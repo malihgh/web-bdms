@@ -105,6 +105,9 @@ class DomainDropdown extends React.Component {
         selected
     } = this.state
     if(!domains.data.hasOwnProperty(schema)){
+      if(domains.isFetching === true){
+        return 'loading translations'
+      }
       return (
         <div style={{color: 'red'}}>
           "{schema}" not in codelist

@@ -9,6 +9,7 @@ import HeaderComponent from './pages/header/headerComponent'
 import HomeComponent from './pages/home/homeComponent'
 import EditorComponent from './pages/editor/editorComponent'
 
+console.log('process.env.PUBLIC_URL: ' + process.env.PUBLIC_URL)
 class App extends Component {
   render() {
     return (
@@ -32,12 +33,12 @@ class App extends Component {
               {
                 [
                   {
-                    path: '/',
+                    path: process.env.PUBLIC_URL + '/',
                     exact: true,
                     body: HomeComponent
                   },
                   {
-                    path: '/editor',
+                    path: process.env.PUBLIC_URL + '/editor',
                     exact: true,
                     body: EditorComponent
                   }

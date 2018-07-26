@@ -7,6 +7,10 @@ import BoreholeForm from '../../commons/form/borehole/boreholeForm'
 import ProjectTable from '../../commons/table/projectTable'
 import BoreholeTable from '../../commons/table/boreholeTable'
 
+import {
+  createBorehole
+} from '@ist-supsi/bmsjs'
+
 import LabelReset from '../../commons/form/labelReset'
 
 import {
@@ -15,6 +19,8 @@ import {
   Input,
   // Button,
   // Segment,
+  Icon,
+  Button,
   Divider
 } from 'semantic-ui-react'
 
@@ -38,42 +44,51 @@ class EditorComponent extends React.Component {
           // maxWidth: '400px',
           padding: '1em'
         }}>
-          <div>
-            <Header>
-              {t('title')} ({pcnt})
-            </Header>
-            <Form
-              error
-              autoComplete="off">
-              <Form.Group widths='equal'>
-                <Form.Input fluid
-                  placeholder={t('create_new')}/>
-                <Form.Button
-                  fluid
-                  disabled
-                  content={t('create')}
-                  primary/>
-              </Form.Group>
-              <Divider/>
-              <Form.Field>
-                <Input
-                  icon='search'
-                  iconPosition='left'
-                  placeholder={t('search')}
-                  onChange={(e)=>{
-                    console.log('change')
-                  }}
-                  // value={this.state.borehole.extended.original_name}
-                  autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="off"
-                  spellCheck="false"/>
-                <LabelReset onClick={()=>{
-                  console.log('reset')
-                }}/>
-              </Form.Field>
-            </Form>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            marginBottom: '1em'
+          }}>
+            <div style={{
+              flex: '1 1 0%'
+            }}>
+              <Header style={{margin: 'auto'}}>
+                {t('title')} ({pcnt})
+              </Header>
+            </div>
+            <div>
+              <Button basic  size='mini'
+                onClick={(e) => {
+                  // createLayer(
+                  //   this.state.stratigraphy_id
+                  // ).then(
+                  //   function(response) {
+                  //     if(response.data.success){
+                  //       let layer_id = response.data.id
+                  //       getLayers(
+                  //         this.state.stratigraphy_id
+                  //       ).then(function(response) {
+                  //         if(response.data.success){
+                  //           this.setState({
+                  //             layers: response.data.data,
+                  //             layer: layer_id
+                  //           })
+                  //         }
+                  //       }.bind(this)).catch(function (error) {
+                  //         console.log(error)
+                  //       })
+                  //     }
+                  //   }.bind(this)
+                  // ).catch(function (error) {
+                  //   console.log(error)
+                  // })
+                }}>
+                <Icon name='add' />
+                Add project
+              </Button>
+            </div>
           </div>
+          <Divider/>
           <ProjectTable
             activeItem={
               !_.isNil(this.props.store.pselected)?
@@ -104,42 +119,40 @@ class EditorComponent extends React.Component {
               flexDirection: 'column',
               padding: '1em'
             }}>
-            <div>
-              <Header>
-                {t('title2')} ({bcnt})
-              </Header>
-              <Form
-                error
-                autoComplete="off">
-                <Form.Group widths='equal'>
-                  <Form.Input fluid
-                    placeholder={t('create_new')}/>
-                  <Form.Button
-                    fluid
-                    disabled
-                    content={t('create')}
-                    primary/>
-                </Form.Group>
-                <Divider/>
-                <Form.Field>
-                  <Input
-                    icon='search'
-                    iconPosition='left'
-                    placeholder={t('search')}
-                    onChange={(e)=>{
-                      console.log('change')
-                    }}
-                    // value={this.state.borehole.extended.original_name}
-                    autoComplete="off"
-                    autoCorrect="off"
-                    autoCapitalize="off"
-                    spellCheck="false"/>
-                  <LabelReset onClick={()=>{
-                    console.log('reset')
-                  }}/>
-                </Form.Field>
-              </Form>
-            </div>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                marginBottom: '1em'
+              }}>
+                <div style={{
+                  flex: '1 1 0%'
+                }}>
+                  <Header style={{margin: 'auto'}}>
+                    {t('title2')} ({bcnt})
+                  </Header>
+                </div>
+                <div>
+                  <Button basic size='mini'
+                    onClick={(e) => {
+                      createBorehole(
+                        this.props.store.pselected.id
+                      ).then(
+                        function(response) {
+                          if(response.data.success){
+                            this.props.boreholeSelected({
+                              id: response.data.id
+                            })
+                          }
+                        }.bind(this)
+                      ).catch(function (error) {
+                        console.log(error)
+                      })
+                    }}>
+                    <Icon name='add' />
+                    Add borehole
+                  </Button>
+                </div>
+              </div>
             <BoreholeTable
               activeItem={
                 !_.isNil(this.props.store.bselected)?

@@ -610,7 +610,10 @@ class BoreholeForm extends React.Component {
                                 'custom.address', e.target.value
                               )
                             }}
-                            value={this.state.borehole.custom.address}
+                            value={
+                                _.isNil(this.state.borehole.custom.address)?
+                                '': this.state.borehole.custom.address
+                            }
                             autoComplete="off"
                             autoCorrect="off"
                             autoCapitalize="off"

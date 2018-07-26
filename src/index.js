@@ -11,12 +11,10 @@ import i18n from './i18n'
 import './index.css'
 import 'ol/ol.css'
 import App from './App'
-import registerServiceWorker from './registerServiceWorker'
+// import registerServiceWorker from './registerServiceWorker'
 import 'semantic-ui-css/semantic.css'
 
 import {appReducers} from './reducers'
-// import {store, injectReducer} from '@ist-supsi/bmsjs'
-// injectReducer(store, appReducers)
 
 import {createReducer} from '@ist-supsi/bmsjs'
 
@@ -37,4 +35,4 @@ ReactDOM.render(
   </I18nextProvider>,
   document.getElementById('root')
 )
-registerServiceWorker()
+// registerServiceWorker()
