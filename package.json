@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:8888",
+  "homepage": "https://geoservice.ist.supsi.ch/bms",
   "dependencies": {
     "i18next": "^11.3.3",
     "i18next-browser-languagedetector": "^2.2.0",

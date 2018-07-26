@@ -29,14 +29,13 @@ class MunicipalityDropdown extends React.Component {
     if(municipalities.data.length===0) this.props.loadMunicipalities()
   }
 
-  // static getDerivedStateFromProps(nextProps, prevState){
-  //   console.log(nextProps.selected, prevState.selected);
-  //   if (nextProps.selected !== prevState.selected){
-  //     return {selected: nextProps.selected}
-  //   }
-  //   return null
-  // }
-  //
+  static getDerivedStateFromProps(nextProps, prevState){
+    if (nextProps.selected !== prevState.selected){
+      return {selected: nextProps.selected}
+    }
+    return null
+  }
+
   shouldComponentUpdate(nextProps, nextState){
     if(
       this.props.municipalities.data.length !==
@@ -51,7 +50,6 @@ class MunicipalityDropdown extends React.Component {
     }else if (this.props.disabled !== nextProps.disabled) {
       return true
     }
-    console.log("Dont update");
     return false
   }
 

@@ -7,13 +7,8 @@ import {
   Button
 } from 'semantic-ui-react'
 
-import {
-  setIndex,
-  boreholeSeleced
-} from './actions'
-
 import SearchComponent from '../../commons/search/searchComponent'
-import BoreholeGridComponent from '../../commons/grid/boreholeGridComponent'
+import BoreholeTable from '../../commons/table/boreholeTable'
 import DetailsContainer from '../../commons/detail/detailsContainer'
 import MapComponent from '../../commons/map/mapComponent'
 
@@ -104,7 +99,7 @@ class HomeComponent extends React.Component {
                   <DetailsContainer
                     id={home.selected.id}/>
                 </div>:
-                <BoreholeGridComponent
+                <BoreholeTable
                   onSelected={(borehole)=>{
                     this.props.boreholeSeleced(borehole)
                   }}
@@ -120,7 +115,9 @@ class HomeComponent extends React.Component {
               display: 'flex',
               flexDirection: 'column'
             }}>
-              <MapComponent/>
+              <MapComponent
+                highlighted={
+                  home.selected? [home.selected.id]: []}/>
             </div>
           </div>
       </div>
@@ -141,10 +138,16 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     dispatch: dispatch,
     setIndex: (e, titleProps) => {
       const { index } = titleProps
-      dispatch(setIndex(index))
+      dispatch({
+        type: 'LFMSELECTED',
+        index: index
+      })
     },
     boreholeSeleced: (borehole) => {
-      dispatch(boreholeSeleced(borehole))
+      dispatch({
+        type: 'HOME_BOREHOLE_SELECTED',
+        borehole: borehole
+      })
     }
   }
 }

@@ -4,7 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 let resources = {
   en: {
     common: {
-      "title": "istSOS-3.0",
+      "title": "BMS",
       "start": "This page is in English."
     },
     header: {
@@ -25,12 +25,19 @@ let resources = {
       'back_to_list': 'back to list'
     },
     editor: {
-
+      'title': 'Project',
+      'title2': 'Boreholes',
+      'search': 'Search project',
+      'project_name': 'Project name',
+      'create_new': 'Create new project',
+      'create': 'Create'
     },
     borehole_form: {
       'meta_location': 'Location',
       'meta_borehole': 'Borehole',
       'form_admin': 'Admin',
+      'meta_stratigraphy': 'Stratigraphy',
+      'loading_fetch': 'Loading an existing borehole..',
       'creation_fetch': 'Preparing a new borehole..',
       'duplicate': 'Duplicated value: assign a new value.',
       'date_format': 'dd.mm.yyyy',
@@ -39,7 +46,7 @@ let resources = {
       'kind': 'Drilling type',
       'project_name': 'Project name',
       'restriction': 'Restriction',
-      'restriction_date': 'Restriction date',
+      'restriction_until': 'Restriction date',
       'location_x': 'Coordinate East',
       'location_y': 'Coordinate North',
       'srs': 'SRS',
@@ -52,23 +59,31 @@ let resources = {
       'city': 'City',
       'address': 'Address',
       'landuse': 'Land use',
-      'drilling_method': 'Drilling method',
-      'drilling_end': 'Drill end date',
+      'method': 'Drilling method',
+      'drilling_date': 'Drill end date',
       'cuttings': 'Cuttings',
       'purpose': 'Purpose',
       'drill_diameter': 'Drill diameter (m)',
-      'borhole_status': 'Status of borehole',
-      'inclination': 'Inclination (°)',
-      'inclination_direction': 'Inclination direction (°)',
-      'qt_inclination_direction': 'QC Inclin. / Direction',
-      'depth': 'Depth (MD) (m)',
-      'qt_depth': 'QC depth',
+      'status': 'Status of borehole',
+      'bore_inc': 'Inclination (°)',
+      'bore_inc_dir': 'Inclination direction (°)',
+      'qt_bore_inc_dir': 'QC Inclin. / Direction',
+      'length': 'Depth (MD) (m)',
+      'qt_length': 'QC depth',
       'top_bedrock': 'Top bedrock',
       'qt_top_bedrock': 'QC top bedrock',
       'groundwater': 'Groundwater',
       'lit_pet_top_bedrock': 'Lit/Pet Top bedrock',
       'lit_str_top_bedrock': 'Litstrati top bedrock',
       'chro_str_top_bedrock': 'Chronostrati top bedrock'
+    },
+    layer_form: {
+      'loading_fetch': 'Loading an existing layer..',
+      'creation_fetch': 'Preparing a new layer..',
+      'depth_from': 'Top MD (m)',
+      'depth_to': 'Base MD (m)',
+      'description': 'Layer description',
+      'geo_description': 'Geology description',
     },
     search: {
       'reset': 'reset',
@@ -82,7 +97,7 @@ let resources = {
   },
   it: {
     common: {
-      "title": "istSOS-3.0",
+      "title": "BMS",
       "start": "Questa pagina è in Italiano"
     },
     header: {
@@ -103,12 +118,19 @@ let resources = {
       'back_to_list': 'Torna alla lista'
     },
     editor: {
-
+      'title': 'Progetti',
+      'title2': 'Sondaggi',
+      'project_name': 'Nome progetto',
+      'search': 'Ricerca progetto',
+      'create_new': 'Crea nuovo',
+      'create': 'Crea'
     },
     borehole_form: {
       'meta_location': 'Posizione',
       'meta_borehole': 'Sondaggio',
       'form_admin': 'Amministrativo',
+      'meta_stratigraphy': 'Startigrafia',
+      'loading_fetch': 'Caricamento di un sondaggio esistente..',
       'creation_fetch': 'Preparazione di un nuovo sondaggio..',
       'duplicate': 'Valore duplicato: assegnare un altro valore.',
       'date_format': 'gg.mm.aaaa',
@@ -117,7 +139,7 @@ let resources = {
       'kind': 'Tipologia di perforazione',
       'project_name': 'Nome progetto',
       'restriction': 'Restrizione',
-      'restriction_date': 'Data restrizione',
+      'restriction_until': 'Data restrizione',
       'location_x': 'Coordinata Est',
       'location_y': 'Coordinata Nord',
       'srs': 'SRS',
@@ -130,22 +152,31 @@ let resources = {
       'city': 'Città',
       'address': 'Indirizzo',
       'landuse': 'Uso del suolo',
-      'drilling_method': 'Tipologia di perforazione',
-      'drilling_end': 'Data fine perforazione',
+      'method': 'Tipologia di perforazione',
+      'drilling_date': 'Data fine perforazione',
       'cuttings': 'Taglio',
       'purpose': 'Scopo',
       'drill_diameter': 'diametro perforazione (m)',
-      'borhole_status': 'Stato del sondaggio',
-      'inclination': 'Inclinazione (°)',
-      'inclination_direction': 'Direzione inclinazione (°)',
-      'depth': 'Profondità (MD) (m)',
-      'qt_depth': 'Qualità profondità',
+      'status': 'Stato del sondaggio',
+      'bore_inc': 'Inclinazione (°)',
+      'bore_inc_dir': 'Direzione inclinazione (°)',
+      'qt_bore_inc_dir': 'Qualità Inclin. / Direz.',
+      'length': 'Profondità (MD) (m)',
+      'qt_length': 'Qualità profondità',
       'top_bedrock': 'Top bedrock',
       'qt_top_bedrock': 'QC top bedrock',
       'groundwater': 'Groundwater',
       'lit_pet_top_bedrock': 'Lit/Pet Top bedrock',
       'lit_str_top_bedrock': 'Litstrati top bedrock',
       'chro_str_top_bedrock': 'Chronostrati top bedrock'
+    },
+    layer_form: {
+      'loading_fetch': 'Loading an existing layer..',
+      'creation_fetch': 'Preparing a new layer..',
+      'depth_from': 'Top MD (m)',
+      'depth_to': 'Base MD (m)',
+      'description': 'Descrizione livello',
+      'geo_description': 'Descrizione geologia',
     },
     search: {
       'reset': 'azzera',

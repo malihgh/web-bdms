@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+import _ from 'lodash'
 
 import {
   loadDomains
@@ -27,13 +28,31 @@ class DomainDropdown extends React.Component {
       domains,
       schema
     } = this.props
-    if(!domains.data.hasOwnProperty(schema)){
+    if(!domains.data.hasOwnProperty(schema) && domains.isFetching === false){
       this.props.loadDomains()
     }
   }
 
+  // shouldComponentUpdate(nextProps, nextState){
+  //   console.log(this.props.i18n.language, nextProps.i18n.language);
+  //   if (this.props.domains.isFetching !== nextProps.domains.isFetching) {
+  //     return true
+  //   }else if (this.props.selected !== nextProps.selected) {
+  //     return true
+  //   }else if (this.props.i18n.language !== nextProps.i18n.language) {
+  //     return true
+  //   }
+  //   // else if (nextProps.domains.data.hasOwnProperty(nextProps.schema)) {
+  //   //   return true
+  //   // }
+  //   return false
+  // }
+
   static getDerivedStateFromProps(nextProps, prevState){
-    if (nextProps.selected){
+    if (_.isNil(nextProps.selected)){
+      if(nextProps.multiple === true) return  {selected: []}
+      return {selected: ''}
+    }else if (nextProps.selected !== prevState.select){
       return {selected: nextProps.selected}
     }
     return null
@@ -43,16 +62,34 @@ class DomainDropdown extends React.Component {
     const {
       onSelected,
       domains,
-      schema
+      schema,
+      multiple
     } = this.props
-    for (var i = 0; i < domains.data[schema].length; i++) {
-      let h = domains.data[schema][i]
-      if(h.id === data.value){
-        this.setState({selected: h.id})
-        if(onSelected!==undefined){
-          onSelected({...h})
+    if(multiple===true){
+      const selection = []
+      for (let i = 0; i < domains.data[schema].length; i++) {
+        let h = domains.data[schema][i]
+        for (var f = 0; f < data.value.length; f++) {
+          const s = data.value[f]
+          if(h.id === s){
+            selection.push({...h})
+          }
         }
-        break
+      }
+      this.setState({selected: data.value})
+      if(onSelected!==undefined){
+        onSelected(selection)
+      }
+    }else{
+      for (let i = 0; i < domains.data[schema].length; i++) {
+        let h = domains.data[schema][i]
+        if(h.id === data.value){
+          this.setState({selected: h.id})
+          if(onSelected!==undefined){
+            onSelected({...h})
+          }
+          break
+        }
       }
     }
   }
@@ -99,7 +136,10 @@ class DomainDropdown extends React.Component {
 
 DomainDropdown.propTypes = {
   schema: PropTypes.string,
-  selected: PropTypes.number,
+  selected: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.arrayOf(PropTypes.number)
+  ]),
   onSelected: PropTypes.func,
   search: PropTypes.bool,
   multiple: PropTypes.bool
