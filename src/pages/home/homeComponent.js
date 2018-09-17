@@ -2,88 +2,48 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import {
-  Accordion,
-  Icon,
-  Button
-} from 'semantic-ui-react'
+    withRouter
+} from 'react-router-dom'
 
-import SearchComponent from '../../commons/search/searchComponent'
 import BoreholeTable from '../../commons/table/boreholeTable'
 import DetailsContainer from '../../commons/detail/detailsContainer'
 import MapComponent from '../../commons/map/mapComponent'
+import MenuExplorer from '../../commons/menu/explorer/menuExplorer'
+import MenuContainer from '../../commons/menu/menuContainer'
 
 class HomeComponent extends React.Component {
     render() {
       const {
-        t,
-        leftmenu,
         home,
         search
       } = this.props
       return (
         <div style={{
           flex: '1 1 0%',
+          height: '100%',
           display: 'flex',
           flexDirection: 'row'
         }}>
-          <div style={{
-            width: '300px',
-            padding: "1em",
-            // boxShadow: '0px 0px 8px 0px rgba(0,0,0,0.5)'
-          }}>
-            <Accordion>
-              <Accordion.Title
-                  active={leftmenu.index === 0}
-                  index={0}
-                  onClick={this.props.setIndex}>
-                <Icon name='dropdown' />
-                <span style={{
-                  fontSize: leftmenu.index === 0? '1.2em': null,
-                  fontWeight: leftmenu.index === 0? 'bold': null
-                }}>{t('legend')}</span>
-              </Accordion.Title>
-              <Accordion.Content active={leftmenu.index === 0}>
-                Foo
-              </Accordion.Content>
-              <Accordion.Title
-                  active={leftmenu.index === 1}
-                  index={1}
-                  onClick={this.props.setIndex}>
-                <Icon name='dropdown' />
-                <span style={{
-                  fontSize: leftmenu.index === 1? '1.2em': null,
-                  fontWeight: leftmenu.index === 1? 'bold': null
-                }}>{t('attribute_filter')}</span>
-              </Accordion.Title>
-              <Accordion.Content active={leftmenu.index === 1}>
-                <SearchComponent
-                  onChange={(filter)=>{
-                    //console.log(filter)
-                  }}/>
-              </Accordion.Content>
-              <Accordion.Title
-                  active={leftmenu.index === 2}
-                  index={2}
-                  onClick={this.props.setIndex}>
-                <Icon name='dropdown' />
-                <span style={{
-                  fontSize: leftmenu.index === 2? '1.2em': null,
-                  fontWeight: leftmenu.index === 2? 'bold': null
-                }}>{t('spatial_filter')}</span>
-              </Accordion.Title>
-              <Accordion.Content active={leftmenu.index === 2}>
-                Bar
-              </Accordion.Content>
-            </Accordion>
-          </div>
+          {
+            false? null:
+            <div style={{
+              flex: '0 0 300px',
+              boxShadow: '2px 0px 5px 0px rgba(0,0,0,0.75)',
+              marginRight: '10px'
+            }}>
+              <MenuContainer>
+                <MenuExplorer/>
+              </MenuContainer>
+            </div>
+          }
           <div style={{
             flex: '1 1 0%',
             display: 'flex',
             flexDirection: 'row'
           }}>
             <div style={{
-              flex: '1 1 100%',
-              padding: "1em",
+              flex: '1 1.5 100%',
+              padding: "1em 0.5em",
               // boxShadow: 'rgba(0, 0, 0, 0.5) 0px 0px 8px 0px inset',
               display: 'flex',
               flexDirection: 'column'
@@ -91,17 +51,18 @@ class HomeComponent extends React.Component {
               {
                 home.selected?
                 <div>
-                  <Button basic icon
-                    onClick={e=>this.props.boreholeSeleced(null)}>
-                    <Icon name='caret left' />
-                    {t('back_to_list')}
-                  </Button>
                   <DetailsContainer
                     id={home.selected.id}/>
                 </div>:
                 <BoreholeTable
                   onSelected={(borehole)=>{
                     this.props.boreholeSeleced(borehole)
+                    // history.push(
+                    //   process.env.PUBLIC_URL + '/detail/' + borehole.id
+                    // )
+                  }}
+                  onHover={(item)=>{
+                    this.props.boreholeHover(item)
                   }}
                   filter={{
                     ...search.filter
@@ -117,7 +78,17 @@ class HomeComponent extends React.Component {
             }}>
               <MapComponent
                 highlighted={
-                  home.selected? [home.selected.id]: []}/>
+                  home.selected?
+                    [home.selected.id]:
+                    home.hover?
+                      [home.hover.id]: []}
+                moveend={(features, extent)=>{
+                  this.props.filterByExtent(extent)
+                  // if(search.mapfilter===true){
+                  //   this.props.filterByExtent(extent)
+                  // }
+                }}
+              />
             </div>
           </div>
       </div>
@@ -148,6 +119,18 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         type: 'HOME_BOREHOLE_SELECTED',
         borehole: borehole
       })
+    },
+    boreholeHover: (borehole) => {
+      dispatch({
+        type: 'HOME_BOREHOLE_HOVER',
+        borehole: borehole
+      })
+    },
+    filterByExtent: (extent) => {
+      dispatch({
+        type: 'SEARCH_EXTENT_CHANGED',
+        extent: extent
+      })
     }
   }
 }
@@ -155,4 +138,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(translate('home')(HomeComponent))
+)(translate('home')(withRouter(HomeComponent)))

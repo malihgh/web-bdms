@@ -1,11 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
 import _ from 'lodash'
 
 import {
-  loadDomains
+  loadProjects
 } from '@ist-supsi/bmsjs'
 
 import {
@@ -13,35 +12,34 @@ import {
   Header,
 } from 'semantic-ui-react'
 
-class DomainDropdown extends React.Component {
+class ProjectDropdown extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      selected: this.props.selected,
-      language: this.props.i18n.language
+      selected: this.props.selected
     }
     this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount(){
     const {
-      domains,
-      schema
+      projects
     } = this.props
-    if(!domains.data.hasOwnProperty(schema) && domains.isFetching === false){
-      this.props.loadDomains()
+    if(
+      projects.data.length === 0
+      && projects.isFetching === false
+    ){
+      this.props.loadProjects()
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState){
-    if (this.props.selected !== nextProps.selected) {
-      return true
-    }else if (this.state.language !== nextProps.i18n.language) {
-      return true
-    }
-    return false
-  }
+  // shouldComponentUpdate(nextProps, nextState){
+  //   if (this.props.selected !== nextProps.selected) {
+  //     return true
+  //   }
+  //   return false
+  // }
 
   static getDerivedStateFromProps(nextProps, prevState){
     const state = {...prevState}
@@ -54,35 +52,20 @@ class DomainDropdown extends React.Component {
     } else {
       state.selected = nextProps.selected
     }
-    if (nextProps.i18n.language !== prevState.language){
-      state.language = nextProps.i18n.language
-    }
     if (_.isEqual(state, prevState)) return null
     return state
-
-    // if (_.isNil(nextProps.selected)){
-    //   if(nextProps.multiple === true) return  {selected: []}
-    //   return {selected: ''}
-    // }else if (nextProps.selected !== prevState.select){
-    //   return {selected: nextProps.selected}
-    // }else if (nextProps.i18n.language !== prevState.language){
-    //   console.log('Derived!') 
-    //   return {language: nextProps.i18n.language}
-    // }
-    // return null
   }
 
   handleChange(event, data) {
     const {
       onSelected,
-      domains,
-      schema,
+      projects,
       multiple
     } = this.props
     if(multiple===true){
       const selection = []
-      for (let i = 0; i < domains.data[schema].length; i++) {
-        let h = domains.data[schema][i]
+      for (let i = 0; i < projects.data.length; i++) {
+        let h = projects.data[i]
         for (var f = 0; f < data.value.length; f++) {
           const s = data.value[f]
           if(h.id === s){
@@ -95,8 +78,8 @@ class DomainDropdown extends React.Component {
         onSelected(selection)
       }
     }else{
-      for (let i = 0; i < domains.data[schema].length; i++) {
-        let h = domains.data[schema][i]
+      for (let i = 0; i < projects.data.length; i++) {
+        let h = projects.data[i]
         if(h.id === data.value){
           this.setState({selected: h.id})
           if(onSelected!==undefined){
@@ -110,23 +93,14 @@ class DomainDropdown extends React.Component {
 
   render() {
     const {
-      domains,
-      schema,
-      i18n,
+      projects,
       search,
       multiple
     } = this.props, {
         selected
     } = this.state
-    if(!domains.data.hasOwnProperty(schema)){
-      if(domains.isFetching === true){
-        return 'loading translations'
-      }
-      return (
-        <div style={{color: 'red'}}>
-          "{schema}" not in codelist
-        </div>
-      )
+    if(projects.isFetching === true){
+      return 'loading projects'
     }
     return (
       <Form.Select
@@ -134,15 +108,16 @@ class DomainDropdown extends React.Component {
         search={search}
         multiple={multiple}
         options={
-          domains.data[schema].map((domain) => ({
-            key: "dom-opt-" + domain.id,
-            value: domain.id,
-            text: domain[i18n.language].text,
+          projects.data.map((project) => ({
+            key: "dom-opt-" + project.id,
+            value: project.id,
+            text: project.name,
             content: <Header
               content={
-                domain[i18n.language].text
+                project.name
               }
-              subheader={domain[i18n.language].descr}/>
+              // subheader={domain.name}
+            />
           }))
         }
         value={selected}
@@ -151,8 +126,7 @@ class DomainDropdown extends React.Component {
   }
 }
 
-DomainDropdown.propTypes = {
-  schema: PropTypes.string,
+ProjectDropdown.propTypes = {
   selected: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.arrayOf(PropTypes.number)
@@ -162,22 +136,22 @@ DomainDropdown.propTypes = {
   multiple: PropTypes.bool
 }
 
-DomainDropdown.defaultProps = {
+ProjectDropdown.defaultProps = {
   search: false,
   multiple: false
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    domains: state.core_domain_list
+    projects: state.core_project_list
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     dispatch: dispatch,
-    loadDomains: () => {
-      dispatch(loadDomains())
+    loadProjects: () => {
+      dispatch(loadProjects())
     }
   }
 }
@@ -185,6 +159,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)((
-   translate('search')(DomainDropdown)
-))
+)(ProjectDropdown)

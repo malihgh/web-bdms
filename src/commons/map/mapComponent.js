@@ -22,7 +22,7 @@ import {
 class MapComponent extends React.Component {
   constructor(props) {
     super(props);
-    // Don't call this.setState() here!
+    this.moveEnd = this.moveEnd.bind(this)
     this.state = {
       counter: 0
     }
@@ -94,6 +94,9 @@ class MapComponent extends React.Component {
       // })
     }))
 
+    // Register map events
+    this.map.on('moveend', this.moveEnd)
+
     getGeojson().then(function(response) {
       if(response.data.success){
         this.points.addFeatures(
@@ -104,6 +107,7 @@ class MapComponent extends React.Component {
         this.map.getView().fit(
             this.points.getExtent()
         )
+        this.moveEnd()
       }
     }.bind(this)).catch(function (error) {
       console.log(error)
@@ -142,6 +146,22 @@ class MapComponent extends React.Component {
     return [new Style(conf)];
   }
 
+  /*
+      Calculate which features are visible in actual map extent
+      If  moveend prop funtion is present then call it.
+  */
+  moveEnd(){
+    const { moveend } = this.props;
+    if(moveend !== undefined){
+      var extent = this.map.getView().calculateExtent(this.map.getSize())
+      let features = []
+      this.points.forEachFeatureInExtent(extent, function(feature){
+          features.push(feature.get('id'))
+      })
+      moveend(features, extent)
+    }
+  }
+
   componentWillReceiveProps(nextProps){
     const {
         highlighted
@@ -166,6 +186,7 @@ class MapComponent extends React.Component {
 
 
 MapComponent.propTypes = {
+  moveend: PropTypes.func,
   highlighted: PropTypes.array
 }
 

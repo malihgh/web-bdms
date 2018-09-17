@@ -8,21 +8,15 @@ import {
   getBorehole,
   checkBorehole,
   createBorehole,
-  patchBorehole,
-  createStratigraphy,
-  createLayer,
-  getLayers,
-  deleteLayer
+  patchBorehole
 } from '@ist-supsi/bmsjs'
 
 import DomainDropdown from '../domain/dropdown/domainDropdown'
 import MunicipalityDropdown from '../municipality/dropdown/municipalityDropdown'
-import StartigraphyTable from '../../table/stratigraphyTable'
+import DomainTabs from '../domain/domainTabs'
 import CantonDropdown from '../cantons/dropdown/cantonDropdown'
 import DateField from '../dateField'
-import StratigraphyForm from '../stratigraphy/stratigraphyForm'
-import LayerForm from '../layer/layerForm'
-import LayersList from '../../layers/layerList'
+import StratigraphyFormContainer from '../stratigraphy/stratigraphyFormContainer'
 
 import {
   Tab,
@@ -32,10 +26,7 @@ import {
   Message,
   Dimmer,
   Loader,
-  Divider,
-  // Button,
-  Icon,
-  Menu
+  TextArea
 } from 'semantic-ui-react'
 
 class BoreholeForm extends React.Component {
@@ -83,7 +74,12 @@ class BoreholeForm extends React.Component {
         qt_top_bedrock: null,
         lit_pet_top_bedrock: [],
         lit_str_top_bedrock: [],
-        chro_str_top_bedrock: []
+        chro_str_top_bedrock: [],
+        remarks: '',
+        mistakes: '',
+        processing_status: null,
+        national_relevance: null,
+        attributes_to_edit: []
       }
     }
     this.state = {
@@ -342,7 +338,12 @@ class BoreholeForm extends React.Component {
                       error
                       size={size}
                       autoComplete="off">
-                      <Form.Field>
+                      <Form.Field
+                        required
+                        error={
+                          this.state.borehole.extended.original_name === ''
+                        }
+                      >
                         <label>{t('original_name')}</label>
                         <Input
                           loading={this.state['extended.original_name_fetch']}
@@ -376,7 +377,12 @@ class BoreholeForm extends React.Component {
                             />: null
                       }
                       <Form.Group widths='equal'>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                          error={
+                            this.state.borehole.custom.public_name === ''
+                          }
+                        >
                           <label>{t('public_name')}</label>
                           <Input
                             loading={this.state.public_name_fetch}
@@ -400,7 +406,9 @@ class BoreholeForm extends React.Component {
                             autoCapitalize="off"
                             spellCheck="false"/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('kind')}</label>
                           <DomainDropdown
                             schema='kind'
@@ -431,7 +439,9 @@ class BoreholeForm extends React.Component {
                     <Form
                       size={size}>
                       <Form.Group widths='equal'>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('restriction')}</label>
                           <DomainDropdown
                             schema='restriction'
@@ -462,7 +472,9 @@ class BoreholeForm extends React.Component {
                   <Segment>
                     <Form size={size}>
                       <Form.Group widths='equal'>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('location_x')}</label>
                           <Input
                             type='number'
@@ -482,7 +494,9 @@ class BoreholeForm extends React.Component {
                             autoCapitalize="off"
                             spellCheck="false"/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('location_y')}</label>
                           <Input
                             type='number'
@@ -502,7 +516,9 @@ class BoreholeForm extends React.Component {
                             autoCapitalize="off"
                             spellCheck="false"/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('srs')}</label>
                           <DomainDropdown
                             schema='srs'
@@ -511,7 +527,9 @@ class BoreholeForm extends React.Component {
                               this.updateChange('srs', selected.id, false)
                             }}/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('qt_location')}</label>
                           <DomainDropdown
                             schema='qt_location'
@@ -522,7 +540,9 @@ class BoreholeForm extends React.Component {
                         </Form.Field>
                       </Form.Group>
                       <Form.Group widths='equal'>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('elevation_z')}</label>
                           <Input
                             type='number'
@@ -542,7 +562,9 @@ class BoreholeForm extends React.Component {
                             autoCapitalize="off"
                             spellCheck="false"/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('hrs')}</label>
                           <DomainDropdown
                             schema='hrs'
@@ -551,7 +573,9 @@ class BoreholeForm extends React.Component {
                               this.updateChange('hrs', selected.id, false)
                             }}/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('qt_elevation')}</label>
                           <DomainDropdown
                             schema='qt_elevation'
@@ -568,12 +592,16 @@ class BoreholeForm extends React.Component {
                     <Form
                       size={size}>
                       <Form.Group widths='equal'>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('country')}</label>
                           <Input
                             value={'Switzerland'}/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('canton')}</label>
                           <CantonDropdown
                             selected={this.state.borehole.custom.canton}
@@ -588,7 +616,9 @@ class BoreholeForm extends React.Component {
                               )
                             }}/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('city')}</label>
                           <MunicipalityDropdown
                             disabled={this.state.borehole.custom.canton===null}
@@ -648,7 +678,9 @@ class BoreholeForm extends React.Component {
                       size={size}
                       autoComplete="off">
                       <Form.Group widths='equal'>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('method')}</label>
                           <DomainDropdown
                             schema='extended.method'
@@ -659,6 +691,7 @@ class BoreholeForm extends React.Component {
                             }}/>
                         </Form.Field>
                         <Form.Field
+                          required
                           error={
                             _.isString(this.state.borehole.drilling_date) &&
                             this.state.borehole.drilling_date !== '' &&
@@ -675,7 +708,9 @@ class BoreholeForm extends React.Component {
                         </Form.Field>
                       </Form.Group>
                       <Form.Group widths='equal'>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('cuttings')}</label>
                           <DomainDropdown
                             schema='custom.cuttings'
@@ -685,7 +720,9 @@ class BoreholeForm extends React.Component {
                                 'custom.cuttings', selected.id, false)
                             }}/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('purpose')}</label>
                           <DomainDropdown
                             schema='extended.purpose'
@@ -717,7 +754,9 @@ class BoreholeForm extends React.Component {
                             autoCapitalize="off"
                             spellCheck="false"/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('status')}</label>
                           <DomainDropdown
                             schema='extended.status'
@@ -729,7 +768,9 @@ class BoreholeForm extends React.Component {
                         </Form.Field>
                       </Form.Group>
                       <Form.Group widths='equal'>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('bore_inc')}</label>
                           <Input
                             type='number'
@@ -749,7 +790,9 @@ class BoreholeForm extends React.Component {
                             autoCapitalize="off"
                             spellCheck="false"/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('bore_inc_dir')}</label>
                           <Input
                             type='number'
@@ -769,7 +812,9 @@ class BoreholeForm extends React.Component {
                             autoCapitalize="off"
                             spellCheck="false"/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('qt_bore_inc_dir')}</label>
                           <DomainDropdown
                             schema='custom.qt_bore_inc_dir'
@@ -788,7 +833,9 @@ class BoreholeForm extends React.Component {
                       size={size}
                       autoComplete="off">
                       <Form.Group widths='equal'>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('length')}</label>
                           <Input
                             type='number'
@@ -808,7 +855,9 @@ class BoreholeForm extends React.Component {
                             autoCapitalize="off"
                             spellCheck="false"/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('qt_length')}</label>
                           <DomainDropdown
                             schema='custom.qt_length'
@@ -821,7 +870,9 @@ class BoreholeForm extends React.Component {
                         </Form.Field>
                       </Form.Group>
                       <Form.Group widths='equal'>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('top_bedrock')}</label>
                           <Input
                             type='number'
@@ -841,18 +892,25 @@ class BoreholeForm extends React.Component {
                             autoCapitalize="off"
                             spellCheck="false"/>
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field
+                          required
+                        >
                           <label>{t('qt_top_bedrock')}</label>
                           <DomainDropdown
                             schema='custom.qt_top_bedrock'
                             selected={this.state.borehole.custom.qt_top_bedrock}
                             onSelected={(selected)=>{
                               this.updateChange(
-                                'custom.qt_top_bedrock', selected.id, false)
+                                'custom.qt_top_bedrock',
+                                selected.id,
+                                false
+                              )
                             }}/>
                         </Form.Field>
                       </Form.Group>
-                      <Form.Field>
+                      <Form.Field
+                        required
+                      >
                         <label>{t('groundwater')}</label>
                         <Form.Group inline>
                           <Form.Radio
@@ -926,6 +984,91 @@ class BoreholeForm extends React.Component {
                   </Segment>
                 </div>
               )
+            } else if (this.state.tab === 2) {
+              return (
+                <div style={{
+                    flex: "1 1 0%",
+                    padding: "1em",
+                    overflowY: "auto"
+                  }}>
+                  <Segment>
+                    <Form
+                      error
+                      size={size}
+                      autoComplete="off">
+                      <Form.Field>
+                        <label>{t('national_relevance')}</label>
+                        <DomainDropdown
+                          schema='madm402'
+                          selected={
+                            this.state.borehole.custom.national_relevance
+                          }
+                          onSelected={(selected)=>{
+                            this.updateChange(
+                              'custom.national_relevance',
+                              selected.id,
+                              false
+                            )
+                          }}/>
+                      </Form.Field>
+                      <Form.Field>
+                        <label>{t('processing_status')}</label>
+                        <DomainDropdown
+                          schema='madm401'
+                          selected={
+                            this.state.borehole.custom.processing_status
+                          }
+                          onSelected={(selected)=>{
+                            this.updateChange(
+                              'custom.processing_status',
+                              selected.id,
+                              false
+                            )
+                          }}/>
+                      </Form.Field>
+                      <Form.Field>
+                        <label>{t('attributes_to_edit')}</label>
+                        <DomainDropdown
+                          schema='madm404'
+                          selected={
+                            this.state.borehole.custom.attributes_to_edit
+                          }
+                          multiple={true}
+                          search={true}
+                          onSelected={(selected)=>{
+                            this.updateChange(
+                              'custom.attributes_to_edit',
+                              selected.map(lptb=>lptb.id),
+                              false
+                            )
+                          }}/>
+                      </Form.Field>
+                      <Form.Field>
+                        <label>{t('mistakes')}</label>
+                        <TextArea
+                          autoHeight
+                          onChange={(e)=>{
+                            this.updateChange(
+                              'custom.mistakes', e.target.value
+                            )
+                          }}
+                          value={this.state.borehole.custom.mistakes}/>
+                      </Form.Field>
+                      <Form.Field>
+                        <label>{t('remarks')}</label>
+                        <TextArea
+                          autoHeight
+                          onChange={(e)=>{
+                            this.updateChange(
+                              'custom.remarks', e.target.value
+                            )
+                          }}
+                          value={this.state.borehole.custom.remarks}/>
+                      </Form.Field>
+                    </Form>
+                  </Segment>
+                </div>
+              )
             } else if (this.state.tab === 3) {
               return (
                 <div style={{
@@ -936,211 +1079,25 @@ class BoreholeForm extends React.Component {
                   <div
                     style={{
                       display: 'flex',
-                      flexDirection: 'row',
+                      flexDirection: 'column',
                       height: '100%'
                     }}>
-                    <div style={{
-                      overflow: 'hidden',
-                      height: '100%',
-                      display: 'flex',
-                      flex: '0.3 1 0%',
-                      flexDirection: 'column',
-                      // maxWidth: '400px',
-                      padding: '1em'
-                    }}>
-                      <div>
-                        <Form
-                          error
-                          autoComplete="off">
-                          <Form.Group widths='equal'>
-                            <Form.Field>
-                              <DomainDropdown
-                                schema='layer_kind'
-                                selected={
-                                  this.state.layer_kind
-                                }
-                                onSelected={(selected)=>{
-                                  this.setState({
-                                    layer_kind: selected.id
-                                  })
-                                }}/>
-                            </Form.Field>
-                            <Form.Button
-                              fluid
-                              disabled={
-                                this.state.layer_kind === null
-                              }
-                              content={t('create')}
-                              secondary
-                              onClick={()=>{
-                                createStratigraphy(
-                                  this.props.id,
-                                  this.state.layer_kind
-                                ).then(
-                                  function(response) {
-                                    if(response.data.success){
-                                      // let bh = response.data.data
-                                      this.setState({
-                                        layer_kind: null,
-                                        stratigraphy_id: response.data.id
-                                      })
-                                    }
-                                }.bind(this)).catch(function (error) {
-                                  console.log(error)
-                                })
-                              }}/>
-                          </Form.Group>
-                        </Form>
-                      </div>
-                      <div style={{
-                          flex: "0.6 1 0%",
-                          overflowY: "auto"
-                        }}>
-                        <StartigraphyTable
-                          filter={{
-                            borehole: this.state.borehole.id
-                          }}
-                          onSelected={selected => {
-                            this.setState({
-                              stratigraphy_id: selected.id,
-                              layers: [],
-                              layer: null
-                            }, () => {
-                              getLayers(selected.id).then(function(response) {
-                                if(response.data.success){
-                                  this.setState({
-                                    layers: response.data.data
-                                  })
-                                }
-                              }.bind(this)).catch(function (error) {
-                                console.log(error)
-                              })
-                            })
-                          }}/>
-                      </div>
-                    </div>
-                    {
-                      this.state.stratigraphy_id === null?
-                      <div style={{
-                          flex: "0.7 1 0%",
-                          padding: "1em",
-                          overflowY: "auto"
-                        }}>
-                        Stratigraphy not selected
-                      </div>: <Segment style={{
-                          flex: "0.7 1 0%",
-                          padding: "1em",
-                          overflowY: "auto",
-                          display: "flex",
-                          flexDirection: "column"
-                        }}>
-                        <StratigraphyForm
-                          id={this.state.stratigraphy_id}/>
-                        <Divider/>
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            height: '100%'
-                          }}>
-                          <div style={{
-                            width: '250px'
-                          }}>
-                            <Menu secondary>
-                              <Menu.Item
-                                onClick={(e) => {
-                                  createLayer(
-                                    this.state.stratigraphy_id
-                                  ).then(
-                                    function(response) {
-                                      if(response.data.success){
-                                        let layer_id = response.data.id
-                                        getLayers(
-                                          this.state.stratigraphy_id
-                                        ).then(function(response) {
-                                          if(response.data.success){
-                                            this.setState({
-                                              layers: response.data.data,
-                                              layer: layer_id
-                                            })
-                                          }
-                                        }.bind(this)).catch(function (error) {
-                                          console.log(error)
-                                        })
-                                      }
-                                    }.bind(this)
-                                  ).catch(function (error) {
-                                    console.log(error)
-                                  })
-                                }}>
-                                <Icon name='add' />
-                                Add layer
-                              </Menu.Item>
-                            </Menu>
-                            <LayersList
-                              // id={this.state.stratigraphy_id}
-                              onSelected={layer => {
-                                this.setState({
-                                  layer: layer.id
-                                })
-                              }}
-                              onDelete={layer => {
-                                deleteLayer(
-                                  layer.id
-                                ).then(
-                                  function(response) {
-                                    if(response.data.success){
-                                      getLayers(
-                                        this.state.stratigraphy_id
-                                      ).then(function(response) {
-                                        if(response.data.success){
-                                          this.setState({
-                                            layers: response.data.data,
-                                            layer: null
-                                          })
-                                        }
-                                      }.bind(this)).catch(function (error) {
-                                        console.log(error)
-                                      })
-                                    }
-                                }.bind(this)).catch(function (error) {
-                                  console.log(error)
-                                })
-                              }}
-                              selected={this.state.layer}
-                              layers={this.state.layers}
-                              update={this.state.layerUpdated}/>
-                          </div>
-                          <Segment style={{
-                            flex: '1 1 0%',
-                            marginLeft: '1em'
-                          }}>
-                            {
-                              this.state.layer !== null?
-                              <LayerForm
-                                id={this.state.layer}
-                                onUpdated={(id, attribute, value) => {
-                                  const layers = this.state.layers
-                                  for (var i = 0; i < layers.length; i++) {
-                                    if(id === layers[i].id){
-                                      layers[i][attribute] = value
-                                      break
-                                    }
-                                  }
-                                  this.setState({
-                                    layers: layers
-                                  })
-                                }}/>: null
-                            }
-                          </Segment>
-                        </div>
-                      </Segment>
-                    }
+                    <DomainTabs
+                      selected={this.state.layer_kind}
+                      schema='layer_kind'
+                      onSelected={(selected)=>{
+                        this.setState({
+                          layer_kind: selected
+                        })
+                      }}/>
+                    <StratigraphyFormContainer
+                      borehole={this.state.borehole.id}
+                      kind={this.state.layer_kind}/>
                   </div>
                 </div>
               )
             }
-          })()}
+          }).bind(this)()}
         </Dimmer.Dimmable>
     )
   }

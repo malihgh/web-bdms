@@ -106,6 +106,7 @@ class LayersList extends React.Component {
             </List.Item>
           ))
         }
+        {this.props.children}
       </List>
     )
   }

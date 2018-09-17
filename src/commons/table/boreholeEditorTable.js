@@ -12,10 +12,10 @@ import {
 } from 'semantic-ui-react'
 
 import {
-  loadBoreholes
+  loadEditingBoreholes
 } from '@ist-supsi/bmsjs'
 
-class BoreholeTable extends TableComponent {
+class BoreholeEditorTable extends TableComponent {
   getHeaderLabel(key){
     const { t } = this.props
     return (
@@ -37,6 +37,18 @@ class BoreholeTable extends TableComponent {
     const { t } = this.props
     return (
       <Table.Row>
+        <Table.HeaderCell
+          verticalAlign='top'>
+          Status
+          <br/>
+          <span
+            style={{
+              color: '#787878',
+              fontSize: '0.8em'
+            }}>
+            Completness
+          </span>
+        </Table.HeaderCell>
         <Table.HeaderCell
           verticalAlign='top'>
           {t('original_name')}
@@ -106,6 +118,17 @@ class BoreholeTable extends TableComponent {
       // <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
       //   {item.id}
       // </Table.Cell>,
+      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
+        Ready
+        <br/>
+        <span
+          style={{
+            color: '#787878',
+            fontSize: '0.8em'
+          }}>
+            100%
+        </span>
+      </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {item.original_name}
         <br/>
@@ -240,7 +263,7 @@ class BoreholeTable extends TableComponent {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    store: state.core_borehole_list,
+    store: state.core_borehole_editor_list,
     ...ownProps
   }
 }
@@ -249,7 +272,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         dispatch: dispatch,
         loadData: (page, filter = {}) => {
-          dispatch(loadBoreholes(page, 100, filter))
+          dispatch(loadEditingBoreholes(page, 100, filter))
         }
     }
 }
@@ -257,4 +280,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(translate('borehole_form')(BoreholeTable))
+)(translate('borehole_form')(BoreholeEditorTable))

@@ -5,14 +5,20 @@ import { translate } from 'react-i18next'
 import _ from 'lodash'
 import {
   Form,
-  Input
+  Input,
+  Checkbox
 } from 'semantic-ui-react'
 
 import {
-  setIdentifier
+  setIdentifier,
+  setKind,
+  setRestriction,
+  setStatus
 } from './searchActions'
 
 import LabelReset from '../form/labelReset'
+import DomainDropdown from '../form/domain/dropdown/domainDropdown'
+import MunicipalityDropdown from '../form/municipality/dropdown/municipalityDropdown'
 
 class SearchComponent extends React.Component {
   constructor(props) {
@@ -40,10 +46,19 @@ class SearchComponent extends React.Component {
     const {search, t} = this.props;
     return (
       <Form size='small'>
+        <Form.Field >
+          <label>Filter by Map</label>
+          <Checkbox
+            toggle
+            checked={search.mapfilter}
+            onChange={(e, d)=>{
+              this.props.setmapfilter(d.checked)
+            }}/>
+        </Form.Field>
         <Form.Field>
-          <label>{t('identifier')}</label>
+          <label>{t('borehole_form:original_name')}</label>
           <Input
-            placeholder={t('identifier')}
+            placeholder={t('borehole_form:original_name')}
             value={search.filter.identifier}
             onChange={this._setIdentifier}/>
           <LabelReset onClick={()=>{
@@ -51,8 +66,44 @@ class SearchComponent extends React.Component {
           }}/>
         </Form.Field>
         <Form.Field>
+          <label>{t('borehole_form:kind')}</label>
+          <DomainDropdown
+            schema='kind'
+            selected={search.filter.kind}
+            onSelected={(selected)=>{
+              this.props.setKind(selected.id)
+            }}/>
+          <LabelReset onClick={()=>{
+            this.props.setKind(null)
+          }}/>
+        </Form.Field>
+        <Form.Field>
+          <label>{t('borehole_form:restriction')}</label>
+          <DomainDropdown
+            schema='restriction'
+            selected={search.filter.restriction}
+            onSelected={(selected)=>{
+              this.props.setRestriction(selected.id)
+            }}/>
+          <LabelReset onClick={()=>{
+            this.props.setRestriction(null)
+          }}/>
+        </Form.Field>
+        <Form.Field>
+          <label>{t('borehole_form:status')}</label>
+          <DomainDropdown
+            schema='extended.status'
+            selected={search.filter.status}
+            onSelected={(selected)=>{
+              this.props.setStatus(selected.id)
+            }}/>
+          <LabelReset onClick={()=>{
+            this.props.setStatus(null)
+          }}/>
+        </Form.Field>
+        <Form.Field>
           <label>Municipality</label>
-          <Input placeholder='Last Name' />
+          <MunicipalityDropdown/>
           <LabelReset onClick={()=>{
             console.log('reset');
           }}/>
@@ -75,8 +126,29 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     dispatch: dispatch,
+    setmapfilter: (active) => {
+      dispatch({
+        type: 'SEARCH_MAPFILTER_CHANGED',
+        active: active
+      })
+      // if(active === false){
+      //   dispatch({
+      //     type: 'SEARCH_EXTENT_CHANGED',
+      //     extent: null
+      //   })
+      // }
+    },
     setIdentifier: (identifier) => {
       dispatch(setIdentifier(identifier))
+    },
+    setKind: (id) => {
+      dispatch(setKind(id))
+    },
+    setRestriction: (id) => {
+      dispatch(setRestriction(id))
+    },
+    setStatus: (id) => {
+      dispatch(setStatus(id))
     }
   }
 }
@@ -84,4 +156,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate('search')(SearchComponent))
+)(translate(['search', 'borehole_form'])(SearchComponent))

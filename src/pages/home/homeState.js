@@ -1,6 +1,7 @@
 const initialState = {
   cnt: 0,
-  selected: null
+  selected: null,
+  hover: null
 }
 
 const home = (state = initialState, action) => {
@@ -9,6 +10,12 @@ const home = (state = initialState, action) => {
       return {
         ...state,
         selected: action.borehole
+      }
+    }
+    case 'HOME_BOREHOLE_HOVER': {
+      return {
+        ...state,
+        hover: action.borehole
       }
     }
     default:

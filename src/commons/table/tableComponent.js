@@ -58,6 +58,14 @@ class TableComponent extends React.Component {
       this.setState({activeItem: selected.id})
     }
   }
+  handleHover(selected){
+    const {
+      onHover
+    } = this.props
+    if(onHover!==undefined){
+      onHover(selected)
+    }
+  }
 
   getHeader(){
     console.error("Please overwrite getHeader method");
@@ -85,7 +93,7 @@ class TableComponent extends React.Component {
           textAlign: 'center',
           // padding: '0px 1em 0px 1em'
         }}>
-          <Table fixed compact='very' basic='very' selectable>
+          <Table fixed compact='very' basic='very'>
             <Table.Header>
               {this.getHeader()}
             </Table.Header>
@@ -107,7 +115,10 @@ class TableComponent extends React.Component {
                   }}
                   key={this.uid+"_"+idx}
                   active={activeItem === item.id}
-                  onClick={e=>this.handleClick(item)}>
+                  onClick={e=>this.handleClick(item)}
+                  onMouseEnter={e=>this.handleHover(item)}
+                  onMouseLeave={e=>this.handleHover(null)}
+                >
                     {
                       this.getCols(item, idx)
                     }
@@ -140,6 +151,7 @@ class TableComponent extends React.Component {
 
 TableComponent.propTypes = {
     onSelected: PropTypes.func,
+    onHover: PropTypes.func,
     filter: PropTypes.object,
     loadData: PropTypes.func
 }

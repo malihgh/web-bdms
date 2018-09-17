@@ -75,7 +75,10 @@ class StratigraphyForm extends React.Component {
       <Form
         error
         size={size}
-        autoComplete="off">
+        autoComplete="off"
+        style={{
+          padding: '0.5em 0px 1em 0px'
+        }}>
         <Form.Field>
           <label>Stratigraphy type</label>
           <DomainText

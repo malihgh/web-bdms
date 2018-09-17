@@ -1,13 +1,23 @@
 const initialState = {
   isFetching: false,
-  borehole: null
+  isFetchingStratigraphies: false,
+  tab: 0,
+  borehole: null,
+  stratigraphies: []
 }
 
 const detail_borehole = (state = initialState, action) => {
   switch (action.type) {
+    case 'DETCNTTABCHG': {
+      return {
+        ...state,
+        tab: action.tab
+      }
+    }
     case 'GETBOREHOLEDETAILS': {
       return {
-        ...initialState,
+        ...state,
+        borehole: null,
         isFetching: true
       }
     }
@@ -16,6 +26,21 @@ const detail_borehole = (state = initialState, action) => {
         ...state,
         isFetching: false,
         borehole: action.borehole
+      }
+    }
+
+    case 'GET_BOREHOLE_STRATIGRAPHIES': {
+      return {
+        ...state,
+        stratigraphies: [],
+        isFetchingStratigraphies: true
+      }
+    }
+    case 'GET_BOREHOLE_STRATIGRAPHIES_OK': {
+      return {
+        ...state,
+        isFetchingStratigraphies: false,
+        stratigraphies: action.stratigraphies
       }
     }
     default:
