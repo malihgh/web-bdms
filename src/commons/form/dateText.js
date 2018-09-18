@@ -18,9 +18,6 @@ class DateText extends React.Component {
       moment.locale(i18n.language)
     }
     if(moment(date).isValid()){
-      console.log('DD.MM.YYYY' + (
-        hours? ' HH:mm': ''
-      ))
       return moment(date).format(
         'DD.MM.YYYY' + (
           hours? ' HH:mm': ''
