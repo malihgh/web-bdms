@@ -1,11 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import _ from 'lodash'
 import moment from 'moment'
 
 import {
   getBorehole,
+  updateBorehole,
+  loadBorehole,
   checkBorehole,
   createBorehole,
   patchBorehole
@@ -129,6 +132,16 @@ class BoreholeForm extends React.Component {
         layer: null,
         borehole: this.empty
       }, () => {
+        this.props.loadBorehole(id).then(function(response) {
+          if(response.success){
+            self.setState({
+              loading_fetch: false
+            })
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
+        /*
         getBorehole(id).then(function(response) {
           if(response.data.success){
             let bh = response.data.data
@@ -146,7 +159,7 @@ class BoreholeForm extends React.Component {
           }
         }).catch(function (error) {
           console.log(error)
-        })
+        })*/
       })
     }else{
       // request the creation of a new borehole if id is not given
@@ -177,19 +190,27 @@ class BoreholeForm extends React.Component {
     const state = {
       ...this.state,
       patch_fetch: true,
-      borehole: {
-        ...this.state.borehole
-      }
+      // borehole: {
+      //   ...this.state.borehole
+      // }
     }
-    _.set(state.borehole, attribute, value)
+    const borehole = {
+      ...this.props.borehole.data
+    }
+    _.set(borehole, attribute, value)
+    // _.set(state.borehole, attribute, value)
     state[attribute+"_fetch"] = true
 
     const self = this
+
+    // update state
     this.setState(state, () => {
       if(self.checkattribute){
         clearTimeout(self.checkattribute);
         self.checkattribute = false
       }
+      this.props.updateBorehole(borehole)
+
       self.checkattribute = setTimeout(function(){
         checkBorehole(
           attribute, value
@@ -215,6 +236,22 @@ class BoreholeForm extends React.Component {
                 console.error(error)
               })
             }
+            // if(response.data.check){
+            //   // patch attribute
+            //   patchBorehole(
+            //     self.state.borehole.id,
+            //     attribute,
+            //     value
+            //   ).then(function(response) {
+            //     if(response.data.success){
+            //       self.setState({
+            //         patch_fetch: false
+            //       })
+            //     }
+            //   }).catch(function (error) {
+            //     console.error(error)
+            //   })
+            // }
           }
         }).catch(function (error) {
           console.error(error)
@@ -227,13 +264,17 @@ class BoreholeForm extends React.Component {
     const state = {
       ...this.state,
       patch_fetch: true,
-      borehole: {
-        ...this.state.borehole
-      }
+      // borehole: {
+      //   ...this.state.borehole
+      // }
     }
-    _.set(state.borehole, attribute, value)
+    const borehole = {
+      ...this.props.borehole.data
+    }
+    _.set(borehole, attribute, value)
     const self = this
     this.setState(state, () => {
+      this.props.updateBorehole(borehole)
       if(
         self.updateAttributeDelay.hasOwnProperty(attribute) &&
         self.updateAttributeDelay[attribute]
@@ -263,8 +304,8 @@ class BoreholeForm extends React.Component {
     const {
       t
     } = this.props
+    const borehole = this.props.borehole.data
     const size = null // 'small'
-
     return (
       <Dimmer.Dimmable
         as={Segment}
@@ -341,7 +382,7 @@ class BoreholeForm extends React.Component {
                       <Form.Field
                         required
                         error={
-                          this.state.borehole.extended.original_name === ''
+                          borehole.extended.original_name === ''
                         }
                       >
                         <label>{t('original_name')}</label>
@@ -361,7 +402,7 @@ class BoreholeForm extends React.Component {
                               e.target.value
                             )
                           }}
-                          value={this.state.borehole.extended.original_name}
+                          value={borehole.extended.original_name}
                           autoComplete="off"
                           autoCorrect="off"
                           autoCapitalize="off"
@@ -380,7 +421,7 @@ class BoreholeForm extends React.Component {
                         <Form.Field
                           required
                           error={
-                            this.state.borehole.custom.public_name === ''
+                            borehole.custom.public_name === ''
                           }
                         >
                           <label>{t('public_name')}</label>
@@ -400,7 +441,7 @@ class BoreholeForm extends React.Component {
                                 e.target.value
                               )
                             }}
-                            value={this.state.borehole.custom.public_name}
+                            value={borehole.custom.public_name}
                             autoComplete="off"
                             autoCorrect="off"
                             autoCapitalize="off"
@@ -412,7 +453,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('kind')}</label>
                           <DomainDropdown
                             schema='kind'
-                            selected={this.state.borehole.kind}
+                            selected={borehole.kind}
                             onSelected={(selected)=>{
                               this.updateChange('kind', selected.id, false)
                             }}/>
@@ -426,7 +467,7 @@ class BoreholeForm extends React.Component {
                               'custom.project_name', e.target.value
                             )
                           }}
-                          value={this.state.borehole.custom.project_name}
+                          value={borehole.custom.project_name}
                           autoComplete="off"
                           autoCorrect="off"
                           autoCapitalize="off"
@@ -445,20 +486,20 @@ class BoreholeForm extends React.Component {
                           <label>{t('restriction')}</label>
                           <DomainDropdown
                             schema='restriction'
-                            selected={this.state.borehole.restriction}
+                            selected={borehole.restriction}
                             onSelected={(selected)=>{
                               this.updateChange('restriction', selected.id, false)
                             }}/>
                         </Form.Field>
                         <Form.Field
                           error={
-                            _.isString(this.state.borehole.restriction_until) &&
-                            this.state.borehole.restriction_until !== '' &&
-                            !moment(this.state.borehole.restriction_until).isValid()
+                            _.isString(borehole.restriction_until) &&
+                            borehole.restriction_until !== '' &&
+                            !moment(borehole.restriction_until).isValid()
                           }>
                           <label>{t('restriction_until')} ({t('date_format')})</label>
                           <DateField
-                            date={this.state.borehole.restriction_until}
+                            date={borehole.restriction_until}
                             onChange={(selected)=>{
                               this.updateChange(
                                 'restriction_until', selected, false
@@ -479,8 +520,8 @@ class BoreholeForm extends React.Component {
                           <Input
                             type='number'
                             value={
-                              _.isNil(this.state.borehole.location_x)?
-                              '': this.state.borehole.location_x
+                              _.isNil(borehole.location_x)?
+                              '': borehole.location_x
                             }
                             onChange={(e)=>{
                               this.updateChange(
@@ -501,8 +542,8 @@ class BoreholeForm extends React.Component {
                           <Input
                             type='number'
                             value={
-                              _.isNil(this.state.borehole.location_y)?
-                              '': this.state.borehole.location_y
+                              _.isNil(borehole.location_y)?
+                              '': borehole.location_y
                             }
                             onChange={(e)=>{
                               this.updateChange(
@@ -522,7 +563,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('srs')}</label>
                           <DomainDropdown
                             schema='srs'
-                            selected={this.state.borehole.srs}
+                            selected={borehole.srs}
                             onSelected={(selected)=>{
                               this.updateChange('srs', selected.id, false)
                             }}/>
@@ -533,7 +574,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('qt_location')}</label>
                           <DomainDropdown
                             schema='qt_location'
-                            selected={this.state.borehole.qt_location}
+                            selected={borehole.qt_location}
                             onSelected={(selected)=>{
                               this.updateChange('qt_location', selected.id, false)
                             }}/>
@@ -547,8 +588,8 @@ class BoreholeForm extends React.Component {
                           <Input
                             type='number'
                             value={
-                              _.isNil(this.state.borehole.elevation_z)?
-                              '': this.state.borehole.elevation_z
+                              _.isNil(borehole.elevation_z)?
+                              '': borehole.elevation_z
                             }
                             onChange={(e)=>{
                               this.updateChange(
@@ -568,7 +609,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('hrs')}</label>
                           <DomainDropdown
                             schema='hrs'
-                            selected={this.state.borehole.hrs}
+                            selected={borehole.hrs}
                             onSelected={(selected)=>{
                               this.updateChange('hrs', selected.id, false)
                             }}/>
@@ -579,7 +620,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('qt_elevation')}</label>
                           <DomainDropdown
                             schema='qt_elevation'
-                            selected={this.state.borehole.qt_elevation}
+                            selected={borehole.qt_elevation}
                             onSelected={(selected)=>{
                               this.updateChange('qt_elevation', selected.id, false)
                             }}/>
@@ -604,9 +645,9 @@ class BoreholeForm extends React.Component {
                         >
                           <label>{t('canton')}</label>
                           <CantonDropdown
-                            selected={this.state.borehole.custom.canton}
+                            selected={borehole.custom.canton}
                             onSelected={(selected)=>{
-                              if(this.state.borehole.custom.city !== null){
+                              if(borehole.custom.city !== null){
                                 this.updateChange(
                                   'custom.city', null, false
                                 )
@@ -621,9 +662,9 @@ class BoreholeForm extends React.Component {
                         >
                           <label>{t('city')}</label>
                           <MunicipalityDropdown
-                            disabled={this.state.borehole.custom.canton===null}
-                            canton={this.state.borehole.custom.canton}
-                            selected={this.state.borehole.custom.city}
+                            disabled={borehole.custom.canton===null}
+                            canton={borehole.custom.canton}
+                            selected={borehole.custom.city}
                             onSelected={(selected)=>{
                               this.updateChange(
                                 'custom.city', selected.id, false
@@ -641,8 +682,8 @@ class BoreholeForm extends React.Component {
                               )
                             }}
                             value={
-                                _.isNil(this.state.borehole.custom.address)?
-                                '': this.state.borehole.custom.address
+                                _.isNil(borehole.custom.address)?
+                                '': borehole.custom.address
                             }
                             autoComplete="off"
                             autoCorrect="off"
@@ -653,7 +694,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('landuse')}</label>
                           <DomainDropdown
                             schema='custom.landuse'
-                            selected={this.state.borehole.custom.landuse}
+                            selected={borehole.custom.landuse}
                             onSelected={(selected)=>{
                               this.updateChange(
                                 'custom.landuse', selected.id, false
@@ -684,7 +725,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('method')}</label>
                           <DomainDropdown
                             schema='extended.method'
-                            selected={this.state.borehole.extended.method}
+                            selected={borehole.extended.method}
                             onSelected={(selected)=>{
                               this.updateChange(
                                 'extended.method', selected.id, false)
@@ -693,13 +734,13 @@ class BoreholeForm extends React.Component {
                         <Form.Field
                           required
                           error={
-                            _.isString(this.state.borehole.drilling_date) &&
-                            this.state.borehole.drilling_date !== '' &&
-                            !moment(this.state.borehole.drilling_date).isValid()
+                            _.isString(borehole.drilling_date) &&
+                            borehole.drilling_date !== '' &&
+                            !moment(borehole.drilling_date).isValid()
                           }>
                           <label>{t('drilling_date')} ({t('date_format')})</label>
                           <DateField
-                            date={this.state.borehole.drilling_date}
+                            date={borehole.drilling_date}
                             onChange={(selected)=>{
                               this.updateChange(
                                 'drilling_date', selected, false
@@ -714,7 +755,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('cuttings')}</label>
                           <DomainDropdown
                             schema='custom.cuttings'
-                            selected={this.state.borehole.custom.cuttings}
+                            selected={borehole.custom.cuttings}
                             onSelected={(selected)=>{
                               this.updateChange(
                                 'custom.cuttings', selected.id, false)
@@ -726,7 +767,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('purpose')}</label>
                           <DomainDropdown
                             schema='extended.purpose'
-                            selected={this.state.borehole.extended.purpose}
+                            selected={borehole.extended.purpose}
                             onSelected={(selected)=>{
                               this.updateChange(
                                 'extended.purpose', selected.id, false)
@@ -739,8 +780,8 @@ class BoreholeForm extends React.Component {
                           <Input
                             type='number'
                             value={
-                              _.isNil(this.state.borehole.custom.drill_diameter)?
-                              '': this.state.borehole.custom.drill_diameter
+                              _.isNil(borehole.custom.drill_diameter)?
+                              '': borehole.custom.drill_diameter
                             }
                             onChange={(e)=>{
                               this.updateChange(
@@ -760,7 +801,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('status')}</label>
                           <DomainDropdown
                             schema='extended.status'
-                            selected={this.state.borehole.extended.status}
+                            selected={borehole.extended.status}
                             onSelected={(selected)=>{
                               this.updateChange(
                                 'extended.status', selected.id, false)
@@ -775,8 +816,8 @@ class BoreholeForm extends React.Component {
                           <Input
                             type='number'
                             value={
-                              _.isNil(this.state.borehole.bore_inc)?
-                              '': this.state.borehole.bore_inc
+                              _.isNil(borehole.bore_inc)?
+                              '': borehole.bore_inc
                             }
                             onChange={(e)=>{
                               this.updateChange(
@@ -797,8 +838,8 @@ class BoreholeForm extends React.Component {
                           <Input
                             type='number'
                             value={
-                              _.isNil(this.state.borehole.bore_inc_dir)?
-                              '': this.state.borehole.bore_inc_dir
+                              _.isNil(borehole.bore_inc_dir)?
+                              '': borehole.bore_inc_dir
                             }
                             onChange={(e)=>{
                               this.updateChange(
@@ -818,7 +859,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('qt_bore_inc_dir')}</label>
                           <DomainDropdown
                             schema='custom.qt_bore_inc_dir'
-                            selected={this.state.borehole.custom.qt_bore_inc_dir}
+                            selected={borehole.custom.qt_bore_inc_dir}
                             onSelected={(selected)=>{
                               this.updateChange(
                                 'custom.qt_bore_inc_dir', selected.id, false)
@@ -840,8 +881,8 @@ class BoreholeForm extends React.Component {
                           <Input
                             type='number'
                             value={
-                              _.isNil(this.state.borehole.length)?
-                              '': this.state.borehole.length
+                              _.isNil(borehole.length)?
+                              '': borehole.length
                             }
                             onChange={(e)=>{
                               this.updateChange(
@@ -861,7 +902,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('qt_length')}</label>
                           <DomainDropdown
                             schema='custom.qt_length'
-                            selected={this.state.borehole.custom.qt_length}
+                            selected={borehole.custom.qt_length}
                             onSelected={(selected)=>{
                               this.updateChange(
                                 'custom.qt_length', selected.id, false
@@ -877,8 +918,8 @@ class BoreholeForm extends React.Component {
                           <Input
                             type='number'
                             value={
-                              _.isNil(this.state.borehole.extended.top_bedrock)?
-                              '': this.state.borehole.extended.top_bedrock
+                              _.isNil(borehole.extended.top_bedrock)?
+                              '': borehole.extended.top_bedrock
                             }
                             onChange={(e)=>{
                               this.updateChange(
@@ -898,7 +939,7 @@ class BoreholeForm extends React.Component {
                           <label>{t('qt_top_bedrock')}</label>
                           <DomainDropdown
                             schema='custom.qt_top_bedrock'
-                            selected={this.state.borehole.custom.qt_top_bedrock}
+                            selected={borehole.custom.qt_top_bedrock}
                             onSelected={(selected)=>{
                               this.updateChange(
                                 'custom.qt_top_bedrock',
@@ -915,7 +956,7 @@ class BoreholeForm extends React.Component {
                         <Form.Group inline>
                           <Form.Radio
                             label='Yes'
-                            checked={this.state.borehole.extended.groundwater === true}
+                            checked={borehole.extended.groundwater === true}
                             onChange={(e, d)=>{
                               this.updateChange(
                                 'extended.groundwater', true, false)
@@ -923,7 +964,7 @@ class BoreholeForm extends React.Component {
                           />
                           <Form.Radio
                             label='No'
-                            checked={this.state.borehole.extended.groundwater === false}
+                            checked={borehole.extended.groundwater === false}
                             onChange={(e, d)=>{
                               this.updateChange(
                                 'extended.groundwater', false, false)
@@ -935,7 +976,7 @@ class BoreholeForm extends React.Component {
                         <label>{t('lit_pet_top_bedrock')}</label>
                         <DomainDropdown
                           schema='custom.lit_pet_top_bedrock'
-                          selected={this.state.borehole.custom.lit_pet_top_bedrock}
+                          selected={borehole.custom.lit_pet_top_bedrock}
                           multiple={true}
                           search={true}
                           onSelected={(selected)=>{
@@ -951,7 +992,7 @@ class BoreholeForm extends React.Component {
                         <DomainDropdown
                           schema='custom.lit_str_top_bedrock'
                           selected={
-                            this.state.borehole.custom.lit_str_top_bedrock
+                            borehole.custom.lit_str_top_bedrock
                           }
                           multiple={true}
                           search={true}
@@ -968,7 +1009,7 @@ class BoreholeForm extends React.Component {
                         <DomainDropdown
                           schema='custom.chro_str_top_bedrock'
                           selected={
-                            this.state.borehole.custom.chro_str_top_bedrock
+                            borehole.custom.chro_str_top_bedrock
                           }
                           multiple={true}
                           search={true}
@@ -1001,7 +1042,7 @@ class BoreholeForm extends React.Component {
                         <DomainDropdown
                           schema='madm402'
                           selected={
-                            this.state.borehole.custom.national_relevance
+                            borehole.custom.national_relevance
                           }
                           onSelected={(selected)=>{
                             this.updateChange(
@@ -1016,7 +1057,7 @@ class BoreholeForm extends React.Component {
                         <DomainDropdown
                           schema='madm401'
                           selected={
-                            this.state.borehole.custom.processing_status
+                            borehole.custom.processing_status
                           }
                           onSelected={(selected)=>{
                             this.updateChange(
@@ -1031,7 +1072,7 @@ class BoreholeForm extends React.Component {
                         <DomainDropdown
                           schema='madm404'
                           selected={
-                            this.state.borehole.custom.attributes_to_edit
+                            borehole.custom.attributes_to_edit
                           }
                           multiple={true}
                           search={true}
@@ -1052,7 +1093,7 @@ class BoreholeForm extends React.Component {
                               'custom.mistakes', e.target.value
                             )
                           }}
-                          value={this.state.borehole.custom.mistakes}/>
+                          value={borehole.custom.mistakes}/>
                       </Form.Field>
                       <Form.Field>
                         <label>{t('remarks')}</label>
@@ -1063,7 +1104,7 @@ class BoreholeForm extends React.Component {
                               'custom.remarks', e.target.value
                             )
                           }}
-                          value={this.state.borehole.custom.remarks}/>
+                          value={borehole.custom.remarks}/>
                       </Form.Field>
                     </Form>
                   </Segment>
@@ -1091,7 +1132,7 @@ class BoreholeForm extends React.Component {
                         })
                       }}/>
                     <StratigraphyFormContainer
-                      borehole={this.state.borehole.id}
+                      borehole={borehole.id}
                       kind={this.state.layer_kind}/>
                   </div>
                 </div>
@@ -1111,4 +1152,27 @@ BoreholeForm.defaultProps = {
   id: undefined
 }
 
-export default translate('borehole_form')(BoreholeForm)
+const mapStateToProps = (state, ownProps) => {
+  return {
+    borehole: state.core_borehole
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    dispatch: dispatch,
+    loadBorehole: (id) => {
+      return dispatch(loadBorehole(id))
+    },
+    updateBorehole: (data) => {
+      return dispatch(updateBorehole(data))
+    }
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)((
+   translate('borehole_form')(BoreholeForm)
+))
