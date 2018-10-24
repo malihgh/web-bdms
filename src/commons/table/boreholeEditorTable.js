@@ -8,7 +8,7 @@ import DomainText from '../form/domain/domainText'
 import DateText from '../form/dateText'
 
 import {
-  Table
+  Table, Icon
 } from 'semantic-ui-react'
 
 import {
@@ -33,7 +33,7 @@ class BoreholeEditorTable extends TableComponent {
       </Table.HeaderCell>
     )
   }
-  getHeader(){
+  _getHeader(){
     const { t } = this.props
     return (
       <Table.Row>
@@ -112,22 +112,18 @@ class BoreholeEditorTable extends TableComponent {
       </Table.Row>
     )
   }
-  getCols(item, idx){
+  _getCols(item, idx){
     let colIdx = 0
     return ([
       // <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
       //   {item.id}
       // </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        Ready
-        <br/>
-        <span
-          style={{
-            color: '#787878',
-            fontSize: '0.8em'
-          }}>
-            100%
-        </span>
+        {
+          item.percentage < 100?
+            <Icon name='exclamation circle' color='red'/>:
+            <Icon name='check circle' color='green'/>
+        } {item.percentage}%
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {item.original_name}
@@ -193,10 +189,11 @@ class BoreholeEditorTable extends TableComponent {
       </Table.Cell>,
     ])
   }
-  _getHeader(){
+  getHeader(){
     return (
       <Table.Row>
         {/*<Table.HeaderCell>id</Table.HeaderCell>*/}
+        {this.getHeaderLabel('completness')}
         {this.getHeaderLabel('original_name')}
         {this.getHeaderLabel('kind')}
         {this.getHeaderLabel('restriction')}
@@ -211,12 +208,19 @@ class BoreholeEditorTable extends TableComponent {
       </Table.Row>
     )
   }
-  _getCols(item, idx){
+  getCols(item, idx){
     let colIdx = 0
     return ([
       // <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
       //   {item.id}
       // </Table.Cell>,
+      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
+        {
+          item.percentage < 100?
+            null: //<Icon name='exclamation circle' color='red'/>:
+            <Icon name='check circle' color='green'/>
+        } {item.percentage}%
+      </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {item.original_name}
       </Table.Cell>,

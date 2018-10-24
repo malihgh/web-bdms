@@ -1,40 +1,36 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
-import _ from 'lodash'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
+import _ from 'lodash';
 import {
   Form,
   Input,
-  // Checkbox
-} from 'semantic-ui-react'
+  Radio
+} from 'semantic-ui-react';
 
-import DateField from '../../form/dateField'
-import LabelReset from '../../form/labelReset'
-import ProjectDropdown from '../../form/project/dropdown/projectDropdown'
-
-// import DomainDropdown from '../form/domain/dropdown/domainDropdown'
-// import MunicipalityDropdown from '../form/municipality/dropdown/municipalityDropdown'
+import LabelReset from '../../form/labelReset';
 
 class SearchEditorComponent extends React.Component {
   componentDidUpdate(prevProps){
     const {
       search,
       onChange
-    } = this.props
+    } = this.props;
     if(
         onChange !== undefined
         && !_.isEqual(
           search.filter, prevProps.search.filter
         )
     ){
-      onChange({...search.filter})
+      onChange({...search.filter});
     }
   }
   render() {
     const {search, t} = this.props;
     return (
       <Form size='small'>
+        {/*
         <Form.Field>
           <label>{t('borehole_form:project_name')}</label>
           <ProjectDropdown
@@ -46,6 +42,48 @@ class SearchEditorComponent extends React.Component {
           <LabelReset
             onClick={()=>{
               this.props.setProject('')
+            }}
+          />
+        </Form.Field>
+        */}
+        <Form.Field >
+          <label>{t('completness')}</label>
+          <Radio
+            label={t('all')}
+            name='radioGroup'
+            checked={search.filter.completness === 'all'}
+            onChange={()=>{
+              this.props.setCompletness('all')
+            }}
+          />
+        </Form.Field>
+        <Form.Field >
+          <Radio
+            label={t('complete')}
+            name='radioGroup'
+            checked={search.filter.completness === 'complete'}
+            onChange={()=>{
+              this.props.setCompletness('complete')
+            }}
+          />
+        </Form.Field>
+        <Form.Field >
+          <Radio
+            label={t('incomplete')}
+            name='radioGroup'
+            checked={search.filter.completness === 'incomplete'}
+            onChange={()=>{
+              this.props.setCompletness('incomplete')
+            }}
+          />
+        </Form.Field>
+        <Form.Field >
+          <Radio
+            label={t('empty')}
+            name='radioGroup'
+            checked={search.filter.completness === 'empty'}
+            onChange={()=>{
+              this.props.setCompletness('empty')
             }}
           />
         </Form.Field>
@@ -61,6 +99,7 @@ class SearchEditorComponent extends React.Component {
             this.props.setOriginalName('')
           }}/>
         </Form.Field>
+        {/*
         <Form.Field>
           <label>{t('last_update')} ({t('borehole_form:date_format')})</label>
           <DateField
@@ -87,6 +126,7 @@ class SearchEditorComponent extends React.Component {
               }}
             />
         </Form.Field>
+        */}
       </Form>
     )
   }
@@ -105,6 +145,12 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     dispatch: dispatch,
+    setCompletness: (completness) => {
+      dispatch({
+        type: 'SEARCH_EDITOR_COMPLETNESS_CHANGED',
+        completness: completness
+      })
+    },
     setProject: (id) => {
       dispatch({
         type: 'SEARCH_EDITOR_PROJECT_CHANGED',

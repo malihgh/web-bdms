@@ -10,7 +10,9 @@ let resources = {
       'no': 'No',
       'username': 'Username',
       'creator': 'Created by',
-      'creation_date': 'Creation date'
+      'creation_date': 'Creation date',
+      'delete': 'delete',
+      'sure': 'Are you sure?'
     },
     header: {
       'explore': 'Explore',
@@ -38,6 +40,7 @@ let resources = {
       'create': 'Create'
     },
     borehole_form: {
+      'completness': 'Completness',
       'meta_location': 'Location',
       'meta_borehole': 'Borehole',
       'form_admin': 'Admin',
@@ -137,7 +140,12 @@ let resources = {
       'reset': 'reset',
       'identifier': 'Identifier',
       'last_update': 'Last update',
-      'creation': 'Creation date'
+      'creation': 'Creation date',
+      'completness': 'Filter by completness',
+      'all': 'All',
+      'complete': 'Completed',
+      'incomplete': 'Incompleted',
+      'empty': 'Empty'
     },
     grid: {
       'legend': 'Map legend',
@@ -153,7 +161,9 @@ let resources = {
       'no': 'No',
       'username': 'Nome utente',
       'creator': 'Creato da',
-      'creation_date': 'Data di creazione'
+      'creation_date': 'Data di creazione',
+      'delete': 'Elimina',
+      'sure': 'Sei sicuro?'
     },
     header: {
       'explore': 'Esplora',
@@ -181,6 +191,7 @@ let resources = {
       'create': 'Crea'
     },
     borehole_form: {
+      'completness': 'Completezza',
       'meta_location': 'Posizione',
       'meta_borehole': 'Sondaggio',
       'form_admin': 'Amministrativo',
@@ -280,7 +291,12 @@ let resources = {
       'reset': 'azzera',
       'identifier': 'Codice di identificazione',
       'last_update': 'Ultima modifica',
-      'creation': 'Data di creazione'
+      'creation': 'Data di creazione',
+      'completness': 'Filtra per complettezza',
+      'all': 'Tutti',
+      'complete': 'Completati',
+      'incomplete': 'Incompleti',
+      'empty': 'Vuoti'
     },
     grid: {
       'legend': 'Map legend',

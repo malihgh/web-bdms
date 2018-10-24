@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
+import _ from 'lodash';
 import {
     withRouter
 } from 'react-router-dom'
@@ -12,6 +13,8 @@ import {
   Button,
 } from 'semantic-ui-react'
 
+import DateText from '../../form/dateText'
+
 import SearchComponent from '../../search/searchComponent'
 
 class MenuExplorer extends React.Component {
@@ -19,7 +22,8 @@ class MenuExplorer extends React.Component {
     const {
       home,
       boreholes,
-      t
+      t,
+      detail
     } = this.props
     return(
       home.selected?
@@ -31,9 +35,15 @@ class MenuExplorer extends React.Component {
           <Icon name='caret left' />
           {t('back_to_list')}
         </Button>
-        <Segment>
+        <Segment
+          loading={detail.isFetching}
+        >
           <Header>
-            {home.selected.original_name}
+            {
+              _.hasIn(detail.borehole, 'extended.original_name')?
+                detail.borehole.extended.original_name:
+                null
+            }
           </Header>
           <div style={{
               marginTop: '0.5em'  
@@ -46,7 +56,11 @@ class MenuExplorer extends React.Component {
               {t('common:creator')}
             </span>
             <br/>
-            {home.selected.author.username}
+            {
+              _.hasIn(detail.borehole, 'author.username')?
+                detail.borehole.author.username:
+                null
+            }
           </div>
           <div style={{
               marginTop: '0.5em'  
@@ -60,8 +74,12 @@ class MenuExplorer extends React.Component {
             </span>
             <br/>
             {
-              home.selected.author.date === null?
-              '-': home.selected.author.date
+              _.hasIn(detail.borehole, 'author.date')?
+                <DateText
+                  date={detail.borehole.author.date}
+                  hours={true}
+                />:
+                null
             }
           </div>
         </Segment>
@@ -89,6 +107,7 @@ class MenuExplorer extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     leftmenu: state.leftmenu,
+    detail: state.detail_borehole,
     home: state.home,
     search: state.search,
     boreholes: state.core_borehole_list

@@ -1,15 +1,26 @@
 const initialState = {
   isFetching: false,
   filter: {
-    project: '',
+    project_name: '',
+    project: null,
     last_update: '',
     creation: '',
-    original_name: ''
+    original_name: '',
+    completness: 'all'
   }
 }
 
 const searchEditor = (state = initialState, action) => {
   switch (action.type) {
+    case 'SEARCH_EDITOR_COMPLETNESS_CHANGED': {
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          completness: action.completness
+        }
+      }
+    }
     case 'SEARCH_EDITOR_PROJECT_CHANGED': {
       return {
         ...state,

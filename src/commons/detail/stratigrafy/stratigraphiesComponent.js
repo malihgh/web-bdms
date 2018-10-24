@@ -19,7 +19,13 @@ class StratigraphiesComponent extends React.Component {
               id={item.kind}/>
           </Menu.Item>
         ),
-        render: () => <div>
+        render: () => <div
+          style={{
+            flex: "1 1 0%",
+            overflow: 'hidden',
+            height: '100%'
+          }}
+        >
           <ProfileContainer
             id={item.id}/>
         </div>
@@ -28,14 +34,20 @@ class StratigraphiesComponent extends React.Component {
     return (
       <div style={{
           flex: "1 1 0%",
-          overflowY: 'auto',
-          padding: '0px 1em'
+          overflow: 'hidden',
+          padding: '1em',
+          height: '100%'
         }}>
         {
           stratigraphies.length > 0?
           <Tab
             menu={{ secondary: true }}
             panes={tmp}
+            style={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column'
+            }}
           />: <span>n/p</span>
         }
       </div>

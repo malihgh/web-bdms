@@ -131,7 +131,7 @@ class StratigraphyFormContainer extends React.Component {
                       if(response.data.success){
                         self.load(borehole, kind)
                       }
-                  }.bind(this)).catch(function (error) {
+                    }/*.bind(this)*/).catch(function (error) {
                     console.log(error)
                   })
                 }}

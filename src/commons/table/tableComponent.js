@@ -4,7 +4,8 @@ import _ from 'lodash'
 
 import {
   Table,
-  Pagination
+  Pagination,
+  Segment
 } from 'semantic-ui-react'
 
 class TableComponent extends React.Component {
@@ -30,7 +31,7 @@ class TableComponent extends React.Component {
   componentDidUpdate(prevProps){
     const {
       filter
-    } = this.props
+    } = this.props;
     if(!_.isEqual(filter, prevProps.filter)){
       // delay grid reload waiting for user typing
       if(this.delay){
@@ -83,7 +84,10 @@ class TableComponent extends React.Component {
       activeItem
     } = this.state
     return (
-      <div style={{
+      <Segment
+        basic
+        loading={store.isFetching}
+        style={{
           flex: "1 1 0%",
           display: 'flex',
           flexDirection: 'column',
@@ -114,7 +118,10 @@ class TableComponent extends React.Component {
                     cursor: 'pointer'
                   }}
                   key={this.uid+"_"+idx}
-                  active={activeItem === item.id}
+                  active={
+                    activeItem === item.id
+                    || this.props.highlight === item.id
+                  }
                   onClick={e=>this.handleClick(item)}
                   onMouseEnter={e=>this.handleHover(item)}
                   onMouseLeave={e=>this.handleHover(null)}
@@ -144,16 +151,17 @@ class TableComponent extends React.Component {
               totalPages={store.pages}/>
           </div>: null
         }
-      </div>
+      </Segment>
     )
   }
 }
 
 TableComponent.propTypes = {
-    onSelected: PropTypes.func,
-    onHover: PropTypes.func,
-    filter: PropTypes.object,
-    loadData: PropTypes.func
+  filter: PropTypes.object,
+  highlight: PropTypes.number,
+  loadData: PropTypes.func,
+  onSelected: PropTypes.func,
+  onHover: PropTypes.func
 }
 
 TableComponent.defaultProps = {

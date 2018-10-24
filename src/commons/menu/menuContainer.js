@@ -1,40 +1,41 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import _ from 'lodash'
+import React from 'react';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 import {
     withRouter
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 
-import MenuComponent from './menuComponent'
+import MenuComponent from './menuComponent';
 
 class MenuContainer extends React.Component {
   render() {
     const {
       history, location
-    } = this.props
+    } = this.props;
     return(
       <MenuComponent
         mode={(()=>{
           if(
-            _.indexOf([
-              '', '/'
-            ], location.pathname) >= 0
+            location.pathname.indexOf('editor') >= 0
           ){
-            return 'viewer'
+            console.log("editor mode")
+            return 'editor';
           }else{
-            return 'editor'
+            console.log("viewer mode")
+            return 'viewer';
           }
         })()}
         handleModeChange={(mode)=>{
+          console.log(process.env.PUBLIC_URL, mode)
           if(mode==='editor'){
             history.push(
               process.env.PUBLIC_URL + '/editor'
-            )
+            );
           }else if (mode === 'viewer'){
             history.push(
               process.env.PUBLIC_URL
-            )
+            );
           }
         }}
       >
@@ -45,7 +46,7 @@ class MenuContainer extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {};
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -57,4 +58,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(MenuContainer))
+)(withRouter(MenuContainer));

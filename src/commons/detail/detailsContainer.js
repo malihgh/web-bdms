@@ -1,41 +1,59 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import {
   Tab
-} from 'semantic-ui-react'
-import MetaComponent from './meta/metaComponent'
-import BoreholeComponent from './borehole/boreholeComponent'
-import StratigraphiesComponent from './stratigrafy/stratigraphiesComponent'
+} from 'semantic-ui-react';
+import MetaComponent from './meta/metaComponent';
+import BoreholeComponent from './borehole/boreholeComponent';
+import StratigraphiesComponent from './stratigrafy/stratigraphiesComponent';
 import {
   getBorehole,
   getStratigraphiesByBorehole
-} from '@ist-supsi/bmsjs'
+} from '@ist-supsi/bmsjs';
 
 class DetailsContainer extends React.Component {
   componentDidMount(){
     const {
       id
-    } = this.props
-    this.props.getBorehole(id)
-    this.props.getStratigraphiesByBorehole(id)
+    } = this.props;
+    this.props.getBorehole(id);
+    this.props.getStratigraphiesByBorehole(id);
+  }
+  componentDidUpdate(prevProps){
+    const {
+      id, detail
+    } = this.props;
+    if(
+      detail.borehole !== null
+      && id !== null
+      && detail.borehole.id !== id
+    ){
+      this.props.getBorehole(id);
+      this.props.getStratigraphiesByBorehole(id);
+    }
   }
   render() {
     const {
       detail, t
-    } = this.props
+    } = this.props;
     return (
       detail.borehole?
         <div style={{
             flex: "1 1 0%",
-            overflowY: 'auto',
-            padding: '1em'
+            // overflowY: 'auto',
+            padding: '1em',
+            height: '100%'
           }}>
           <Tab
+            activeIndex={detail.tab}
             menu={{
               secondary: true,
               pointing: true
+            }}
+            onTabChange={(e, d, i) => {
+              this.props.setTab(d.activeIndex)
             }}
             panes={[
               {
@@ -48,20 +66,22 @@ class DetailsContainer extends React.Component {
                 render: () => <BoreholeComponent
                   data={detail.borehole}/>
               },
-              {
-                menuItem: t('form_admin'),
-                render: () => null
-              },
+              // {
+              //   menuItem: t('form_admin'),
+              //   render: () => null
+              // },
               {
                 menuItem: t('meta_stratigraphy'),
                 render: () => <StratigraphiesComponent
                   stratigraphies={detail.stratigraphies}/>
               }
             ]}
-            activeIndex={detail.tab}
-            onTabChange={(e, d, i) => {
-              this.props.setTab(d.activeIndex)
-            }}/>
+            style={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+          />
         </div>:
         <div>
           Nothing selected

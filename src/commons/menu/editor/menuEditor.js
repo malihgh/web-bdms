@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 import { translate } from 'react-i18next'
 import {
     withRouter
@@ -16,10 +17,12 @@ import {
 
 import {
   createBorehole,
-  getBorehole
+  getBorehole,
+  deleteBorehole
 } from '@ist-supsi/bmsjs'
 
 import DateText from '../../form/dateText';
+import DomainText from '../../form/domain/domainText'
 import SearchEditorComponent from '../../search/editor/searchEditorComponent'
 
 class MenuEditor extends React.Component {
@@ -27,13 +30,14 @@ class MenuEditor extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      creating: false
+      creating: false,
+      delete: false
     }
   }
 
   render() {
     const {
-      t, boreholeSelected
+      t, boreholeSelected, borehole
     } = this.props
     return(
       this.props.editor.bselected?
@@ -41,15 +45,16 @@ class MenuEditor extends React.Component {
         padding: '1em'
       }}>
         <Button fluid icon primary
-          onClick={e=>boreholeSelected(null)}>
+          onClick={e=>{
+            this.setState({
+              delete: false
+            }, ()=>boreholeSelected(null))
+          }}
+        >
           <Icon name='caret left' />
           {t('back_to_list')}
         </Button>
         <br/>
-        <Button fluid icon positive>
-          <Icon name='share' />
-          Publish
-        </Button>
         <Segment>
           <Header>
             {this.props.editor.bselected.original_name}
@@ -96,44 +101,66 @@ class MenuEditor extends React.Component {
               }}>
               {t('borehole_form:meta_stratigraphy')}
             </span>
-            <Table fixed compact='very' basic='very'>
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell>
-                    Original
-                  </Table.Cell>
-                  <Table.Cell textAlign='right'>
-                    13 layers
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    Interpretation 1
-                  </Table.Cell>
-                  <Table.Cell textAlign='right'>
-                    10 layers
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    Interpretation 2
-                  </Table.Cell>
-                  <Table.Cell textAlign='right'>
-                    n/p
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    Interpretation 3
-                  </Table.Cell>
-                  <Table.Cell textAlign='right'>
-                    n/p
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            </Table>
+            {
+              _.isArray(this.props.editor.bselected.stratigraphy)?
+                <Table fixed compact='very' basic='very'>
+                  <Table.Body>
+                    {
+                      this.props.editor.bselected.stratigraphy.map(
+                        (stratigraphy, idx) => (
+                          <Table.Row key={'bms-medtr-'+idx}>
+                            <Table.Cell>
+                              <DomainText
+                                schema='layer_kind'
+                                id={stratigraphy.kind}
+                              />
+                            </Table.Cell>
+                            <Table.Cell textAlign='right'>
+                              {stratigraphy.layers} layers
+                            </Table.Cell>
+                          </Table.Row>
+                        )
+                      )
+                    }
+                  </Table.Body>
+                </Table>: null
+            }
           </div>
         </Segment>
+        <br/>
+        <Button
+          color={this.state.delete === true? 'red': null}
+          fluid
+          icon 
+          onClick={e=>{
+            if(this.state.delete === false){
+              this.setState({
+                delete: true
+              })
+            } else {
+              this.setState({
+                delete: false
+              }, ()=>{
+                deleteBorehole(borehole.data.id).then(
+                  function(response) {
+                    boreholeSelected(null);
+                  }
+                );
+              })
+            }
+          }}>
+          {
+            this.state.delete === true?
+              null:
+              <Icon name='trash alternate' />
+          }
+          
+          {
+            this.state.delete === true?
+              t('common:sure'):
+              t('common:delete')
+          }
+        </Button>
       </div>:
       <div
         style={{
@@ -170,7 +197,7 @@ class MenuEditor extends React.Component {
                           }
                         )
                       }
-                    }.bind(this)
+                    }//.bind(this)
                   ).catch(function (error) {
                     console.log(error)
                   })
@@ -208,7 +235,8 @@ const mapStateToProps = (state, ownProps) => {
     leftmenu: state.leftmenu,
     home: state.home,
     search: state.search,
-    editor: state.editor
+    editor: state.editor,
+    borehole: state.core_borehole
   }
 }
 
@@ -216,6 +244,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     dispatch: dispatch,
     boreholeSelected: (borehole) => {
+      dispatch({
+        path: '/borehole',
+        type: 'CLEAR'
+      })
       dispatch({
         type: 'EDITOR_BOREHOLE_SELECTED',
         selected: borehole
