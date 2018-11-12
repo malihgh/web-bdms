@@ -97,7 +97,7 @@ class MenuComponent extends React.Component {
               <Dropdown
                   trigger={
                     <span>
-                      {t('header:language')}
+                      {t('header:language')} ({i18n.language})
                     </span>
                   }
                 >
@@ -105,19 +105,43 @@ class MenuComponent extends React.Component {
                     <Dropdown.Item
                       onClick={()=>{
                         i18n.changeLanguage('en')
-                      }}>English</Dropdown.Item>
+                      }}
+                      selected={
+                        i18n.language === 'en'
+                      }
+                    >
+                      English
+                    </Dropdown.Item>
                     <Dropdown.Item
                       onClick={()=>{
-                        i18n.changeLanguage('en')
-                      }}>Deutsch</Dropdown.Item>
+                        i18n.changeLanguage('de')
+                      }}
+                      selected={
+                        i18n.language === 'de'
+                      }
+                    >
+                      Deutsch
+                    </Dropdown.Item>
                     <Dropdown.Item
                       onClick={()=>{
-                        i18n.changeLanguage('en')
-                      }}>Français</Dropdown.Item>
+                        i18n.changeLanguage('fr')
+                      }}
+                      selected={
+                        i18n.language === 'fr'
+                      }
+                    >
+                      Français
+                    </Dropdown.Item>
                     <Dropdown.Item
                       onClick={()=>{
                         i18n.changeLanguage('it')
-                      }}>Italiano</Dropdown.Item>
+                      }}
+                      selected={
+                        i18n.language === 'it'
+                      }
+                    >
+                      Italiano
+                    </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
             </List.Content>
