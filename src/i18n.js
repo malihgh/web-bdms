@@ -13,7 +13,8 @@ let resources = {
       'creator': 'Created by',
       'creation_date': 'Creation date',
       'delete': 'delete',
-      'sure': 'Are you sure?'
+      'sure': 'Are you sure?',
+      'reset': 'reset'
     },
     header: {
       'explore': 'Explore',
@@ -164,7 +165,8 @@ let resources = {
       'creator': 'Created by',
       'creation_date': 'Creation date',
       'delete': 'delete',
-      'sure': 'Are you sure?'
+      'sure': 'Are you sure?',
+      'reset': 'rücksetzen'
     }
   },
   it: {
@@ -178,7 +180,8 @@ let resources = {
       'creator': 'Creato da',
       'creation_date': 'Data di creazione',
       'delete': 'Elimina',
-      'sure': 'Sei sicuro?'
+      'sure': 'Sei sicuro?',
+      'reset': 'azzerare'
     },
     header: {
       'explore': 'Esplora',

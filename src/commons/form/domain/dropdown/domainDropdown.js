@@ -1,36 +1,38 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
-import _ from 'lodash'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import {
   loadDomains
-} from '@ist-supsi/bmsjs'
+} from '@ist-supsi/bmsjs';
+
+import DomainText from '../domainText';
 
 import {
   Form,
   Header,
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
 
 class DomainDropdown extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       selected: this.props.selected,
       language: this.props.i18n.language
-    }
-    this.handleChange = this.handleChange.bind(this)
+    };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount(){
     const {
       domains,
       schema
-    } = this.props
+    } = this.props;
     if(!domains.data.hasOwnProperty(schema) && domains.isFetching === false){
-      this.props.loadDomains()
+      this.props.loadDomains();
     }
   }
 
@@ -78,31 +80,40 @@ class DomainDropdown extends React.Component {
       domains,
       schema,
       multiple
-    } = this.props
+    } = this.props;
     if(multiple===true){
-      const selection = []
+      const selection = [];
       for (let i = 0; i < domains.data[schema].length; i++) {
-        let h = domains.data[schema][i]
+        let h = domains.data[schema][i];
         for (var f = 0; f < data.value.length; f++) {
-          const s = data.value[f]
+          const s = data.value[f];
           if(h.id === s){
-            selection.push({...h})
+            selection.push({...h});
           }
         }
       }
-      this.setState({selected: data.value})
+      this.setState({selected: data.value});
       if(onSelected!==undefined){
-        onSelected(selection)
+        onSelected(selection);
       }
     }else{
-      for (let i = 0; i < domains.data[schema].length; i++) {
-        let h = domains.data[schema][i]
-        if(h.id === data.value){
-          this.setState({selected: h.id})
-          if(onSelected!==undefined){
-            onSelected({...h})
+      if(data.value === null){
+        this.setState({selected: null})
+        if(onSelected!==undefined){
+          onSelected({
+            id: null
+          });
+        }
+      }else{
+        for (let i = 0; i < domains.data[schema].length; i++) {
+          let h = domains.data[schema][i];
+          if(h.id === data.value){
+            this.setState({selected: h.id})
+            if(onSelected!==undefined){
+              onSelected({...h});
+            }
+            break;
           }
-          break
         }
       }
     }
@@ -112,7 +123,7 @@ class DomainDropdown extends React.Component {
     const {
       domains,
       schema,
-      i18n,
+      t,
       search,
       multiple
     } = this.props, {
@@ -133,8 +144,20 @@ class DomainDropdown extends React.Component {
         fluid={true}
         search={search}
         multiple={multiple}
-        options={
-          domains.data[schema].map((domain) => ({
+        options={[
+          {
+            key: "dom-opt-z",
+            value: null,
+            text: '',
+            content: <span
+              style={{
+                color: 'red'
+              }}  
+            >
+              {t('reset')}
+            </span>
+          },
+          ...domains.data[schema].map((domain) => ({
             key: "dom-opt-" + domain.id,
             value: domain.id,
             text: domain.code !== domain[this.state.language].text?
@@ -148,7 +171,7 @@ class DomainDropdown extends React.Component {
                   domain[this.state.language].text + ', ' +  domain[this.state.language].descr: domain[this.state.language].text
               }/>
           }))
-        }
+        ]}
         value={selected}
         onChange={this.handleChange}/>
     )
@@ -190,5 +213,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )((
-   translate('search')(DomainDropdown)
+   translate('common')(DomainDropdown)
 ))
