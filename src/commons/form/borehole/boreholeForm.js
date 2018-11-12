@@ -315,9 +315,9 @@ class BoreholeForm extends React.Component {
   render() {
     const {
       t
-    } = this.props
-    const borehole = this.props.borehole.data
-    const size = null // 'small'
+    } = this.props;
+    const borehole = this.props.borehole.data;
+    const size = null; // 'small'
     return (
       <Dimmer.Dimmable
         as={'div'}
@@ -395,6 +395,8 @@ class BoreholeForm extends React.Component {
                         required
                         error={
                           borehole.extended.original_name === ''
+                          || this.state['extended.original_name_check'] === false
+                               && this.state['extended.original_name_fetch'] === false
                         }
                       >
                         <label>{t('original_name')}</label>
@@ -402,10 +404,8 @@ class BoreholeForm extends React.Component {
                           loading={this.state['extended.original_name_fetch']}
                           iconPosition='left'
                           icon={
-                            this.state[
-                              'extended.original_name_check'] === true
-                            && this.state[
-                              'extended.original_name_fetch'] === false?
+                            this.state['extended.original_name_check'] === true
+                              && this.state['extended.original_name_fetch'] === false?
                             'check': 'delete'
                           }
                           onChange={(e)=>{
@@ -421,8 +421,8 @@ class BoreholeForm extends React.Component {
                           spellCheck="false"/>
                       </Form.Field>
                       {
-                        this.state.original_name_check === false
-                        && this.state.original_name_fetch === false?
+                        this.state['extended.original_name_check'] === false
+                        && this.state['extended.original_name_fetch'] === false?
                           <Message
                               error
                               size={size}
@@ -434,6 +434,8 @@ class BoreholeForm extends React.Component {
                           required
                           error={
                             borehole.custom.public_name === ''
+                            || this.state['custom.public_name_check'] === false
+                                 && this.state['custom.public_name_fetch'] === false
                           }
                         >
                           <label>{t('public_name')}</label>
@@ -460,6 +462,7 @@ class BoreholeForm extends React.Component {
                             spellCheck="false"/>
                         </Form.Field>
                         <Form.Field
+                          error={borehole.kind === null}
                           required
                         >
                           <label>{t('kind')}</label>
@@ -471,6 +474,15 @@ class BoreholeForm extends React.Component {
                             }}/>
                         </Form.Field>
                       </Form.Group>
+                      {
+                        this.state['custom.public_name_check'] === false
+                        && this.state['custom.public_name_fetch'] === false?
+                          <Message
+                              error
+                              size={size}
+                              content={t('duplicate')}
+                            />: null
+                      }
                       <Form.Field>
                         <label>{t('project_name')}</label>
                         <Input
@@ -504,10 +516,17 @@ class BoreholeForm extends React.Component {
                             }}/>
                         </Form.Field>
                         <Form.Field
+                          required={borehole.restriction === 29}
                           error={
-                            _.isString(borehole.restriction_until) &&
-                            borehole.restriction_until !== '' &&
-                            !moment(borehole.restriction_until).isValid()
+                            (
+                              borehole.restriction === 29 &&
+                              !moment(borehole.restriction_until).isValid()
+                            ) || (
+                              borehole.restriction !== 29 &&
+                              _.isString(borehole.restriction_until) &&
+                                borehole.restriction_until !== '' &&
+                                  moment(borehole.restriction_until).isValid()
+                            )
                           }>
                           <label>{t('restriction_until')} ({t('date_format')})</label>
                           <DateField
