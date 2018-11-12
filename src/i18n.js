@@ -8,6 +8,7 @@ let resources = {
       "start": "This page is in English.",
       'yes': 'Yes',
       'no': 'No',
+      'np': 'No information',
       'username': 'Username',
       'creator': 'Created by',
       'creation_date': 'Creation date',
@@ -153,12 +154,26 @@ let resources = {
       'spatial_filter': 'Spatial filter'
     }
   },
+  de: {
+    common: {
+      "title": "BMS",
+      'yes': 'Ja',
+      'no': 'Nein',
+      'np': 'Keine Angabe',
+      'username': 'Username',
+      'creator': 'Created by',
+      'creation_date': 'Creation date',
+      'delete': 'delete',
+      'sure': 'Are you sure?'
+    }
+  },
   it: {
     common: {
       "title": "BMS",
       "start": "Questa pagina è in Italiano",
       'yes': 'Sì',
       'no': 'No',
+      'np': 'Nessuna informazione',
       'username': 'Nome utente',
       'creator': 'Creato da',
       'creation_date': 'Data di creazione',
@@ -317,7 +332,7 @@ i18n
     'en': ['en-US'], 
     'default': ['en']
   },
-  whitelist: ['en', 'it'],
+  whitelist: ['en', 'it', 'de', 'fr'],
 
   // have a common namespace used around the full app
   // ns: ['common', 'header', 'menu'],

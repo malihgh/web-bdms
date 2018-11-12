@@ -1031,7 +1031,7 @@ class BoreholeForm extends React.Component {
                         <label>{t('groundwater')}</label>
                         <Form.Group inline>
                           <Form.Radio
-                            label='Yes'
+                            label={t('common:yes')}
                             checked={borehole.extended.groundwater === true}
                             onChange={(e, d)=>{
                               this.updateChange(
@@ -1039,11 +1039,19 @@ class BoreholeForm extends React.Component {
                             }}
                           />
                           <Form.Radio
-                            label='No'
+                            label={t('common:no')}
                             checked={borehole.extended.groundwater === false}
                             onChange={(e, d)=>{
                               this.updateChange(
                                 'extended.groundwater', false, false)
+                            }}
+                          />
+                          <Form.Radio
+                            label={t('common:np')}
+                            checked={borehole.extended.groundwater === null}
+                            onChange={(e, d)=>{
+                              this.updateChange(
+                                'extended.groundwater', null, false)
                             }}
                           />
                         </Form.Group>
@@ -1258,5 +1266,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )((
-   translate('borehole_form')(BoreholeForm)
+   translate(['borehole_form', 'common'])(BoreholeForm)
 ))
