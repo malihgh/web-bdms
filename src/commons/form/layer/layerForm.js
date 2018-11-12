@@ -605,7 +605,7 @@ class LayerForm extends React.Component {
                 )
               }}/>
           </Form.Field>
-          <Form.Field>
+          {/*<Form.Field>
             <label>{t('unconrocks')}</label>
             <DomainDropdown
               schema='mcla102'
@@ -616,6 +616,7 @@ class LayerForm extends React.Component {
                 )
               }}/>
           </Form.Field>
+          */}
           <Form.Field>
             <label>{t('debris')}</label>
             <DomainDropdown
@@ -646,28 +647,32 @@ class LayerForm extends React.Component {
                 )
               }}/>
           </Form.Field>
-          <Form.Field>
-            <label>{t('lithok')}</label>
-            <DomainDropdown
-              schema='mcla105'
-              selected={this.state.layer.lithok}
-              onSelected={(selected)=>{
-                this.updateChange(
-                  'lithok', selected.id, false
-                )
-              }}/>
-          </Form.Field>
-          <Form.Field>
-            <label>{t('kirost')}</label>
-            <DomainDropdown
-              schema='mcla106'
-              selected={this.state.layer.kirost}
-              onSelected={(selected)=>{
-                this.updateChange(
-                  'kirost', selected.id, false
-                )
-              }}/>
-          </Form.Field>
+          {
+            /*
+            <Form.Field>
+              <label>{t('lithok')}</label>
+              <DomainDropdown
+                schema='mcla105'
+                selected={this.state.layer.lithok}
+                onSelected={(selected)=>{
+                  this.updateChange(
+                    'lithok', selected.id, false
+                  )
+                }}/>
+            </Form.Field>
+            <Form.Field>
+              <label>{t('kirost')}</label>
+              <DomainDropdown
+                schema='mcla106'
+                selected={this.state.layer.kirost}
+                onSelected={(selected)=>{
+                  this.updateChange(
+                    'kirost', selected.id, false
+                  )
+                }}/>
+            </Form.Field>
+            */
+          }
           <Form.Field>
             <label>{t('notes')}</label>
             <TextArea
