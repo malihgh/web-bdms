@@ -76,9 +76,9 @@ class BoreholeForm extends React.Component {
         qt_bore_inc_dir: null,
         qt_length: null,
         qt_top_bedrock: null,
-        lit_pet_top_bedrock: [],
-        lit_str_top_bedrock: [],
-        chro_str_top_bedrock: [],
+        lit_pet_top_bedrock: null,
+        lit_str_top_bedrock: null,
+        chro_str_top_bedrock: null,
         remarks: '',
         mistakes: '',
         processing_status: null,
@@ -1056,51 +1056,47 @@ class BoreholeForm extends React.Component {
                           />
                         </Form.Group>
                       </Form.Field>
-                      <Form.Field>
+                      <Form.Field
+                        required
+                      >
                         <label>{t('lit_pet_top_bedrock')}</label>
                         <DomainDropdown
                           schema='custom.lit_pet_top_bedrock'
                           selected={borehole.custom.lit_pet_top_bedrock}
-                          multiple={true}
-                          search={true}
                           onSelected={(selected)=>{
                             this.updateChange(
                               'custom.lit_pet_top_bedrock',
-                              selected.map(lptb=>lptb.id),
+                              selected.id,
                               false
                             )
                           }}/>
                       </Form.Field>
-                      <Form.Field>
+                      <Form.Field
+                        required
+                      >
                         <label>{t('lit_str_top_bedrock')}</label>
                         <DomainDropdown
                           schema='custom.lit_str_top_bedrock'
-                          selected={
-                            borehole.custom.lit_str_top_bedrock
-                          }
-                          multiple={true}
-                          search={true}
+                          selected={borehole.custom.lit_str_top_bedrock}
                           onSelected={(selected)=>{
                             this.updateChange(
                               'custom.lit_str_top_bedrock',
-                              selected.map(lptb=>lptb.id),
+                              selected.id,
                               false
                             )
                           }}/>
                       </Form.Field>
-                      <Form.Field>
+                      <Form.Field
+                        required
+                      >
                         <label>{t('chro_str_top_bedrock')}</label>
                         <DomainDropdown
                           schema='custom.chro_str_top_bedrock'
-                          selected={
-                            borehole.custom.chro_str_top_bedrock
-                          }
-                          multiple={true}
-                          search={true}
+                          selected={borehole.custom.chro_str_top_bedrock}
                           onSelected={(selected)=>{
                             this.updateChange(
                               'custom.chro_str_top_bedrock',
-                              selected.map(lptb=>lptb.id),
+                              selected.id,
                               false
                             )
                           }}/>
