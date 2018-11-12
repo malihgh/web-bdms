@@ -60,7 +60,7 @@ class MapComponent extends React.Component {
           layers: [
             new TileLayer({
               minResolution: 2.5,
-              preload: Infinity,
+              // preload: Infinity,
               source: new WMTS({
                 crossOrigin: 'anonymous',
                 attributions: '&copy; Data: <a href="http://www.swisstopo.admin.ch/internet/swisstopo/en/home.html">swisstopo</a>',
@@ -73,7 +73,7 @@ class MapComponent extends React.Component {
             }),
             new TileLayer({
               maxResolution: 2.5,
-              preload: Infinity,
+              // preload: Infinity,
               source: new WMTS({
                 crossOrigin: 'anonymous',
                 attributions: '&copy; Data: <a href="http://www.swisstopo.admin.ch/internet/swisstopo/en/home.html">swisstopo</a>',
@@ -113,7 +113,8 @@ class MapComponent extends React.Component {
     this.map.addInteraction(selectPointerMove);
 
     const selectClick = new Select({
-      condition: click
+      condition: click,
+      style: this.styleFunction.bind(this)
     });
     selectClick.on('select', this.selected);
     this.map.addInteraction(selectClick);
@@ -185,6 +186,7 @@ class MapComponent extends React.Component {
 
   selected(e) {
     const { selected } = this.props;
+    console.log('selected', e.selected)
     if(selected !== undefined){
       if(e.selected.length>0){
         selected(e.selected[0].getId())
@@ -209,7 +211,11 @@ class MapComponent extends React.Component {
     const {
         highlighted
     } = nextProps;
+    let refresh = false;
     if(!_.isEqual(highlighted, this.props.highlighted)){
+      refresh = true;
+    }
+    if(refresh){
       this.points.refresh({force:true});
     }
   }

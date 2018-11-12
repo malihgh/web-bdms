@@ -31,7 +31,7 @@ class MenuExplorer extends React.Component {
         padding: '1em'
       }}>
         <Button fluid icon primary
-          onClick={e=>this.props.boreholeSeleced(null)}>
+          onClick={e=>this.props.boreholeSeleced()}>
           <Icon name='caret left' />
           {t('back_to_list')}
         </Button>
@@ -117,10 +117,10 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     dispatch: dispatch,
-    boreholeSeleced: (borehole) => {
+    boreholeSeleced: () => {
       dispatch({
         type: 'HOME_BOREHOLE_SELECTED',
-        borehole: borehole
+        id: null
       })
     }
   }

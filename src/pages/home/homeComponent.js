@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import _ from 'lodash';
 import {
     withRouter
 } from 'react-router-dom';
@@ -56,9 +57,6 @@ class HomeComponent extends React.Component {
                 <BoreholeTable
                   onSelected={(borehole)=>{
                     this.props.boreholeSeleced(borehole.id);
-                    // history.push(
-                    //   process.env.PUBLIC_URL + '/detail/' + borehole.id
-                    // )
                   }}
                   onHover={(item)=>{
                     this.props.boreholeHover(item);
@@ -78,10 +76,11 @@ class HomeComponent extends React.Component {
           }}>
             <MapComponent
               highlighted={
-                home.selected?
-                  [home.selected.id]:
+                !_.isNil(home.selected)?
+                  [home.selected]:
                   home.hover?
-                    [home.hover.id]: []}
+                    [home.hover.id]: []
+              }
               moveend={(features, extent)=>{
                 this.props.filterByExtent(extent);
                 // if(search.mapfilter===true){
@@ -89,7 +88,9 @@ class HomeComponent extends React.Component {
                 // }
               }}
               hover={(id)=>{
-                this.props.mapHover(id);
+                if(_.isNil(home.selected)){
+                  this.props.mapHover(id);
+                }
               }}
               selected={(id)=>{
                 this.props.boreholeSeleced(id);
