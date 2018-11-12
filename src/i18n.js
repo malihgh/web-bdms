@@ -125,7 +125,7 @@ let resources = {
       'cohesion': 'Cohesion',
       'further_properties': 'Further properties',
       'uscs_1': 'USCS 1',
-      'uscs_2': 'USCS 1',
+      'uscs_2': 'USCS 2',
       'uscs_3': 'USCS 3',
       'uscs_original': 'USCS original',
       'uscs_determination': 'USCS determination',
