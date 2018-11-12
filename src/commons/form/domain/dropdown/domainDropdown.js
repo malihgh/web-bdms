@@ -137,15 +137,15 @@ class DomainDropdown extends React.Component {
           domains.data[schema].map((domain) => ({
             key: "dom-opt-" + domain.id,
             value: domain.id,
-            text: domain.code !== domain[i18n.language].text?
-              domain.code + ' (' + domain[i18n.language].text + ')': domain.code,
+            text: domain.code !== domain[this.state.language].text?
+              domain.code + ' (' + domain[this.state.language].text + ')': domain.code,
             content: <Header
               content={
                 domain.code
               }
               subheader={
-                domain[i18n.language].descr !== null && domain[i18n.language].descr !== ''?
-                  domain[i18n.language].text + ', ' +  domain[i18n.language].descr: domain[i18n.language].text
+                domain[this.state.language].descr !== null && domain[this.state.language].descr !== ''?
+                  domain[this.state.language].text + ', ' +  domain[this.state.language].descr: domain[this.state.language].text
               }/>
           }))
         }

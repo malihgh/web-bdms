@@ -311,7 +311,13 @@ i18n
 .init({
   // we init with resources
   resources: resources,
-  fallbackLng: 'en',
+  // lng: 'en',
+  // fallbackLng: 'en',
+  fallbackLng: { 
+    'en': ['en-US'], 
+    'default': ['en']
+  },
+  whitelist: ['en', 'it'],
 
   // have a common namespace used around the full app
   // ns: ['common', 'header', 'menu'],
