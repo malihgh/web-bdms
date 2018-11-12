@@ -366,8 +366,8 @@ class PointComponent extends React.Component {
               onClick={(e)=>{
                 if(_.isFunction(this.props.applyChange)){
                   this.props.applyChange(
-                    this.state.toPoint[0],
-                    this.state.toPoint[1]
+                    _.round(this.state.toPoint[0], 2),
+                      _.round(this.state.toPoint[1], 2)
                   )
                 }
               }}>Apply</Button>
