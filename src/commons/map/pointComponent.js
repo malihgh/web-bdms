@@ -30,7 +30,8 @@ import proj4 from 'proj4';
 
 import {
   Segment,
-  Button
+  Button,
+  Icon
 } from 'semantic-ui-react';
 
 const projections = {
@@ -202,21 +203,18 @@ class PointComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log('componentWillReceiveProps');
     if(
       _.isNumber(nextProps.x)
       && _.isNumber(nextProps.y)
       && nextProps.x + nextProps.y !== 0
       && !_.isNil(nextProps.srs)
     ){
-      console.log('Updating map point', nextProps);
       const point = this.transform(
         [nextProps.x, nextProps.y], nextProps.srs
       );
       if(
         !_.isEqual(point, this.state.point)
       ){
-        console.log(point, this.state.point);
         this.setState({
           point: point,
           toPoint: [nextProps.x, nextProps.y]
@@ -357,20 +355,38 @@ class PointComponent extends React.Component {
             })
           </div>
           <div>
-            <Button
-              disabled={
-                !_.isArray(this.state.toPoint)
-              }
-              primary
-              size='mini'
-              onClick={(e)=>{
-                if(_.isFunction(this.props.applyChange)){
-                  this.props.applyChange(
-                    _.round(this.state.toPoint[0], 2),
-                      _.round(this.state.toPoint[1], 2)
-                  )
+            <Button.Group>
+              <Button
+                disabled={
+                  !_.isArray(this.state.toPoint)
                 }
-              }}>Apply</Button>
+                color='green'
+                size='mini'
+                onClick={(e)=>{
+                  if(_.isFunction(this.props.applyChange)){
+                    this.props.applyChange(
+                      _.round(this.state.toPoint[0], 2),
+                        _.round(this.state.toPoint[1], 2)
+                    )
+                  }
+                }}>Apply</Button>
+              <Button
+                disabled={
+                  false //!_.isArray(this.state.toPoint)
+                }
+                icon
+                color='grey'
+                size='mini'
+                onClick={(e)=>{
+                  this.map.getView().fit(
+                    this.centerFeature.getGeometry(),
+                    {minResolution: 1}
+                  );
+                }}
+              >
+                <Icon name='compress'/>
+              </Button>
+            </Button.Group>
           </div>
         </div>
       </Segment>
