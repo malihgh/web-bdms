@@ -31,8 +31,13 @@ import proj4 from 'proj4';
 import {
   Segment,
   Button,
+  Label,
   Icon
 } from 'semantic-ui-react';
+
+import {
+  getHeight
+} from '@ist-supsi/bmsjs';
 
 const projections = {
   "EPSG:21781": "+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.4,15.1,405.3,0,0,0,0 +units=m +no_defs",
@@ -46,6 +51,7 @@ class PointComponent extends React.Component {
 
   constructor(props) {
     super(props);
+    this.lh = false; // loading height queue
     this.changefeature = this.changefeature.bind(this);
     this.styleFunction = this.styleFunction.bind(this);
     this.transform = this.transform.bind(this);
@@ -68,7 +74,8 @@ class PointComponent extends React.Component {
     }else{
       this.state = {
         point: null,
-        toPoint: null
+        toPoint: null,
+        height: null
       };
     }
   }
@@ -257,11 +264,13 @@ class PointComponent extends React.Component {
     if (this.centerFeature === undefined){
       this.centerFeature = feature;
     }
+    const self = this;
     this.setState({
       point: coordinates,
+      height: null,
       toPoint: !_.isNil(this.props.srs)?
         this.btransform(
-          this.state.point,
+          coordinates,
           this.props.srs 
         ): coordinates
     }, ()=>{
@@ -269,10 +278,23 @@ class PointComponent extends React.Component {
       if (_.isFunction(changefeature)){
         changefeature(this.state.toPoint);
       }
+      /*if(this.lh !== false){
+        clearTimeout(this.lh);
+        this.lh = false;
+      }
+      this.lh = setTimeout(function(){
+        console.log("Getting height..")
+        getHeight(
+          coordinates[0],
+          coordinates[1]
+        ).then((response)=>{
+          self.setState({
+            height: response.status === 200?
+              response.data.height: null
+          })
+        });
+      }, 500);*/
     });
-    // if(ev.type='addfeature'){
-    //     this.disableEditing();
-    // }
     this.draw.setActive(false);
   }
 
@@ -344,15 +366,33 @@ class PointComponent extends React.Component {
               flex: '1 1 100%'
             }}
           >
-            Coordinates: {
-              _.isArray(this.state.toPoint)?
-                _.round(this.state.toPoint[0], 2).toLocaleString()
-                + ", " + _.round(this.state.toPoint[1], 2).toLocaleString():
-                'n/p'
-            } ({
-              _.isNil(this.props.srs)?
-                this.srs: this.props.srs
-            })
+            <Label
+              color='black'
+            >
+              <Icon name='map marker' />
+              {
+                _.isArray(this.state.toPoint)?
+                  'E' + _.round(this.state.toPoint[0], 2).toLocaleString()
+                  + " N" + _.round(this.state.toPoint[1], 2).toLocaleString():
+                  'n/p'
+              }
+              <Label.Detail>
+                ({
+                  _.isNil(this.props.srs)?
+                    this.srs: this.props.srs
+                })
+              </Label.Detail>
+            </Label>
+            {
+              this.state.height !== null?
+                <Label
+                  color='blue'
+                >
+                  <Icon
+                    name='resize vertical'
+                  /> {this.state.height}
+                </Label>: null
+            }
           </div>
           <div>
             <Button.Group>
@@ -360,22 +400,45 @@ class PointComponent extends React.Component {
                 disabled={
                   !_.isArray(this.state.toPoint)
                 }
-                color='green'
                 size='mini'
                 onClick={(e)=>{
                   if(_.isFunction(this.props.applyChange)){
                     this.props.applyChange(
                       _.round(this.state.toPoint[0], 2),
-                        _.round(this.state.toPoint[1], 2)
-                    )
+                      _.round(this.state.toPoint[1], 2),
+                      this.state.height !== null?
+                        parseFloat(this.state.height): null
+                    );
                   }
-                }}>Apply</Button>
+                }}>
+                Apply
+              </Button>
+              <Button
+                disabled={
+                  !_.isArray(this.state.toPoint)
+                }
+                icon
+                size='mini'
+                onClick={(e)=>{
+                  if(_.isFunction(this.props.applyChange)){
+                    getHeight(
+                      this.state.point[0],
+                      this.state.point[1]
+                    ).then((response)=>{
+                      this.setState({
+                        height: response.status === 200?
+                          response.data.height: null
+                      })
+                    });
+                  }
+                }}>
+                <Icon name='resize vertical'/>
+              </Button>
               <Button
                 disabled={
                   false //!_.isArray(this.state.toPoint)
                 }
                 icon
-                color='grey'
                 size='mini'
                 onClick={(e)=>{
                   this.map.getView().fit(

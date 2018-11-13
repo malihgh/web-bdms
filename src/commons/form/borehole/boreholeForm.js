@@ -278,6 +278,9 @@ class BoreholeForm extends React.Component {
     if(attribute === 'location'){
       _.set(borehole, 'location_x', value[0]);
       _.set(borehole, 'location_y', value[1]);
+      if(value[2] !== null){
+        _.set(borehole, 'elevation_z', value[2]);
+      }
     }else{
       _.set(borehole, attribute, value);
     }
@@ -773,8 +776,9 @@ class BoreholeForm extends React.Component {
                             })['code']:
                             null
                         }
-                        applyChange={(x, y)=>{
-                          this.updateChange('location', [x, y], false);
+                        applyChange={(x, y, height)=>{
+                          console.log("Height: " + height);
+                          this.updateChange('location', [x, y, height], false);
                         }}
                       />
                     </div>
