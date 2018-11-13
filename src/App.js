@@ -1,44 +1,44 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from 'react';
+import { connect } from 'react-redux';
 import {
   BrowserRouter as Router,
   Route,
   Switch
-} from 'react-router-dom'
+} from 'react-router-dom';
 
-import HomeComponent from './pages/home/homeComponent'
-import EditorComponent from './pages/editor/editorComponent'
-import SidebarComponent from './pages/sidebar/sidebarComponent'
+import HomeComponent from './pages/home/homeComponent';
+import EditorComponent from './pages/editor/editorComponent';
+import SidebarComponent from './pages/sidebar/sidebarComponent';
 
 import {
   loadDomains,
   loadCantons
-} from '@ist-supsi/bmsjs'
+} from '@ist-supsi/bmsjs';
 
 // console.log('process.env.PUBLIC_URL: ' + process.env.PUBLIC_URL)
 class App extends React.Component {
   componentDidMount(){
     const {
       domains, cantons
-    } = this.props
+    } = this.props;
     if(Object.keys(domains.data).length === 0){
-      this.props.loadDomains()
+      this.props.loadDomains();
     }
-    if(cantons.data.length===0) this.props.loadCantons()
+    if(cantons.data.length===0) this.props.loadCantons();
   }
   isFetching(){
     const {
       domains, cantons
-    } = this.props
+    } = this.props;
     if(
       Object.keys(domains.data).length === 0
       || domains.isFetching === true
-    ) return true
+    ) return true;
     if (
       cantons.data.length === 0
       || cantons.isFetching === true
-    ) return true
-    return false
+    ) return true;
+    return false;
   }
   render() {
     return (
@@ -80,30 +80,30 @@ class App extends React.Component {
       </Router>
     );
   }
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
     domains: state.core_domain_list,
     cantons: state.core_canton_list
   }
-}
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     dispatch: dispatch,
     loadDomains: () => {
-      dispatch(loadDomains())
+      dispatch(loadDomains());
     },
     loadCantons: () => {
-      dispatch(loadCantons())
+      dispatch(loadCantons());
     }
   }
-}
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App)
+)(App);
 
 // export default App
