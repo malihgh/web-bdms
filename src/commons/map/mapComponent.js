@@ -15,6 +15,8 @@ import Style from 'ol/style/Style';
 import Circle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 import Select from 'ol/interaction/Select';
+import Attribution from 'ol/control/Attribution';
+import {defaults as defaultControls} from 'ol/control/util';
 import { click, pointerMove } from 'ol/events/condition';
 
 import {
@@ -54,6 +56,14 @@ class MapComponent extends React.Component {
       matrixIds: matrixIds
     });
     this.map = new Map({
+      controls: defaultControls({
+        attribution: true,
+        attributionOptions: {
+          collapsed: false,
+          collapsible: false,
+          collapseLabel: 'tettine'
+        }
+      }),
       layers: [
         new LayerGroup({
           visible: true,
@@ -89,11 +99,11 @@ class MapComponent extends React.Component {
       ],
       target: 'map',
       view: new View({
-        /*maxResolution: 340,
-        minResolution: 1,*/
+        maxResolution: 305,
+        minResolution: 0.5,
         resolution: 500,
         center: center,
-        //extent: [708000, 115000, 727000, 143000]
+        extent: extent
       })
     })
     this.points = new VectorSource()
@@ -101,6 +111,14 @@ class MapComponent extends React.Component {
       source: this.points,
       style: this.styleFunction.bind(this)
     }));
+
+    // this.map.addControl(
+    //   new Attribution({
+    //     collapsed: false,
+    //     collapsible: false,
+    //     collapseLabel: 'tettine'
+    //   })
+    // );
 
     // Register map events
     this.map.on('moveend', this.moveEnd);
@@ -112,12 +130,12 @@ class MapComponent extends React.Component {
     selectPointerMove.on('select', this.hover);
     this.map.addInteraction(selectPointerMove);
 
-    const selectClick = new Select({
+    this.selectClick = new Select({
       condition: click,
       style: this.styleFunction.bind(this)
     });
-    selectClick.on('select', this.selected);
-    this.map.addInteraction(selectClick);
+    this.selectClick.on('select', this.selected);
+    this.map.addInteraction(this.selectClick);
 
     getGeojson().then(function(response) {
       if(response.data.success){
@@ -141,7 +159,7 @@ class MapComponent extends React.Component {
       highlighted
     } = this.props;
 
-    let selected = highlighted !== undefined
+    let selected = (highlighted !== undefined)
       && highlighted.indexOf(feature.get('id'))>-1;
 
     let conf = {
@@ -174,6 +192,7 @@ class MapComponent extends React.Component {
   */
   moveEnd(){
     const { moveend } = this.props;
+    console.log(this.map.getView().getResolution())
     if(moveend !== undefined){
       var extent = this.map.getView().calculateExtent(this.map.getSize());
       let features = [];
@@ -216,6 +235,7 @@ class MapComponent extends React.Component {
       refresh = true;
     }
     if(refresh){
+      this.selectClick.getFeatures().clear();
       this.points.refresh({force:true});
     }
   }
