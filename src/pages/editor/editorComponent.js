@@ -22,7 +22,8 @@ class EditorComponent extends React.Component {
           false? null:
           <div style={{
             flex: '0 0 300px',
-            boxShadow: '2px 0px 5px 0px rgba(0,0,0,0.75)',
+            // boxShadow: '2px 0px 5px 0px rgba(0,0,0,0.75)',
+            borderRight: 'thin solid #c7c7c7',
             marginRight: '10px'
           }}>
             <MenuContainer>
