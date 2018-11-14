@@ -8,8 +8,6 @@ import {
   loadDomains
 } from '@ist-supsi/bmsjs';
 
-import DomainText from '../domainText';
-
 import {
   Form,
   Header,

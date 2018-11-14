@@ -398,8 +398,10 @@ class BoreholeForm extends React.Component {
                         required
                         error={
                           borehole.extended.original_name === ''
-                          || this.state['extended.original_name_check'] === false
-                               && this.state['extended.original_name_fetch'] === false
+                          || (
+                            this.state['extended.original_name_check'] === false
+                            && this.state['extended.original_name_fetch'] === false
+                          )
                         }
                       >
                         <label>{t('original_name')}</label>
@@ -437,8 +439,10 @@ class BoreholeForm extends React.Component {
                           required
                           error={
                             borehole.custom.public_name === ''
-                            || this.state['custom.public_name_check'] === false
-                                 && this.state['custom.public_name_fetch'] === false
+                            || (
+                              this.state['custom.public_name_check'] === false
+                              && this.state['custom.public_name_fetch'] === false
+                            )
                           }
                         >
                           <label>{t('public_name')}</label>
