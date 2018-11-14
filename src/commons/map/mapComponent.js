@@ -15,13 +15,16 @@ import Style from 'ol/style/Style';
 import Circle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 import Select from 'ol/interaction/Select';
-import Attribution from 'ol/control/Attribution';
 import {defaults as defaultControls} from 'ol/control/util';
 import { click, pointerMove } from 'ol/events/condition';
 
 import {
   getGeojson
 } from '@ist-supsi/bmsjs';
+
+import {
+  Button
+} from 'semantic-ui-react';
 
 class MapComponent extends React.Component {
   constructor(props) {
@@ -30,7 +33,8 @@ class MapComponent extends React.Component {
     this.selected = this.selected.bind(this);
     this.hover = this.hover.bind(this);
     this.state = {
-      counter: 0
+      counter: 0,
+      satellite: false
     };
   }
   componentDidMount(){
@@ -55,6 +59,7 @@ class MapComponent extends React.Component {
       resolutions: resolutions,
       matrixIds: matrixIds
     });
+    const attribution = '&copy; Data: <a style="color: black; text-decoration: underline;" href="https://www.swisstopo.admin.ch">swisstopo</a>';
     this.map = new Map({
       controls: defaultControls({
         attribution: true,
@@ -66,14 +71,14 @@ class MapComponent extends React.Component {
       }),
       layers: [
         new LayerGroup({
-          visible: true,
+          visible: !this.state.satellite,
           layers: [
             new TileLayer({
               minResolution: 2.5,
               // preload: Infinity,
               source: new WMTS({
                 crossOrigin: 'anonymous',
-                attributions: '&copy; Data: <a href="http://www.swisstopo.admin.ch/internet/swisstopo/en/home.html">swisstopo</a>',
+                attributions: attribution,
                 url: 'https://wmts10.geo.admin.ch/1.0.0/{Layer}/default/current/2056/{TileMatrix}/{TileCol}/{TileRow}.jpeg',
                 tileGrid: tileGrid,
                 // projection: getProjection(this.srs),
@@ -86,7 +91,7 @@ class MapComponent extends React.Component {
               // preload: Infinity,
               source: new WMTS({
                 crossOrigin: 'anonymous',
-                attributions: '&copy; Data: <a href="http://www.swisstopo.admin.ch/internet/swisstopo/en/home.html">swisstopo</a>',
+                attributions: attribution,
                 url: 'https://wmts10.geo.admin.ch/1.0.0/{Layer}/default/current/2056/{TileMatrix}/{TileCol}/{TileRow}.png',
                 tileGrid: tileGrid,
                 // projection: getProjection(this.srs),
@@ -95,6 +100,17 @@ class MapComponent extends React.Component {
               })
             })
           ]
+        }),
+        new TileLayer({
+          visible: this.state.satellite,
+          source: new WMTS({
+            crossOrigin: 'anonymous',
+            attributions: attribution,
+            url: 'https://wmts10.geo.admin.ch/1.0.0/{Layer}/default/current/2056/{TileMatrix}/{TileCol}/{TileRow}.jpeg',
+            tileGrid: tileGrid,
+            layer: "ch.swisstopo.swissimage",
+            requestEncoding: 'REST'
+          })
         })
       ],
       target: 'map',
@@ -241,14 +257,54 @@ class MapComponent extends React.Component {
   }
 
   render() {
+    const {
+      satellite
+    } = this.state;
     return (
-      <div id='map' style={{
-        width: '100%',
-        height: '100%',
-        padding: '0px',
-        flex: '1 1 100%',
-        // border: 'thin solid #cccccc'
-      }}/>
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          padding: '0px',
+          flex: '1 1 100%',
+          // border: 'thin solid #cccccc'
+        }}
+      >
+        <div style={{
+          position: 'absolute',
+          top: '6px',
+          right: '6px',
+          zIndex: '1'
+        }}>
+          <Button
+            color='black'
+            size='mini'
+            toggle
+            active={satellite}
+            onClick={(e)=>{
+              this.setState({
+                satellite: !satellite
+              }, (a) => {
+                console.log(a);
+                const layers = this.map.getLayers().getArray();
+                layers[0].setVisible(!this.state.satellite);
+                layers[1].setVisible(this.state.satellite);
+              })
+            }}>
+            Satellite
+          </Button>
+        </div>
+        <div
+          id='map'
+          style={{
+            width: '100%',
+            height: '100%',
+            padding: '0px',
+            flex: '1 1 100%',
+            // border: 'thin solid #cccccc'
+          }}
+        />
+      </div>
     );
   }
 };

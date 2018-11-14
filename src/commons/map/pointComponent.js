@@ -18,6 +18,7 @@ import Draw from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify';
 import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
+import {defaults as defaultControls} from 'ol/control/util';
 
 import {
   get as getProjection,
@@ -75,7 +76,8 @@ class PointComponent extends React.Component {
       this.state = {
         point: null,
         toPoint: null,
-        height: null
+        height: null,
+        satellite: false
       };
     }
   }
@@ -122,17 +124,26 @@ class PointComponent extends React.Component {
       resolutions: resolutions,
       matrixIds: matrixIds
     });
+    const attribution = '&copy; Data: <a style="color: black; text-decoration: underline;" href="https://www.swisstopo.admin.ch">swisstopo</a>';
     this.map = new Map({
+      controls: defaultControls({
+        attribution: true,
+        attributionOptions: {
+          collapsed: false,
+          collapsible: false,
+          collapseLabel: 'tettine'
+        }
+      }),
       layers: [
         new LayerGroup({
-          visible: true,
+          visible: !this.state.satellite,
           layers: [
             new TileLayer({
               minResolution: 2.5,
-              preload: Infinity,
+              // preload: Infinity,
               source: new WMTS({
                 crossOrigin: 'anonymous',
-                attributions: '&copy; Data: <a href="http://www.swisstopo.admin.ch/internet/swisstopo/en/home.html">swisstopo</a>',
+                attributions: attribution,
                 url: 'https://wmts10.geo.admin.ch/1.0.0/{Layer}/default/current/2056/{TileMatrix}/{TileCol}/{TileRow}.jpeg',
                 tileGrid: tileGrid,
                 projection: getProjection(this.srs),
@@ -142,10 +153,10 @@ class PointComponent extends React.Component {
             }),
             new TileLayer({
               maxResolution: 2.5,
-              preload: Infinity,
+              // preload: Infinity,
               source: new WMTS({
                 crossOrigin: 'anonymous',
-                attributions: '&copy; Data: <a href="http://www.swisstopo.admin.ch/internet/swisstopo/en/home.html">swisstopo</a>',
+                attributions: attribution,
                 url: 'https://wmts10.geo.admin.ch/1.0.0/{Layer}/default/current/2056/{TileMatrix}/{TileCol}/{TileRow}.png',
                 tileGrid: tileGrid,
                 projection: getProjection(this.srs),
@@ -154,6 +165,18 @@ class PointComponent extends React.Component {
               })
             })
           ]
+        }),
+        new TileLayer({
+          visible: this.state.satellite,
+          source: new WMTS({
+            crossOrigin: 'anonymous',
+            attributions: attribution,
+            url: 'https://wmts10.geo.admin.ch/1.0.0/{Layer}/default/current/2056/{TileMatrix}/{TileCol}/{TileRow}.jpeg',
+            tileGrid: tileGrid,
+            projection: getProjection(this.srs),
+            layer: "ch.swisstopo.swissimage",
+            requestEncoding: 'REST'
+          })
         })
       ],
       target: 'point',
@@ -264,7 +287,7 @@ class PointComponent extends React.Component {
     if (this.centerFeature === undefined){
       this.centerFeature = feature;
     }
-    const self = this;
+    // const self = this;
     this.setState({
       point: coordinates,
       height: null,
@@ -331,16 +354,42 @@ class PointComponent extends React.Component {
   }
 
   render() {
-    console.log('render');
+    const {
+      satellite
+    } = this.state;
     return (
       <Segment
         style={{
-          display: 'flex',
-          flexDirection: 'column',
+          // display: 'flex',
+          // flexDirection: 'column',
           padding: '0px',
           flex: '1 1 100%',
           // border: 'thin solid #cccccc'
       }}>
+        <div style={{
+          position: 'absolute',
+          top: '6px',
+          right: '6px',
+          zIndex: '1'
+        }}>
+          <Button
+            color='black'
+            size='mini'
+            toggle
+            active={satellite}
+            onClick={(e)=>{
+              this.setState({
+                satellite: !satellite
+              }, (a) => {
+                console.log(a);
+                const layers = this.map.getLayers().getArray();
+                layers[0].setVisible(!this.state.satellite);
+                layers[1].setVisible(this.state.satellite);
+              })
+            }}>
+            Satellite
+          </Button>
+        </div>
         <div
           id='point'
           style={{
@@ -353,6 +402,7 @@ class PointComponent extends React.Component {
         />
         <div
           style={{
+            bottom: '0px',
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
@@ -377,10 +427,10 @@ class PointComponent extends React.Component {
                   'n/p'
               }
               <Label.Detail>
-                ({
+                {
                   _.isNil(this.props.srs)?
                     this.srs: this.props.srs
-                })
+                }
               </Label.Detail>
             </Label>
             {
@@ -390,7 +440,7 @@ class PointComponent extends React.Component {
                 >
                   <Icon
                     name='resize vertical'
-                  /> {this.state.height}
+                  /> {this.state.height} m
                 </Label>: null
             }
           </div>
