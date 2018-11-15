@@ -36,29 +36,29 @@ class DomainDropdown extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState){
     if (this.props.selected !== nextProps.selected) {
-      return true
+      return true;
     }else if (this.state.language !== nextProps.i18n.language) {
-      return true
+      return true;
     }
-    return false
+    return false;
   }
 
   static getDerivedStateFromProps(nextProps, prevState){
-    const state = {...prevState}
+    const state = {...prevState};
     if (_.isNil(nextProps.selected)){
       if(nextProps.multiple === true) {
-        state.selected = []
+        state.selected = [];
       } else {
-        state.selected = null
+        state.selected = null;
       }
     } else {
-      state.selected = nextProps.selected
+      state.selected = nextProps.selected;
     }
     if (nextProps.i18n.language !== prevState.language){
-      state.language = nextProps.i18n.language
+      state.language = nextProps.i18n.language;
     }
-    if (_.isEqual(state, prevState)) return null
-    return state
+    if (_.isEqual(state, prevState)) return null;
+    return state;
 
     // if (_.isNil(nextProps.selected)){
     //   if(nextProps.multiple === true) return  {selected: []}
@@ -106,7 +106,7 @@ class DomainDropdown extends React.Component {
         for (let i = 0; i < domains.data[schema].length; i++) {
           let h = domains.data[schema][i];
           if(h.id === data.value){
-            this.setState({selected: h.id})
+            this.setState({selected: h.id});
             if(onSelected!==undefined){
               onSelected({...h});
             }
@@ -126,55 +126,59 @@ class DomainDropdown extends React.Component {
       multiple
     } = this.props, {
         selected
-    } = this.state
+    } = this.state;
     if(!domains.data.hasOwnProperty(schema)){
       if(domains.isFetching === true){
-        return 'loading translations'
+        return 'loading translations';
       }
       return (
         <div style={{color: 'red'}}>
           "{schema}" not in codelist
         </div>
-      )
+      );
     }
+    let options = [];
+    if (this.props.reset){
+      options.push({
+        key: "dom-opt-z",
+        value: null,
+        text: '',
+        content: <span
+          style={{
+            color: 'red'
+          }}  
+        >
+          {t('reset')}
+        </span>
+      });
+    }
+    options = _.concat(options, domains.data[schema].map((domain) => ({
+      key: "dom-opt-" + domain.id,
+      value: domain.id,
+      text: domain.code !== domain[this.state.language].text?
+        domain.code + ' (' + domain[this.state.language].text + ')': domain.code,
+      content: <Header
+        content={
+          domain.code
+        }
+        subheader={
+          domain[
+            this.state.language
+          ].descr !== null && domain[this.state.language].descr !== ''?
+            domain[this.state.language].text + ', ' +  domain[this.state.language].descr: domain[this.state.language].text
+        }/>
+    })));
     return (
       <Form.Select
         fluid={true}
         search={search}
         multiple={multiple}
-        options={[
-          {
-            key: "dom-opt-z",
-            value: null,
-            text: '',
-            content: <span
-              style={{
-                color: 'red'
-              }}  
-            >
-              {t('reset')}
-            </span>
-          },
-          ...domains.data[schema].map((domain) => ({
-            key: "dom-opt-" + domain.id,
-            value: domain.id,
-            text: domain.code !== domain[this.state.language].text?
-              domain.code + ' (' + domain[this.state.language].text + ')': domain.code,
-            content: <Header
-              content={
-                domain.code
-              }
-              subheader={
-                domain[this.state.language].descr !== null && domain[this.state.language].descr !== ''?
-                  domain[this.state.language].text + ', ' +  domain[this.state.language].descr: domain[this.state.language].text
-              }/>
-          }))
-        ]}
+        options={options}
         value={selected}
         onChange={this.handleChange}/>
-    )
+    );
   }
-}
+};
 
 DomainDropdown.propTypes = {
   schema: PropTypes.string,
@@ -184,19 +188,21 @@ DomainDropdown.propTypes = {
   ]),
   onSelected: PropTypes.func,
   search: PropTypes.bool,
-  multiple: PropTypes.bool
-}
+  multiple: PropTypes.bool,
+  reset: PropTypes.bool
+};
 
 DomainDropdown.defaultProps = {
   search: false,
-  multiple: false
-}
+  multiple: false,
+  reset: true
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
     domains: state.core_domain_list
   }
-}
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
@@ -205,11 +211,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(loadDomains())
     }
   }
-}
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )((
    translate('common')(DomainDropdown)
-))
+));
