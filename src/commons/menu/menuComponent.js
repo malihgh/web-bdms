@@ -1,19 +1,19 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { translate } from 'react-i18next'
-import _ from 'lodash'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import {
   List,
   Icon,
   Dropdown
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
 
 class MenuComponent extends React.Component {
   render() {
     const {
       i18n, t, handleModeChange, mode
-    } = this.props
+    } = this.props;
     return (
       <div style={{
         flex: '1 1 0%',
@@ -32,14 +32,13 @@ class MenuComponent extends React.Component {
               <Dropdown trigger={
                 <span
                   style={{
-                    // color: '#787878'
                     color: 'rgb(222, 222, 222)'
                   }}
                 >
                   change
                 </span>
               } options={(()=>{
-                let opts = []
+                let opts = [];
                 if (mode !== 'viewer'){
                   opts.push({
                     key: 'viewer',
@@ -47,10 +46,10 @@ class MenuComponent extends React.Component {
                     icon: 'binoculars',
                     onClick: () => {
                       if(_.isFunction(handleModeChange)){
-                        handleModeChange('viewer')
+                        handleModeChange('viewer');
                       }
                     }
-                  })
+                  });
                 }
                 if (mode !== 'editor'){
                   opts.push({
@@ -59,24 +58,43 @@ class MenuComponent extends React.Component {
                     icon: 'edit',
                     onClick: () => {
                       if(_.isFunction(handleModeChange)){
-                        handleModeChange('editor')
+                        handleModeChange('editor');
                       }
                     }
-                  })
+                  });
                 }
-                return opts
+                return opts;
               })()} />
             </List.Content>
             {
-              mode === 'viewer'?
-              <List.Content>
-                <Icon name='binoculars' />
-                Explorer Mode
-              </List.Content>: 
-              <List.Content>
-                <Icon name='edit' />
-                Editor Mode
-              </List.Content>
+              (()=>{
+                switch (mode) {
+                  case 'viewer':
+                    return (
+                      <List.Content>
+                        <Icon name='binoculars' />
+                        Explorer Mode
+                      </List.Content>
+                    )
+                  case 'edit':
+                    return (
+                      <List.Content>
+                        <Icon name='edit' />
+                        Editor Mode
+                      </List.Content>
+                    )
+                  case 'setting':
+                    return (
+                      <List.Content>
+                        <Icon name='setting' />
+                        Settings
+                      </List.Content>
+                    )
+                
+                  default:
+                    break;
+                }
+              })()
             }
           </List.Item>
         </List>
@@ -104,7 +122,7 @@ class MenuComponent extends React.Component {
                   <Dropdown.Menu>
                     <Dropdown.Item
                       onClick={()=>{
-                        i18n.changeLanguage('en')
+                        i18n.changeLanguage('en');
                       }}
                       selected={
                         i18n.language === 'en'
@@ -114,7 +132,7 @@ class MenuComponent extends React.Component {
                     </Dropdown.Item>
                     <Dropdown.Item
                       onClick={()=>{
-                        i18n.changeLanguage('de')
+                        i18n.changeLanguage('de');
                       }}
                       selected={
                         i18n.language === 'de'
@@ -124,7 +142,7 @@ class MenuComponent extends React.Component {
                     </Dropdown.Item>
                     <Dropdown.Item
                       onClick={()=>{
-                        i18n.changeLanguage('fr')
+                        i18n.changeLanguage('fr');
                       }}
                       selected={
                         i18n.language === 'fr'
@@ -134,7 +152,7 @@ class MenuComponent extends React.Component {
                     </Dropdown.Item>
                     <Dropdown.Item
                       onClick={()=>{
-                        i18n.changeLanguage('it')
+                        i18n.changeLanguage('it');
                       }}
                       selected={
                         i18n.language === 'it'
@@ -145,20 +163,28 @@ class MenuComponent extends React.Component {
                   </Dropdown.Menu>
                 </Dropdown>
             </List.Content>
-            <List.Content>
+            <List.Content
+              as='a'
+              onClick={(e)=>{
+                e.stopPropagation();
+                if(_.isFunction(handleModeChange)){
+                  handleModeChange('setting/explorer');
+                }
+              }}
+            >
               <Icon name='setting' />
               Settings
             </List.Content>
           </List.Item>
         </List>
     </div>
-    )
+    );
   }
 }
 
 MenuComponent.propTypes = {
   handleModeChange: PropTypes.func,
   mode: PropTypes.string
-}
+};
 
-export default translate(['common', 'header'])(MenuComponent)
+export default translate(['common', 'header'])(MenuComponent);

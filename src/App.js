@@ -9,22 +9,26 @@ import {
 import HomeComponent from './pages/home/homeComponent';
 import EditorComponent from './pages/editor/editorComponent';
 import SidebarComponent from './pages/sidebar/sidebarComponent';
+import SettingCmp from './pages/settings/settingCmp';
 
 import {
   loadDomains,
-  loadCantons
+  loadCantons,
+  loadSettings
 } from '@ist-supsi/bmsjs';
+
 
 // console.log('process.env.PUBLIC_URL: ' + process.env.PUBLIC_URL)
 class App extends React.Component {
   componentDidMount(){
     const {
-      domains, cantons
+      domains, cantons, setting
     } = this.props;
     if(Object.keys(domains.data).length === 0){
       this.props.loadDomains();
     }
     if(cantons.data.length===0) this.props.loadCantons();
+    this.props.loadSettings();
   }
   isFetching(){
     const {
@@ -62,6 +66,11 @@ class App extends React.Component {
                 path: process.env.PUBLIC_URL + '/editor',
                 exact: true,
                 body: EditorComponent
+              },
+              {
+                path: process.env.PUBLIC_URL + '/setting/:id',
+                exact: true,
+                body: SettingCmp
               }
             ].map((route, index) => (
               <Route
@@ -85,7 +94,8 @@ class App extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     domains: state.core_domain_list,
-    cantons: state.core_canton_list
+    cantons: state.core_canton_list,
+    setting: state.setting
   }
 };
 
@@ -97,6 +107,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     loadCantons: () => {
       dispatch(loadCantons());
+    },
+    loadSettings: () => {
+      dispatch(loadSettings());
     }
   }
 };

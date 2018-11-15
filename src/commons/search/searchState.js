@@ -1,5 +1,8 @@
+import _ from 'lodash';
+
 const initialState = {
   isFetching: false,
+  advanced: false,
   mapfilter: false,
   extent: null,
   filter: {
@@ -22,7 +25,7 @@ const search = (state = initialState, action) => {
             extent: state.extent
           },
           mapfilter: action.active
-        }
+        };
       }
       return {
         ...state,
@@ -31,43 +34,23 @@ const search = (state = initialState, action) => {
           extent: null
         },
         mapfilter: action.active
-      }
+      };
     }
-    case 'SEARCH_INDENTIFIER_CHANGED': {
-      return {
-        ...state,
-        filter: {
-          ...state.filter,
-          identifier: action.identifier
+    case 'SEARCH_FILTER_CHANGED': {
+      const copy = {...state};
+      const path = `filter.${action.key}`;
+      if (_.has(copy, path)){
+        if (_.isNil(action.value) || action.value===''){
+          if (_.isString(action.value)){
+            _.set(copy, path, '');
+          }else{
+            _.set(copy, path, null);
+          }
+        } else {
+          _.set(copy, path, action.value);
         }
       }
-    }
-    case 'SEARCH_KIND_CHANGED': {
-      return {
-        ...state,
-        filter: {
-          ...state.filter,
-          kind: action.id
-        }
-      }
-    }
-    case 'SEARCH_RESTRICTION_CHANGED': {
-      return {
-        ...state,
-        filter: {
-          ...state.filter,
-          restriction: action.id
-        }
-      }
-    }
-    case 'SEARCH_STATUS_CHANGED': {
-      return {
-        ...state,
-        filter: {
-          ...state.filter,
-          status: action.id
-        }
-      }
+      return copy;
     }
     case 'SEARCH_EXTENT_CHANGED': {
       if(state.mapfilter === true){
@@ -78,15 +61,15 @@ const search = (state = initialState, action) => {
             ...state.filter,
             extent: action.extent
           }
-        }
+        };
       }
       return {
         ...state,
         extent: action.extent
-      }
+      };
     }
     default:
-      return state
+      return state;
   }
 }
 

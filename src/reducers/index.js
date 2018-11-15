@@ -1,10 +1,10 @@
-import home from '../pages/home/homeState'
-import editor from '../pages/editor/editorState'
-import leftmenu from './leftmenu'
-import detail_borehole from '../commons/detail/detailsState'
-import search from '../commons/search/searchState'
-import searchEditor from '../commons/search/editor/searchEditorState'
-// import test from './test'
+import home from '../pages/home/homeState';
+import editor from '../pages/editor/editorState';
+import leftmenu from './leftmenu';
+import detail_borehole from '../commons/detail/detailsState';
+import search from '../commons/search/searchState';
+import searchEditor from '../commons/search/editor/searchEditorState';
+import setting from '../pages/settings/settingState';
 
 export const appReducers = {
   leftmenu,
@@ -12,6 +12,6 @@ export const appReducers = {
   detail_borehole,
   search,
   searchEditor,
-  editor
-  // test
-}
+  editor,
+  setting
+};

@@ -1,33 +1,19 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
-import _ from 'lodash'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
+import _ from 'lodash';
 import {
   Form,
   Input,
   Checkbox
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
 
-import {
-  setIdentifier,
-  setKind,
-  setRestriction,
-  setStatus
-} from './searchActions'
-
-import LabelReset from '../form/labelReset'
-import DomainDropdown from '../form/domain/dropdown/domainDropdown'
-import MunicipalityDropdown from '../form/municipality/dropdown/municipalityDropdown'
+import LabelReset from '../form/labelReset';
+import DomainDropdown from '../form/domain/dropdown/domainDropdown';
+import MunicipalityDropdown from '../form/municipality/dropdown/municipalityDropdown';
 
 class SearchComponent extends React.Component {
-  constructor(props) {
-    super(props)
-    this._setIdentifier = this._setIdentifier.bind(this)
-  }
-  _setIdentifier(event) {
-    this.props.setIdentifier(event.target.value)
-  }
   componentDidUpdate(prevProps){
     const {
       search,
@@ -43,10 +29,17 @@ class SearchComponent extends React.Component {
     }
   }
   render() {
-    const {search, t} = this.props;
+    const {search, setting, t} = this.props;
     return (
       <Form size='small'>
-        <Form.Field >
+        <Form.Field
+          style={{
+            display: (
+              search.advanced === true
+              || setting.mapfilter === true
+            )? null: 'none'
+          }}
+        >
           <label>Filter by Map</label>
           <Checkbox
             toggle
@@ -55,39 +48,83 @@ class SearchComponent extends React.Component {
               this.props.setmapfilter(d.checked)
             }}/>
         </Form.Field>
-        <Form.Field>
+        <Form.Field
+          style={{
+            display: (
+              search.advanced === true
+              || setting.extended.original_name === true
+            )? null: 'none'
+          }}
+        >
           <label>{t('borehole_form:original_name')}</label>
           <Input
             placeholder={t('borehole_form:original_name')}
             value={search.filter.identifier}
-            onChange={this._setIdentifier}/>
+            onChange={(eve)=>{
+              this.props.setFilter(
+                'identifier',
+                eve.target.value
+              )
+            }}/>
           <LabelReset onClick={()=>{
-            this.props.setIdentifier('')
+              this.props.setFilter(
+                'identifier', ''
+              )
           }}/>
         </Form.Field>
-        <Form.Field>
+        <Form.Field
+          style={{
+            display: (
+              search.advanced === true
+              || setting.kind === true
+            )? null: 'none'
+          }}
+        >
           <label>{t('borehole_form:kind')}</label>
           <DomainDropdown
             schema='kind'
             selected={search.filter.kind}
             onSelected={(selected)=>{
-              this.props.setKind(selected.id)
-            }}/>
-          <LabelReset onClick={()=>{
-            this.props.setKind(null)
-          }}/>
+              this.props.setFilter(
+                'kind', selected.id
+              );
+            }}
+            reset={false}
+          />
+          <LabelReset
+            onClick={()=>{
+              this.props.setFilter(
+                'kind', null
+              );
+            }}
+          />
         </Form.Field>
-        <Form.Field>
+        <Form.Field
+          style={{
+            display: (
+              search.advanced === true
+              || setting.restriction === true
+            )? null: 'none'
+          }}
+        >
           <label>{t('borehole_form:restriction')}</label>
           <DomainDropdown
             schema='restriction'
             selected={search.filter.restriction}
             onSelected={(selected)=>{
-              this.props.setRestriction(selected.id)
-            }}/>
-          <LabelReset onClick={()=>{
-            this.props.setRestriction(null)
-          }}/>
+              this.props.setFilter(
+                'restriction', selected.id
+              );
+            }}
+            reset={false}
+          />
+          <LabelReset
+            onClick={()=>{
+              this.props.setFilter(
+                'restriction', null
+              );
+            }}
+          />
         </Form.Field>
         <Form.Field>
           <label>{t('borehole_form:status')}</label>
@@ -95,11 +132,19 @@ class SearchComponent extends React.Component {
             schema='extended.status'
             selected={search.filter.status}
             onSelected={(selected)=>{
-              this.props.setStatus(selected.id)
-            }}/>
-          <LabelReset onClick={()=>{
-            this.props.setStatus(null)
-          }}/>
+              this.props.setFilter(
+                'status', selected.id
+              );
+            }}
+            reset={false}
+          />
+          <LabelReset
+            onClick={()=>{
+              this.props.setFilter(
+                'status', null
+              );
+            }}
+          />
         </Form.Field>
         <Form.Field>
           <label>Municipality</label>
@@ -119,7 +164,8 @@ SearchComponent.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    search: state.search
+    search: state.search,
+    setting: state.setting.data.filter
   }
 }
 
@@ -130,25 +176,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch({
         type: 'SEARCH_MAPFILTER_CHANGED',
         active: active
-      })
-      // if(active === false){
-      //   dispatch({
-      //     type: 'SEARCH_EXTENT_CHANGED',
-      //     extent: null
-      //   })
-      // }
+      });
     },
-    setIdentifier: (identifier) => {
-      dispatch(setIdentifier(identifier))
-    },
-    setKind: (id) => {
-      dispatch(setKind(id))
-    },
-    setRestriction: (id) => {
-      dispatch(setRestriction(id))
-    },
-    setStatus: (id) => {
-      dispatch(setStatus(id))
+    setFilter: (key, value) => {
+      dispatch({
+        type: 'SEARCH_FILTER_CHANGED',
+        key: key,
+        value: value
+      });
     }
   }
 }

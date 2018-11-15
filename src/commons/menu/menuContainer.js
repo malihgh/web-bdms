@@ -15,13 +15,15 @@ class MenuContainer extends React.Component {
     return(
       <MenuComponent
         mode={(()=>{
-          if(
+          if (
             location.pathname.indexOf('editor') >= 0
           ){
-            console.log("editor mode")
             return 'editor';
-          }else{
-            console.log("viewer mode")
+          } else if (
+            location.pathname.indexOf('setting') >= 0
+          ){
+            return 'setting';
+          } else {
             return 'viewer';
           }
         })()}
@@ -34,6 +36,10 @@ class MenuContainer extends React.Component {
           }else if (mode === 'viewer'){
             history.push(
               process.env.PUBLIC_URL
+            );
+          }else if (mode.indexOf('setting')>=0){
+            history.push(
+              `${process.env.PUBLIC_URL}/${mode}`
             );
           }
         }}
