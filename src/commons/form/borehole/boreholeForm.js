@@ -36,9 +36,9 @@ import {
 class BoreholeForm extends React.Component {
 
   constructor(props) {
-    super(props)
-    this.checkattribute = false
-    this.updateAttributeDelay = {}
+    super(props);
+    this.checkattribute = false;
+    this.updateAttributeDelay = {};
     this.empty = {
       id: props.hasOwnProperty('id')? props.id: null,
       kind: null,
@@ -85,7 +85,7 @@ class BoreholeForm extends React.Component {
         national_relevance: null,
         attributes_to_edit: []
       }
-    }
+    };
     this.state = {
       tab: 0,
       loading_fetch: false,
@@ -105,14 +105,14 @@ class BoreholeForm extends React.Component {
       borehole: {
         ...this.empty
       }
-    }
+    };
   }
 
   componentDidMount(){
     const {
       id
-    } = this.props
-    if(!_.isNil(id)) this.loadOrCreate(id)
+    } = this.props;
+    if(!_.isNil(id)) this.loadOrCreate(id);
   }
 
   componentDidUpdate(prevProps) {
@@ -137,10 +137,10 @@ class BoreholeForm extends React.Component {
           if(response.success){
             self.setState({
               loading_fetch: false
-            })
+            });
           }
         }).catch(function (error) {
-          console.log(error)
+          console.log(error);
         })
         /*
         getBorehole(id).then(function(response) {
@@ -176,13 +176,13 @@ class BoreholeForm extends React.Component {
                   ...self.state.borehole,
                   id: response.data.id
                 }
-              })
+              });
             }
           }).catch(function (error) {
-            console.log(error)
+            console.log(error);
           })
         }, 100)
-      })
+      });
     }
   }
 
@@ -194,23 +194,23 @@ class BoreholeForm extends React.Component {
       // borehole: {
       //   ...this.state.borehole
       // }
-    }
+    };
     const borehole = {
       ...this.props.borehole.data
-    }
+    };
     _.set(borehole, attribute, value)
     // _.set(state.borehole, attribute, value)
-    state[attribute+"_fetch"] = true
+    state[attribute+"_fetch"] = true;
 
-    const self = this
+    const self = this;
 
     // update state
     this.setState(state, () => {
       if(self.checkattribute){
         clearTimeout(self.checkattribute);
-        self.checkattribute = false
+        self.checkattribute = false;
       }
-      this.props.updateBorehole(borehole)
+      this.props.updateBorehole(borehole);
 
       self.checkattribute = setTimeout(function(){
         checkBorehole(
@@ -232,12 +232,12 @@ class BoreholeForm extends React.Component {
                   self.setState({
                     patch_fetch: false
                   }, () => {
-                    borehole.percentage = response.data.data
-                    self.props.updateBorehole(borehole)
+                    borehole.percentage = response.data.data;
+                    self.props.updateBorehole(borehole);
                   })
                 }
               }).catch(function (error) {
-                console.error(error)
+                console.error(error);
               })
             }
             // if(response.data.check){
@@ -258,9 +258,9 @@ class BoreholeForm extends React.Component {
             // }
           }
         }).catch(function (error) {
-          console.error(error)
+          console.error(error);
         })
-      }, 250)
+      }, 250);
     })
   }
 
@@ -271,16 +271,21 @@ class BoreholeForm extends React.Component {
       // borehole: {
       //   ...this.state.borehole
       // }
-    }
+    };
     const borehole = {
       ...this.props.borehole.data
-    }
+    };
     if(attribute === 'location'){
       _.set(borehole, 'location_x', value[0]);
       _.set(borehole, 'location_y', value[1]);
-      if(value[2] !== null){
-        _.set(borehole, 'elevation_z', value[2]);
+      _.set(borehole, 'custom.canton', value[2]);
+      _.set(borehole, 'custom.city', value[3]);
+      if(value[4] !== null){
+        _.set(borehole, 'elevation_z', value[4]);
       }
+    }else if(attribute === 'geocoding'){
+      _.set(borehole, 'custom.canton', value[0]);
+      _.set(borehole, 'custom.city', value[1]);
     }else{
       _.set(borehole, attribute, value);
     }
@@ -718,7 +723,7 @@ class BoreholeForm extends React.Component {
                                 selected={borehole.custom.city}
                                 onSelected={(selected)=>{
                                   this.updateChange(
-                                    'custom.city', selected.id, false
+                                    'custom.canton', selected.id, false
                                   )
                                 }}/>
                             </Form.Field>
@@ -763,6 +768,7 @@ class BoreholeForm extends React.Component {
                       }}
                     >
                       <PointComponent
+                        id={this.props.id}
                         x={
                           borehole.location_x === ''?
                             null:
@@ -780,14 +786,14 @@ class BoreholeForm extends React.Component {
                             })['code']:
                             null
                         }
-                        applyChange={(x, y, height)=>{
-                          console.log("Height: " + height);
-                          this.updateChange('location', [x, y, height], false);
+                        applyChange={(x, y, height, cid, mid)=>{
+                          console.log(x, y, height, cid, mid)
+                          this.updateChange(
+                            'location', [x, y, cid, mid, height], false);
                         }}
                       />
                     </div>
                   </div>
-
                 </div>
               )
             } else if (this.state.tab === 1) {

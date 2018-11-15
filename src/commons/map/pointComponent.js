@@ -37,8 +37,10 @@ import {
 } from 'semantic-ui-react';
 
 import {
-  getHeight
+  getHeight,
+  getAddressByPoint
 } from '@ist-supsi/bmsjs';
+import { transformWithProjections } from 'ol/proj';
 
 const projections = {
   "EPSG:21781": "+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.4,15.1,405.3,0,0,0,0 +units=m +no_defs",
@@ -52,9 +54,10 @@ class PointComponent extends React.Component {
 
   constructor(props) {
     super(props);
-    this.lh = false; // loading height queue
+    this.lh = false; // loading location queue
     this.changefeature = this.changefeature.bind(this);
     this.styleFunction = this.styleFunction.bind(this);
+    this.getAddress = this.getAddress.bind(this);
     this.transform = this.transform.bind(this);
     this.srs = 'EPSG:2056';
 
@@ -70,14 +73,26 @@ class PointComponent extends React.Component {
     ){
       this.state = {
         point: this.transform([props.x, props.y], props.srs),
-        toPoint: [props.x, props.y]
+        toPoint: [props.x, props.y],
+        height: null,
+        satellite: false,
+        cid: null,
+        canton: null,
+        mid: null,
+        municipality: null,
+        address: false
       };
     }else{
       this.state = {
         point: null,
         toPoint: null,
         height: null,
-        satellite: false
+        satellite: false,
+        cid: null,
+        canton: null,
+        mid: null,
+        municipality: null,
+        address: false
       };
     }
   }
@@ -247,7 +262,10 @@ class PointComponent extends React.Component {
       ){
         this.setState({
           point: point,
-          toPoint: [nextProps.x, nextProps.y]
+          toPoint: [nextProps.x, nextProps.y],
+          address: true
+        }, ()=>{
+          this.getAddress(point);
         });
         this.draw.setActive(false);
         this.position.un('changefeature', this.changefeature, this);
@@ -295,30 +313,38 @@ class PointComponent extends React.Component {
         this.btransform(
           coordinates,
           this.props.srs 
-        ): coordinates
+        ): coordinates,
+      cid: null,
+      canton: null,
+      mid: null,
+      municipality: null,
+      address: true
     }, ()=>{
       // Callback after state is updated
       if (_.isFunction(changefeature)){
         changefeature(this.state.toPoint);
       }
-      /*if(this.lh !== false){
-        clearTimeout(this.lh);
-        this.lh = false;
-      }
-      this.lh = setTimeout(function(){
-        console.log("Getting height..")
-        getHeight(
-          coordinates[0],
-          coordinates[1]
-        ).then((response)=>{
-          self.setState({
-            height: response.status === 200?
-              response.data.height: null
-          })
-        });
-      }, 500);*/
+      this.getAddress(coordinates);
     });
     this.draw.setActive(false);
+  }
+
+  getAddress(coordinates){
+    if(this.lh !== false){
+      clearTimeout(this.lh);
+      this.lh = false;
+    }
+    this.lh = setTimeout(function(){
+      getAddressByPoint(
+        coordinates[0], coordinates[1]
+      ).then((response)=>{
+        console.log(response);
+        this.setState({
+          address: false,
+          ...response.data.data
+        });
+      });
+    }.bind(this), 500);
   }
 
   styleFunction(feature, resolution){
@@ -423,16 +449,38 @@ class PointComponent extends React.Component {
               {
                 _.isArray(this.state.toPoint)?
                   'E' + _.round(this.state.toPoint[0], 2).toLocaleString()
-                  + " N" + _.round(this.state.toPoint[1], 2).toLocaleString():
-                  'n/p'
+                  + " N" + _.round(this.state.toPoint[1], 2).toLocaleString()
+                  // + " (" + (_.isNil(this.props.srs)?
+                  //     this.srs: this.props.srs) + ")":
+                  :'n/p'
               }
               <Label.Detail>
                 {
+                  // _.compact([
+                  //   this.state.municipality,
+                  //   this.state.canton
+                  // ]).join(", ")
                   _.isNil(this.props.srs)?
                     this.srs: this.props.srs
                 }
               </Label.Detail>
             </Label>
+            {
+              _.compact([
+                this.state.municipality,
+                this.state.canton
+              ]).length > 0?
+                <Label
+                  color='black'
+                >
+                  {
+                    _.compact([
+                      this.state.municipality,
+                      this.state.canton
+                    ]).join(", ")
+                  }
+                </Label>: null
+            }
             {
               this.state.height !== null?
                 <Label
@@ -445,11 +493,15 @@ class PointComponent extends React.Component {
             }
           </div>
           <div>
-            <Button.Group>
+            <Button.Group
+              size='mini'
+            >
               <Button
                 disabled={
                   !_.isArray(this.state.toPoint)
+                  || this.state.address
                 }
+                loading={this.state.address}
                 size='mini'
                 onClick={(e)=>{
                   if(_.isFunction(this.props.applyChange)){
@@ -457,7 +509,9 @@ class PointComponent extends React.Component {
                       _.round(this.state.toPoint[0], 2),
                       _.round(this.state.toPoint[1], 2),
                       this.state.height !== null?
-                        parseFloat(this.state.height): null
+                        parseFloat(this.state.height): null,
+                      this.state.cid,
+                      this.state.mid
                     );
                   }
                 }}>
@@ -508,11 +562,11 @@ class PointComponent extends React.Component {
 };
 
 PointComponent.propTypes = {
-  changefeature: PropTypes.func,
   applyChange: PropTypes.func,
+  changefeature: PropTypes.func,
+  srs: PropTypes.string,
   x: PropTypes.number,
-  y: PropTypes.number,
-  srs: PropTypes.string
+  y: PropTypes.number
   // highlighted: PropTypes.array,
   // hover: PropTypes.func,
   // selected: PropTypes.func
