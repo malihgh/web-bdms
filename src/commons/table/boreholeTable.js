@@ -1,23 +1,23 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
-import _ from 'lodash'
+import React from 'react';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
+import _ from 'lodash';
 
-import TableComponent from './tableComponent'
-import DomainText from '../form/domain/domainText'
-import DateText from '../form/dateText'
+import TableComponent from './tableComponent';
+import DomainText from '../form/domain/domainText';
+import DateText from '../form/dateText';
 
 import {
   Table
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
 
 import {
   loadBoreholes
-} from '@ist-supsi/bmsjs'
+} from '@ist-supsi/bmsjs';
 
 class BoreholeTable extends TableComponent {
   getHeaderLabel(key){
-    const { t } = this.props
+    const { t } = this.props;
     return (
       <Table.HeaderCell
         // singleLine
@@ -31,10 +31,10 @@ class BoreholeTable extends TableComponent {
           {key}
         </span>
       </Table.HeaderCell>
-    )
+    );
   }
   getHeader(){
-    const { t } = this.props
+    const { t } = this.props;
     return (
       <Table.Row>
         <Table.HeaderCell
@@ -98,7 +98,7 @@ class BoreholeTable extends TableComponent {
           </span>
         </Table.HeaderCell>
       </Table.Row>
-    )
+    );
   }
   getCols(item, idx){
     let colIdx = 0
