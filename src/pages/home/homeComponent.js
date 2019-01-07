@@ -97,6 +97,9 @@ class HomeComponent extends React.Component {
               selected={(id)=>{
                 this.props.boreholeSeleced(id);
               }}
+              filter={{
+                ...search.filter
+              }}
             />
           </div>
         </div>
