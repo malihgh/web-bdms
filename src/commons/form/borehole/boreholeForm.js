@@ -229,7 +229,7 @@ class BoreholeForm extends React.Component {
             if(response.data.check){
               // patch attribute
               patchBorehole(
-                self.state.borehole.id,
+                borehole.id,
                 attribute,
                 value
               ).then(function(response) {
@@ -248,7 +248,7 @@ class BoreholeForm extends React.Component {
             // if(response.data.check){
             //   // patch attribute
             //   patchBorehole(
-            //     self.state.borehole.id,
+            //     borehole.id,
             //     attribute,
             //     value
             //   ).then(function(response) {
@@ -306,7 +306,7 @@ class BoreholeForm extends React.Component {
       }
       self.updateAttributeDelay[attribute] = setTimeout(function(){
         patchBorehole(
-          self.state.borehole.id,
+          borehole.id,
           attribute,
           value
         ).then(function(response) {
