@@ -15,8 +15,12 @@ import Style from 'ol/style/Style';
 import Circle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 import Select from 'ol/interaction/Select';
+import Overlay from 'ol/Overlay.js';
 import {defaults as defaultControls} from 'ol/control/util';
 import { click, pointerMove } from 'ol/events/condition';
+
+import { translate } from 'react-i18next';
+import DomainText from '../form/domain/domainText';
 
 import {
   getGeojson
@@ -32,9 +36,11 @@ class MapComponent extends React.Component {
     this.moveEnd = this.moveEnd.bind(this);
     this.selected = this.selected.bind(this);
     this.hover = this.hover.bind(this);
+    this.timeoutFilter = null;
     this.state = {
       counter: 0,
-      satellite: false
+      satellite: false,
+      hover: null
     };
   }
   componentDidMount(){
@@ -121,27 +127,28 @@ class MapComponent extends React.Component {
         center: center,
         extent: extent
       })
-    })
+    });
     this.points = new VectorSource()
     this.map.addLayer(new VectorLayer({
       source: this.points,
       style: this.styleFunction.bind(this)
     }));
 
-    // this.map.addControl(
-    //   new Attribution({
-    //     collapsed: false,
-    //     collapsible: false,
-    //     collapseLabel: 'tettine'
-    //   })
-    // );
+    this.popup = new Overlay({
+      position: undefined,
+      positioning: 'bottom-center',
+      element: document.getElementById('popup-overlay'),
+      stopEvent: false
+    });
+    this.map.addOverlay(this.popup);
 
     // Register map events
     this.map.on('moveend', this.moveEnd);
 
     // On point over interaction
     const selectPointerMove = new Select({
-      condition: pointerMove
+      condition: pointerMove,
+      // style: this.styleHover.bind(this)
     });
     selectPointerMove.on('select', this.hover);
     this.map.addInteraction(selectPointerMove);
@@ -170,6 +177,41 @@ class MapComponent extends React.Component {
     });
   }
 
+  styleHover(feature, resolution){
+    const {
+      highlighted
+    } = this.props;
+
+    // let selected = (highlighted !== undefined)
+    //   && highlighted.indexOf(feature.get('id'))>-1;
+
+    // if(selected){
+    //   return[];
+    // }
+
+    let conf = {
+      image: new Circle({
+        radius: 6,
+        fill: new Fill({color: 'rgba(255, 0, 255, 0.8)'}),
+        stroke: new Stroke({color: 'black', width: 1})
+      }),
+      text: new Text({
+        textAlign: "center",
+        textBaseline: 'middle',
+        fill: new Fill({color: 'white'}),
+        font: "bold 20px arial sans-serif",
+        text: feature.get('original_name'),
+        stroke: new Stroke({
+          color: 'black',
+          width: 3
+        }),
+        offsetY: -22
+      })
+    };
+
+    return [new Style(conf)];
+  }
+
   styleFunction(feature, resolution){
     const {
       highlighted
@@ -188,14 +230,18 @@ class MapComponent extends React.Component {
       })
     };
 
-    if(resolution<10){
+    if(resolution<10 || selected){
       conf.text = new Text({
         textAlign: "center",
         textBaseline: 'middle',
         fill: new Fill({color: 'black'}),
-        font: '12px sans-serif',
-        text: feature.get('name'),
-        offsetY: 12
+        font: "bold 14px arial sans-serif",
+        text: feature.get('original_name'),
+        stroke: new Stroke({
+          color: 'white',
+          width: 3
+        }),
+        offsetY: 14
       });
     }
 
@@ -235,20 +281,65 @@ class MapComponent extends React.Component {
     const { hover } = this.props;
     if(hover !== undefined){
       if(e.selected.length>0){
-        hover(e.selected[0].getId())
+        this.setState({
+          hover: e.selected[0]
+        }, ()=>{
+          this.popup.setPosition(e.selected[0].getGeometry().getCoordinates());
+          hover(e.selected[0].getId());
+        });
       } else {
-        hover(null)
+        this.setState({
+          hover: null
+        }, ()=>{
+          this.popup.setPosition(undefined);
+          hover(null);
+        });
       }
     }
   }
 
   componentWillReceiveProps(nextProps){
     const {
-        highlighted
+        highlighted,
+        filter
     } = nextProps;
     let refresh = false;
     if(!_.isEqual(highlighted, this.props.highlighted)){
       refresh = true;
+    }
+    if(!_.isEqual(filter, this.props.filter)){
+      if(
+        !_.isEqual(
+          filter.extent,
+          this.props.filter.extent
+        )
+      ){
+        console.log("extent changed..");
+      }else{
+        refresh = true;
+        console.log("Applying filter?")
+        if(this.timeoutFilter !== null){
+          clearTimeout(this.timeoutFilter);
+        }
+        this.timeoutFilter = setTimeout(()=>{
+          this.points.clear(true);
+          getGeojson(filter).then(function(response) {
+            if(response.data.success){
+              this.points.addFeatures(
+                (
+                  new GeoJSON()
+                ).readFeatures(response.data.data)
+              );
+              this.map.getView().fit(
+                this.points.getExtent()
+              );
+              this.moveEnd();
+            }
+          }.bind(this)).catch(function (error) {
+            console.log(error);
+          });
+        }, 500);
+      }
     }
     if(refresh){
       this.selectClick.getFeatures().clear();
@@ -257,6 +348,7 @@ class MapComponent extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     const {
       satellite
     } = this.state;
@@ -301,9 +393,77 @@ class MapComponent extends React.Component {
             height: '100%',
             padding: '0px',
             flex: '1 1 100%',
+            cursor: this.state.hover === null? null: 'pointer'
             // border: 'thin solid #cccccc'
           }}
         />
+        <div style={{
+          display: 'none'
+        }}>
+          <div
+            className="ol-popup"
+            id={'popup-overlay'}
+          >
+            <div
+              style={{
+                flex: 1,
+                padding: '10px 0.5em 0px 0.5em'
+              }}
+            >
+              <div>
+                <span
+                  style={{
+                    color: 'rgb(120, 120, 120)',
+                    fontSize: '0.8em'
+                  }}
+                >
+                  <DomainText
+                    id={
+                      this.state.hover !== null?
+                        this.state.hover.get('kind'): null
+                    }
+                    schema='kind'
+                  />
+                </span>
+              </div>
+              <div
+                style={{
+                  fontWeight: 'bold'
+                }}
+              >
+                {
+                  this.state.hover !== null?
+                    this.state.hover.get('original_name'): null
+                }
+              </div>
+              <div
+                style={{
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                <span
+                  style={{
+                    color: 'rgb(120, 120, 120)',
+                    fontSize: '0.8em'
+                  }}
+                >
+                  {t('length')}
+                </span>
+              </div>
+              <div
+                style={{
+                  fontWeight: 'bold'
+                }}
+              >
+                {
+                  this.state.hover === null
+                  || _.isNil(this.state.hover.get('length'))?
+                    'n/p': this.state.hover.get('length') + ' m'
+                }
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -313,11 +473,13 @@ MapComponent.propTypes = {
   moveend: PropTypes.func,
   highlighted: PropTypes.array,
   hover: PropTypes.func,
-  selected: PropTypes.func
+  selected: PropTypes.func,
+  filter: PropTypes.object
 };
 
 MapComponent.defaultProps = {
-  highlighted: []
+  highlighted: [],
+  filter: {}
 };
 
-export default MapComponent;
+export default (translate('borehole_form')(MapComponent));
