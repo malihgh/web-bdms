@@ -52,6 +52,22 @@ class SearchComponent extends React.Component {
           style={{
             display: (
               search.advanced === true
+              || setting.zoom2selected === true
+            )? null: 'none'
+          }}
+        >
+          <label>Zoom to selected</label>
+          <Checkbox
+            toggle
+            checked={search.zoom2selected}
+            onChange={(e, d)=>{
+              this.props.setzoom2filter(d.checked)
+            }}/>
+        </Form.Field>
+        <Form.Field
+          style={{
+            display: (
+              search.advanced === true
               || setting.extended.original_name === true
             )? null: 'none'
           }}
@@ -175,6 +191,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     setmapfilter: (active) => {
       dispatch({
         type: 'SEARCH_MAPFILTER_CHANGED',
+        active: active
+      });
+    },
+    setzoom2filter: (active) => {
+      dispatch({
+        type: 'SEARCH_ZOOM2_CHANGED',
         active: active
       });
     },

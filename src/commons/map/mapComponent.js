@@ -301,7 +301,8 @@ class MapComponent extends React.Component {
   componentWillReceiveProps(nextProps){
     const {
         highlighted,
-        filter
+        filter,
+        zoomto
     } = nextProps;
     let refresh = false;
     if(!_.isEqual(highlighted, this.props.highlighted)){
@@ -340,6 +341,12 @@ class MapComponent extends React.Component {
           });
         }, 500);
       }
+    }
+    if(zoomto !== null && zoomto !== this.props.zoomto){
+      var feature = this.points.getFeatureById(zoomto);
+      var point = feature.getGeometry();
+      var size = this.map.getSize();
+      this.map.getView().setCenter(point.getCoordinates());
     }
     if(refresh){
       this.selectClick.getFeatures().clear();
@@ -382,7 +389,8 @@ class MapComponent extends React.Component {
                 layers[0].setVisible(!this.state.satellite);
                 layers[1].setVisible(this.state.satellite);
               })
-            }}>
+            }}
+          >
             Satellite
           </Button>
         </div>
@@ -474,12 +482,14 @@ MapComponent.propTypes = {
   highlighted: PropTypes.array,
   hover: PropTypes.func,
   selected: PropTypes.func,
-  filter: PropTypes.object
+  filter: PropTypes.object,
+  zoomto: PropTypes.number
 };
 
 MapComponent.defaultProps = {
   highlighted: [],
-  filter: {}
+  filter: {},
+  zoomto: null
 };
 
 export default (translate('borehole_form')(MapComponent));

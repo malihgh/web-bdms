@@ -12,6 +12,7 @@ const initialState = {
   data: {
     filter: {
       mapfilter: true,
+      zoom2selected: true,
       kind: true,
       restriction: true,
       restriction_until: true,
@@ -80,7 +81,6 @@ const setting = (state = initialState, action) => {
         return copy
       }
       case 'PATCH': {
-        debugger;
         const copy = {...state};
         _.set(
           copy, `data.${action.field}`, action.value

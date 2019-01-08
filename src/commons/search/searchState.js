@@ -4,6 +4,7 @@ const initialState = {
   isFetching: false,
   advanced: false,
   mapfilter: false,
+  zoom2selected: false,
   extent: null,
   filter: {
     identifier: '',
@@ -34,6 +35,18 @@ const search = (state = initialState, action) => {
           extent: null
         },
         mapfilter: action.active
+      };
+    }
+    case 'SEARCH_ZOOM2_CHANGED': {
+      if(action.active === true){
+        return {
+          ...state,
+          zoom2selected: action.active
+        };
+      }
+      return {
+        ...state,
+        zoom2selected: action.active
       };
     }
     case 'SEARCH_FILTER_CHANGED': {

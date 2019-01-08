@@ -83,6 +83,10 @@ class HomeComponent extends React.Component {
                   home.hover?
                     [home.hover.id]: []
               }
+              zoomto={
+                search.zoom2selected?
+                  home.selected: null
+              }
               moveend={(features, extent)=>{
                 this.props.filterByExtent(extent);
                 // if(search.mapfilter===true){
