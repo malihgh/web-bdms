@@ -19,12 +19,14 @@ class HomeComponent extends React.Component {
       search
     } = this.props;
     return (
-      <div style={{
-        flex: '1 1 0%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'row'
-      }}>
+      <div
+        style={{
+          flex: '1 1 0%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'row'
+        }}
+      >
         {
           false? null:
           <div style={{
@@ -107,7 +109,7 @@ class HomeComponent extends React.Component {
             />
           </div>
         </div>
-    </div>
+      </div>
     )
   }
 }

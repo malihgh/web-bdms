@@ -33,64 +33,12 @@ import {
   Progress
 } from 'semantic-ui-react';
 
-const boreholeTmpl = {
-  id: null,
-  kind: null,
-  restriction: null,
-  restriction_until: null,
-  location_x: '',
-  location_y: '',
-  srs: null,
-  qt_location: null,
-  elevation_z: '',
-  hrs: null,
-  qt_elevation: null,
-  drilling_date: null,
-  bore_inc: null,
-  bore_inc_dir: null,
-  length: null,
-  extended: {
-    original_name: '',
-    method: null,
-    purpose: null,
-    status: null,
-    top_bedrock: null,
-    groundwater: null
-  },
-  custom: {
-    public_name: '',
-    project_name: '',
-    country: 'Switzerland',
-    canton: null,
-    city: null,
-    address: '',
-    landuse: null,
-    cuttings: null,
-    drill_diameter: '',
-    qt_bore_inc_dir: null,
-    qt_length: null,
-    qt_top_bedrock: null,
-    lit_pet_top_bedrock: null,
-    lit_str_top_bedrock: null,
-    chro_str_top_bedrock: null,
-    remarks: '',
-    mistakes: '',
-    processing_status: null,
-    national_relevance: null,
-    attributes_to_edit: []
-  }
-};
-
 class BoreholeForm extends React.Component {
 
   constructor(props) {
     super(props);
     this.checkattribute = false;
     this.updateAttributeDelay = {};
-    this.empty = {
-      id: props.hasOwnProperty('id')? props.id: null,
-      ...boreholeTmpl
-    };
     this.state = {
       tab: 0,
       loading_fetch: false,
@@ -106,10 +54,7 @@ class BoreholeForm extends React.Component {
       stratigraphy_id: null,
       layer: null,
       layers: [],
-      layerUpdated: null,
-      borehole: {
-        ...this.empty
-      }
+      layerUpdated: null
     };
   }
 
@@ -208,7 +153,7 @@ class BoreholeForm extends React.Component {
     state[attribute+"_fetch"] = true;
 
     const self = this;
-
+    debugger
     // update state
     this.setState(state, () => {
       if(self.checkattribute){

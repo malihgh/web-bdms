@@ -193,7 +193,7 @@ DomainDropdown.propTypes = {
 };
 
 DomainDropdown.defaultProps = {
-  search: false,
+  search: true,
   multiple: false,
   reset: true
 };

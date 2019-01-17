@@ -44,6 +44,7 @@ class MapComponent extends React.Component {
     };
   }
   componentDidMount(){
+    console.log("Map: componentDidMount");
     var resolutions = [
       4000, 3750, 3500, 3250, 3000, 2750, 2500, 2250, 2000, 1750, 1500, 1250,
       1000, 750, 650, 500, 250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5
@@ -254,7 +255,7 @@ class MapComponent extends React.Component {
   */
   moveEnd(){
     const { moveend } = this.props;
-    console.log(this.map.getView().getResolution())
+    // console.log(this.map.getView().getResolution())
     if(moveend !== undefined){
       var extent = this.map.getView().calculateExtent(this.map.getSize());
       let features = [];
@@ -267,7 +268,7 @@ class MapComponent extends React.Component {
 
   selected(e) {
     const { selected } = this.props;
-    console.log('selected', e.selected)
+    // console.log('selected', e.selected)
     if(selected !== undefined){
       if(e.selected.length>0){
         selected(e.selected[0].getId())

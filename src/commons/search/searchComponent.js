@@ -56,7 +56,7 @@ class SearchComponent extends React.Component {
             )? null: 'none'
           }}
         >
-          <label>Zoom to selected</label>
+          <label>Center to selected</label>
           <Checkbox
             toggle
             checked={search.zoom2selected}
