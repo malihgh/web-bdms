@@ -1,6 +1,7 @@
 const initialState = {
   pselected: null,
-  bselected: null
+  bselected: null,
+  mselected: null
 }
 
 const editor = (state = initialState, action) => {
@@ -15,6 +16,12 @@ const editor = (state = initialState, action) => {
       return {
         ...state,
         bselected: action.selected
+      }
+    }
+    case 'EDITOR_MULTIPLE_SELECTED': {
+      return {
+        ...state,
+        mselected: action.selection
       }
     }
     default:

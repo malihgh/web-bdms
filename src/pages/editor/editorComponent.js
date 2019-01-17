@@ -4,6 +4,7 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 
 import BoreholeForm from '../../commons/form/borehole/boreholeForm';
+import MultipleForm from '../../commons/form/multiple/multipleForm';
 import BoreholeEditorTable from '../../commons/table/boreholeEditorTable';
 import MenuEditor from '../../commons/menu/editor/menuEditor';
 import MenuContainer from '../../commons/menu/menuContainer';
@@ -37,31 +38,7 @@ class EditorComponent extends React.Component {
           flexDirection: 'row'
         }}>
           {
-            _.isNil(this.props.store.bselected)?
-              <div style={{
-                flex: '1 1.5 100%',
-                padding: "1em",
-                // boxShadow: 'rgba(0, 0, 0, 0.5) 0px 0px 8px 0px inset',
-                display: 'flex',
-                flexDirection: 'column'
-              }}>
-                <BoreholeEditorTable
-                  activeItem={
-                    !_.isNil(this.props.store.bselected)?
-                      this.props.store.bselected.id: null
-                  }
-                  /*filter={{
-                    project: !_.isNil(this.props.store.pselected)?
-                      this.props.store.pselected.id: undefined
-                  }}*/
-                  filter={{
-                    ...this.props.search.filter
-                  }}
-                  onSelected={(borehole)=>{
-                    this.props.boreholeSelected(borehole)
-                  }}
-                />
-              </div>:
+            !_.isNil(this.props.store.bselected)?
               <div style={{
                 overflow: 'hidden',
                 height: '100%',
@@ -75,7 +52,47 @@ class EditorComponent extends React.Component {
                     !_.isNil(this.props.store.bselected)?
                       this.props.store.bselected.id: undefined
                   }/>
-              </div>
+              </div>:
+              !_.isNil(this.props.store.mselected)?
+                <div style={{
+                  overflow: 'hidden',
+                  height: '100%',
+                  display: 'flex',
+                  flex: '1 1 100%',
+                  flexDirection: 'column',
+                  padding: '1em'
+                }}>
+                  <MultipleForm
+                    selected={this.props.store.mselected}
+                  />
+                </div>:
+                <div style={{
+                  flex: '1 1.5 100%',
+                  padding: "1em",
+                  // boxShadow: 'rgba(0, 0, 0, 0.5) 0px 0px 8px 0px inset',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}>
+                  <BoreholeEditorTable
+                    activeItem={
+                      !_.isNil(this.props.store.bselected)?
+                        this.props.store.bselected.id: null
+                    }
+                    /*filter={{
+                      project: !_.isNil(this.props.store.pselected)?
+                        this.props.store.pselected.id: undefined
+                    }}*/
+                    filter={{
+                      ...this.props.search.filter
+                    }}
+                    onSelected={(borehole)=>{
+                      this.props.boreholeSelected(borehole)
+                    }}
+                    onMultiple={(selection)=>{
+                      this.props.multipleSelected(selection)
+                    }}
+                  />
+                </div>
           }
       </div>
     </div>
@@ -106,6 +123,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch({
         type: 'EDITOR_BOREHOLE_SELECTED',
         selected: borehole
+      });
+    },
+    multipleSelected: (selection) => {
+      dispatch({
+        type: 'EDITOR_MULTIPLE_SELECTED',
+        selection: selection
       });
     }
   };
