@@ -8,7 +8,7 @@ import DomainText from '../form/domain/domainText'
 import DateText from '../form/dateText'
 
 import {
-  Table, Icon
+  Table, Icon, Checkbox
 } from 'semantic-ui-react'
 
 import {
@@ -16,13 +16,39 @@ import {
 } from '@ist-supsi/bmsjs'
 
 class BoreholeEditorTable extends TableComponent {
-  getHeaderLabel(key){
-    const { t } = this.props
+  reorder(orderby){
+    const { filter, loadData, store } = this.props;
+    let dir = store.direction === 'DESC'? 'ASC': 'DESC';
+    loadData(
+      store.page,
+      filter,
+      orderby,
+      dir
+    );
+  }
+  getHeaderLabel(key, disableOrdering = false){
+    const { store, t } = this.props
     return (
       <Table.HeaderCell
-        // singleLine
-        verticalAlign='top'>
-        {t(key)}
+        onClick={()=>{
+          if(disableOrdering === false){
+            this.reorder(key);
+          }
+        }}
+        style={{
+          cursor: disableOrdering === true? null: 'pointer'
+        }}
+        verticalAlign='top'
+      >
+        {
+            disableOrdering === false && store.orderby === key?
+              <Icon
+                name={
+                  store.direction === 'DESC'?
+                    'sort down': 'sort up'
+                }
+              />: null
+          } {t(key)}
         <br/>
         <span style={{
           fontSize: '0.8em',
@@ -192,16 +218,23 @@ class BoreholeEditorTable extends TableComponent {
   getHeader(){
     return (
       <Table.Row>
-        {/*<Table.HeaderCell>id</Table.HeaderCell>*/}
+        <Table.HeaderCell style={{width: '2em'}}>
+          <Checkbox
+            onClick={(e)=>{
+              e.stopPropagation();
+              console.log("sing selection");
+            }}
+          />
+        </Table.HeaderCell>
         {this.getHeaderLabel('completness')}
         {this.getHeaderLabel('original_name')}
         {this.getHeaderLabel('kind')}
         {this.getHeaderLabel('restriction')}
-        {this.getHeaderLabel('location_x')}
-        {this.getHeaderLabel('location_y')}
-        {this.getHeaderLabel('srs')}
+        {this.getHeaderLabel('location_x', true)}
+        {this.getHeaderLabel('location_y', true)}
+        {this.getHeaderLabel('srs', true)}
         {this.getHeaderLabel('elevation_z')}
-        {this.getHeaderLabel('hrs')}
+        {this.getHeaderLabel('hrs', true)}
         {this.getHeaderLabel('drilling_date')}
         {this.getHeaderLabel('status')}
         {this.getHeaderLabel('length')}
@@ -209,11 +242,21 @@ class BoreholeEditorTable extends TableComponent {
     )
   }
   getCols(item, idx){
+    const {
+      selected
+    } = this.state;
     let colIdx = 0
     return ([
-      // <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-      //   {item.id}
-      // </Table.Cell>,
+      <Table.Cell
+        key={this.uid + "_" + idx + "_" + colIdx++}
+        onClick={(e)=>{
+          e.stopPropagation();
+          this.add2selection(item.id);
+        }}
+        style={{width: '2em'}}
+      >
+        <Checkbox checked={selected.indexOf(item.id)>=0}/>
+      </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {
           item.percentage < 100?
@@ -275,8 +318,12 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         dispatch: dispatch,
-        loadData: (page, filter = {}) => {
-          dispatch(loadEditingBoreholes(page, 100, filter))
+        loadData: (page, filter = {}, orderby = null, direction = null) => {
+          dispatch(
+            loadEditingBoreholes(
+              page, 100, filter, orderby, direction
+            )
+          );
         }
     }
 }
@@ -284,4 +331,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(translate('borehole_form')(BoreholeEditorTable))
+)(translate('borehole_form')(BoreholeEditorTable));

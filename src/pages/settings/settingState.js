@@ -10,6 +10,10 @@ const initialState = {
   rtime: 0, // fetch time
   fcnt: 0, // fetch counter
   data: {
+    boreholetable: {
+      orderby: null,
+      direction: null
+    },
     filter: {
       mapfilter: true,
       zoom2selected: true,

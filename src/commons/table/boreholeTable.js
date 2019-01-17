@@ -8,6 +8,7 @@ import DomainText from '../form/domain/domainText';
 import DateText from '../form/dateText';
 
 import {
+  Icon,
   Table
 } from 'semantic-ui-react';
 
@@ -16,21 +17,46 @@ import {
 } from '@ist-supsi/bmsjs';
 
 class BoreholeTable extends TableComponent {
-  getHeaderLabel(key){
-    const { t } = this.props;
+  reorder(orderby){
+    const { filter, loadData, store } = this.props;
+    let dir = store.direction === 'DESC'? 'ASC': 'DESC';
+    loadData(
+      store.page,
+      filter,
+      orderby,
+      dir
+    );
+  }
+  getIcon(orderby, sub = false){
+    const { store, t } = this.props;
+    let style = {
+      cursor: 'pointer'
+    }
+    if(sub === true){
+      style = {
+        ...style,
+        color: '#787878',
+        fontSize: '0.8em'
+      }
+    }
     return (
-      <Table.HeaderCell
-        // singleLine
-        verticalAlign='top'>
-        {t(key)}
-        <br/>
-        <span style={{
-          fontSize: '0.8em',
-          color: '#787878'
-        }}>
-          {key}
-        </span>
-      </Table.HeaderCell>
+        <div
+          onClick={()=>{
+            this.reorder(orderby);
+          }}
+          style={style}
+        >
+          {
+            store.orderby === orderby?
+              <Icon
+                name={
+                  store.direction === 'DESC'?
+                    'sort down': 'sort up'
+                }
+              />: null
+          }
+          {t(orderby)}
+        </div>
     );
   }
   getHeader(){
@@ -39,27 +65,13 @@ class BoreholeTable extends TableComponent {
       <Table.Row>
         <Table.HeaderCell
           verticalAlign='top'>
-          {t('original_name')}
-          <br/>
-          <span
-            style={{
-              color: '#787878',
-              fontSize: '0.8em'
-            }}>
-            {t('kind')}
-          </span>
+          {this.getIcon('original_name')}
+          {this.getIcon('kind', true)}
         </Table.HeaderCell>
         <Table.HeaderCell
           verticalAlign='top'>
-          {t('restriction')}
-          <br/>
-          <span
-            style={{
-              color: '#787878',
-              fontSize: '0.8em'
-            }}>
-            {t('restriction_until')}
-          </span>
+          {this.getIcon('restriction')}
+          {this.getIcon('restriction_until', true)}
         </Table.HeaderCell>
         {/*<Table.HeaderCell
           verticalAlign='top'>
@@ -75,27 +87,13 @@ class BoreholeTable extends TableComponent {
         </Table.HeaderCell>*/}
         <Table.HeaderCell
           verticalAlign='top'>
-          {t('elevation_z')} ({t('hrs')})
-          <br/>
-          <span
-            style={{
-              color: '#787878',
-              fontSize: '0.8em'
-            }}>
-            {t('length')}
-          </span>
+          {this.getIcon('elevation_z')} ({t('hrs')})
+          {this.getIcon('length', true)}
         </Table.HeaderCell>
         <Table.HeaderCell
           verticalAlign='top'>
-          {t('status')}
-          <br/>
-          <span
-            style={{
-              color: '#787878',
-              fontSize: '0.8em'
-            }}>
-            {t('drilling_date')}
-          </span>
+          {this.getIcon('status')}
+          {this.getIcon('drilling_date', true)}
         </Table.HeaderCell>
       </Table.Row>
     );
@@ -158,7 +156,10 @@ class BoreholeTable extends TableComponent {
         </span>
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.extended.status} schema='extended.status'/>
+        <DomainText
+          id={item.extended.status}
+          schema='extended.status'
+        />
         <br/>
         <span
           style={{
@@ -170,91 +171,25 @@ class BoreholeTable extends TableComponent {
       </Table.Cell>,
     ])
   }
-  _getHeader(){
-    return (
-      <Table.Row>
-        {/*<Table.HeaderCell>id</Table.HeaderCell>*/}
-        {this.getHeaderLabel('original_name')}
-        {this.getHeaderLabel('kind')}
-        {this.getHeaderLabel('restriction')}
-        {this.getHeaderLabel('location_x')}
-        {this.getHeaderLabel('location_y')}
-        {this.getHeaderLabel('srs')}
-        {this.getHeaderLabel('elevation_z')}
-        {this.getHeaderLabel('hrs')}
-        {this.getHeaderLabel('drilling_date')}
-        {this.getHeaderLabel('status')}
-        {this.getHeaderLabel('length')}
-      </Table.Row>
-    )
-  }
-  _getCols(item, idx){
-    let colIdx = 0
-    return ([
-      // <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-      //   {item.id}
-      // </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {item.original_name}
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.kind} schema='kind'/>
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.restriction} schema='restriction'/>
-        <br/>
-        <span style={{
-          fontSize: '0.9em',
-          color: 'rgb(60, 137, 236)'
-        }}>
-          <DateText date={item.restriction_until}/>
-        </span>
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {item.location_x}
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {item.location_y}
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.srs} schema='srs'/>
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {_.isNil(item.elevation_z)? null: item.elevation_z + ' m'}
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.hrs} schema='hrs'/>
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DateText date={item.drilling_date}/>
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.extended.status} schema='extended.status'/>
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {_.isNil(item.length)? null: item.length + ' m'}
-      </Table.Cell>,
-    ])
-  }
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
     store: state.core_borehole_list,
     ...ownProps
   }
-}
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        dispatch: dispatch,
-        loadData: (page, filter = {}) => {
-          dispatch(loadBoreholes(page, 100, filter))
-        }
+  return {
+    dispatch: dispatch,
+    loadData: (page, filter = {}, orderby = null, direction = null) => {
+      dispatch(loadBoreholes(page, 100, filter, orderby, direction));
     }
-}
+  }
+};
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(translate('borehole_form')(BoreholeTable))
+  mapStateToProps,
+  mapDispatchToProps
+)(translate('borehole_form')(BoreholeTable));
