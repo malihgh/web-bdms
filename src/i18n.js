@@ -96,6 +96,7 @@ let resources = {
       'remarks': 'Remarks'
     },
     layer_form: {
+      'layers': 'Layers',
       'loading_fetch': 'Loading an existing layer..',
       'creation_fetch': 'Preparing a new layer..',
       'depth': 'Depth',
@@ -263,8 +264,9 @@ let resources = {
       'remarks': 'Remarks'
     },
     layer_form: {
-      'loading_fetch': 'Loading an existing layer..',
-      'creation_fetch': 'Preparing a new layer..',
+      'layers': 'Livelli',
+      'loading_fetch': 'Caricamento livelli in corso..',
+      'creation_fetch': 'Creazione di un nuovo livello..',
       'depth': 'Profondità',
       'depth_from': 'Top MD (m)',
       'depth_to': 'Base MD (m)',

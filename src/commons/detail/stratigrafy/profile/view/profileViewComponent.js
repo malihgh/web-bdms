@@ -1,19 +1,22 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { translate } from 'react-i18next'
-import _ from 'lodash'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
+import _ from 'lodash';
 import {
   Table,
   Dimmer,
   Loader,
   List
-} from 'semantic-ui-react'
-import DomainText from '../../../../form/domain/domainText'
+} from 'semantic-ui-react';
+import DomainText from '../../../../form/domain/domainText';
 // import DateText from '../../form/dateText'
 
 class ProfileView extends React.Component {
   getDomainRow(schema, id, i18n = undefined){
-    const { t } = this.props
+    const { t } = this.props;
+    this.getColor = this.getColor.bind(this);
+    this.getPattern = this.getPattern.bind(this);
     return (
       <Table.Row>
         <Table.Cell
@@ -36,7 +39,7 @@ class ProfileView extends React.Component {
     )
   }
   getDomainRowMultiple(schema, ids, i18n = undefined){
-    const { t } = this.props
+    const { t } = this.props;
     return (
       <Table.Row>
         <Table.Cell
@@ -70,7 +73,7 @@ class ProfileView extends React.Component {
     )
   }
   getTextRow(schema, text){
-    const { t } = this.props
+    const { t } = this.props;
     return (
       <Table.Row>
         <Table.Cell
@@ -88,11 +91,36 @@ class ProfileView extends React.Component {
       </Table.Row>
     )
   }
+  getPattern(id){
+    const {
+      domains
+    } = this.props;
+    let domain = domains.data['custom.lit_pet_top_bedrock'].find(function(element) {
+      return element.id === id
+    });
+    if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('img')){
+      return 'url("/img/lit/' + domain.conf.img + '")'
+    }
+    else return null;
+  }
+  getColor(id){
+    const {
+      domains
+    } = this.props;
+    let domain = domains.data['custom.lit_str_top_bedrock'].find(function(element) {
+      return element.id === id
+    });
+    if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('color')){
+      const color = domain.conf.color;
+      return 'rgb(' + color.join(',') + ')'
+    }
+    else return null;
+  }
+
   render() {
     const {
       data, t, onSelected, layer
-    } = this.props
-    console.log(layer)
+    } = this.props;
     return (
       <div style={{
         flex: "1 1 0%",
@@ -103,14 +131,9 @@ class ProfileView extends React.Component {
       }}>
         <div style={{
             overflowY: 'auto',
-            padding: '1em'
+            paddingRight: '0.5em'
           }}>
-          <Table basic selectable>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>{t('depth')}</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
+          <Table basic selectable structured>
             <Table.Body>
               {
                 data.map((item, idx) => (
@@ -120,9 +143,39 @@ class ProfileView extends React.Component {
                       cursor: 'pointer'
                     }}
                     onClick={()=>{
-                      onSelected(item)
+                      onSelected(item);
                     }}>
-                    <Table.Cell collapsing singleLine>
+                    <Table.Cell
+                      collapsing
+                      style={{
+                        width: '4em',
+                        backgroundColor: this.getColor(item.lithostratigraphy),
+                        backgroundImage: this.getPattern(item.lithology),
+                        backgroundSize: 'cover'
+                      }}
+                    >
+                    </Table.Cell>
+                    <Table.Cell collapsing>
+                      <span
+                        style={{
+                          fontWeight: 'bold'
+                        }}
+                      >
+                        <DomainText
+                            schema='custom.lit_str_top_bedrock'
+                            id={item.lithostratigraphy}/>
+                      </span>
+                      <br/>
+                      <span
+                        style={{
+                          color: '#787878',
+                          fontSize: '0.8em'
+                        }}>
+                        <DomainText
+                          schema='custom.lit_pet_top_bedrock'
+                          id={item.lithology}/>
+                      </span>
+                      <br/>
                       <span
                         style={{
                           color: '#787878',
@@ -159,7 +212,11 @@ class ProfileView extends React.Component {
             {
               this.props.layer === null?
               'Nothing selected':
-              <Table basic>
+              <Table basic
+                style={{
+                  marginTop: '0px'
+                }}
+              >
                 <Table.Body>
                   {this.getTextRow(
                     'depth_from', layer.depth_from
@@ -352,6 +409,23 @@ ProfileView.propTypes = {
     layer: PropTypes.object,
     isFetchingLayer: PropTypes.bool,
     onSelected: PropTypes.func
-}
+};
 
-export default translate(['layer_form','common'])(ProfileView)
+const mapStateToProps = (state, ownProps) => {
+  return {
+    domains: state.core_domain_list
+  }
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    dispatch: dispatch
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  translate(['layer_form','common'])(ProfileView)
+);

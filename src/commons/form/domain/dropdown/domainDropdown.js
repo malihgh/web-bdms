@@ -158,8 +158,31 @@ class DomainDropdown extends React.Component {
       text: domain.code !== domain[this.state.language].text?
         domain.code + ' (' + domain[this.state.language].text + ')': domain.code,
       content: <Header
+        style={{
+          backgroundImage: domain.conf !== null?
+            domain.conf.hasOwnProperty('img')?
+              'url("/img/lit/' +
+                domain.conf.img + '")': null
+              : null
+        }}
         content={
-          domain.code
+          <div
+            style={{
+              borderLeft: domain.conf !== null?
+                domain.conf.hasOwnProperty('color')?
+                  '1em solid rgb(' +
+                  domain.conf.color[0] + ", " +
+                  domain.conf.color[1] + ", " +
+                  domain.conf.color[2] + ")": null
+                : null,
+              paddingLeft: domain.conf !== null?
+                domain.conf.hasOwnProperty('color')?
+                  '0.5em': null
+                : null
+            }}
+          >
+            {domain.code}
+          </div>
         }
         subheader={
           domain[

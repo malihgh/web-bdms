@@ -673,7 +673,7 @@ class BoreholeForm extends React.Component {
                                 selected={borehole.custom.city}
                                 onSelected={(selected)=>{
                                   this.updateChange(
-                                    'custom.canton', selected.id, false
+                                    'custom.city', selected.id, false
                                   )
                                 }}/>
                             </Form.Field>

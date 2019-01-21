@@ -95,6 +95,18 @@ class MenuExplorer extends React.Component {
             boreholes.dlen + ' founds'
           }
         </Header>
+        <div
+          style={{
+            marginBottom: '0.8em'
+          }}
+        >
+          <Button
+            primary
+            size='mini'
+          >
+            Export
+          </Button>
+        </div>
         <SearchComponent
           onChange={(filter)=>{
             //console.log(filter)
