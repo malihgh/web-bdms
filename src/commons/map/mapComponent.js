@@ -13,6 +13,7 @@ import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
 import Style from 'ol/style/Style';
 import Circle from 'ol/style/Circle';
+import RegularShape from 'ol/style/RegularShape';
 import Text from 'ol/style/Text';
 import Select from 'ol/interaction/Select';
 import Overlay from 'ol/Overlay.js';
@@ -27,7 +28,8 @@ import {
 } from '@ist-supsi/bmsjs';
 
 import {
-  Button
+  Button,
+  Dropdown
 } from 'semantic-ui-react';
 
 class MapComponent extends React.Component {
@@ -39,7 +41,11 @@ class MapComponent extends React.Component {
     this.timeoutFilter = null;
     this.state = {
       counter: 0,
+      basemap: 'colormap',
+      colormap: true,
+      greymap: false,
       satellite: false,
+      geologie500: false,
       hover: null
     };
   }
@@ -78,7 +84,8 @@ class MapComponent extends React.Component {
       }),
       layers: [
         new LayerGroup({
-          visible: !this.state.satellite,
+          visible: this.state.basemap==='colormap',
+          name: 'colormap',
           layers: [
             new TileLayer({
               minResolution: 2.5,
@@ -109,13 +116,38 @@ class MapComponent extends React.Component {
           ]
         }),
         new TileLayer({
-          visible: this.state.satellite,
+          visible: this.state.basemap==='greymap',
+          name: 'greymap',
+          source: new WMTS({
+            crossOrigin: 'anonymous',
+            attributions: attribution,
+            url: 'https://wmts10.geo.admin.ch/1.0.0/{Layer}/default/current/2056/{TileMatrix}/{TileCol}/{TileRow}.jpeg',
+            tileGrid: tileGrid,
+            layer: "ch.swisstopo.pixelkarte-grau",
+            requestEncoding: 'REST'
+          })
+        }),
+        new TileLayer({
+          visible: this.state.basemap==='satellite',
+          name: 'satellite',
           source: new WMTS({
             crossOrigin: 'anonymous',
             attributions: attribution,
             url: 'https://wmts10.geo.admin.ch/1.0.0/{Layer}/default/current/2056/{TileMatrix}/{TileCol}/{TileRow}.jpeg',
             tileGrid: tileGrid,
             layer: "ch.swisstopo.swissimage",
+            requestEncoding: 'REST'
+          })
+        }),
+        new TileLayer({
+          visible: this.state.basemap==='geologie500',
+          name: 'geologie500',
+          source: new WMTS({
+            crossOrigin: 'anonymous',
+            attributions: attribution,
+            url: 'https://wmts10.geo.admin.ch/1.0.0/{Layer}/default/20080630/2056/{TileMatrix}/{TileCol}/{TileRow}.png',
+            tileGrid: tileGrid,
+            layer: "ch.swisstopo.geologie-geologische_karte",
             requestEncoding: 'REST'
           })
         })
@@ -221,30 +253,101 @@ class MapComponent extends React.Component {
     let selected = (highlighted !== undefined)
       && highlighted.indexOf(feature.get('id'))>-1;
 
-    let conf = {
-      image: new Circle({
-        radius: selected? 10: 6,
-        fill: selected?
-          new Fill({color: 'rgba(255, 0, 0, 0.8)'}):
-          new Fill({color: 'rgba(0, 255, 0, 1)'}),
-        stroke: new Stroke({color: 'black', width: 1})
-      })
-    };
-
-    if(resolution<10 || selected){
-      conf.text = new Text({
-        textAlign: "center",
-        textBaseline: 'middle',
-        fill: new Fill({color: 'black'}),
-        font: "bold 14px arial sans-serif",
-        text: feature.get('original_name'),
-        stroke: new Stroke({
-          color: 'white',
-          width: 3
-        }),
-        offsetY: 14
-      });
+    /*
+      "f" "free"
+      "b" "limited until"
+      "g" "closed"
+    */
+    let res = feature.get('restriction_code');
+    let fill = null, stroke = new Stroke({color: 'black', width: 2});
+    let fcolor = null;
+    if(res === 'f'){
+      fcolor = 'rgb(0, 255, 0)';
+    }else if(['b', 'g'].indexOf(res)>=0){
+      fcolor = 'rgb(255, 0, 0)';
+    }else{
+      fcolor = 'rgb(0, 0, 0)';
     }
+    fill = new Fill({color: fcolor});
+
+    let conf = null;
+    /*
+      "a"   "Other"
+      "SS"  "Sondierschlitz"
+      "B"   "Drilling"
+      "RS"  "Dynamic probing"
+    */
+    let kind = feature.get('kind_code');
+    if(kind==='a'){ // deep boreholes
+      return [
+        new Style({
+          image: new Circle({
+            radius: 6,
+            stroke: new Stroke({color: fcolor, width: 2}),
+            fill: new Fill({color: 'white'})
+          })
+        }),
+        new Style({
+          image: new Circle({
+            radius: 3,
+            fill: fill
+          })
+        })
+      ];
+    } else if(kind==='SS'){ // boreholes
+      conf = {
+        image: new Circle({
+          radius: 6,
+          stroke: new Stroke({color: 'black', width: 2}),
+          fill: new Fill({color: fcolor})
+        })
+      };
+    } else if(kind==='B'){ // trial pits
+      conf = {
+        image: new RegularShape({
+          fill: fill,
+          stroke: new Stroke({color: 'black', width: 1}),
+          points: 3,
+          radius: 8,
+          // rotation: Math.PI / 4,
+          angle: 0
+        })
+      };
+    } else if(kind==='RS'){ // dynamic probing
+      conf = { 
+        image: new RegularShape({
+          fill: fill,
+          stroke: new Stroke({color: 'black', width: 1}),
+          points: 3,
+          radius: 8,
+          rotation: Math.PI,
+          angle: 0
+        })
+      };
+    }else{
+      conf = {
+        image: new Circle({
+          radius: 6,
+          fill: fill,
+          stroke: new Stroke({color: 'black', width: 1})
+        })
+      };
+    }
+
+    // if(resolution<10 || selected){
+    //   conf.text = new Text({
+    //     textAlign: "center",
+    //     textBaseline: 'middle',
+    //     fill: new Fill({color: 'black'}),
+    //     font: "bold 14px arial sans-serif",
+    //     text: feature.get('original_name'),
+    //     stroke: new Stroke({
+    //       color: 'white',
+    //       width: 3
+    //     }),
+    //     offsetY: 14
+    //   });
+    // }
 
     return [new Style(conf)];
   }
@@ -376,24 +479,59 @@ class MapComponent extends React.Component {
           right: '6px',
           zIndex: '1'
         }}>
-          <Button
-            color='black'
-            size='mini'
-            toggle
-            active={satellite}
-            onClick={(e)=>{
+          <Dropdown
+            style={{
+              minWidth: '10em'
+            }}
+            selection
+            value={this.state.basemap}
+            onChange={(ev, data)=>{
               this.setState({
-                satellite: !satellite
+                basemap: data.value
               }, (a) => {
                 console.log(a);
                 const layers = this.map.getLayers().getArray();
-                layers[0].setVisible(!this.state.satellite);
-                layers[1].setVisible(this.state.satellite);
-              })
+                for (let index = 0; index < layers.length; index++) {
+                  const layer = layers[index];
+                  console.log()
+                  if([
+                    'colormap',
+                    'greymap',
+                    'satellite',
+                    'geologie500'
+                  ].indexOf(layer.get('name'))>=0){
+                    if(layer.get('name')===data.value){
+                      layer.setVisible(true);
+                    }else{
+                      layer.setVisible(false);
+                    }
+                  }
+                }
+              });
             }}
-          >
-            Satellite
-          </Button>
+            options={[
+              {
+                key: 'colormap',
+                value: 'colormap',
+                text: 'Color map'
+              },
+              {
+                key: 'greymap',
+                value: 'greymap',
+                text: 'Grey map'
+              },
+              {
+                key: 'satellite',
+                value: 'satellite',
+                text: 'Satellite'
+              },
+              {
+                key: 'geologie500',
+                value: 'geologie500',
+                text: 'Geology'
+              }
+            ]}
+          />
         </div>
         <div
           id='map'
@@ -415,26 +553,9 @@ class MapComponent extends React.Component {
           >
             <div
               style={{
-                flex: 1,
-                padding: '10px 0.5em 0px 0.5em'
+                flex: 1
               }}
             >
-              <div>
-                <span
-                  style={{
-                    color: 'rgb(120, 120, 120)',
-                    fontSize: '0.8em'
-                  }}
-                >
-                  <DomainText
-                    id={
-                      this.state.hover !== null?
-                        this.state.hover.get('kind'): null
-                    }
-                    schema='kind'
-                  />
-                </span>
-              </div>
               <div
                 style={{
                   fontWeight: 'bold'
