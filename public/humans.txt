@@ -1,0 +1,46 @@
+
+  _____     _   _ _         _                   _                     
+ |_   _|   | | (_) |       | |                 (_)                    
+   | |  ___| |_ _| |_ _   _| |_ ___    ___  ___ _  ___ _ __  _______  
+   | | / __| __| | __| | | | __/ _ \  / __|/ __| |/ _ \ '_ \|_  / _ \ 
+  _| |_\__ \ |_| | |_| |_| | || (_) | \__ \ (__| |  __/ | | |/ /  __/ 
+ |_____|___/\__|_|\__|\__,_|\__\___/  |___/\___|_|\___|_| |_/___\___| 
+      _      _ _         _______                                      
+     | |    | | |       |__   __|                                     
+   __| | ___| | | __ _     | | ___ _ __ _ __ __ _                     
+  / _` |/ _ \ | |/ _` |    | |/ _ \ '__| '__/ _` |                    
+ | (_| |  __/ | | (_| |    | |  __/ |  | | | (_| |                    
+  \__,_|\___|_|_|\__,_|    |_|\___|_|  |_|  \__,_|        
+
+   _____ _    _ _____   _____ _____ 
+  / ____| |  | |  __ \ / ____|_   _|
+ | (___ | |  | | |__) | (___   | |  
+  \___ \| |  | |  ___/ \___ \  | |  
+  ____) | |__| | |     ____) |_| |_ 
+ |_____/ \____/|_|    |_____/|_____|
+
+
+/* THE TEAM */
+
+    Company: Istituto scienze della Terra - SUPSI
+    Website: http://www.supsi.ch/ist
+    Contact: geoservice@supsi.ch
+
+    Project Leader: Massimiliano Cannata
+    Contact: massimiliano.cannata@supsi.ch
+
+    Project Manager and System Admin: Marcus Hoffmann
+    Contact: marcus.hoffmann@supsi.ch
+
+    Core developer: Milan P. Antonovic
+    Contact: milan.antonovic@supsi.ch
+
+/* THANKS */
+
+    Federal Office of Topography swisstopo
+    Website: https://swisstopo.admin.ch
+
+    Contacts:
+    Brodhag Sabine, sabine.brodhag@swisstopo.ch
+    Oesterling Nils, nils.oesterling@swisstopo.ch
+
