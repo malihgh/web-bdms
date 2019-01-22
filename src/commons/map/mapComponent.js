@@ -262,9 +262,9 @@ class MapComponent extends React.Component {
     let fill = null, stroke = new Stroke({color: 'black', width: 2});
     let fcolor = null;
     if(res === 'f'){
-      fcolor = 'rgb(0, 255, 0)';
+      fcolor = 'rgb(33, 186, 69)';
     }else if(['b', 'g'].indexOf(res)>=0){
-      fcolor = 'rgb(255, 0, 0)';
+      fcolor = 'rgb(220, 0, 24)';
     }else{
       fcolor = 'rgb(0, 0, 0)';
     }
@@ -298,7 +298,7 @@ class MapComponent extends React.Component {
       conf = {
         image: new Circle({
           radius: 6,
-          stroke: new Stroke({color: 'black', width: 2}),
+          stroke: new Stroke({color: 'black', width: 1}),
           fill: new Fill({color: fcolor})
         })
       };
