@@ -13,7 +13,7 @@ import {
 
 class HeaderComponent extends React.Component {
   render() {
-    const {t, i18n, location, history} = this.props
+    const {t, i18n, location, history} = this.props;
     return (
       <Menu stackable inverted style={{
             margin: '0px',
