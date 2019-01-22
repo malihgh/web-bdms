@@ -28,7 +28,6 @@ class MenuContainer extends React.Component {
           }
         })()}
         handleModeChange={(mode)=>{
-          console.log(process.env.PUBLIC_URL, mode)
           if(mode==='editor'){
             history.push(
               process.env.PUBLIC_URL + '/editor'
@@ -42,6 +41,7 @@ class MenuContainer extends React.Component {
               `${process.env.PUBLIC_URL}/${mode}`
             );
           }
+          this.props.reset();
         }}
       >
         {this.props.children}
@@ -56,7 +56,24 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    dispatch: dispatch
+    dispatch: dispatch,
+    reset: (mode)=>{
+      // if(mode==='viewer'){
+      //   dispatch({
+      //     type: 'HOME_BOREHOLE_SELECTED',
+      //     id: null
+      //   });
+      // }else{
+      //   dispatch({
+      //     id: null,
+      //     type: "EDITOR_BOREHOLE_SELECTED"
+      //   });
+      //   dispatch({
+      //     path: "/borehole",
+      //     type: "CLEAR"
+      //   });
+      // }
+    }
   }
 }
 
