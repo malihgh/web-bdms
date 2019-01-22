@@ -406,10 +406,37 @@ class MapComponent extends React.Component {
     const {
         highlighted,
         filter,
-        zoomto
+        zoomto,
+        hover
     } = nextProps;
     let refresh = false;
     if(!_.isEqual(highlighted, this.props.highlighted)){
+      debugger;
+      if(highlighted.length>0){
+        var feature = this.points.getFeatureById(highlighted[0]);
+        if(feature!==null){
+          this.setState({
+            hover: feature
+          }, ()=>{
+            this.popup.setPosition(feature.getGeometry().getCoordinates());
+            hover(feature.getId());
+          });
+        }else{
+          this.setState({
+            hover: null
+          }, ()=>{
+            this.popup.setPosition(undefined);
+            hover(null);
+          });
+        }
+      } else {
+        this.setState({
+          hover: null
+        }, ()=>{
+          this.popup.setPosition(undefined);
+          hover(null);
+        });
+      }
       refresh = true;
     }
     if(!_.isEqual(filter, this.props.filter)){
