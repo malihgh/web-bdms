@@ -64,6 +64,11 @@ class BoreholeTable extends TableComponent {
     return (
       <Table.Row>
         <Table.HeaderCell
+          style={{width: '1.5em'}}
+          verticalAlign='top'>
+          
+        </Table.HeaderCell>
+        <Table.HeaderCell
           verticalAlign='top'>
           {this.getIcon('original_name')}
           {this.getIcon('kind', true)}
@@ -104,6 +109,53 @@ class BoreholeTable extends TableComponent {
       // <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
       //   {item.id}
       // </Table.Cell>,
+      <Table.Cell
+        style={{width: '1.5em'}}
+        key={this.uid + "_" + idx + "_" + colIdx++}>
+        {(()=>{
+          const kind = this.props.domains.data[
+            'kind'
+          ].find(function(element) {
+            return element.id === item.kind
+          });
+          if(kind !== undefined){
+
+            const restriction = this.props.domains.data[
+              'restriction'
+            ].find(function(element) {
+              return element.id === item.restriction
+            });
+
+            let color = 'black';
+            if(restriction !== undefined){
+              if(restriction.code === 'f'){
+                color = 'green';
+              }else if(['b', 'g'].indexOf(restriction.code)>=0){
+                color = 'red';
+              }
+            }
+
+            return (
+              <img
+                src={
+                  process.env.PUBLIC_URL
+                  + '/img/'
+                  + kind.code
+                  + '-'
+                  + color
+                  + '.svg'
+                }
+                style={{
+                  height: '0.8em',
+                  width: '0.8em'
+                }}
+              />
+            );
+          }else{
+            return (null);
+          }
+        })()}
+      </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {item.original_name}
         <br/>
@@ -176,6 +228,7 @@ class BoreholeTable extends TableComponent {
 const mapStateToProps = (state, ownProps) => {
   return {
     store: state.core_borehole_list,
+    domains: state.core_domain_list,
     ...ownProps
   }
 };
