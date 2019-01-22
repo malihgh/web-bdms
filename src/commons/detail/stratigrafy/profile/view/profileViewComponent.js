@@ -99,7 +99,7 @@ class ProfileView extends React.Component {
       return element.id === id
     });
     if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('img')){
-      return 'url("/img/lit/' + domain.conf.img + '")'
+      return 'url("' + process.env.PUBLIC_URL + '/img/lit/' + domain.conf.img + '")'
     }
     else return null;
   }

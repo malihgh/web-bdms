@@ -161,7 +161,7 @@ class DomainDropdown extends React.Component {
         style={{
           backgroundImage: domain.conf !== null?
             domain.conf.hasOwnProperty('img')?
-              'url("/img/lit/' +
+              'url("' + process.env.PUBLIC_URL + '/img/lit/' +
                 domain.conf.img + '")': null
               : null
         }}

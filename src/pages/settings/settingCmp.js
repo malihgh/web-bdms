@@ -46,7 +46,7 @@ class SettingCmp extends React.Component {
         }}>
            <Router>
             <Route
-              path="/setting/explorer"
+              path={process.env.PUBLIC_URL + "/setting/explorer"}
               component={ExplorerSettings}
             />
            </Router>
