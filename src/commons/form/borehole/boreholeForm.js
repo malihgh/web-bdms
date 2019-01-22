@@ -66,7 +66,7 @@ class BoreholeForm extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.id !== prevProps.id) {
+    if (this.props.id !== null && this.props.id !== prevProps.id) {
       this.loadOrCreate(this.props.id);
     }
   }
@@ -737,7 +737,6 @@ class BoreholeForm extends React.Component {
                             null
                         }
                         applyChange={(x, y, height, cid, mid)=>{
-                          console.log(x, y, height, cid, mid)
                           this.updateChange(
                             'location', [x, y, cid, mid, height], false);
                         }}
