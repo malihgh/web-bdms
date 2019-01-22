@@ -25,14 +25,14 @@ class MenuComponent extends React.Component {
           <List.Item
             style={{
               padding: '1em',
-              backgroundColor: 'black',
+              backgroundColor: mode === 'editor'? 'rgb(220, 0, 24)': 'black',
               color: 'white'
             }}>
             <List.Content floated='right'>
               <Dropdown trigger={
                 <span
                   style={{
-                    color: 'rgb(222, 222, 222)'
+                    color: 'white'
                   }}
                 >
                   change
@@ -76,7 +76,7 @@ class MenuComponent extends React.Component {
                         Explorer Mode
                       </List.Content>
                     )
-                  case 'edit':
+                  case 'editor':
                     return (
                       <List.Content>
                         <Icon name='edit' />
