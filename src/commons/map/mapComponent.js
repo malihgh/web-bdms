@@ -272,14 +272,13 @@ class MapComponent extends React.Component {
 
     let conf = null;
     /*
-      "a"   "Other"
-      "SS"  "Sondierschlitz"
-      "B"   "Drilling"
-      "RS"  "Dynamic probing"
-    */
-    let kind = feature.get('kind_code');
-    if(kind==='a'){ // deep boreholes
-      return [
+      "a"   "Other"             "Other"
+      "SS"  "Sondierschlitz"    "trial pit"
+      "B"   "Drilling"          "borehole"
+      "RS"  "Dynamic probing"   "dynamic probing"
+
+       deep boreholes:
+       return [
         new Style({
           image: new Circle({
             radius: 6,
@@ -294,7 +293,9 @@ class MapComponent extends React.Component {
           })
         })
       ];
-    } else if(kind==='SS'){ // boreholes
+    */
+    let kind = feature.get('kind_code');
+    if(kind==='B'){ // boreholes
       conf = {
         image: new Circle({
           radius: 6,
@@ -302,7 +303,7 @@ class MapComponent extends React.Component {
           fill: new Fill({color: fcolor})
         })
       };
-    } else if(kind==='B'){ // trial pits
+    } else if(kind==='SS'){ // trial pits
       conf = {
         image: new RegularShape({
           fill: fill,
@@ -324,12 +325,15 @@ class MapComponent extends React.Component {
           angle: 0
         })
       };
-    }else{
+    }else{ // Not set and if(kind==='a'){ // deep boreholes
       conf = {
-        image: new Circle({
-          radius: 6,
+        image: new RegularShape({
           fill: fill,
-          stroke: new Stroke({color: 'black', width: 1})
+          stroke: new Stroke({color: 'black', width: 1}),
+          points: 4,
+          radius: 8,
+          rotation: 0.25 * Math.PI,
+          angle: 0
         })
       };
     }
@@ -348,7 +352,24 @@ class MapComponent extends React.Component {
     //     offsetY: 14
     //   });
     // }
-
+    if(selected){
+      return [
+        new Style({
+          image: new Circle({
+            radius: 12,
+            fill: new Fill({color: 'rgba(255, 255, 255, 0.5)'}),
+            stroke: new Stroke({color: 'rgba(33, 133, 208, 1)', width: 3})
+          })
+        }),
+        new Style({
+          image: new Circle({
+            radius: 13,
+            stroke: new Stroke({color: '#787878', width: 1})
+          })
+        }),
+        new Style(conf)
+      ];
+    }
     return [new Style(conf)];
   }
 

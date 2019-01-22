@@ -152,7 +152,18 @@ class BoreholeTable extends TableComponent {
               />
             );
           }else{
-            return (null);
+            return (
+              <img
+                src={
+                  process.env.PUBLIC_URL
+                  + '/img/a-black.svg'
+                }
+                style={{
+                  height: '0.8em',
+                  width: '0.8em'
+                }}
+              />
+            );
           }
         })()}
       </Table.Cell>,
