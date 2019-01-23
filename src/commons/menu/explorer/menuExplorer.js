@@ -105,8 +105,9 @@ class MenuExplorer extends React.Component {
             onClick={()=>{
               window.open(
                 process.env.PUBLIC_URL + '/api/v1/borehole/export?'
-                + Object.keys(search.filter).map(function(k) {
-                    return encodeURIComponent(k) + '=' + encodeURIComponent(search.filter[k])
+                + Object.keys(search.filter).map((k)=>{
+                    return encodeURIComponent(k)
+                    + '=' + encodeURIComponent(search.filter[k])
                   }).join('&')
               );
             }}

@@ -432,7 +432,6 @@ class MapComponent extends React.Component {
     } = nextProps;
     let refresh = false;
     if(!_.isEqual(highlighted, this.props.highlighted)){
-      debugger;
       if(highlighted.length>0){
         var feature = this.points.getFeatureById(highlighted[0]);
         if(feature!==null){

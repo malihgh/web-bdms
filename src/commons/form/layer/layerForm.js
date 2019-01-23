@@ -114,14 +114,14 @@ class LayerForm extends React.Component {
   updateChange(attribute, value, to = true){
     const {
       onUpdated
-    } = this.props
+    } = this.props;
     const state = {
       ...this.state,
       isPatching: true,
       layer: {
         ...this.state.layer
       }
-    }
+    };
     _.set(state.layer, attribute, value)
     this.setState(state, () => {
       if(
@@ -129,7 +129,7 @@ class LayerForm extends React.Component {
         this.updateAttributeDelay[attribute]
       ){
         clearTimeout(this.updateAttributeDelay[attribute]);
-        this.updateAttributeDelay[attribute] = false
+        this.updateAttributeDelay[attribute] = false;
       }
       this.updateAttributeDelay[attribute] = setTimeout(function(){
         patchLayer(
@@ -142,14 +142,14 @@ class LayerForm extends React.Component {
               isPatching: false
             }, () => {
               if(_.isFunction(onUpdated)){
-                onUpdated(this.state.layer.id, attribute, value)
+                onUpdated(this.state.layer.id, attribute, value);
               }
-            })
+            });
           }
         }.bind(this)).catch(function (error) {
-          console.error(error)
+          console.error(error);
         })
-      }.bind(this), to? 500: 0)
+      }.bind(this), to? 500: 0);
     })
   }
 
