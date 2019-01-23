@@ -24,28 +24,28 @@ import {
 class StratigraphyFormContainer extends React.Component {
 
   constructor(props) {
-    super(props)
-    this.load = this.load.bind(this)
+    super(props);
+    this.load = this.load.bind(this);
     this.state = {
       stratigraphy: null,
       stratigraphyEmpty: false,
       fetchingStratigraphy: false,
       layers: null,
       layer: null
-    }
+    };
   }
  
   componentDidMount() {
-    const { borehole, kind } = this.props
+    const { borehole, kind } = this.props;
     if (!_.isNil(borehole) && !_.isNil(kind)) {
-      this.load(borehole, kind)
+      this.load(borehole, kind);
     }
   }
 
   componentDidUpdate(prevProps) {
-    const { borehole, kind } = this.props
+    const { borehole, kind } = this.props;
     if (kind !== prevProps.kind) {
-      this.load(borehole, kind)
+      this.load(borehole, kind);
     }
   }
 
@@ -81,21 +81,21 @@ class StratigraphyFormContainer extends React.Component {
                     }
                   }.bind(this)
                 ).catch((error) => {
-                  console.log(error)
+                  console.log(error);
                 })
               }.bind(this)
-            )
+            );
           } else{
             // Stratigraphy not created yet
             this.setState({
               stratigraphyEmpty: true
-            })
+            });
           }
         }.bind(this)
       ).catch((err) => {
-        console.log(err)
+        console.log(err);
       })
-    }.bind(this))
+    }.bind(this));
   }
 
   render() {
@@ -165,9 +165,7 @@ class StratigraphyFormContainer extends React.Component {
             height: '100%'
           }}
         >
-          <div style={{
-              width: '250px'
-            }}
+          <div
           >
           {
             _.isNil(this.state.layers)?
@@ -265,16 +263,16 @@ class StratigraphyFormContainer extends React.Component {
               <LayerForm
                 id={this.state.layer}
                 onUpdated={(id, attribute, value) => {
-                  const layers = this.state.layers
+                  const layers = this.state.layers;
                   for (var i = 0; i < layers.length; i++) {
                     if(id === layers[i].id){
-                      layers[i][attribute] = value
-                      break
+                      layers[i][attribute] = value;
+                      break;
                     }
                   }
                   this.setState({
                     layers: layers
-                  })
+                  });
                 }}/>: null
             }
           </Segment>
