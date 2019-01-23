@@ -1,19 +1,19 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
-import _ from 'lodash'
+import React from 'react';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
+import _ from 'lodash';
 
-import TableComponent from './tableComponent'
-import DomainText from '../form/domain/domainText'
-import DateText from '../form/dateText'
+import TableComponent from './tableComponent';
+import DomainText from '../form/domain/domainText';
+import DateText from '../form/dateText';
 
 import {
   Table, Icon, Checkbox
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
 
 import {
   loadEditingBoreholes
-} from '@ist-supsi/bmsjs'
+} from '@ist-supsi/bmsjs';
 
 class BoreholeEditorTable extends TableComponent {
   reorder(orderby){
@@ -216,13 +216,20 @@ class BoreholeEditorTable extends TableComponent {
     ])
   }
   getHeader(){
+    const {
+      all, selected
+    } = this.state;
     return (
       <Table.Row>
         <Table.HeaderCell style={{width: '2em'}}>
           <Checkbox
+            checked={all === true}
             onClick={(e)=>{
               e.stopPropagation();
-              console.log("sing selection");
+              this.setState({
+                all: !all,
+                selected: []
+              });
             }}
           />
         </Table.HeaderCell>
@@ -255,7 +262,7 @@ class BoreholeEditorTable extends TableComponent {
         }}
         style={{width: '2em'}}
       >
-        <Checkbox checked={selected.indexOf(item.id)>=0}/>
+        <Checkbox checked={this.inSelection(item.id)}/>
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {
@@ -306,27 +313,27 @@ class BoreholeEditorTable extends TableComponent {
       </Table.Cell>,
     ])
   }
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
     store: state.core_borehole_editor_list,
     ...ownProps
   }
-}
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        dispatch: dispatch,
-        loadData: (page, filter = {}, orderby = null, direction = null) => {
-          dispatch(
-            loadEditingBoreholes(
-              page, 100, filter, orderby, direction
-            )
-          );
-        }
+  return {
+    dispatch: dispatch,
+    loadData: (page, filter = {}, orderby = null, direction = null) => {
+      dispatch(
+        loadEditingBoreholes(
+          page, 100, filter, orderby, direction
+        )
+      );
     }
-}
+  }
+};
 
 export default connect(
     mapStateToProps,

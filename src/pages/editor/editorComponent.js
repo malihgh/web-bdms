@@ -89,7 +89,14 @@ class EditorComponent extends React.Component {
                       this.props.boreholeSelected(borehole)
                     }}
                     onMultiple={(selection)=>{
-                      this.props.multipleSelected(selection)
+                      this.props.multipleSelected(
+                        selection, this.props.search.filter
+                      )
+                    }}
+                    onDelete={(selection)=>{
+                      this.props.delete(
+                        selection, this.props.search.filter
+                      )
                     }}
                   />
                 </div>
@@ -125,10 +132,19 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         selected: borehole
       });
     },
-    multipleSelected: (selection) => {
+    multipleSelected: (selection, filter = null) => {
+      debugger;
       dispatch({
         type: 'EDITOR_MULTIPLE_SELECTED',
-        selection: selection
+        selection: selection,
+        filter: filter
+      });
+    },
+    delete: (selection, filter = null) => {
+      dispatch({
+        type: 'EDITOR_MULTIPLE_DELETION',
+        selection: selection,
+        filter: filter
       });
     }
   };

@@ -3,6 +3,11 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 
 import {
+  getdBoreholeIds,
+  deleteBoreholes
+} from '@ist-supsi/bmsjs';
+
+import {
   Table,
   Pagination,
   Segment,
@@ -15,6 +20,8 @@ class TableComponent extends React.Component {
     this.delay = false;
     this.uid = _.uniqueId();
     this.add2selection = this.add2selection.bind(this);
+    this.inSelection = this.inSelection.bind(this);
+    this.deleteList = this.deleteList.bind(this);
     const {
       activeItem,
       filter
@@ -22,29 +29,47 @@ class TableComponent extends React.Component {
     this.state = {
       activeItem: activeItem !== undefined? activeItem: null,
       filter: filter !== undefined? filter: {},
-      selected: []
+      selected: [],
+      all: false
     };
   }
   componentDidMount(){
     const {
-      filter,
-      setting
+      filter
     } = this.props;
     this.props.loadData(1, filter); //, setting.orderby, setting.direction);
   }
   componentDidUpdate(prevProps){
     const {
-      filter,
-      setting
+      filter
     } = this.props;
     if(!_.isEqual(filter, prevProps.filter)){
       if(this.delay){
         clearTimeout(this.delay);
         this.delay = false;
       }
-      this.delay = setTimeout(function(){
-        this.props.loadData(1, filter); //, setting.orderby, setting.direction);
-      }.bind(this), 10);
+      this.setState({
+        selected: [],
+        all: false
+      }, ()=>{
+        this.delay = setTimeout(function(){
+          this.props.loadData(1, filter); //, setting.orderby, setting.direction);
+        }.bind(this), 10);
+      })
+      // if(this.state.all === true){
+      //   this.setState({
+      //     selected: [],
+      //     all: false
+      //   }, ()=>{
+      //     this.delay = setTimeout(function(){
+      //       this.props.loadData(1, filter); //, setting.orderby, setting.direction);
+      //     }.bind(this), 10);
+      //   });
+      // }else{
+      //   this.delay = setTimeout(function(){
+      //     this.props.loadData(1, filter); //, setting.orderby, setting.direction);
+      //   }.bind(this), 10);
+      // }
     }
   }
   handleClick(selected) {
@@ -65,12 +90,27 @@ class TableComponent extends React.Component {
   }
   handleMultipleClick(){
     const {
+      filter,
       onMultiple
     } = this.props;
-    console.log("Multiple")
-    if(this.state.selected.length>0){
+    if(this.state.all === true || this.state.selected.length>0){
+      // Load selected id if all is true
       if(onMultiple!==undefined){
-        onMultiple(this.state.selected);
+        if(this.state.all === true){
+          getdBoreholeIds(filter).then((response)=>{
+            if (
+              response.data.success
+            ) {
+              onMultiple(
+                _.pullAll(response.data.data, this.state.selected)
+              );
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
+        }else{
+          onMultiple(this.state.selected);
+        }
       }
     }
   }
@@ -80,6 +120,46 @@ class TableComponent extends React.Component {
     } = this.props;
     if(onHover!==undefined){
       onHover(selected);
+    }
+  }
+
+  deleteList(){
+    const {
+      filter,
+      onMultiple
+    } = this.props;
+    if(this.state.all === true || this.state.selected.length>0){
+      if(this.state.all === true){
+        getdBoreholeIds(filter).then((response)=>{
+          if (
+            response.data.success
+          ) {
+            deleteBoreholes(
+              _.pullAll(response.data.data, this.state.selected)
+            ).then(()=>{
+              this.setState({
+                selected: [],
+                all: false
+              }, ()=>{
+                this.props.loadData(1, filter);
+              })
+            });
+          }
+        }).catch((err) => {
+          console.log(err);
+        })
+      }else{
+        deleteBoreholes(
+          this.state.selected
+        ).then(()=>{
+          this.setState({
+            selected: [],
+            all: false
+          }, ()=>{
+            this.props.loadData(1, filter);
+          })
+        });
+      }
     }
   }
   
@@ -99,6 +179,26 @@ class TableComponent extends React.Component {
     });
   }
 
+  inSelection(id){
+    const {
+      selected, all
+    } = this.state;
+    const index = selected.indexOf(id);
+    if(all === true){
+      if(index>=0){
+        return false;
+      }else{
+        return true;
+      }
+    }else{
+      if(index>=0){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  }
+
   getHeader(){
     console.error("Please overwrite getHeader method");
   }
@@ -113,7 +213,8 @@ class TableComponent extends React.Component {
       filter
     } = this.props, {
       activeItem,
-      selected
+      selected,
+      all
     } = this.state;
     return (
       <Segment
@@ -131,7 +232,7 @@ class TableComponent extends React.Component {
           // padding: '0px 1em 0px 1em'
         }}>
           {
-            selected.length>0?
+            all === true || selected.length>0?
               <div
                 style={{
                   backgroundColor: '#FFEB3B',
@@ -146,8 +247,15 @@ class TableComponent extends React.Component {
                   }}
                 >
                   {
-                    selected.length === 1? 'One': selected.length
-                  } borehole{selected.length>1?'s':null} selected.
+                    all === true?
+                      'All':
+                      selected.length === 1?
+                        'One':
+                        selected.length
+                  } borehole{
+                    all === true || selected.length>1?
+                      's': null
+                  } selected.
                 </span> (<span
                   style={{
                     color: '#2196f3',
@@ -156,18 +264,37 @@ class TableComponent extends React.Component {
                   }}
                   onClick={()=>{
                     this.setState({
-                      selected: []
+                      selected: [],
+                      all: false
                     });
                   }}
                 >Reset selection</span>) <Button
-                  basic
                   color='black'
                   onClick={()=>{
                     this.handleMultipleClick();
                   }}
                   size='mini'
                 >
-                  Start
+                  Bulk editing
+                </Button> {
+                  all === false && selected.length === 1?
+                  <Button
+                    primary
+                    onClick={()=>{
+                      console.log('clone click');
+                    }}
+                    size='mini'
+                  >
+                    Clone
+                  </Button>: null
+                } <Button
+                    negative
+                    onClick={()=>{
+                      this.deleteList()
+                    }}
+                    size='mini'
+                  >
+                    Delete
                 </Button>
               </div>: null
           }
@@ -189,7 +316,8 @@ class TableComponent extends React.Component {
               store.data.map((item, idx) => (
                 <Table.Row
                   style={{
-                    cursor: selected.length>0? 'copy': 'pointer'
+                    cursor: all === true || selected.length>0?
+                      'copy': 'pointer'
                   }}
                   key={this.uid+"_"+idx}
                   active={
@@ -197,7 +325,7 @@ class TableComponent extends React.Component {
                     || this.props.highlight === item.id
                   }
                   onClick={e=>{
-                    if(selected.length>0){
+                    if(all === true || selected.length>0){
                       this.add2selection(item.id);
                     }else{
                       this.handleClick(item);
