@@ -9,7 +9,7 @@ import { translate } from 'react-i18next'
 
 class DateText extends React.Component {
   render() {
-    const { date, i18n, hours } = this.props
+    const { date, i18n, hours, fromnow } = this.props
     if(i18n.language === 'de'){
       moment.locale('de-ch')
     }else if (i18n.language === 'en') {
@@ -18,6 +18,9 @@ class DateText extends React.Component {
       moment.locale(i18n.language)
     }
     if(moment(date).isValid()){
+      if(fromnow===true){
+        return moment(date).fromNow();
+      }
       return moment(date).format(
         'DD.MM.YYYY' + (
           hours? ' HH:mm': ''
@@ -33,6 +36,7 @@ class DateText extends React.Component {
 DateText.propTypes = {
   date: PropTypes.string,
   hours: PropTypes.bool,
+  fromnow: PropTypes.bool,
   nullValue: PropTypes.string,
   invalid: PropTypes.string
 }
@@ -40,6 +44,7 @@ DateText.propTypes = {
 DateText.defaultProps = {
   date: null,
   hours: false,
+  fromnow: false,
   nullValue: '',
   invalid: 'invalid date'
 }

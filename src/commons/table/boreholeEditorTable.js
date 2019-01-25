@@ -234,12 +234,14 @@ class BoreholeEditorTable extends TableComponent {
           />
         </Table.HeaderCell>
         {this.getHeaderLabel('completness')}
+        {this.getHeaderLabel('creation')}
+        {this.getHeaderLabel('author')}
         {this.getHeaderLabel('original_name')}
         {this.getHeaderLabel('kind')}
         {this.getHeaderLabel('restriction')}
-        {this.getHeaderLabel('location_x', true)}
+        {/*this.getHeaderLabel('location_x', true)}
         {this.getHeaderLabel('location_y', true)}
-        {this.getHeaderLabel('srs', true)}
+          {this.getHeaderLabel('srs', true)*/}
         {this.getHeaderLabel('elevation_z')}
         {this.getHeaderLabel('hrs', true)}
         {this.getHeaderLabel('drilling_date')}
@@ -269,6 +271,20 @@ class BoreholeEditorTable extends TableComponent {
         } {item.percentage}%
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
+        <span
+          style={{
+            fontSize: '0.8em',
+            color: '#787878'
+          }}
+        >
+          <DateText fromnow={true} date={item.author.date}/>
+        </span><br/>
+        <DateText date={item.author.date}/>
+      </Table.Cell>,
+      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
+        {item.author.username}
+      </Table.Cell>,
+      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {item.original_name}
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
@@ -284,7 +300,7 @@ class BoreholeEditorTable extends TableComponent {
           <DateText date={item.restriction_until}/>
         </span>
       </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
+      /*<Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {item.location_x}
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
@@ -292,7 +308,7 @@ class BoreholeEditorTable extends TableComponent {
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         <DomainText id={item.srs} schema='srs'/>
-      </Table.Cell>,
+      </Table.Cell>,*/
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {_.isNil(item.elevation_z)? null: item.elevation_z + ' m'}
       </Table.Cell>,

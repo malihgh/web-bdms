@@ -43,6 +43,8 @@ let resources = {
     },
     borehole_form: {
       'completness': 'Completness',
+      'creation': 'Creation date',
+      'author': 'Author',
       'meta_location': 'Location',
       'meta_borehole': 'Borehole',
       'form_admin': 'Admin',
@@ -197,6 +199,8 @@ let resources = {
     },
     borehole_form: {
       'completness': 'Vollständigkeit',
+      'creation': 'Erstellungsdatum',
+      'author': 'Autor',
       'meta_location': 'Standort',
       'meta_borehole': 'Bohrloch',
       'form_admin': 'Admin',
@@ -350,6 +354,8 @@ let resources = {
     },
     borehole_form: {
       'completness': 'Completezza',
+      'creation': 'Data di creazione',
+      'author': 'Author',
       'meta_location': 'Posizione',
       'meta_borehole': 'Sondaggio',
       'form_admin': 'Amministrativo',

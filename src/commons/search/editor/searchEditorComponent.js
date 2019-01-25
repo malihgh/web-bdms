@@ -10,6 +10,8 @@ import {
 } from 'semantic-ui-react';
 
 import LabelReset from '../../form/labelReset';
+import DomainDropdown from '../../form/domain/dropdown/domainDropdown';
+import DateField from '../../form/dateField';
 
 class SearchEditorComponent extends React.Component {
   componentDidUpdate(prevProps){
@@ -88,6 +90,24 @@ class SearchEditorComponent extends React.Component {
           />
         </Form.Field>
         <Form.Field>
+          <label>Creation date</label>
+          <DateField
+            date={search.filter.creation}
+            onChange={(selected)=>{
+              this.props.setFilter(
+                'creation', selected
+              );
+            }}
+          />
+          <LabelReset
+            onClick={()=>{
+              this.props.setFilter(
+                'creation', ''
+              );
+            }}
+          />
+        </Form.Field>
+        <Form.Field>
           <label>{t('borehole_form:original_name')}</label>
           <Input
             placeholder={t('borehole_form:original_name')}
@@ -98,6 +118,66 @@ class SearchEditorComponent extends React.Component {
           <LabelReset onClick={()=>{
             this.props.setOriginalName('')
           }}/>
+        </Form.Field>
+        <Form.Field>
+          <label>{t('borehole_form:kind')}</label>
+          <DomainDropdown
+            schema='kind'
+            selected={search.filter.kind}
+            onSelected={(selected)=>{
+              this.props.setFilter(
+                'kind', selected.id
+              );
+            }}
+            reset={false}
+          />
+          <LabelReset
+            onClick={()=>{
+              this.props.setFilter(
+                'kind', null
+              );
+            }}
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>{t('borehole_form:restriction')}</label>
+          <DomainDropdown
+            schema='restriction'
+            selected={search.filter.restriction}
+            onSelected={(selected)=>{
+              this.props.setFilter(
+                'restriction', selected.id
+              );
+            }}
+            reset={false}
+          />
+          <LabelReset
+            onClick={()=>{
+              this.props.setFilter(
+                'restriction', null
+              );
+            }}
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>{t('borehole_form:status')}</label>
+          <DomainDropdown
+            schema='extended.status'
+            selected={search.filter.status}
+            onSelected={(selected)=>{
+              this.props.setFilter(
+                'status', selected.id
+              );
+            }}
+            reset={false}
+          />
+          <LabelReset
+            onClick={()=>{
+              this.props.setFilter(
+                'status', null
+              );
+            }}
+          />
         </Form.Field>
         {/*
         <Form.Field>
@@ -145,6 +225,13 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     dispatch: dispatch,
+    setFilter: (key, value) => {
+      dispatch({
+        type: 'SEARCH_EDITOR_FILTER_CHANGED',
+        key: key,
+        value: value
+      });
+    },
     setCompletness: (completness) => {
       dispatch({
         type: 'SEARCH_EDITOR_COMPLETNESS_CHANGED',

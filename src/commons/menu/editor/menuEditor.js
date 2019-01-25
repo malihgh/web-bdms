@@ -37,7 +37,7 @@ class MenuEditor extends React.Component {
 
   render() {
     const {
-      t, boreholeSelected, borehole
+      t, boreholeSelected, borehole, boreholes
     } = this.props
     return(
       !_.isNil(this.props.editor.bselected)?
@@ -184,70 +184,78 @@ class MenuEditor extends React.Component {
               </Button>
             </div>
           </div>:
-          <div
-            style={{
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column'
-            }}>
-            <List
-              divided
-              verticalAlign='middle'
-              selection
+          [
+            <Button.Group
+              basic
+              key='sb-em-1'
+              size='mini'
+              widths='3'
             >
-              <List.Item
-                style={{
-                  padding: '1em'
-                }}>
-                <List.Content
-                  onClick={(e) => {
-                    const self = this
-                    this.setState({
-                      creating: true
-                    }, () => {
-                      createBorehole().then(
-                        function(response) {
-                          if(response.data.success){
-                            getBorehole(response.data.id).then(
-                              function(response) {
-                                if(response.data.success){
-                                  boreholeSelected(response.data.data)
-                                }
-                                self.setState({
-                                  creating: false
-                                })
+              <Button
+                icon='refresh'
+                content='Refresh'
+                loading={boreholes.isFetching}
+                onClick={()=>{
+                  this.props.refresh();
+                }}
+              />
+              <Button
+                icon='undo'
+                content='Reset'
+                onClick={()=>{
+                  this.props.reset();
+                }}
+              />
+              <Button
+                icon='add'
+                content='New'
+                onClick={()=>{
+                  const self = this
+                  this.setState({
+                    creating: true
+                  }, () => {
+                    createBorehole().then(
+                      function(response) {
+                        if(response.data.success){
+                          getBorehole(response.data.id).then(
+                            function(response) {
+                              if(response.data.success){
+                                boreholeSelected(response.data.data)
                               }
-                            )
-                          }
-                        }//.bind(this)
-                      ).catch(function (error) {
-                        console.log(error)
-                      })
+                              self.setState({
+                                creating: false
+                              })
+                            }
+                          )
+                        }
+                      }//.bind(this)
+                    ).catch(function (error) {
+                      console.log(error)
                     })
-                  }}
-                >
-                  {
-                    this.state.creating === true?
-                    <Icon name='spinner' loading/>:
-                    <Icon name='add' />
-                  }
-                  Create a new borehole
-                </List.Content>
-              </List.Item>
-            </List>
+                  })
+                }}
+              />
+            </Button.Group>,
             <div
               style={{
-                margin: '1em'
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column'
               }}>
-              <Header size='medium' color='blue'>
-                Boreholes (drafts)
-              </Header>
-              <SearchEditorComponent
-                onChange={(filter)=>{
-                  //console.log(filter)
-                }}/>
+              <div
+                style={{
+                  margin: '1em'
+                }}>
+                <Header size='medium' color='blue'>
+                  Boreholes (drafts)
+                </Header>
+                <SearchEditorComponent
+                  onChange={(filter)=>{
+                    //console.log(filter)
+                  }}/>
+              </div>
             </div>
-          </div>
+          ]
     )
   }
 }
@@ -258,7 +266,8 @@ const mapStateToProps = (state, ownProps) => {
     home: state.home,
     search: state.search,
     editor: state.editor,
-    borehole: state.core_borehole
+    borehole: state.core_borehole,
+    boreholes: state.core_borehole_editor_list
   }
 }
 
@@ -273,6 +282,16 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch({
         type: 'EDITOR_BOREHOLE_SELECTED',
         selected: borehole
+      })
+    },
+    refresh: () => {
+      dispatch({
+        type: 'SEARCH_EDITOR_FILTER_REFRESH'
+      })
+    },
+    reset: () => {
+      dispatch({
+        type: 'SEARCH_EDITOR_FILTER_RESET'
       })
     }
   }
