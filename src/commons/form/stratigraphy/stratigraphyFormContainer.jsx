@@ -1,24 +1,26 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { translate } from 'react-i18next'
-import { connect } from 'react-redux'
-import _ from 'lodash'
-import LayerForm from '../layer/layerForm'
-import LayersList from '../../layers/layerList'
-import DomainText from '../domain/domainText'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+import LayerForm from '../layer/layerForm';
+import LayersList from '../../layers/layerList';
+import DateField from '../dateField';
+import DomainDropdown from '../domain/dropdown/domainDropdown';
 import {
   Button,
-  Icon,
-  List,
-  Segment
-} from 'semantic-ui-react'
+  Segment,
+  Form
+} from 'semantic-ui-react';
 import {
   getStratigraphies,
+  getStratigraphy,
   getLayers,
   deleteLayer,
   createLayer,
-  createStratigraphy
-} from '@ist-supsi/bmsjs'
+  patchStratigraphy,
+  deleteStratigraphy
+} from '@ist-supsi/bmsjs';
 
 
 class StratigraphyFormContainer extends React.Component {
@@ -26,8 +28,10 @@ class StratigraphyFormContainer extends React.Component {
   constructor(props) {
     super(props);
     this.load = this.load.bind(this);
+    this.updateAttributeDelay = {};
     this.state = {
       stratigraphy: null,
+      isPatching: false,
       stratigraphyEmpty: false,
       fetchingStratigraphy: false,
       layers: null,
@@ -36,20 +40,20 @@ class StratigraphyFormContainer extends React.Component {
   }
  
   componentDidMount() {
-    const { borehole, kind } = this.props;
-    if (!_.isNil(borehole) && !_.isNil(kind)) {
-      this.load(borehole, kind);
+    const { id } = this.props;
+    if (!_.isNil(id)) {
+      this.load(id);
     }
   }
 
   componentDidUpdate(prevProps) {
-    const { borehole, kind } = this.props;
-    if (kind !== prevProps.kind) {
-      this.load(borehole, kind);
+    const { id } = this.props;
+    if (id !== prevProps.id) {
+      this.load(id);
     }
   }
 
-  load(borehole, kind) {
+  load(id) {
     // Get Stratigraphy by borehole and stratigraphy kind
     this.setState({
       stratigraphy: null,
@@ -58,6 +62,54 @@ class StratigraphyFormContainer extends React.Component {
       layers: null,
       layer: null
     }, function(){
+      
+      getStratigraphy(id).then(
+        function(response){
+          if (
+            response.data.success
+          ) {
+            this.setState({
+                stratigraphy: response.data.data
+              }, function(){
+                // Load Stratigraphy Layers
+                getLayers(
+                  this.state.stratigraphy.id
+                ).then(
+                  function(response){
+                    if(response.data.success){
+                      this.setState({
+                        layers: response.data.data
+                      })
+                    }
+                  }.bind(this)
+                ).catch((error) => {
+                  console.log(error);
+                })
+              }.bind(this)
+            );
+          } else{
+            // Stratigraphy not created yet
+            this.setState({
+              stratigraphyEmpty: true
+            });
+          }
+        }.bind(this)
+      ).catch((err) => {
+        console.log(err);
+      })
+    }.bind(this));
+  }
+
+  _load(borehole, kind) {
+    // Get Stratigraphy by borehole and stratigraphy kind
+    this.setState({
+      stratigraphy: null,
+      stratigraphyEmpty: false,
+      fetchingStratigraphy: true,
+      layers: null,
+      layer: null
+    }, function(){
+      
       getStratigraphies(
         borehole, kind
       ).then(
@@ -98,10 +150,53 @@ class StratigraphyFormContainer extends React.Component {
     }.bind(this));
   }
 
+  updateChange(attribute, value, to = true){
+    const {
+      onUpdated
+    } = this.props;
+    const state = {
+      ...this.state,
+      isPatching: true,
+      stratigraphy: {
+        ...this.state.stratigraphy
+      }
+    };
+    _.set(state.stratigraphy, attribute, value)
+    this.setState(state, () => {
+      if(
+        this.updateAttributeDelay.hasOwnProperty(attribute) &&
+        this.updateAttributeDelay[attribute]
+      ){
+        clearTimeout(this.updateAttributeDelay[attribute]);
+        this.updateAttributeDelay[attribute] = false;
+      }
+      this.updateAttributeDelay[attribute] = setTimeout(function(){
+        patchStratigraphy(
+          this.state.stratigraphy.id,
+          attribute,
+          value
+        ).then(function(response) {
+          if(response.data.success){
+            this.setState({
+              isPatching: false
+            }, () => {
+              if(_.isFunction(onUpdated)){
+                onUpdated(this.state.stratigraphy.id, attribute, value);
+              }
+            });
+          }
+        }.bind(this)).catch(function (error) {
+          console.error(error);
+        })
+      }.bind(this), to? 500: 0);
+    });
+  }
+
   render() {
     const { stratigraphy } = this.state
-    const { borehole, kind } = this.props
-    if(this.state.stratigraphyEmpty){
+    const { domains, t, onDeleted } = this.props
+    
+    /*if(this.state.stratigraphyEmpty){
       return (
         <div
           style={{
@@ -131,7 +226,7 @@ class StratigraphyFormContainer extends React.Component {
                       if(response.data.success){
                         self.load(borehole, kind)
                       }
-                    }/*.bind(this)*/).catch(function (error) {
+                    }).catch(function (error) {
                     console.log(error)
                   })
                 }}
@@ -145,8 +240,23 @@ class StratigraphyFormContainer extends React.Component {
           </div>
         </div>
       )
-    }else if (_.isNil(stratigraphy)) {
-      return 'nothing selected'
+    }else 
+    */
+    if (this.state.stratigraphyEmpty || _.isNil(stratigraphy)) {
+      return (
+        <div
+          style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <div>
+            Nothing selected
+          </div>
+        </div>
+      )
     }
     return (
       <div
@@ -166,13 +276,90 @@ class StratigraphyFormContainer extends React.Component {
           }}
         >
           <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column'
+            }}
           >
+            <Form
+              size='small'
+            >
+              <Form.Group widths='equal'>
+                <Form.Field
+                  style={{
+                    width: '50%'
+                  }}
+                  required
+                >
+                  <label>{t('meta_stratigraphy')}</label>
+                  <DomainDropdown
+                    schema='layer_kind'
+                    selected={stratigraphy.kind}
+                    onSelected={(selected)=>{
+                      this.updateChange(
+                        'kind', selected.id, false
+                      )
+                    }}
+                    reset={false}
+                  />
+                </Form.Field>
+                <Form.Field
+                  style={{
+                    width: '50%'
+                  }}
+                  required
+                  error={_.isNil(stratigraphy.date)}
+                >
+                  <label>Date</label>
+                  <DateField
+                    date={stratigraphy.date}
+                    onChange={(selected)=>{
+                      this.updateChange(
+                        'date', selected, false
+                      )
+                    }} />
+                </Form.Field>
+              </Form.Group>
+            </Form>
           {
             _.isNil(this.state.layers)?
               null:
-              <div>
-                <List divided relaxed >
-                  <List.Item
+              <div
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    marginBottom: '0.5em'
+                  }}
+                >
+                  <Button
+                    fluid
+                    negative
+                    onClick={()=>{
+                      deleteStratigraphy(
+                        stratigraphy.id
+                      ).then((response)=>{
+                        if(_.isFunction(onDeleted)){
+                          onDeleted(stratigraphy.id);
+                        }
+                        this.setState({
+                          stratigraphy: null
+                        });
+                      })
+                    }}
+                    size='tiny'
+                  >
+                    Delete stratigraphy
+                  </Button>
+                  <Button
+                    fluid
+                    positive
                     onClick={()=>{
                       createLayer(
                         this.state.stratigraphy.id
@@ -198,57 +385,50 @@ class StratigraphyFormContainer extends React.Component {
                         console.log(error)
                       })
                     }}
-                    style={{
-                      backgroundColor: '#eaeaea',
-                      padding: '0.5em 0.5em'
-                    }}
+                    size='tiny'
                   >
-                    <List.Content floated='right'>
-                      <Button icon size='mini' circular basic primary>
-                        <Icon name='add' />
-                      </Button>
-                    </List.Content>
-                    <List.Content>
-                      <List.Header>Add layer</List.Header>
-                    <List.Description>
-                      Click here to add a new layer
-                    </List.Description>
-                    </List.Content>
-                  </List.Item>
-                </List>
-
-                <LayersList
-                  layers={this.state.layers}
-                  onSelected={layer => {
-                    this.setState({
-                      layer: layer.id
-                    })
+                    Add layer
+                  </Button>
+                </div>
+                <div
+                  style={{
+                    flex: 1,
+                    overflowY: 'auto'
                   }}
-                  onDelete={layer => {
-                    deleteLayer(
-                      layer.id
-                    ).then(
-                      function(response) {
-                        if(response.data.success){
-                          getLayers(
-                            this.state.stratigraphy.id
-                          ).then(function(response) {
-                            if(response.data.success){
-                              this.setState({
-                                layers: response.data.data,
-                                layer: null
-                              })
-                            }
-                          }.bind(this)).catch(function (error) {
-                            console.log(error)
-                          })
-                        }
-                    }.bind(this)).catch(function (error) {
-                      console.log(error)
-                    })
-                  }}
-                  selected={this.state.layer}>
-                </LayersList>
+                >
+                  <LayersList
+                    layers={this.state.layers}
+                    onSelected={layer => {
+                      this.setState({
+                        layer: layer.id
+                      })
+                    }}
+                    onDelete={layer => {
+                      deleteLayer(
+                        layer.id
+                      ).then(
+                        function(response) {
+                          if(response.data.success){
+                            getLayers(
+                              this.state.stratigraphy.id
+                            ).then(function(response) {
+                              if(response.data.success){
+                                this.setState({
+                                  layers: response.data.data,
+                                  layer: null
+                                })
+                              }
+                            }.bind(this)).catch(function (error) {
+                              console.log(error)
+                            })
+                          }
+                      }.bind(this)).catch(function (error) {
+                        console.log(error)
+                      })
+                    }}
+                    selected={this.state.layer}>
+                  </LayersList>
+                </div>
               </div>
           }
           </div>
@@ -262,8 +442,13 @@ class StratigraphyFormContainer extends React.Component {
               this.state.layer !== null?
               <LayerForm
                 id={this.state.layer}
+                conf={
+                  domains.data.layer_kind.find(function(element) {
+                    return element.id === stratigraphy.kind
+                  }).conf
+                }
                 onUpdated={(id, attribute, value) => {
-                  const layers = this.state.layers;
+                  const layers = [...this.state.layers];
                   for (var i = 0; i < layers.length; i++) {
                     if(id === layers[i].id){
                       layers[i][attribute] = value;
@@ -284,12 +469,16 @@ class StratigraphyFormContainer extends React.Component {
 
 StratigraphyFormContainer.propTypes = {
   borehole: PropTypes.number,
-  kind: PropTypes.number
+  kind: PropTypes.number,
+  id: PropTypes.number,
+  onUpdated: PropTypes.func,
+  onDeleted: PropTypes.func
 }
 
 StratigraphyFormContainer.defaultProps = {
   borehole: undefined,
-  kind: undefined
+  kind: undefined,
+  id: undefined
 }
 
 const mapStateToProps = (state, ownProps) => {

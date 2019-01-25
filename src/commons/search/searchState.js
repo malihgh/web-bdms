@@ -7,15 +7,32 @@ const initialState = {
   zoom2selected: false,
   extent: null,
   filter: {
+    refresh: 0,
     identifier: '',
     kind: null,
     restriction: null,
+    restriction_until_from: '',
+    restriction_until_to: '',
+    drilling_date_from: '',
+    drilling_date_to: '',
+    elevation_z_from: '',
+    elevation_z_to: '',
+    length_from: '',
+    length_to: '',
     status: null,
-    extent: null
+    extent: null,
+    canton: null,
+    municipality: null
   }
-}
+};
 
-const search = (state = initialState, action) => {
+const search = (
+    state = {
+      ...initialState,
+      filter: {
+        ...initialState.filter
+      }
+    }, action) => {
   switch (action.type) {
     case 'SEARCH_MAPFILTER_CHANGED': {
       if(action.active === true){
@@ -64,6 +81,43 @@ const search = (state = initialState, action) => {
         }
       }
       return copy;
+    }
+    case 'SEARCH_FILTER_RESET_RESTRICTION': {
+      const copy = {...state};
+      copy.filter.restriction_until_from = '';
+      copy.filter.restriction_until_to = '';
+      return copy;
+    }
+    case 'SEARCH_FILTER_RESET_DRILLING': {
+      const copy = {...state};
+      copy.filter.drilling_date_from = '';
+      copy.filter.drilling_date_to = '';
+      return copy;
+    }
+    case 'SEARCH_FILTER_RESET_ELEVATION': {
+      const copy = {...state};
+      copy.filter.elevation_z_from = '';
+      copy.filter.elevation_z_to = '';
+      return copy;
+    }
+    case 'SEARCH_FILTER_RESET_DEPTH': {
+      const copy = {...state};
+      copy.filter.length_from = '';
+      copy.filter.length_to = '';
+      return copy;
+    }
+    case 'SEARCH_FILTER_REFRESH': {
+      const copy = {...state};
+      copy.filter.refresh = copy.filter.refresh + 1;
+      return copy;
+    }
+    case 'SEARCH_FILTER_RESET': {
+      return {
+        ...state,
+        filter: {
+          ...initialState.filter
+        }
+      };
     }
     case 'SEARCH_EXTENT_CHANGED': {
       if(state.mapfilter === true){

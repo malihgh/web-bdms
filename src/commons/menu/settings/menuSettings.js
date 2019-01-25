@@ -1,22 +1,21 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import _ from 'lodash'
-import { translate } from 'react-i18next'
+import React from 'react';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import {
     withRouter
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 import {
   Icon,
   Button
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
 
 class MenuSettings extends React.Component {
 
   render() {
     const {
-      t, setting
-    } = this.props
+      t
+    } = this.props;
     return(
       <div style={{
         padding: '1em'
@@ -30,13 +29,13 @@ class MenuSettings extends React.Component {
       </div>
     )
   }
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
     setting: state.setting
-  }
-}
+  };
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
@@ -45,14 +44,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch({
         path: '/borehole',
         type: 'CLEAR'
-      })
+      });
     }
   }
-}
+};
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(translate(
   ['home','common', 'borehole_form']
-)(withRouter(MenuSettings)))
+)(withRouter(MenuSettings)));

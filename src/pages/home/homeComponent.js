@@ -30,10 +30,11 @@ class HomeComponent extends React.Component {
         {
           false? null:
           <div style={{
-            flex: '0 0 300px',
+            width: '300px',
             // boxShadow: '2px 0px 5px 0px rgba(0,0,0,0.75)',
             borderRight: 'thin solid #c7c7c7',
-            marginRight: '10px'
+            display: 'flex',
+            flexDirection: 'column'
           }}>
             <MenuContainer>
               <MenuExplorer/>
@@ -71,12 +72,15 @@ class HomeComponent extends React.Component {
                 />
             }
           </div>
-          <div style={{
+          <div
+            className='stbg'
+            style={{
             flex: '1 1 100%',
             // padding: "1em",
             display: 'flex',
             flexDirection: 'column',
-            borderLeft: 'thin solid #c7c7c7',
+            // borderLeft: 'thin solid #c7c7c7',
+            boxShadow: 'rgba(0, 0, 0, 0.75) -2px 0px 5px 0px'
           }}>
             <MapComponent
               highlighted={

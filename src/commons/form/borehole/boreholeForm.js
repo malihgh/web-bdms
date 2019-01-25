@@ -10,16 +10,20 @@ import {
   loadBorehole,
   checkBorehole,
   createBorehole,
+  createStratigraphy,
   patchBorehole
 } from '@ist-supsi/bmsjs';
 
 import PointComponent from '../../map/pointComponent';
 import DomainDropdown from '../domain/dropdown/domainDropdown';
 import MunicipalityDropdown from '../municipality/dropdown/municipalityDropdown';
-import DomainTabs from '../domain/domainTabs';
+// import DomainTabs from '../domain/domainTabs';
 import CantonDropdown from '../cantons/dropdown/cantonDropdown';
 import DateField from '../dateField';
+import DateText from '../dateText';
+// import StratigraphyForm from '../stratigraphy/stratigraphyForm';
 import StratigraphyFormContainer from '../stratigraphy/stratigraphyFormContainer';
+import DomainText from '../domain/domainText';
 
 import {
   Tab,
@@ -30,7 +34,8 @@ import {
   Dimmer,
   Loader,
   TextArea,
-  Progress
+  Progress,
+  Button
 } from 'semantic-ui-react';
 
 class BoreholeForm extends React.Component {
@@ -86,7 +91,12 @@ class BoreholeForm extends React.Component {
         this.props.loadBorehole(id).then(function(response) {
           if(response.success){
             self.setState({
-              loading_fetch: false
+              loading_fetch: false,
+              stratigraphy_id: (
+                _.isArray(response.data.stratigraphy)
+                && response.data.stratigraphy.length>0?
+                  response.data.stratigraphy[0].id: null
+              )
             });
           }
         }).catch(function (error) {
@@ -153,7 +163,6 @@ class BoreholeForm extends React.Component {
     state[attribute+"_fetch"] = true;
 
     const self = this;
-    debugger
     // update state
     this.setState(state, () => {
       if(self.checkattribute){
@@ -1166,17 +1175,109 @@ class BoreholeForm extends React.Component {
                       flexDirection: 'column',
                       height: '100%'
                     }}>
-                    <DomainTabs
-                      selected={this.state.layer_kind}
-                      schema='layer_kind'
-                      onSelected={(selected)=>{
-                        this.setState({
-                          layer_kind: selected
-                        })
-                      }}/>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row'
+                      }}
+                    >
+                      <Button
+                        content={t('meta_stratigraphy')}
+                        icon='add'
+                        onClick={()=>{
+                          createStratigraphy(
+                            borehole.id
+                          ).then(
+                            (response)=>{
+                              if(response.data.success){
+                                this.setState({
+                                  stratigraphy_id: response.data.id
+                                }, ()=>{
+                                  this.loadOrCreate(borehole.id);
+                                });
+                              }
+                            }
+                          ).catch(function (error) {
+                            console.log(error);
+                          });
+                        }}
+                        secondary
+                        size='small'
+                      />
+                      {
+                        _.isArray(borehole.stratigraphy)? 
+                          borehole.stratigraphy.map((stratigraphy, sx)=>(
+                            <div
+                              key={'str-tab-'+sx}
+                              onClick={()=>{
+                                this.setState({
+                                  stratigraphy_id: stratigraphy.id
+                                })
+                              }}
+                              style={{
+                                margin: '0px 1em',
+                                cursor: 'pointer',
+                                borderBottom: 
+                                  this.state.stratigraphy_id === stratigraphy.id?
+                                    '2px solid black': '2px solid transparent',
+                                padding: '0px 0.5em 3px 0.5em'
+                              }}
+                            >
+                              <span
+                                style={{
+                                  fontWeight: 'bold'
+                                }}
+                              >
+                                <DomainText
+                                  schema={'layer_kind'}
+                                  id={stratigraphy.kind}
+                                />
+                              </span>
+                              <br/>
+                              <span
+                                style={{
+                                  color: '#787878',
+                                  fontSize: '0.8em'
+                                }}
+                              >
+                                <DateText
+                                  date={stratigraphy.date}
+                                />
+                              </span>
+                            </div>
+                          )): null
+                      }
+                    </div>
                     <StratigraphyFormContainer
                       borehole={borehole.id}
-                      kind={this.state.layer_kind}/>
+                      kind={this.state.layer_kind}
+                      id={this.state.stratigraphy_id}
+                      onUpdated={(id, attribute, value)=>{
+                        const bh = {
+                          ...borehole
+                        };
+                        for (var i = 0; i < bh.stratigraphy.length; i++) {
+                          if(id === bh.stratigraphy[i].id){
+                            bh.stratigraphy[i][attribute] = value;
+                            break;
+                          }
+                        }
+                        this.props.updateBorehole(bh);
+                      }}
+                      onDeleted={(id)=>{
+                        const bh = {
+                          ...borehole
+                        };
+                        const strt = [];
+                        for (var i = 0; i < bh.stratigraphy.length; i++) {
+                          if(id !== bh.stratigraphy[i].id){
+                            strt.push(bh.stratigraphy[i]);
+                          }
+                        }
+                        bh.stratigraphy = strt;
+                        this.props.updateBorehole(bh);
+                      }}
+                    />
                   </div>
                 </div>
               )

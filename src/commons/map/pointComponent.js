@@ -40,7 +40,6 @@ import {
   getHeight,
   getAddressByPoint
 } from '@ist-supsi/bmsjs';
-import { transformWithProjections } from 'ol/proj';
 
 const projections = {
   "EPSG:21781": "+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.4,15.1,405.3,0,0,0,0 +units=m +no_defs",
@@ -392,7 +391,8 @@ class PointComponent extends React.Component {
           flex: '1 1 100%',
           // border: 'thin solid #cccccc'
       }}>
-        <div style={{
+        <div
+          style={{
           position: 'absolute',
           top: '6px',
           right: '6px',
@@ -417,12 +417,13 @@ class PointComponent extends React.Component {
           </Button>
         </div>
         <div
+          className='stbg'
           id='point'
           style={{
             // width: '100%',
             // height: '100%',
             padding: '0px',
-            flex: '1 1 100%',
+            flex: '1 1 100%'
             // border: 'thin solid #cccccc'
           }}
         />

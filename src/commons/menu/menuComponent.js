@@ -21,7 +21,13 @@ class MenuComponent extends React.Component {
         height: '100%',
         flexDirection: 'column'
       }}>
-      <List divided verticalAlign='middle'>
+      <List
+        divided
+        verticalAlign='middle'
+        style={{
+          margin: '0px'
+        }}
+      >
           <List.Item
             style={{
               padding: '1em',
@@ -98,7 +104,12 @@ class MenuComponent extends React.Component {
             }
           </List.Item>
         </List>
-        <div style={{ flex: 1 }}>
+        <div style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column'
+          }}
+        >
           {this.props.children}
         </div>
         <List

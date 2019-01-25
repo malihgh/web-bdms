@@ -21,14 +21,12 @@ import {defaults as defaultControls} from 'ol/control/util';
 import { click, pointerMove } from 'ol/events/condition';
 
 import { translate } from 'react-i18next';
-import DomainText from '../form/domain/domainText';
 
 import {
   getGeojson
 } from '@ist-supsi/bmsjs';
 
 import {
-  Button,
   Dropdown
 } from 'semantic-ui-react';
 
@@ -211,17 +209,6 @@ class MapComponent extends React.Component {
   }
 
   styleHover(feature, resolution){
-    const {
-      highlighted
-    } = this.props;
-
-    // let selected = (highlighted !== undefined)
-    //   && highlighted.indexOf(feature.get('id'))>-1;
-
-    // if(selected){
-    //   return[];
-    // }
-
     let conf = {
       image: new Circle({
         radius: 6,
@@ -241,7 +228,6 @@ class MapComponent extends React.Component {
         offsetY: -22
       })
     };
-
     return [new Style(conf)];
   }
 
@@ -259,7 +245,7 @@ class MapComponent extends React.Component {
       "g" "closed"
     */
     let res = feature.get('restriction_code');
-    let fill = null, stroke = new Stroke({color: 'black', width: 2});
+    let fill = null; //, stroke = new Stroke({color: 'black', width: 2});
     let fcolor = null;
     if(res === 'f'){
       fcolor = 'rgb(33, 186, 69)';
@@ -358,12 +344,13 @@ class MapComponent extends React.Component {
           image: new Circle({
             radius: 12,
             fill: new Fill({color: 'rgba(255, 255, 255, 0.5)'}),
-            stroke: new Stroke({color: 'rgba(33, 133, 208, 1)', width: 3})
+            stroke: new Stroke({color: 'rgba(240, 175, 0, 1)', width: 4})
           })
+          // zIndex: 10000
         }),
         new Style({
           image: new Circle({
-            radius: 13,
+            radius: 14,
             stroke: new Stroke({color: '#787878', width: 1})
           })
         }),
@@ -433,7 +420,7 @@ class MapComponent extends React.Component {
     let refresh = false;
     if(!_.isEqual(highlighted, this.props.highlighted)){
       if(highlighted.length>0){
-        var feature = this.points.getFeatureById(highlighted[0]);
+        let feature = this.points.getFeatureById(highlighted[0]);
         if(feature!==null){
           this.setState({
             hover: feature
@@ -494,9 +481,8 @@ class MapComponent extends React.Component {
       }
     }
     if(zoomto !== null && zoomto !== this.props.zoomto){
-      var feature = this.points.getFeatureById(zoomto);
+      let feature = this.points.getFeatureById(zoomto);
       var point = feature.getGeometry();
-      var size = this.map.getSize();
       this.map.getView().setCenter(point.getCoordinates());
     }
     if(refresh){
@@ -507,9 +493,6 @@ class MapComponent extends React.Component {
 
   render() {
     const { t } = this.props;
-    const {
-      satellite
-    } = this.state;
     return (
       <div
         style={{

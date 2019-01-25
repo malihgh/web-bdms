@@ -1,46 +1,46 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { translate } from 'react-i18next'
-import _ from 'lodash'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import {
   createStratigraphy,
   getStratigraphy
-} from '@ist-supsi/bmsjs'
+} from '@ist-supsi/bmsjs';
 
-import DomainText from '../domain/domainText'
-import DomainDropdown from '../domain/dropdown/domainDropdown'
-import StartigraphyTable from '../../table/stratigraphyTable'
-import LayerForm from '../layer/layerForm'
+import DomainText from '../domain/domainText';
+import DomainDropdown from '../domain/dropdown/domainDropdown';
+import StartigraphyTable from '../../table/stratigraphyTable';
+import LayerForm from '../layer/layerForm';
 
 import {
   Form
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
 
 class StratigraphyForm extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.empty = {
       id: props.hasOwnProperty('id')? props.id: null,
       kind: null
-    }
-    this.checkattribute = false
-    this.updateAttributeDelay = {}
+    };
+    this.checkattribute = false;
+    this.updateAttributeDelay = {};
     this.state = {
       isFetching: false,
       isPatching: false,
       stratigraphy: {
         ...this.empty
       }
-    }
+    };
   }
 
   componentDidMount(){
     const {
       id
-    } = this.props
-    this.load(id)
+    } = this.props;
+    this.load(id);
   }
 
   componentDidUpdate(prevProps) {
@@ -60,17 +60,17 @@ class StratigraphyForm extends React.Component {
             this.setState({
               isFetching: false,
               stratigraphy: response.data.data
-            })
+            });
           }
         }.bind(this)).catch(function (error) {
-          console.log(error)
+          console.log(error);
         })
       })
     }
   }
 
   render() {
-    const size = null // 'small'
+    const size = null; // 'small'
     return (
       <Form
         error

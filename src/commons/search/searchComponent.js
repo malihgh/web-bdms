@@ -12,6 +12,8 @@ import {
 import LabelReset from '../form/labelReset';
 import DomainDropdown from '../form/domain/dropdown/domainDropdown';
 import MunicipalityDropdown from '../form/municipality/dropdown/municipalityDropdown';
+import CantonDropdown from '../form/cantons/dropdown/cantonDropdown';
+import DateField from '../form/dateField';
 
 class SearchComponent extends React.Component {
   componentDidUpdate(prevProps){
@@ -143,6 +145,85 @@ class SearchComponent extends React.Component {
           />
         </Form.Field>
         <Form.Field>
+          <label>{t('borehole_form:restriction_until')} (
+            {t('borehole_form:date_format')})</label>
+          <DateField
+            date={search.filter.restriction_until_from}
+            onChange={(selected)=>{
+              this.props.setFilter(
+                'restriction_until_from', selected
+              );
+            }}
+            placeholder='After this date'
+          />
+          <DateField
+            date={search.filter.restriction_until_to}
+            onChange={(selected)=>{
+              this.props.setFilter(
+                'restriction_until_to', selected
+              );
+            }}
+            placeholder='Before this date'
+          />
+          <LabelReset
+            onClick={()=>{
+              this.props.resetRestriction();
+            }}
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>{t('borehole_form:elevation_z')}</label>
+          <Input
+            placeholder='Elevation from meters'
+            value={search.filter.elevation_z_from}
+            onChange={(eve)=>{
+              this.props.setFilter(
+                'elevation_z_from',
+                eve.target.value
+              )
+            }}/>
+            <Input
+              placeholder='Elevation to meters'
+              value={search.filter.elevation_z_to}
+              onChange={(eve)=>{
+                this.props.setFilter(
+                  'elevation_z_to',
+                  eve.target.value
+                )
+              }}/>
+            <LabelReset
+              onClick={()=>{
+                this.props.resetElevation();
+              }}
+            />
+        </Form.Field>
+        <Form.Field>
+          <label>{t('borehole_form:length')}</label>
+          <Input
+            placeholder='Depth from meters'
+            value={search.filter.length_from}
+            onChange={(eve)=>{
+              this.props.setFilter(
+                'length_from',
+                eve.target.value
+              )
+            }}/>
+            <Input
+              placeholder='Depth to meters'
+              value={search.filter.length_to}
+              onChange={(eve)=>{
+                this.props.setFilter(
+                  'length_to',
+                  eve.target.value
+                )
+              }}/>
+            <LabelReset
+              onClick={()=>{
+                this.props.resetDepth();
+              }}
+            />
+        </Form.Field>
+        <Form.Field>
           <label>{t('borehole_form:status')}</label>
           <DomainDropdown
             schema='extended.status'
@@ -163,11 +244,73 @@ class SearchComponent extends React.Component {
           />
         </Form.Field>
         <Form.Field>
+          <label>{t('borehole_form:drilling_date')} (
+            {t('borehole_form:date_format')})</label>
+          <DateField
+            date={search.filter.drilling_date_from}
+            onChange={(selected)=>{
+              this.props.setFilter(
+                'drilling_date_from', selected
+              );
+            }}
+            placeholder='After this date'
+          />
+          <DateField
+            date={search.filter.drilling_date_to}
+            onChange={(selected)=>{
+              this.props.setFilter(
+                'drilling_date_to', selected
+              );
+            }}
+            placeholder='Before this date'
+          />
+          <LabelReset
+            onClick={()=>{
+              this.props.resetDrilling();
+            }}
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>{t('borehole_form:canton')}</label>
+          <CantonDropdown
+            selected={search.filter.canton}
+            onSelected={(selected)=>{
+              if(search.filter.municipality !== null){
+                this.props.setFilter(
+                  'municipality', null
+                );
+              }
+              this.props.setFilter(
+                'canton', selected.id
+              );
+            }}/>
+            <LabelReset
+              onClick={()=>{
+                this.props.setFilter(
+                  'canton', null
+                );
+              }}
+            />
+        </Form.Field>
+        <Form.Field>
           <label>Municipality</label>
-          <MunicipalityDropdown/>
-          <LabelReset onClick={()=>{
-            console.log('reset');
-          }}/>
+          <MunicipalityDropdown
+            selected={search.filter.municipality}
+            disabled={search.filter.canton===null}
+            canton={search.filter.canton}
+            onSelected={(selected)=>{
+              this.props.setFilter(
+                'municipality', selected.id
+              );
+            }}
+          />
+          <LabelReset
+            onClick={()=>{
+              this.props.setFilter(
+                'municipality', null
+              );
+            }}
+          />
         </Form.Field>
       </Form>
     )
@@ -205,6 +348,26 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         type: 'SEARCH_FILTER_CHANGED',
         key: key,
         value: value
+      });
+    },
+    resetRestriction: () => {
+      dispatch({
+        type: 'SEARCH_FILTER_RESET_RESTRICTION'
+      });
+    },
+    resetElevation: () => {
+      dispatch({
+        type: 'SEARCH_FILTER_RESET_ELEVATION'
+      });
+    },
+    resetDepth: () => {
+      dispatch({
+        type: 'SEARCH_FILTER_RESET_DEPTH'
+      });
+    },
+    resetDrilling: () => {
+      dispatch({
+        type: 'SEARCH_FILTER_RESET_DRILLING'
       });
     }
   }

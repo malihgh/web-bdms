@@ -30,7 +30,7 @@ class DateField extends React.Component {
   }
   render() {
     const {
-      onChange, i18n
+      onChange, i18n, placeholder
     } = this.props
     if(i18n.language === 'de'){
       moment.locale('de-ch')
@@ -51,6 +51,7 @@ class DateField extends React.Component {
         customInput={
           <div>
             <Input
+              placeholder={placeholder}
               value={
                 moment(this.state.date).isValid()?
                 moment(this.state.date).format('DD.MM.YYYY'):''
@@ -80,7 +81,14 @@ class DateField extends React.Component {
 
 DateField.propTypes = {
   date: PropTypes.string,
-  onChange: PropTypes.func
-}
+  onChange: PropTypes.func,
+  placeholder: PropTypes.string
+};
+
+DateField.defaultProps = {
+  placeholder: null
+};
+
+
 
 export default translate('search')(DateField)

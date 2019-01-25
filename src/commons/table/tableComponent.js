@@ -56,20 +56,6 @@ class TableComponent extends React.Component {
           this.props.loadData(1, filter); //, setting.orderby, setting.direction);
         }.bind(this), 10);
       })
-      // if(this.state.all === true){
-      //   this.setState({
-      //     selected: [],
-      //     all: false
-      //   }, ()=>{
-      //     this.delay = setTimeout(function(){
-      //       this.props.loadData(1, filter); //, setting.orderby, setting.direction);
-      //     }.bind(this), 10);
-      //   });
-      // }else{
-      //   this.delay = setTimeout(function(){
-      //     this.props.loadData(1, filter); //, setting.orderby, setting.direction);
-      //   }.bind(this), 10);
-      // }
     }
   }
   handleClick(selected) {
@@ -122,11 +108,9 @@ class TableComponent extends React.Component {
       onHover(selected);
     }
   }
-
   deleteList(){
     const {
-      filter,
-      onMultiple
+      filter
     } = this.props;
     if(this.state.all === true || this.state.selected.length>0){
       if(this.state.all === true){

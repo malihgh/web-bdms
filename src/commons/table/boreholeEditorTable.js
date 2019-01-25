@@ -217,7 +217,7 @@ class BoreholeEditorTable extends TableComponent {
   }
   getHeader(){
     const {
-      all, selected
+      all
     } = this.state;
     return (
       <Table.Row>
@@ -249,9 +249,6 @@ class BoreholeEditorTable extends TableComponent {
     )
   }
   getCols(item, idx){
-    const {
-      selected
-    } = this.state;
     let colIdx = 0
     return ([
       <Table.Cell

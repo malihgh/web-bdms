@@ -10,7 +10,7 @@ import {
   Segment,
   Icon,
   Header,
-  Button,
+  Button
 } from 'semantic-ui-react'
 
 import DateText from '../../form/dateText'
@@ -25,7 +25,7 @@ class MenuExplorer extends React.Component {
       t,
       detail,
       search
-    } = this.props
+    } = this.props;
     return(
       home.selected?
       <div style={{
@@ -85,23 +85,25 @@ class MenuExplorer extends React.Component {
           </div>
         </Segment>
       </div>:
-      <div
-        style={{
-          margin: '1em'
-        }}>
-        <Header size='medium' color='blue'>
-          Boreholes: {
-            boreholes.isFetching?
-            ' searching...':
-            boreholes.dlen + ' founds'
-          }
-        </Header>
-        <div
-          style={{
-            marginBottom: '0.8em'
-          }}
+      [
+        
+        <Button.Group
+          basic
+          key='sb-em-1'
+          size='mini'
+          widths='3'
         >
           <Button
+            icon='refresh'
+            content='Refresh'
+            loading={boreholes.isFetching}
+            onClick={()=>{
+              this.props.refresh();
+            }}
+          />
+          <Button
+            content='Export'
+            icon='download'
             onClick={()=>{
               window.open(
                 process.env.PUBLIC_URL + '/api/v1/borehole/export?'
@@ -111,17 +113,37 @@ class MenuExplorer extends React.Component {
                   }).join('&')
               );
             }}
-            primary
-            size='mini'
-          >
-            Export
-          </Button>
+          />
+          <Button
+            icon='undo'
+            content='Reset'
+            onClick={()=>{
+              this.props.reset();
+            }}
+          />
+        </Button.Group>,
+        <div
+          key='sb-em-2'
+          style={{
+            padding: '1em',
+            flex: '1 1 100%',
+            display: 'flex',
+            flexDirection: 'column',
+            overflowY: 'auto'
+          }}>
+          <Header size='medium' color='blue'>
+            Boreholes: {
+              boreholes.isFetching?
+              ' searching...':
+              boreholes.dlen + ' founds'
+            }
+          </Header>
+          <SearchComponent
+            onChange={(filter)=>{
+              //console.log(filter)
+            }}/>
         </div>
-        <SearchComponent
-          onChange={(filter)=>{
-            //console.log(filter)
-          }}/>
-      </div>
+      ]
     )
   }
 }
@@ -144,6 +166,16 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         type: 'HOME_BOREHOLE_SELECTED',
         id: null
       })
+    },
+    refresh: () => {
+      dispatch({
+        type: 'SEARCH_FILTER_REFRESH'
+      });
+    },
+    reset: () => {
+      dispatch({
+        type: 'SEARCH_FILTER_RESET'
+      });
     }
   }
 }

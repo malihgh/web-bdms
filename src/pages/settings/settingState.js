@@ -1,9 +1,5 @@
 import _ from 'lodash';
 
-import {
-  boreholeTmpl
-} from '../../commons/form/borehole/boreholeForm';
-
 const initialState = {
   isFetching: false,
   pathching: [],

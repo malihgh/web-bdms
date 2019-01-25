@@ -137,6 +137,7 @@ class BoreholeTable extends TableComponent {
 
             return (
               <img
+                alt={kind.code}
                 src={
                   process.env.PUBLIC_URL
                   + '/img/'
@@ -154,6 +155,7 @@ class BoreholeTable extends TableComponent {
           }else{
             return (
               <img
+                alt={'n/p'}
                 src={
                   process.env.PUBLIC_URL
                   + '/img/a-black.svg'

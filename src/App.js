@@ -17,12 +17,16 @@ import {
   loadSettings
 } from '@ist-supsi/bmsjs';
 
+import {
+  Icon
+} from 'semantic-ui-react';
+
 
 // console.log('process.env.PUBLIC_URL: ' + process.env.PUBLIC_URL)
 class App extends React.Component {
   componentDidMount(){
     const {
-      domains, cantons, setting
+      domains, cantons
     } = this.props;
     if(Object.keys(domains.data).length === 0){
       this.props.loadDomains();
@@ -47,7 +51,19 @@ class App extends React.Component {
   render() {
     return (
       this.isFetching()?
-      'loading...':
+      <div
+          style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%'
+          }}
+        >
+          <div>
+            <Icon loading name='spinner' /> Loading...
+          </div>
+        </div>:
       <Router>
         <Switch>
           {

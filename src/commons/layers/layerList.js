@@ -8,10 +8,8 @@ import { connect } from 'react-redux';
 // } from '@ist-supsi/bmsjs'
 
 import {
-  List,
   Button,
   Icon,
-  Image,
   Table
 } from 'semantic-ui-react';
 
@@ -111,6 +109,7 @@ class LayersList extends React.Component {
           {
             layers.map((item, idx) => (
               <Table.Row
+                key={'ll-rw-'+idx}
                 active={item.id === this.props.selected}
                 style={{
                   cursor: 'pointer'
@@ -166,7 +165,7 @@ class LayersList extends React.Component {
                   <Table.Cell
                     collapsing
                   >
-                    <Button icon size='mini' circular basic
+                    <Button icon size='mini' circular basic negative
                       onClick={(e)=>{
                         e.stopPropagation()
                         if(_.isFunction(this.props.onDelete)){

@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import {
   BrowserRouter as Router,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
-import _ from 'lodash';
 import {
     withRouter
 } from 'react-router-dom';
@@ -16,10 +14,6 @@ import ExplorerSettings from './explorerSettings';
 
 class SettingCmp extends React.Component {
   render() {
-    const {
-      setting,
-      match
-    } = this.props;
     return (
       <div
         style={{
@@ -30,10 +24,9 @@ class SettingCmp extends React.Component {
         }}
       >
         <div style={{
-          flex: '0 0 300px',
+          width: '300px',
           // boxShadow: '2px 0px 5px 0px rgba(0,0,0,0.75)',
-          borderRight: 'thin solid #c7c7c7',
-          marginRight: '10px'
+          borderRight: 'thin solid #c7c7c7'
         }}>
           <MenuContainer>
             <MenuSettings/>

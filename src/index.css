@@ -45,3 +45,7 @@
 .ol-popup-closer:after {
   content: "✖";
 }
+
+.stbg {
+  background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAnRSTlMAAHaTzTgAAAARSURBVHgBY3iKBFEAOp/+MgB+UQnYeBZPWAAAAABJRU5ErkJggg==)!important;
+}

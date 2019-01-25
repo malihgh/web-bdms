@@ -13,8 +13,7 @@ import {
   Header,
   Input,
   Button,
-  Form,
-  Segment
+  Form
 } from 'semantic-ui-react';
 
 import {

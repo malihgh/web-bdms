@@ -29,13 +29,13 @@
     Project Leader: Massimiliano Cannata
     Contact: massimiliano.cannata@supsi.ch
 
-    Project Manager and System Admin: Marcus Hoffmann
+    Project Manager and Sys Admin: Marcus Hoffmann
     Contact: marcus.hoffmann@supsi.ch
 
-    Core developer: Milan P. Antonovic
+    Full stack developer: Milan P. Antonovic
     Contact: milan.antonovic@supsi.ch
 
-/* THANKS */
+/* MANDATOR */
 
     Federal Office of Topography swisstopo
     Website: https://swisstopo.admin.ch
