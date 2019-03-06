@@ -8,12 +8,12 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 
 import {
-  Divider,
+  // Divider,
   List,
   Icon,
   Dropdown,
   Popup,
-  Button
+  // Button
 } from 'semantic-ui-react';
 // import LabelReset from '../form/labelReset';
 

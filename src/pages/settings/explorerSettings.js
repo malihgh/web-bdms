@@ -10,7 +10,7 @@ import {
   Checkbox,
   Divider,
   Header,
-  Icon,
+  // Icon,
   Segment,
 } from 'semantic-ui-react';
 
@@ -25,7 +25,9 @@ class ExplorerSettings extends React.Component {
       search_filter: false,
       map: false
     };
+    console.log("constructor..")
   }
+  
   render() {
     const {
       setting, t, toggleFilter
@@ -82,7 +84,7 @@ class ExplorerSettings extends React.Component {
             <Segment.Group>
               <Segment>
                 <Checkbox
-                  checked={setting.filter.mapfilter}
+                  checked={setting.data.filter.mapfilter}
                   label='Filter by Map'
                   onChange={(e, d)=>{
                     toggleFilter(
@@ -150,7 +152,7 @@ class ExplorerSettings extends React.Component {
             <Segment.Group>
               <Segment>
                 <Checkbox
-                  checked={setting.filter.mapfilter}
+                  checked={setting.data.filter.mapfilter}
                   label='Filter by Map'
                   onChange={(e, d)=>{
                     toggleFilter(
@@ -172,7 +174,7 @@ class ExplorerSettings extends React.Component {
               </Segment>
               <Segment>
                 <Checkbox
-                  checked={setting.filter.zoom2selected}
+                  checked={setting.data.filter.zoom2selected}
                   label='Zoom to selected'
                   onChange={(e, d)=>{
                     toggleFilter(
@@ -195,7 +197,7 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={
-                    setting.filter.kind
+                    setting.data.filter.kind
                   }
                   label={t('kind')}
                   onChange={(e, d)=>{
@@ -219,7 +221,7 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={
-                    setting.filter.restriction
+                    setting.data.filter.restriction
                   }
                   label={t('restriction') + "/" + t('restriction_until')}
                   onChange={(e, d)=>{
@@ -243,7 +245,7 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={
-                    setting.filter.custom.canton
+                    setting.data.filter.custom.canton
                   }
                   label={t('canton') + "/" + t('city')}
                   onChange={(e, d)=>{
@@ -267,7 +269,7 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={
-                    setting.filter.elevation_z
+                    setting.data.filter.elevation_z
                   }
                   label={t('elevation_z')}
                   onChange={(e, d)=>{
@@ -291,7 +293,7 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={
-                    setting.filter.length
+                    setting.data.filter.length
                   }
                   label={t('length')}
                   onChange={(e, d)=>{
@@ -315,7 +317,7 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={
-                    setting.filter.extended.status
+                    setting.data.filter.extended.status
                   }
                   label={t('status')}
                   onChange={(e, d)=>{
@@ -339,7 +341,7 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={
-                    setting.filter.drilling_date
+                    setting.data.filter.drilling_date
                   }
                   label={t('drilling_date')}
                   onChange={(e, d)=>{
@@ -371,7 +373,7 @@ class ExplorerSettings extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    setting: state.setting.data
+    setting: state.setting
   }
 };
 
@@ -379,14 +381,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     dispatch: dispatch,
     toggleFilter: (filter, enabled) => {
-      
       dispatch(patchSettings(`filter.${filter}`, enabled));
-
-      // dispatch({
-      //   type: 'SETTING_TOGGLE_FILTER',
-      //   filter: filter,
-      //   enabled: enabled
-      // })
     },
     patchSettings: (filter, enabled) => {
       dispatch(patchSettings(`filter.${filter}`, enabled));
