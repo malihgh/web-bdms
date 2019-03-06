@@ -49,7 +49,7 @@ class MenuEditor extends React.Component {
   }
 
   updateDimensions(){
-    if(!_.isNil(this.menu)){
+    if(!_.isNil(this.menu) && this.menu.children.length>0){
       const height = this.menu.clientHeight;
       const children_height = this.menu.children[0].clientHeight;
       this.setState({
