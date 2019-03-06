@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import {
   // BrowserRouter as Router,
@@ -15,10 +14,9 @@ import ExplorerSettings from './explorerSettings';
 
 class SettingCmp extends React.Component {
   render() {
-    const {
-      match
-    } = this.props;
-
+    // const {
+    //   match
+    // } = this.props;
     return (
         <div
           style={{
@@ -33,7 +31,8 @@ class SettingCmp extends React.Component {
               flex: '1 1 100%',
               // height: '100%',
               display: 'flex',
-              flexDirection: 'row'
+              flexDirection: 'row',
+              overflow: 'hidden'
             }}
           >
             <div style={{
@@ -49,7 +48,7 @@ class SettingCmp extends React.Component {
               flex: '1 1 0%',
               overflowY: 'auto'
             }}>
-              {
+              {/* {
                 match.params.id === 'explorer'?
                   <ExplorerSettings/>: null
               }
@@ -58,8 +57,8 @@ class SettingCmp extends React.Component {
                   <div>
                     ciao
                   </div>: null
-              }
-              {/* <Switch>
+              } */}
+              <Switch>
                 <Route
                   path={process.env.PUBLIC_URL + "/setting/explorer"}
                   component={ExplorerSettings}
@@ -67,12 +66,30 @@ class SettingCmp extends React.Component {
                 <Route
                   path={process.env.PUBLIC_URL + "/setting/editor"}
                   render={()=>(
-                    <div>
-                      ciao
+                    <div
+                      style={{
+                        padding: '2em',
+                        flex: 1
+                      }}
+                    >
+                      coming soon
                     </div>
                   )}
                 />
-              </Switch> */}
+                <Route
+                  path={process.env.PUBLIC_URL + "/setting/account"}
+                  render={()=>(
+                    <div
+                      style={{
+                        padding: '2em',
+                        flex: 1
+                      }}
+                    >
+                      coming soon
+                    </div>
+                  )}
+                />
+              </Switch>
             </div>
           </div>
         </div>
@@ -80,30 +97,4 @@ class SettingCmp extends React.Component {
   }
 };
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    setting: state.setting
-  }
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    dispatch: dispatch
-  }
-};
-
-export default withRouter(
-  connect(
-      mapStateToProps,
-      mapDispatchToProps
-  )(
-    translate('common')(SettingCmp)
-  )
-);
-
-// export default connect(
-//     mapStateToProps,
-//     mapDispatchToProps
-// )(
-//   translate('common')(withRouter(SettingCmp))
-// );
+export default withRouter(translate('common')(SettingCmp));

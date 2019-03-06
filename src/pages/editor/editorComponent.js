@@ -30,7 +30,8 @@ class EditorComponent extends React.Component {
           style={{
             flex: '1 1 100%',
             display: 'flex',
-            flexDirection: 'row'
+            flexDirection: 'row',
+            overflow: 'hidden'
           }}
         >
           <div style={{
