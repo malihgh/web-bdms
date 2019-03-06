@@ -7,10 +7,10 @@ import {
 } from 'react-router-dom'
 
 import {
-  Icon,
-  List,
-  Header,
   Button,
+  Header,
+  Icon,
+  Menu,
   Segment,
   Table
 } from 'semantic-ui-react'
@@ -28,10 +28,37 @@ import SearchEditorComponent from '../../search/editor/searchEditorComponent'
 class MenuEditor extends React.Component {
   
   constructor(props) {
-    super(props)
+    super(props);
+    // this.cntMenu = React.createRef();
+    // this.menu = React.createRef();
+    this.updateDimensions = this.updateDimensions.bind(this);
     this.state = {
       creating: false,
-      delete: false
+      delete: false,
+      scroller: false
+    }
+  }
+
+  componentDidMount() {
+    this.updateDimensions();
+    window.addEventListener("resize", this.updateDimensions.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions.bind(this));
+  }
+
+  updateDimensions(){
+    if(!_.isNil(this.menu)){
+      const height = this.menu.clientHeight;
+      const children_height = this.menu.children[0].clientHeight;
+      this.setState({
+        scroller: children_height>height
+      });
+    }else{
+      this.setState({
+        scroller: true
+      });
     }
   }
 
@@ -185,30 +212,89 @@ class MenuEditor extends React.Component {
             </div>
           </div>:
           [
-            <Button.Group
-              basic
+            <div
               key='sb-em-1'
+              style={{
+                padding: '1em'
+              }}>
+              <Header size='medium'>
+                Boreholes (drafts)
+              </Header>
+            </div>,
+            <div
+              className={
+                this.state.scroller === true?
+                'scroller': null
+              }
+              ref={ divElement => this.menu = divElement}
+              key='sb-em-2'
+              style={{
+                padding: '1em',
+                flex: '1 1 100%',
+                display: 'flex',
+                flexDirection: 'column',
+                overflowY: 'hidden',
+                marginRight: this.state.scroller === true?
+                  this.props.setting.scrollbar: '0px'
+              }}>
+              <SearchEditorComponent
+                onChange={(filter)=>{
+                  //console.log(filter)
+                }}/>
+            </div>,
+            // <div
+            //   style={{
+            //     height: '100%',
+            //     display: 'flex',
+            //     flexDirection: 'column'
+            //   }}>
+            //   <div
+            //     style={{
+            //       margin: '1em'
+            //     }}>
+            //     <Header size='medium' color='blue'>
+            //       Boreholes (drafts)
+            //     </Header>
+            //     <SearchEditorComponent
+            //       onChange={(filter)=>{
+            //         //console.log(filter)
+            //       }}/>
+            //   </div>
+            // </div>,
+            <Menu
+              icon='labeled'
               size='mini'
-              widths='3'
+              key='sb-em-3'
+              style={{
+                margin: '0px'
+              }}
             >
-              <Button
-                icon='refresh'
-                content='Refresh'
-                loading={boreholes.isFetching}
+              <Menu.Item
                 onClick={()=>{
                   this.props.refresh();
                 }}
-              />
-              <Button
-                icon='undo'
-                content='Reset'
+                style={{
+                  flex: 1
+                }}
+              >
+                <Icon
+                  name='refresh'
+                  loading={boreholes.isFetching}
+                />
+                Refresh
+              </Menu.Item>
+              <Menu.Item
                 onClick={()=>{
                   this.props.reset();
                 }}
-              />
-              <Button
-                icon='add'
-                content='New'
+                style={{
+                  flex: 1
+                }}
+              >
+                <Icon name='undo' />
+                Reset
+              </Menu.Item>
+              <Menu.Item
                 onClick={()=>{
                   const self = this
                   this.setState({
@@ -234,27 +320,14 @@ class MenuEditor extends React.Component {
                     })
                   })
                 }}
-              />
-            </Button.Group>,
-            <div
-              style={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column'
-              }}>
-              <div
                 style={{
-                  margin: '1em'
-                }}>
-                <Header size='medium' color='blue'>
-                  Boreholes (drafts)
-                </Header>
-                <SearchEditorComponent
-                  onChange={(filter)=>{
-                    //console.log(filter)
-                  }}/>
-              </div>
-            </div>
+                  flex: 1
+                }}
+              >
+                <Icon name='add' />
+                New
+              </Menu.Item>
+            </Menu>
           ]
     )
   }
@@ -267,7 +340,8 @@ const mapStateToProps = (state, ownProps) => {
     search: state.search,
     editor: state.editor,
     borehole: state.core_borehole,
-    boreholes: state.core_borehole_editor_list
+    boreholes: state.core_borehole_editor_list,
+    setting: state.setting
   }
 }
 

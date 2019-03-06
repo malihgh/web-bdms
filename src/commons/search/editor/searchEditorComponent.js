@@ -31,7 +31,7 @@ class SearchEditorComponent extends React.Component {
   render() {
     const {search, t} = this.props;
     return (
-      <Form size='small'>
+      <Form size='tiny'>
         {/*
         <Form.Field>
           <label>{t('borehole_form:project_name')}</label>

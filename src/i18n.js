@@ -14,7 +14,8 @@ let resources = {
       'creation_date': 'Creation date',
       'delete': 'delete',
       'sure': 'Are you sure?',
-      'reset': 'reset'
+      'reset': 'reset',
+      'done': 'Done'
     },
     header: {
       'explore': 'Explore',
@@ -170,7 +171,8 @@ let resources = {
       'creation_date': 'Erstellungsdatum',
       'delete': 'Eliminieren',
       'sure': 'Sicher?',
-      'reset': 'Zurücksetzen'
+      'reset': 'Zurücksetzen',
+      'done': 'Ok'
     },
     header: {
       'explore': 'Durchsuchen',
@@ -325,7 +327,8 @@ let resources = {
       'creation_date': 'Data di creazione',
       'delete': 'Elimina',
       'sure': 'Sei sicuro?',
-      'reset': 'azzerare'
+      'reset': 'azzerare',
+      'done': 'Fatto'
     },
     header: {
       'explore': 'Esplora',

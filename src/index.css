@@ -49,3 +49,45 @@
 .stbg {
   background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAnRSTlMAAHaTzTgAAAARSURBVHgBY3iKBFEAOp/+MgB+UQnYeBZPWAAAAABJRU5ErkJggg==)!important;
 }
+
+/* way the hell off screen */
+.scrollbar-measure {
+	width: 100px;
+	height: 100px;
+	overflow: scroll;
+	position: absolute;
+	top: -9999px;
+}
+
+.scroller {
+  overflow: hidden;
+}
+
+.scroller:hover {
+  overflow-y: auto !important;
+  margin-right: 0px !important;
+}
+
+.flex_row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex_col {
+  display: flex;
+  flex-direction: row;
+}
+
+.linker {
+  cursor: pointer;
+  text-decoration: underline;
+  color: rgb(64, 99, 255);
+}
+
+.link {
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

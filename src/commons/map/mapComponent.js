@@ -500,6 +500,7 @@ class MapComponent extends React.Component {
           height: '100%',
           padding: '0px',
           flex: '1 1 100%',
+          position: 'relative'
           // border: 'thin solid #cccccc'
         }}
       >
@@ -570,7 +571,8 @@ class MapComponent extends React.Component {
             height: '100%',
             padding: '0px',
             flex: '1 1 100%',
-            cursor: this.state.hover === null? null: 'pointer'
+            cursor: this.state.hover === null? null: 'pointer',
+            position: 'relative'
             // border: 'thin solid #cccccc'
           }}
         />

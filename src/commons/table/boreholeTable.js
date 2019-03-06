@@ -118,23 +118,23 @@ class BoreholeTable extends TableComponent {
           ].find(function(element) {
             return element.id === item.kind
           });
-          if(kind !== undefined){
 
-            const restriction = this.props.domains.data[
-              'restriction'
-            ].find(function(element) {
-              return element.id === item.restriction
-            });
+          const restriction = this.props.domains.data[
+            'restriction'
+          ].find(function(element) {
+            return element.id === item.restriction
+          });
 
-            let color = 'black';
-            if(restriction !== undefined){
-              if(restriction.code === 'f'){
-                color = 'green';
-              }else if(['b', 'g'].indexOf(restriction.code)>=0){
-                color = 'red';
-              }
+          let color = 'black';
+          if(restriction !== undefined){
+            if(restriction.code === 'f'){
+              color = 'green';
+            }else if(['b', 'g'].indexOf(restriction.code)>=0){
+              color = 'red';
             }
+          }
 
+          if(kind !== undefined){
             return (
               <img
                 alt={kind.code}
@@ -158,7 +158,7 @@ class BoreholeTable extends TableComponent {
                 alt={'n/p'}
                 src={
                   process.env.PUBLIC_URL
-                  + '/img/a-black.svg'
+                  + '/img/a-' + color + '.svg'
                 }
                 style={{
                   height: '0.8em',

@@ -1,23 +1,54 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import React from 'react';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import _ from 'lodash';
 import {
     withRouter
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 import {
-  Segment,
-  Icon,
+  Button,
   Header,
-  Button
-} from 'semantic-ui-react'
-
-import DateText from '../../form/dateText'
-
-import SearchComponent from '../../search/searchComponent'
+  Icon,
+  Menu,
+  Segment
+} from 'semantic-ui-react';
+import DateText from '../../form/dateText';
+import SearchComponent from '../../search/searchComponent';
 
 class MenuExplorer extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.updateDimensions = this.updateDimensions.bind(this);
+    this.state = {
+      scroller: false
+    }
+  }
+
+  componentDidMount() {
+    this.updateDimensions();
+    window.addEventListener("resize", this.updateDimensions.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions.bind(this));
+  }
+
+  updateDimensions(){
+    if(!_.isNil(this.menu)){
+      const height = this.menu.clientHeight;
+      const children_height = this.menu.children[0].clientHeight;
+      this.setState({
+        scroller: children_height>height
+      });
+    }else{
+      this.setState({
+        scroller: true
+      });
+    }
+  }
+
   render() {
     const {
       home,
@@ -28,9 +59,11 @@ class MenuExplorer extends React.Component {
     } = this.props;
     return(
       home.selected?
-      <div style={{
-        padding: '1em'
-      }}>
+      <div
+        style={{
+          padding: '1em'
+        }}
+      >
         <Button fluid icon primary
           onClick={e=>this.props.boreholeSeleced()}>
           <Icon name='caret left' />
@@ -86,24 +119,63 @@ class MenuExplorer extends React.Component {
         </Segment>
       </div>:
       [
-        
-        <Button.Group
-          basic
+        <div
           key='sb-em-1'
+          style={{
+            padding: '1em'
+          }}>
+          <Header size='medium'>
+            Boreholes: {
+              boreholes.isFetching?
+              ' searching...':
+              boreholes.dlen + ' founds'
+            }
+          </Header>
+        </div>,
+        <div
+          className={
+            this.state.scroller === true?
+            'scroller': null
+          }
+          ref={ divElement => this.menu = divElement}
+          key='sb-em-2'
+          style={{
+            padding: '1em',
+            flex: '1 1 100%',
+            display: 'flex',
+            flexDirection: 'column',
+            overflowY: 'hidden',
+            marginRight: this.state.scroller === true?
+              this.props.setting.scrollbar: '0px'
+          }}>
+          <SearchComponent
+            onChange={(filter)=>{
+              //console.log(filter)
+            }}/>
+        </div>,
+        <Menu
+          icon='labeled'
           size='mini'
-          widths='3'
+          key='sb-em-3'
+          style={{
+            margin: '0px'
+          }}
         >
-          <Button
-            icon='refresh'
-            content='Refresh'
-            loading={boreholes.isFetching}
+          <Menu.Item
             onClick={()=>{
               this.props.refresh();
             }}
-          />
-          <Button
-            content='Export'
-            icon='download'
+            style={{
+              flex: 1
+            }}
+          >
+            <Icon
+              name='refresh'
+              loading={boreholes.isFetching}
+            />
+            Refresh
+          </Menu.Item>
+          <Menu.Item
             onClick={()=>{
               window.open(
                 process.env.PUBLIC_URL + '/api/v1/borehole/export?'
@@ -113,36 +185,25 @@ class MenuExplorer extends React.Component {
                   }).join('&')
               );
             }}
-          />
-          <Button
-            icon='undo'
-            content='Reset'
-            onClick={()=>{
-              this.props.reset();
+            style={{
+              flex: 1
             }}
-          />
-        </Button.Group>,
-        <div
-          key='sb-em-2'
-          style={{
-            padding: '1em',
-            flex: '1 1 100%',
-            display: 'flex',
-            flexDirection: 'column',
-            overflowY: 'auto'
-          }}>
-          <Header size='medium' color='blue'>
-            Boreholes: {
-              boreholes.isFetching?
-              ' searching...':
-              boreholes.dlen + ' founds'
-            }
-          </Header>
-          <SearchComponent
-            onChange={(filter)=>{
-              //console.log(filter)
-            }}/>
-        </div>
+          >
+            <Icon name='download' />
+            Export
+          </Menu.Item>
+          <Menu.Item
+            onClick={()=>{
+              this.props.reset();              
+            }}
+            style={{
+              flex: 1
+            }}
+          >
+            <Icon name='undo' />
+            Reset
+          </Menu.Item>
+        </Menu>
       ]
     )
   }
@@ -154,7 +215,8 @@ const mapStateToProps = (state, ownProps) => {
     detail: state.detail_borehole,
     home: state.home,
     search: state.search,
-    boreholes: state.core_borehole_list
+    boreholes: state.core_borehole_list,
+    setting: state.setting
   }
 }
 

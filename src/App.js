@@ -3,24 +3,48 @@ import { connect } from 'react-redux';
 import {
   BrowserRouter as Router,
   Route,
-  Switch
+  Switch,
+  Redirect
 } from 'react-router-dom';
 
 import HomeComponent from './pages/home/homeComponent';
 import EditorComponent from './pages/editor/editorComponent';
-import SidebarComponent from './pages/sidebar/sidebarComponent';
+// import SidebarComponent from './pages/sidebar/sidebarComponent';
 import SettingCmp from './pages/settings/settingCmp';
 
 import {
   loadDomains,
   loadCantons,
-  loadSettings
+  loadSettings,
+  loadUser
 } from '@ist-supsi/bmsjs';
 
 import {
   Icon
 } from 'semantic-ui-react';
 
+const cpaths = [
+  {
+    path: process.env.PUBLIC_URL + '/',
+    exact: true,
+    body: HomeComponent
+  },
+  {
+    path: process.env.PUBLIC_URL + '/detail/:id',
+    exact: true,
+    body: HomeComponent
+  },
+  {
+    path: process.env.PUBLIC_URL + '/editor',
+    exact: true,
+    body: EditorComponent
+  },
+  {
+    path: process.env.PUBLIC_URL + '/setting/:id',
+    exact: true,
+    body: SettingCmp
+  }
+];
 
 // console.log('process.env.PUBLIC_URL: ' + process.env.PUBLIC_URL)
 class App extends React.Component {
@@ -33,6 +57,20 @@ class App extends React.Component {
     }
     if(cantons.data.length===0) this.props.loadCantons();
     this.props.loadSettings();
+    this.props.loadUser();
+
+    var scrollDiv = document.createElement("div");
+    scrollDiv.className = "scrollbar-measure";
+    document.body.appendChild(scrollDiv);
+
+    // Get the scrollbar width
+    var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+    // console.warn(scrollbarWidth); // Mac:  15
+    this.props.setScrollbarWidth(scrollbarWidth+'px')
+
+    // Delete the DIV 
+    document.body.removeChild(scrollDiv);
+
   }
   isFetching(){
     const {
@@ -49,6 +87,20 @@ class App extends React.Component {
     return false;
   }
   render() {
+    const fpaths = cpaths.filter(rt => {
+      // console.log(
+      //   rt.path,
+      //   this.props.user.data !== null?
+      //     this.props.user.data.roles.indexOf('producer')>=0: '-'
+      // )
+      return (
+        rt.path === '/'
+        || (
+          this.props.user.data !== null
+          && this.props.user.data.roles.indexOf('producer')>=0
+        ))
+    })
+    // console.log(fpaths);
     return (
       this.isFetching()?
       <div
@@ -60,47 +112,68 @@ class App extends React.Component {
             height: '100%'
           }}
         >
+
           <div>
-            <Icon loading name='spinner' /> Loading...
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row'
+              }}
+            >
+              <img
+                alt="Swiss Logo"
+                src={process.env.PUBLIC_URL + '/img/ch.png'}
+                style={{
+                  height: '30px',
+                  width: 'auto'
+                }}
+              />
+              <div
+                style={{
+                  marginLeft: '1em'
+                }}
+              >
+                <div>
+                  <div>
+                    Borehole Management System
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '0.8em'
+                    }}
+                  >
+                    Loading <Icon loading name='spinner' /> 
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>:
       <Router>
         <Switch>
           {
-            [
-              {
-                path: process.env.PUBLIC_URL + '/',
-                exact: true,
-                body: HomeComponent
-              },
-              {
-                path: process.env.PUBLIC_URL + '/detail/:id',
-                exact: true,
-                body: HomeComponent
-              },
-              {
-                path: process.env.PUBLIC_URL + '/editor',
-                exact: true,
-                body: EditorComponent
-              },
-              {
-                path: process.env.PUBLIC_URL + '/setting/:id',
-                exact: true,
-                body: SettingCmp
-              }
-            ].map((route, index) => (
-              <Route
-                key={index}
-                path={route.path}
-                exact={route.exact}
-                component={(r)=>(
-                  false?
-                    <SidebarComponent>
-                      <route.body/>
-                    </SidebarComponent>: <route.body/>
-                )}
-              />))
+            fpaths.map((route, index) => {
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  exact={route.exact}
+                  component={(r)=>(
+                    <route.body/>
+                  )}
+                />
+              )
+            })
           }
+          <Route
+            component={(r)=>(
+              <Redirect
+                to={{
+                  pathname:  process.env.PUBLIC_URL + "/"
+                }}
+              />
+            )}
+          />
         </Switch>
       </Router>
     );
@@ -109,9 +182,10 @@ class App extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    domains: state.core_domain_list,
     cantons: state.core_canton_list,
-    setting: state.setting
+    domains: state.core_domain_list,
+    setting: state.setting,
+    user: state.core_user
   }
 };
 
@@ -126,6 +200,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     loadSettings: () => {
       dispatch(loadSettings());
+    },
+    setScrollbarWidth: (w) => {
+      dispatch({
+        type: "SETTING_SCROLLBAR_WIDTH",
+        width: w
+      });
+    },
+    loadUser: () => {
+      dispatch(loadUser());
     }
   }
 };
