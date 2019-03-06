@@ -99,7 +99,7 @@ class MunicipalityDropdown extends React.Component {
                   municipality.name
                 }
                 subheader={municipality.cname}/>
-            }: null
+            }//: null
           ))
         }
         value={selected}

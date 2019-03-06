@@ -87,12 +87,13 @@ class CantonDropdown extends React.Component {
                   canton.name
                 }
                 subheader={canton.cname}/>
-            }: null
+            }//: null
           ))
         }
         value={selected}
-        onChange={this.handleChange}/>
-    )
+        onChange={this.handleChange}
+      />
+    );
   }
 }
 
