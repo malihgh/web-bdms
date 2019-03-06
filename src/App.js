@@ -139,7 +139,8 @@ class App extends React.Component {
                   </div>
                   <div
                     style={{
-                      fontSize: '0.8em'
+                      fontSize: '0.8em',
+                      textAlign: 'center'
                     }}
                   >
                     Loading <Icon loading name='spinner' /> 
@@ -184,7 +185,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     cantons: state.core_canton_list,
     domains: state.core_domain_list,
-    setting: state.setting,
+    // setting: state.setting,
     user: state.core_user
   }
 };
