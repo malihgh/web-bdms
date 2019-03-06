@@ -17,6 +17,7 @@ import Circle from 'ol/style/Circle';
 import Draw from 'ol/interaction/Draw';
 import Modify from 'ol/interaction/Modify';
 import Point from 'ol/geom/Point';
+import Polygon from 'ol/geom/Polygon';
 import Feature from 'ol/Feature';
 import {defaults as defaultControls} from 'ol/control/util';
 
@@ -58,6 +59,7 @@ class PointComponent extends React.Component {
     this.styleFunction = this.styleFunction.bind(this);
     this.getAddress = this.getAddress.bind(this);
     this.transform = this.transform.bind(this);
+    this.zoomtopoly = this.zoomtopoly.bind(this);
     this.srs = 'EPSG:2056';
 
     _.forEach(projections, function(proj, srs) {
@@ -114,6 +116,21 @@ class PointComponent extends React.Component {
       );
     }
     return this.toSRS(point);
+  }
+
+  zoomtopoly(coords){
+    var feature = new Feature({
+      geometry: new Polygon(coords)
+    });
+    this.map.getView().fit(
+      feature.getGeometry()
+      , {
+        // padding: [170, 100, 30, 100],
+        // minResolution: 1,
+        nearest: true,
+        duration: 500
+      }
+    );
   }
 
   componentDidMount(){
@@ -337,7 +354,7 @@ class PointComponent extends React.Component {
       getAddressByPoint(
         coordinates[0], coordinates[1]
       ).then((response)=>{
-        console.log(response);
+        // console.log(response);
         this.setState({
           address: false,
           ...response.data.data
@@ -407,7 +424,7 @@ class PointComponent extends React.Component {
               this.setState({
                 satellite: !satellite
               }, (a) => {
-                console.log(a);
+                // console.log(a);
                 const layers = this.map.getLayers().getArray();
                 layers[0].setVisible(!this.state.satellite);
                 layers[1].setVisible(this.state.satellite);

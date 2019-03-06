@@ -35,7 +35,9 @@ import {
   Loader,
   TextArea,
   Progress,
-  Button
+  Button,
+  Icon,
+  Image
 } from 'semantic-ui-react';
 
 class BoreholeForm extends React.Component {
@@ -658,7 +660,31 @@ class BoreholeForm extends React.Component {
                             <Form.Field
                               required
                             >
-                              <label>{t('canton')}</label>
+                              <label>
+                                {t('canton')} {
+                                  borehole.custom.canton !== null?
+                                    <span
+                                      className='link'
+                                      onClick={()=>{
+                                        for (let index = 0; index < this.props.cantons.length; index++) {
+                                          const canton = this.props.cantons[index];
+                                          if (canton.id === borehole.custom.canton){
+                                            this.map.zoomtopoly(
+                                              canton.geom.coordinates
+                                            )
+                                            break;
+                                          }
+                                        }
+                                      }}
+                                    >
+                                      <Icon name='map marker' />
+                                      {/* <Icon.Group>
+                                        <Icon name='map marker' />
+                                        <Icon corner name='search' />
+                                      </Icon.Group> */}
+                                    </span>: null
+                                }
+                              </label>
                               <CantonDropdown
                                 selected={borehole.custom.canton}
                                 onSelected={(selected)=>{
@@ -675,12 +701,44 @@ class BoreholeForm extends React.Component {
                             <Form.Field
                               required
                             >
-                              <label>{t('city')}</label>
+                              <label>
+                                {t('city')} {
+                                  borehole.custom.city !== null?
+                                    <span
+                                      className='link'
+                                      onClick={()=>{
+                                        for (let index = 0; index < this.props.municipalities.length; index++) {
+                                          const municipality = this.props.municipalities[index];
+                                          if (municipality.id === borehole.custom.city){
+                                            this.map.zoomtopoly(
+                                              municipality.geom.coordinates
+                                            )
+                                            break;
+                                          }
+                                        }
+                                      }}
+                                    >
+                                      {/* <Image
+                                        avatar
+                                        src={
+                                          process.env.PUBLIC_URL
+                                          + '/img/map-search-outline.svg'
+                                        }
+                                        style={{
+                                          height: '1.5em',
+                                          width: 'auto'                                      
+                                        }}
+                                      /> */}
+                                      <Icon name='map marker' />
+                                    </span>: null
+                                }
+                              </label>
                               <MunicipalityDropdown
                                 disabled={borehole.custom.canton===null}
                                 canton={borehole.custom.canton}
                                 selected={borehole.custom.city}
                                 onSelected={(selected)=>{
+                                  console.log(selected)
                                   this.updateChange(
                                     'custom.city', selected.id, false
                                   )
@@ -728,6 +786,7 @@ class BoreholeForm extends React.Component {
                     >
                       <PointComponent
                         id={this.props.id}
+                        ref={ pmap => this.map = pmap}
                         x={
                           borehole.location_x === ''?
                             null:
@@ -1306,7 +1365,9 @@ BoreholeForm.defaultProps = {
 const mapStateToProps = (state, ownProps) => {
   return {
     borehole: state.core_borehole,
-    domains: state.core_domain_list
+    domains: state.core_domain_list,
+    cantons: state.core_canton_list.data,
+    municipalities: state.core_municipality_list.data
   }
 }
 
