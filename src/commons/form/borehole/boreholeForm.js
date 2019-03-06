@@ -454,7 +454,7 @@ class BoreholeForm extends React.Component {
                               content={t('duplicate')}
                             />: null
                       }
-                      <Form.Field>
+                      {/* <Form.Field>
                         <label>{t('project_name')}</label>
                         <Input
                           onChange={(e)=>{
@@ -467,7 +467,7 @@ class BoreholeForm extends React.Component {
                           autoCorrect="off"
                           autoCapitalize="off"
                           spellCheck="false"/>
-                      </Form.Field>
+                      </Form.Field> */}
                     </Form>
                   </Segment>
 
