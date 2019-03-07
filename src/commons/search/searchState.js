@@ -4,6 +4,7 @@ const initialState = {
   isFetching: false,
   advanced: false,
   mapfilter: false,
+  center2selected: false,
   zoom2selected: false,
   extent: null,
   filter: {
@@ -52,6 +53,18 @@ const search = (
           extent: null
         },
         mapfilter: action.active
+      };
+    }
+    case 'SEARCH_CENTER2_CHANGED': {
+      if(action.active === true){
+        return {
+          ...state,
+          center2selected: action.active
+        };
+      }
+      return {
+        ...state,
+        center2selected: action.active
       };
     }
     case 'SEARCH_ZOOM2_CHANGED': {

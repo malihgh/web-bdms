@@ -59,7 +59,8 @@ class SearchComponent extends React.Component {
               this.props.setmapfilter(d.checked)
             }}/>
         </Form.Field>
-        <Form.Field
+        <Form.Group
+          widths='equal'
           style={{
             display: (
               search.advanced === true
@@ -67,14 +68,30 @@ class SearchComponent extends React.Component {
             )? null: 'none'
           }}
         >
-          <label>Center to selected</label>
-          <Checkbox
-            toggle
-            checked={search.zoom2selected}
-            onChange={(e, d)=>{
-              this.props.setzoom2filter(d.checked)
-            }}/>
-        </Form.Field>
+          <Form.Field>
+            <label>Center to selected</label>
+            <Checkbox
+              toggle
+              checked={search.center2selected}
+              onChange={(e, d)=>{
+                this.props.setcenter2filter(d.checked)
+              }}/>
+          </Form.Field>
+          <Form.Field
+            style={{
+              textAlign: 'right',
+              display: search.center2selected === true? null: 'none'
+            }}
+          >
+            <label>...and zoom</label>
+            <Checkbox
+              toggle
+              checked={search.zoom2selected}
+              onChange={(e, d)=>{
+                this.props.setzoom2filter(d.checked)
+              }}/>
+          </Form.Field>
+        </Form.Group>
         {
           this.isVisible('extended.original_name')?
             <Form.Field>
@@ -358,6 +375,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     setzoom2filter: (active) => {
       dispatch({
         type: 'SEARCH_ZOOM2_CHANGED',
+        active: active
+      });
+    },
+    setcenter2filter: (active) => {
+      dispatch({
+        type: 'SEARCH_CENTER2_CHANGED',
         active: active
       });
     },

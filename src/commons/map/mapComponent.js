@@ -414,8 +414,9 @@ class MapComponent extends React.Component {
     const {
         highlighted,
         filter,
-        zoomto,
-        hover
+        centerto,
+        hover,
+        zoomto
     } = nextProps;
     let refresh = false;
     if(!_.isEqual(highlighted, this.props.highlighted)){
@@ -480,10 +481,16 @@ class MapComponent extends React.Component {
         }, 500);
       }
     }
-    if(zoomto !== null && zoomto !== this.props.zoomto){
-      let feature = this.points.getFeatureById(zoomto);
+    if(centerto !== null && centerto !== this.props.centerto){
+      let feature = this.points.getFeatureById(centerto);
       var point = feature.getGeometry();
-      this.map.getView().setCenter(point.getCoordinates());
+      if(zoomto === true){
+        this.map.getView().fit(
+          point, {minResolution: 1}
+        );
+      }else{
+        this.map.getView().setCenter(point.getCoordinates());
+      }
     }
     if(refresh){
       this.selectClick.getFeatures().clear();
@@ -632,18 +639,20 @@ class MapComponent extends React.Component {
 };
 
 MapComponent.propTypes = {
+  centerto: PropTypes.number,
   moveend: PropTypes.func,
   highlighted: PropTypes.array,
   hover: PropTypes.func,
   selected: PropTypes.func,
   filter: PropTypes.object,
-  zoomto: PropTypes.number
+  zoomto: PropTypes.bool
 };
 
 MapComponent.defaultProps = {
   highlighted: [],
   filter: {},
-  zoomto: null
+  zoomto: false,
+  centerto: null
 };
 
 export default (translate('borehole_form')(MapComponent));
