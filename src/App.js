@@ -36,7 +36,7 @@ const cpaths = [
   },
   {
     path: process.env.PUBLIC_URL + '/editor',
-    exact: true,
+    exact: false,
     body: EditorComponent
   },
   {
@@ -140,7 +140,7 @@ class App extends React.Component {
                   <div
                     style={{
                       fontSize: '0.8em',
-                      textAlign: 'center'
+                      textAlign: 'left'
                     }}
                   >
                     Loading <Icon loading name='spinner' /> 
