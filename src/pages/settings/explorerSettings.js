@@ -22,10 +22,10 @@ class ExplorerSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      appearance: false,
       search_filter: false,
       map: false
     };
-    console.log("constructor..")
   }
   
   render() {
@@ -39,6 +39,74 @@ class ExplorerSettings extends React.Component {
           flex: 1
         }}
       >
+        <div
+          style={{
+            flexDirection: 'row',
+            display: 'flex'
+          }}
+        >
+          <Header
+            as='h3'
+            style={{
+              margin: '0px'
+            }}
+          >
+            Appearance
+          </Header>
+          <div
+            style={{
+              flex: 1,
+              textAlign: 'right'
+            }}
+          >
+            <Button
+              onClick={()=>{
+                this.setState({
+                  appearance: !this.state.appearance
+                })
+              }}
+              color='red'
+              size='small'
+            >
+              {
+                this.state.appearance === true?
+                  'Collapse': 'Expand'
+              }
+            </Button>
+          </div>
+        </div>
+        <div>
+          Pellentesque scelerisque orci dolor, vel posuere nisi imperdiet ut
+          Nunc condimentum erat risus, in dictum erat rhoncus sit amet.
+        </div>
+        {
+          this.state.appearance === true?
+            <Segment.Group>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.mapfilter}
+                  label='Filter by Map'
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'mapfilter',
+                      d.checked
+                    );
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+            </Segment.Group>
+            : <Divider />
+        }
         <div
           style={{
             flexDirection: 'row',
@@ -221,6 +289,54 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={
+                    setting.data.filter.extended.method
+                  }
+                  label={t('method')}
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'extended.method',
+                      d.checked
+                    );
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={
+                    setting.data.filter.custom.project_name
+                  }
+                  label={t('project_name')}
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'custom.project_name',
+                      d.checked
+                    );
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={
                     setting.data.filter.restriction
                   }
                   label={t('restriction') + "/" + t('restriction_until')}
@@ -245,9 +361,33 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={
+                    setting.data.filter.custom.landuse
+                  }
+                  label={t('landuse')}
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'custom.landuse',
+                      d.checked
+                    )
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={
                     setting.data.filter.custom.canton
                   }
-                  label={t('canton') + "/" + t('city')}
+                  label={t('canton') + "/" + t('city') + "/" + t('address')}
                   onChange={(e, d)=>{
                     toggleFilter(
                       'custom.canton',
@@ -317,12 +457,108 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={
+                    setting.data.filter.extended.groundwater
+                  }
+                  label={t('groundwater')}
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'extended.groundwater',
+                      d.checked
+                    )
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={
+                    setting.data.filter.extended.top_bedrock
+                  }
+                  label={t('top_bedrock')}
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'extended.top_bedrock',
+                      d.checked
+                    )
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={
                     setting.data.filter.extended.status
                   }
                   label={t('status')}
                   onChange={(e, d)=>{
                     toggleFilter(
                       'extended.status',
+                      d.checked
+                    )
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={
+                    setting.data.filter.extended.purpose
+                  }
+                  label={t('purpose')}
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'extended.purpose',
+                      d.checked
+                    )
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={
+                    setting.data.filter.custom.cuttings
+                  }
+                  label={t('cuttings')}
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'custom.cuttings',
                       d.checked
                     )
                   }}/>
@@ -362,6 +598,131 @@ class ExplorerSettings extends React.Component {
                     Class aptent taciti sociosqu ad litora torquent per conubia nostra
                   </div>
               </Segment>
+              <Segment>
+                <Checkbox
+                  checked={
+                    setting.data.filter.custom.drill_diameter
+                  }
+                  label={t('drill_diameter')}
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'custom.drill_diameter',
+                      d.checked
+                    );
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+
+              <Segment>
+                <Checkbox
+                  checked={
+                    setting.data.filter.bore_inc
+                  }
+                  label={t('bore_inc')}
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'bore_inc',
+                      d.checked
+                    );
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+
+              <Segment>
+                <Checkbox
+                  checked={
+                    setting.data.filter.custom.lit_pet_top_bedrock
+                  }
+                  label={t('lit_pet_top_bedrock')}
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'custom.lit_pet_top_bedrock',
+                      d.checked
+                    );
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+
+              <Segment>
+                <Checkbox
+                  checked={
+                    setting.data.filter.custom.lit_str_top_bedrock
+                  }
+                  label={t('lit_str_top_bedrock')}
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'custom.lit_str_top_bedrock',
+                      d.checked
+                    );
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+
+              <Segment>
+                <Checkbox
+                  checked={
+                    setting.data.filter.custom.chro_str_top_bedrock
+                  }
+                  label={t('chro_str_top_bedrock')}
+                  onChange={(e, d)=>{
+                    toggleFilter(
+                      'custom.chro_str_top_bedrock',
+                      d.checked
+                    );
+                  }}/>
+                  <div
+                    style={{
+                      paddingTop: '0.5em',
+                      paddingLeft: '1.85714em',
+                      color: '#787878'
+                    }
+                  }>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
+                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
+                  </div>
+              </Segment>
+
             </Segment.Group>
             : <Divider />
         }
