@@ -10,7 +10,12 @@ const initialState = {
   filter: {
     refresh: 0,
     identifier: '',
+    public_name: '',
+    project_name: '',
     kind: null,
+    method: null,
+    purpose: null,
+    landuse: null,
     restriction: null,
     restriction_until_from: '',
     restriction_until_to: '',
@@ -20,10 +25,24 @@ const initialState = {
     elevation_z_to: '',
     length_from: '',
     length_to: '',
+    top_bedrock_from: '',
+    top_bedrock_to: '',
+    groundwater: -1,
     status: null,
     extent: null,
     canton: null,
-    municipality: null
+    municipality: null,
+    address: '',
+    cuttings: null,
+    drill_diameter_from: '',
+    drill_diameter_to: '',
+    bore_inc_from: '',
+    bore_inc_to: '',
+    bore_inc_dir_from: '',
+    bore_inc_dir_to: '',
+    lit_pet_top_bedrock: null,
+    lit_str_top_bedrock: null,
+    chro_str_top_bedrock: null
   }
 };
 
@@ -107,6 +126,24 @@ const search = (
       copy.filter.drilling_date_to = '';
       return copy;
     }
+    case 'SEARCH_FILTER_RESET_DRILL_DIAMETER': {
+      const copy = {...state};
+      copy.filter.drill_diameter_from= '';
+      copy.filter.drill_diameter_to= '';
+      return copy;
+    }
+    case 'SEARCH_FILTER_RESET_BORE_INC': {
+      const copy = {...state};
+      copy.filter.bore_inc_from = '';
+      copy.filter.bore_inc_to = '';
+      return copy;
+    }
+    case 'SEARCH_FILTER_RESET_BORE_INC_DIR': {
+      const copy = {...state};
+      copy.filter.bore_inc_dir_from = '';
+      copy.filter.bore_inc_dir_to = '';
+      return copy;
+    }
     case 'SEARCH_FILTER_RESET_ELEVATION': {
       const copy = {...state};
       copy.filter.elevation_z_from = '';
@@ -117,6 +154,12 @@ const search = (
       const copy = {...state};
       copy.filter.length_from = '';
       copy.filter.length_to = '';
+      return copy;
+    }
+    case 'SEARCH_FILTER_RESET_TOP_BEDROCK': {
+      const copy = {...state};
+      copy.filter.top_bedrock_from = '';
+      copy.filter.top_bedrock_to = '';
       return copy;
     }
     case 'SEARCH_FILTER_REFRESH': {

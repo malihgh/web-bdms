@@ -266,7 +266,7 @@ class BoreholeEditorTable extends TableComponent {
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {
           item.percentage < 100?
-            null: //<Icon name='exclamation circle' color='red'/>:
+            null:
             <Icon name='check circle' color='green'/>
         } {item.percentage}%
       </Table.Cell>,

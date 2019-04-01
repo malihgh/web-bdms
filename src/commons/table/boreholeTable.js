@@ -8,7 +8,10 @@ import DomainText from '../form/domain/domainText';
 import DateText from '../form/dateText';
 
 import {
+  Button,
+  Checkbox,
   Icon,
+  Image,
   Table
 } from 'semantic-ui-react';
 
@@ -63,11 +66,23 @@ class BoreholeTable extends TableComponent {
     const { t } = this.props;
     return (
       <Table.Row>
-        <Table.HeaderCell
+        {/* <Table.HeaderCell
           style={{width: '1.5em'}}
           verticalAlign='top'>
           
-        </Table.HeaderCell>
+        </Table.HeaderCell> */}
+        {/* <Table.HeaderCell style={{width: '2em'}}>
+          <Checkbox
+            // checked={all === true}
+            onClick={(e)=>{
+              e.stopPropagation();
+              // this.setState({
+              //   all: !all,
+              //   selected: []
+              // });
+            }}
+          />
+        </Table.HeaderCell> */}
         <Table.HeaderCell
           verticalAlign='top'>
           {this.getIcon('original_name')}
@@ -100,18 +115,20 @@ class BoreholeTable extends TableComponent {
           {this.getIcon('status')}
           {this.getIcon('drilling_date', true)}
         </Table.HeaderCell>
+        <Table.HeaderCell
+          style={{width: '4em'}}
+          verticalAlign='top'>
+          
+        </Table.HeaderCell>
       </Table.Row>
     );
   }
   getCols(item, idx){
     let colIdx = 0
     return ([
-      // <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-      //   {item.id}
-      // </Table.Cell>,
       <Table.Cell
-        style={{width: '1.5em'}}
-        key={this.uid + "_" + idx + "_" + colIdx++}>
+        key={this.uid + "_" + idx + "_" + colIdx++}
+      >
         {(()=>{
           const kind = this.props.domains.data[
             'kind'
@@ -137,7 +154,7 @@ class BoreholeTable extends TableComponent {
           if(kind !== undefined){
             return (
               <img
-                alt={kind.code}
+                avatar
                 src={
                   process.env.PUBLIC_URL
                   + '/img/'
@@ -147,30 +164,29 @@ class BoreholeTable extends TableComponent {
                   + '.svg'
                 }
                 style={{
-                  height: '0.8em',
-                  width: '0.8em'
+                  height: '0.6em',
+                  marginRight: '0.5em',
+                  width: '0.6em'
                 }}
               />
             );
           }else{
             return (
-              <img
-                alt={'n/p'}
+              <Image
+                avatar
                 src={
                   process.env.PUBLIC_URL
                   + '/img/a-' + color + '.svg'
                 }
                 style={{
-                  height: '0.8em',
-                  width: '0.8em'
+                  height: '0.6em',
+                  marginRight: '0.5em',
+                  width: '0.6em'
                 }}
               />
             );
           }
-        })()}
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {item.original_name}
+        })()} {item.original_name}
         <br/>
         <span
           style={{
@@ -234,12 +250,56 @@ class BoreholeTable extends TableComponent {
             <DateText date={item.drilling_date}/>
         </span>
       </Table.Cell>,
+      <Table.Cell
+        key={this.uid + "_" + idx + "_" + colIdx++}
+        style={{
+          width: '4em',
+          textAlign: 'center'
+        }}
+      >
+        {
+          // this.props.home.hover !== null
+          // && this.props.home.hover.id === item.id?
+          //   <Button
+          //     disabled={this.inCart(item.id)}
+          //     icon
+          //     color='blue'
+          //     icon='cart'
+          //     onClick={(e)=>{
+          //       e.stopPropagation();
+          //       this.add2cart(item.id);
+          //     }}
+          //     size='tiny'
+          //   />: null
+        }
+        <Button
+          icon
+          color={
+            _.findIndex(this.props.checkout.cart, ['id', item.id])>=0?
+              'grey': 'blue'
+          }
+          icon={
+            _.findIndex(this.props.checkout.cart, ['id', item.id])>=0?
+              'trash alternate outline': 'cart'
+          }
+          onClick={(e)=>{
+            e.stopPropagation();
+            this.props.toggleCart(item);
+          }}
+          size='mini'
+        />
+        {/* <Icon
+          color='grey'
+          name='cart plus'
+        /> */}
+      </Table.Cell>,
     ])
   }
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    checkout: state.checkout,
     store: state.core_borehole_list,
     domains: state.core_domain_list,
     ...ownProps
@@ -251,6 +311,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     dispatch: dispatch,
     loadData: (page, filter = {}, orderby = null, direction = null) => {
       dispatch(loadBoreholes(page, 100, filter, orderby, direction));
+    },
+    toggleCart: (item) => {
+      dispatch({
+        type: 'CHECKOUT_TOGGLE_CART',
+        item: item
+      });
     }
   }
 };

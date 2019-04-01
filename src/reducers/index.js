@@ -1,4 +1,5 @@
 import home from '../pages/home/homeState';
+import checkout from '../pages/checkout/checkoutState';
 import editor from '../pages/editor/editorState';
 import leftmenu from './leftmenu';
 import detail_borehole from '../commons/detail/detailsState';
@@ -9,6 +10,7 @@ import setting from '../pages/settings/settingState';
 export const appReducers = {
   leftmenu,
   home,
+  checkout,
   detail_borehole,
   search,
   searchEditor,

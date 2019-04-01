@@ -8,14 +8,18 @@ let resources = {
       "start": "This page is in English.",
       'yes': 'Yes',
       'no': 'No',
-      'np': 'No information',
+      'np': 'Unknown',
       'username': 'Username',
       'creator': 'Created by',
       'creation_date': 'Creation date',
       'delete': 'delete',
       'sure': 'Are you sure?',
       'reset': 'reset',
-      'done': 'Done'
+      'done': 'Done',
+      'from': 'from',
+      'to': 'to',
+      'meter': 'meter',
+      'degree': 'degree'
     },
     header: {
       'explore': 'Explore',
@@ -172,7 +176,11 @@ let resources = {
       'delete': 'Eliminieren',
       'sure': 'Sicher?',
       'reset': 'Zurücksetzen',
-      'done': 'Ok'
+      'done': 'Ok',
+      'from': 'von',
+      'to': 'zu',
+      'meter': 'meter',
+      'degree': 'grad'
     },
     header: {
       'explore': 'Durchsuchen',
@@ -321,14 +329,18 @@ let resources = {
       "start": "Questa pagina è in Italiano",
       'yes': 'Sì',
       'no': 'No',
-      'np': 'Nessuna informazione',
+      'np': 'Sconosciuto',
       'username': 'Nome utente',
       'creator': 'Creato da',
       'creation_date': 'Data di creazione',
       'delete': 'Elimina',
       'sure': 'Sei sicuro?',
       'reset': 'azzerare',
-      'done': 'Fatto'
+      'done': 'Fatto',
+      'from': 'da',
+      'to': 'a',
+      'meter': 'metri',
+      'degree': 'gradi'
     },
     header: {
       'explore': 'Esplora',
