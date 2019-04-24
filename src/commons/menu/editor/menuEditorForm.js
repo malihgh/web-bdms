@@ -324,6 +324,14 @@ class MenuEditorForm extends React.Component {
           }}
         >
           <Menu.Item
+            disabled={
+              borehole.data.lock === null
+              || borehole.data.lock.username !== user.data.username
+              // && moment().diff(
+              //   moment(borehole.data.lock.date),
+              //   'minutes'
+              // ) < 10
+            }
             onClick={() => {
               deleteBorehole(borehole.data.id).then(
                 function () {

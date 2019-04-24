@@ -202,7 +202,7 @@ class MenuExplorer extends React.Component {
                   />
                   Refresh
                 </Menu.Item>
-                <Menu.Item
+                {/* <Menu.Item
                   onClick={() => {
                     window.open(
                       process.env.PUBLIC_URL + '/api/v1/borehole/export?'
@@ -218,7 +218,7 @@ class MenuExplorer extends React.Component {
                 >
                   <Icon name='download' />
                   Export
-                </Menu.Item>
+                </Menu.Item> */}
                 <Menu.Item
                   onClick={() => {
                     this.props.reset();
