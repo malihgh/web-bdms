@@ -15,8 +15,8 @@ import App from './App';
 import { unregister as unregisterServiceWorker } from './registerServiceWorker';
 
 import 'semantic-ui-css/semantic.css';
-import {appReducers} from './reducers';
-import {createReducer} from '@ist-supsi/bmsjs';
+import { appReducers } from './reducers';
+import { createReducer } from '@ist-supsi/bmsjs';
 
 const store = createStore(
   createReducer(appReducers),
@@ -27,7 +27,7 @@ const store = createStore(
 );
 
 ReactDOM.render(
-  <I18nextProvider i18n={ i18n }>
+  <I18nextProvider i18n={i18n}>
     <Provider store={store}>
       <App />
     </Provider>

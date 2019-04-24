@@ -19,7 +19,8 @@ import {
   deleteLayer,
   createLayer,
   patchStratigraphy,
-  deleteStratigraphy
+  deleteStratigraphy,
+  cloneStratigraphy
 } from '@ist-supsi/bmsjs';
 
 
@@ -69,25 +70,24 @@ class StratigraphyFormContainer extends React.Component {
             response.data.success
           ) {
             this.setState({
-                stratigraphy: response.data.data
-              }, function(){
-                // Load Stratigraphy Layers
-                getLayers(
-                  this.state.stratigraphy.id
-                ).then(
-                  function(response){
-                    if(response.data.success){
-                      this.setState({
-                        layers: response.data.data
-                      })
-                    }
-                  }.bind(this)
-                ).catch((error) => {
-                  console.log(error);
-                })
-              }.bind(this)
-            );
-          } else{
+              stratigraphy: response.data.data
+            }, function(){
+              // Load Stratigraphy Layers
+              getLayers(
+                this.state.stratigraphy.id
+              ).then(
+                function(response){
+                  if (response.data.success){
+                    this.setState({
+                      layers: response.data.data
+                    });
+                  }
+                }.bind(this)
+              ).catch((error) => {
+                console.log(error);
+              });
+            }.bind(this));
+          } else {
             // Stratigraphy not created yet
             this.setState({
               stratigraphyEmpty: true
@@ -96,7 +96,7 @@ class StratigraphyFormContainer extends React.Component {
         }.bind(this)
       ).catch((err) => {
         console.log(err);
-      })
+      });
     }.bind(this));
   }
 
@@ -119,25 +119,24 @@ class StratigraphyFormContainer extends React.Component {
             response.data.data.length===1
           ) {
             this.setState({
-                stratigraphy: response.data.data[0]
-              }, function(){
-                // Load Stratigraphy Layers
-                getLayers(
-                  this.state.stratigraphy.id
-                ).then(
-                  function(response){
-                    if(response.data.success){
-                      this.setState({
-                        layers: response.data.data
-                      })
-                    }
-                  }.bind(this)
-                ).catch((error) => {
-                  console.log(error);
-                })
-              }.bind(this)
-            );
-          } else{
+              stratigraphy: response.data.data[0]
+            }, function(){
+              // Load Stratigraphy Layers
+              getLayers(
+                this.state.stratigraphy.id
+              ).then(
+                function(response){
+                  if (response.data.success){
+                    this.setState({
+                      layers: response.data.data
+                    });
+                  }
+                }.bind(this)
+              ).catch((error) => {
+                console.log(error);
+              });
+            }.bind(this));
+          } else {
             // Stratigraphy not created yet
             this.setState({
               stratigraphyEmpty: true
@@ -146,7 +145,7 @@ class StratigraphyFormContainer extends React.Component {
         }.bind(this)
       ).catch((err) => {
         console.log(err);
-      })
+      });
     }.bind(this));
   }
 
@@ -161,9 +160,9 @@ class StratigraphyFormContainer extends React.Component {
         ...this.state.stratigraphy
       }
     };
-    _.set(state.stratigraphy, attribute, value)
+    _.set(state.stratigraphy, attribute, value);
     this.setState(state, () => {
-      if(
+      if (
         this.updateAttributeDelay.hasOwnProperty(attribute) &&
         this.updateAttributeDelay[attribute]
       ){
@@ -176,25 +175,30 @@ class StratigraphyFormContainer extends React.Component {
           attribute,
           value
         ).then(function(response) {
-          if(response.data.success){
+          if (response.data.success){
             this.setState({
               isPatching: false
             }, () => {
-              if(_.isFunction(onUpdated)){
+              if (_.isFunction(onUpdated)){
                 onUpdated(this.state.stratigraphy.id, attribute, value);
               }
             });
           }
         }.bind(this)).catch(function (error) {
           console.error(error);
-        })
+        });
       }.bind(this), to? 500: 0);
     });
   }
 
   render() {
-    const { stratigraphy } = this.state
-    const { domains, t, onDeleted } = this.props
+    const { stratigraphy } = this.state;
+    const {
+      domains,
+      t,
+      onDeleted,
+      onClone
+    } = this.props;
     
     /*if(this.state.stratigraphyEmpty){
       return (
@@ -256,7 +260,7 @@ class StratigraphyFormContainer extends React.Component {
             Nothing selected
           </div>
         </div>
-      )
+      );
     }
     return (
       <div
@@ -286,29 +290,29 @@ class StratigraphyFormContainer extends React.Component {
             >
               <Form.Group widths='equal'>
                 <Form.Field
+                  required
                   style={{
                     width: '50%'
                   }}
-                  required
                 >
                   <label>{t('meta_stratigraphy')}</label>
                   <DomainDropdown
-                    schema='layer_kind'
-                    selected={stratigraphy.kind}
                     onSelected={(selected)=>{
                       this.updateChange(
                         'kind', selected.id, false
-                      )
+                      );
                     }}
                     reset={false}
+                    schema='layer_kind'
+                    selected={stratigraphy.kind}
                   />
                 </Form.Field>
                 <Form.Field
+                  error={_.isNil(stratigraphy.date)}
+                  required
                   style={{
                     width: '50%'
                   }}
-                  required
-                  error={_.isNil(stratigraphy.date)}
                 >
                   <label>Date</label>
                   <DateField
@@ -316,123 +320,143 @@ class StratigraphyFormContainer extends React.Component {
                     onChange={(selected)=>{
                       this.updateChange(
                         'date', selected, false
-                      )
+                      );
                     }} />
                 </Form.Field>
               </Form.Group>
             </Form>
-          {
-            _.isNil(this.state.layers)?
-              null:
-              <div
-                style={{
-                  flex: 1,
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    marginBottom: '0.5em'
-                  }}
-                >
-                  <Button
-                    fluid
-                    negative
-                    onClick={()=>{
-                      deleteStratigraphy(
-                        stratigraphy.id
-                      ).then((response)=>{
-                        if(_.isFunction(onDeleted)){
-                          onDeleted(stratigraphy.id);
-                        }
-                        this.setState({
-                          stratigraphy: null
-                        });
-                      })
-                    }}
-                    size='tiny'
-                  >
-                    Delete stratigraphy
-                  </Button>
-                  <Button
-                    fluid
-                    positive
-                    onClick={()=>{
-                      createLayer(
-                        this.state.stratigraphy.id
-                      ).then(
-                        function(response) {
-                          if(response.data.success){
-                            let layer_id = response.data.id
-                            getLayers(
-                              this.state.stratigraphy.id
-                            ).then(function(response) {
-                              if(response.data.success){
-                                this.setState({
-                                  layers: response.data.data,
-                                  layer: layer_id
-                                })
-                              }
-                            }.bind(this)).catch(function (error) {
-                              console.log(error)
-                            })
-                          }
-                        }.bind(this)
-                      ).catch(function (error) {
-                        console.log(error)
-                      })
-                    }}
-                    size='tiny'
-                  >
-                    Add layer
-                  </Button>
-                </div>
+            {
+              _.isNil(this.state.layers)?
+                null:
                 <div
                   style={{
                     flex: 1,
-                    overflowY: 'auto'
+                    display: 'flex',
+                    flexDirection: 'column'
                   }}
                 >
-                  <LayersList
-                    layers={this.state.layers}
-                    onSelected={layer => {
-                      this.setState({
-                        layer: layer.id
-                      })
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      marginBottom: '0.5em'
                     }}
-                    onDelete={layer => {
-                      deleteLayer(
-                        layer.id
-                      ).then(
-                        function(response) {
-                          if(response.data.success){
-                            getLayers(
-                              this.state.stratigraphy.id
-                            ).then(function(response) {
-                              if(response.data.success){
-                                this.setState({
-                                  layers: response.data.data,
-                                  layer: null
-                                })
-                              }
-                            }.bind(this)).catch(function (error) {
-                              console.log(error)
-                            })
+                  >
+                    <Button
+                      fluid
+                      negative
+                      onClick={()=>{
+                        cloneStratigraphy(
+                          stratigraphy.id
+                        ).then((response)=>{
+                          if (_.isFunction(onClone)){
+                            onClone(stratigraphy.id);
                           }
-                      }.bind(this)).catch(function (error) {
-                        console.log(error)
-                      })
+                          this.setState({
+                            stratigraphy: null
+                          });
+                        });
+                      }}
+                      size='tiny'
+                    >
+                      Clone
+                    </Button>
+                    <Button
+                      fluid
+                      negative
+                      onClick={()=>{
+                        deleteStratigraphy(
+                          stratigraphy.id
+                        ).then((response)=>{
+                          if (_.isFunction(onDeleted)){
+                            onDeleted(stratigraphy.id);
+                          }
+                          this.setState({
+                            stratigraphy: null
+                          });
+                        });
+                      }}
+                      size='tiny'
+                    >
+                      Delete stratigraphy
+                    </Button>
+                    <Button
+                      fluid
+                      onClick={()=>{
+                        createLayer(
+                          this.state.stratigraphy.id
+                        ).then(
+                          function(response) {
+                            if (response.data.success){
+                              let layerId = response.data.id;
+                              getLayers(
+                                this.state.stratigraphy.id
+                              ).then(function(response) {
+                                if (response.data.success){
+                                  this.setState({
+                                    layers: response.data.data,
+                                    layer: layerId
+                                  });
+                                }
+                              }.bind(this)).catch(function (error) {
+                                console.log(error);
+                              });
+                            }
+                          }.bind(this)
+                        ).catch(function (error) {
+                          console.log(error);
+                        });
+                      }}
+                      positive
+                      size='tiny'
+                    >
+                      Add layer
+                    </Button>
+                  </div>
+                  <div
+                    style={{
+                      flex: 1,
+                      overflowY: 'auto'
                     }}
-                    selected={this.state.layer}>
-                  </LayersList>
+                  >
+                    <LayersList
+                      layers={this.state.layers}
+                      onDelete={layer => {
+                        deleteLayer(
+                          layer.id
+                        ).then(
+                          function(response) {
+                            if (response.data.success){
+                              getLayers(
+                                this.state.stratigraphy.id
+                              ).then(function(response) {
+                                if (response.data.success){
+                                  this.setState({
+                                    layers: response.data.data,
+                                    layer: null
+                                  });
+                                }
+                              }.bind(this)).catch(function (error) {
+                                console.log(error);
+                              });
+                            }
+                          }.bind(this)).catch(function (error) {
+                          console.log(error);
+                        });
+                      }}
+                      onSelected={layer => {
+                        this.setState({
+                          layer: layer.id
+                        });
+                      }}
+                      selected={this.state.layer}
+                    />
+                  </div>
                 </div>
-              </div>
-          }
+            }
           </div>
-          <Segment style={{
+          <Segment
+            style={{
               flex: '1 1 0%',
               overflowY: 'auto',
               margin: '0px 1em'
@@ -440,62 +464,62 @@ class StratigraphyFormContainer extends React.Component {
           >
             {
               this.state.layer !== null?
-              <LayerForm
-                id={this.state.layer}
-                conf={
-                  domains.data.layer_kind.find(function(element) {
-                    return element.id === stratigraphy.kind
-                  }).conf
-                }
-                onUpdated={(id, attribute, value) => {
-                  const layers = [...this.state.layers];
-                  for (var i = 0; i < layers.length; i++) {
-                    if(id === layers[i].id){
-                      layers[i][attribute] = value;
-                      break;
-                    }
+                <LayerForm
+                  conf={
+                    domains.data.layer_kind.find(function(element) {
+                      return element.id === stratigraphy.kind;
+                    }).conf
                   }
-                  this.setState({
-                    layers: layers
-                  });
-                }}/>: null
+                  id={this.state.layer}
+                  onUpdated={(id, attribute, value) => {
+                    const layers = [...this.state.layers];
+                    for (var i = 0; i < layers.length; i++) {
+                      if (id === layers[i].id){
+                        layers[i][attribute] = value;
+                        break;
+                      }
+                    }
+                    this.setState({
+                      layers: layers
+                    });
+                  }}
+                />: null
             }
           </Segment>
         </div>
       </div>
-    )
+    );
   }
 }
 
 StratigraphyFormContainer.propTypes = {
-  borehole: PropTypes.number,
-  kind: PropTypes.number,
   id: PropTypes.number,
-  onUpdated: PropTypes.func,
-  onDeleted: PropTypes.func
-}
+  onClone: PropTypes.func,
+  onDeleted: PropTypes.func,
+  onUpdated: PropTypes.func
+};
 
 StratigraphyFormContainer.defaultProps = {
   borehole: undefined,
   kind: undefined,
   id: undefined
-}
+};
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
     domains: state.core_domain_list
-  }
-}
+  };
+};
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )((
   translate('borehole_form')(StratigraphyFormContainer)
-))
+));

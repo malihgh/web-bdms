@@ -4,6 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 let resources = {
   en: {
     common: {
+      "you": "you",
       "title": "BMS",
       "start": "This page is in English.",
       'yes': 'Yes',
@@ -12,6 +13,7 @@ let resources = {
       'username': 'Username',
       'creator': 'Created by',
       'creation_date': 'Creation date',
+      'updateDate': 'Update date',
       'delete': 'delete',
       'sure': 'Are you sure?',
       'reset': 'reset',
@@ -20,6 +22,9 @@ let resources = {
       'to': 'to',
       'meter': 'meter',
       'degree': 'degree'
+    },
+    error: {
+      'E-900': 'Borehole locked by {{user}}'
     },
     header: {
       'explore': 'Explore',
@@ -44,7 +49,10 @@ let resources = {
       'search': 'Search project',
       'project_name': 'Project name',
       'create_new': 'Create new project',
-      'create': 'Create'
+      'create': 'Create',
+      'locked_by': 'Locked by',
+      'locked_at': 'Locked at',
+      'locked_status': 'Status'
     },
     borehole_form: {
       'completness': 'Completness',
@@ -165,6 +173,7 @@ let resources = {
   },
   de: {
     common: {
+      "you": "dir",
       "title": "BMS",
       "start": "Diese Seite ist auf deutsch.",
       'yes': 'Ja',
@@ -173,6 +182,7 @@ let resources = {
       'username': 'Benutzername',
       'creator': 'Erstellt von',
       'creation_date': 'Erstellungsdatum',
+      'updateDate': 'Update date',
       'delete': 'Eliminieren',
       'sure': 'Sicher?',
       'reset': 'Zurücksetzen',
@@ -181,6 +191,9 @@ let resources = {
       'to': 'zu',
       'meter': 'meter',
       'degree': 'grad'
+    },
+    error: {
+      'E-900': `Borehole locked by {{user}}`
     },
     header: {
       'explore': 'Durchsuchen',
@@ -205,7 +218,10 @@ let resources = {
       'search': 'Suche Projekt',
       'project_name': 'Projektname',
       'create_new': 'Neues Projekt erstellen',
-      'create': 'Erstellen'
+      'create': 'Erstellen',
+      'locked_by': 'Gesperrt durch',
+      'locked_at': 'Gesperrt am',
+      'locked_status': 'Zustand'
     },
     borehole_form: {
       'completness': 'Vollständigkeit',
@@ -325,6 +341,7 @@ let resources = {
   },
   it: {
     common: {
+      "you": "te",
       "title": "BMS",
       "start": "Questa pagina è in Italiano",
       'yes': 'Sì',
@@ -333,6 +350,7 @@ let resources = {
       'username': 'Nome utente',
       'creator': 'Creato da',
       'creation_date': 'Data di creazione',
+      'updateDate': 'Data di aggiornamento',
       'delete': 'Elimina',
       'sure': 'Sei sicuro?',
       'reset': 'azzerare',
@@ -341,6 +359,9 @@ let resources = {
       'to': 'a',
       'meter': 'metri',
       'degree': 'gradi'
+    },
+    error: {
+      'E-900': 'Modifica in corso da parte di "{{user}}"'
     },
     header: {
       'explore': 'Esplora',
@@ -365,7 +386,10 @@ let resources = {
       'project_name': 'Nome progetto',
       'search': 'Ricerca progetto',
       'create_new': 'Crea nuovo',
-      'create': 'Crea'
+      'create': 'Crea',
+      'locked_by': 'Bloccato da',
+      'locked_at': 'Bloccato il',
+      'locked_status': 'Stato'
     },
     borehole_form: {
       'completness': 'Completezza',
@@ -484,35 +508,35 @@ let resources = {
       'spatial_filter': 'Filtro spaziale'
     }
   }
-}
+};
 
 i18n
-.use(LanguageDetector)
-.init({
-  // we init with resources
-  resources: resources,
-  // lng: 'en',
-  // fallbackLng: 'en',
-  fallbackLng: {
-    'en': ['en-US'],
-    'default': ['en']
-  },
-  whitelist: ['en', 'it', 'de', 'fr'],
+  .use(LanguageDetector)
+  .init({
+    // we init with resources
+    resources: resources,
+    // lng: 'en',
+    // fallbackLng: 'en',
+    fallbackLng: {
+      'en': ['en-US'],
+      'default': ['en']
+    },
+    whitelist: ['en', 'it', 'de', 'fr'],
 
-  // have a common namespace used around the full app
-  // ns: ['common', 'header', 'menu'],
-  defaultNS: 'common',
+    // have a common namespace used around the full app
+    // ns: ['common', 'header', 'menu'],
+    defaultNS: 'common',
 
-  keySeparator: false, // we use content as keys
+    keySeparator: false, // we use content as keys
 
-  interpolation: {
-    escapeValue: false, // not needed for react!!
-    formatSeparator: ','
-  },
+    interpolation: {
+      escapeValue: false, // not needed for react!!
+      formatSeparator: ','
+    },
 
-  react: {
-    wait: true
-  }
-})
+    react: {
+      wait: true
+    }
+  });
 
-export default i18n
+export default i18n;

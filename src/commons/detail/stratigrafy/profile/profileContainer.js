@@ -56,7 +56,7 @@ class ProfileContainer extends React.Component {
                 layer: result.data.data
               })
             }).catch((err) => {
-              
+              // handling error
             })
           })
         }}/>
@@ -75,7 +75,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
     loadLayers: (id) => {

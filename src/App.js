@@ -16,7 +16,7 @@ import {
   loadDomains,
   loadCantons,
   loadSettings,
-  loadUser
+  loadUser,
 } from '@ist-supsi/bmsjs';
 
 import {
@@ -24,16 +24,6 @@ import {
 } from 'semantic-ui-react';
 
 const cpaths = [
-  {
-    path: process.env.PUBLIC_URL + '/',
-    exact: true,
-    body: HomeComponent
-  },
-  {
-    path: process.env.PUBLIC_URL + '/detail/:id',
-    exact: true,
-    body: HomeComponent
-  },
   {
     path: process.env.PUBLIC_URL + '/editor',
     exact: false,
@@ -43,67 +33,70 @@ const cpaths = [
     path: process.env.PUBLIC_URL + '/setting/:id',
     exact: true,
     body: SettingCmp
-  }
+  },
+  {
+    path: process.env.PUBLIC_URL + '/',
+    body: HomeComponent
+  },
 ];
 
 // console.log('process.env.PUBLIC_URL: ' + process.env.PUBLIC_URL)
 class App extends React.Component {
-  componentDidMount(){
+  componentDidMount() {
     const {
-      domains, cantons
+      cantons,
+      domains
     } = this.props;
-    if(Object.keys(domains.data).length === 0){
+    if (Object.keys(domains.data).length === 0) {
       this.props.loadDomains();
     }
-    if(cantons.data.length===0) this.props.loadCantons();
+    if (cantons.data.length === 0) this.props.loadCantons();
     this.props.loadSettings();
     this.props.loadUser();
+    // this.props.loadWmts();
 
+    // Get the scrollbar width
     var scrollDiv = document.createElement("div");
     scrollDiv.className = "scrollbar-measure";
     document.body.appendChild(scrollDiv);
-
-    // Get the scrollbar width
     var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
     // console.warn(scrollbarWidth); // Mac:  15
-    this.props.setScrollbarWidth(scrollbarWidth+'px')
-
+    this.props.setScrollbarWidth(scrollbarWidth + 'px');
     // Delete the DIV 
     document.body.removeChild(scrollDiv);
 
   }
-  isFetching(){
+  isFetching() {
     const {
-      domains, cantons
+      cantons,
+      domains
     } = this.props;
-    if(
+    if (
       Object.keys(domains.data).length === 0
       || domains.isFetching === true
-    ) return true;
+    ) {
+      return true;
+    }
     if (
       cantons.data.length === 0
       || cantons.isFetching === true
-    ) return true;
+    ) {
+      return true;
+    }
     return false;
   }
   render() {
     const fpaths = cpaths.filter(rt => {
-      // console.log(
-      //   rt.path,
-      //   this.props.user.data !== null?
-      //     this.props.user.data.roles.indexOf('producer')>=0: '-'
-      // )
       return (
         rt.path === '/'
         || (
           this.props.user.data !== null
-          && this.props.user.data.roles.indexOf('producer')>=0
-        ))
-    })
-    // console.log(fpaths);
+          && this.props.user.data.roles.indexOf('producer') >= 0
+        ));
+    });
     return (
-      this.isFetching()?
-      <div
+      this.isFetching() ?
+        <div
           style={{
             flex: '1 1 0%',
             display: 'flex',
@@ -112,7 +105,6 @@ class App extends React.Component {
             height: '100%'
           }}
         >
-
           <div>
             <div
               style={{
@@ -143,40 +135,40 @@ class App extends React.Component {
                       textAlign: 'left'
                     }}
                   >
-                    Loading <Icon loading name='spinner' /> 
+                    Loading <Icon loading name='spinner' />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>:
-      <Router>
-        <Switch>
-          {
-            fpaths.map((route, index) => {
-              return (
-                <Route
-                  key={index}
-                  path={route.path}
-                  exact={route.exact}
-                  component={(r)=>(
-                    <route.body/>
-                  )}
+        </div> :
+        <Router>
+          <Switch>
+            {
+              fpaths.map((route, index) => {
+                return (
+                  <Route
+                    component={(r) => (
+                      <route.body />
+                    )}
+                    exact={route.exact}
+                    key={index}
+                    path={route.path}
+                  />
+                );
+              })
+            }
+            <Route
+              component={(r) => (
+                <Redirect
+                  to={{
+                    pathname: process.env.PUBLIC_URL + "/"
+                  }}
                 />
-              )
-            })
-          }
-          <Route
-            component={(r)=>(
-              <Redirect
-                to={{
-                  pathname:  process.env.PUBLIC_URL + "/"
-                }}
-              />
-            )}
-          />
-        </Switch>
-      </Router>
+              )}
+            />
+          </Switch>
+        </Router>
     );
   }
 };
@@ -185,12 +177,11 @@ const mapStateToProps = (state, ownProps) => {
   return {
     cantons: state.core_canton_list,
     domains: state.core_domain_list,
-    // setting: state.setting,
     user: state.core_user
-  }
+  };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
     loadDomains: () => {
@@ -210,8 +201,23 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     loadUser: () => {
       dispatch(loadUser());
-    }
-  }
+    },
+    // loadWmts: () => {
+    //   dispatch({
+    //     type: 'WMTS_GETCAPABILITIES'
+    //   });
+    //   getWmts().then((response) => {
+    //     dispatch({
+    //       type: 'WMTS_GETCAPABILITIES_OK',
+    //       data: (
+    //         new WMTSCapabilities()
+    //       ).read(response.data)
+    //     });
+    //   }).catch((error) => {
+    //     console.log(error);
+    //   });
+    // }
+  };
 };
 
 export default connect(

@@ -2,162 +2,154 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import {
-  Tab
-} from 'semantic-ui-react';
-import MetaComponent from './meta/metaComponent';
-import BoreholeComponent from './borehole/boreholeComponent';
-import StratigraphiesComponent from './stratigrafy/stratigraphiesComponent';
+import _ from 'lodash';
+import DetailsComponent from './detailsComponent';
+
 import {
   getBorehole,
   getStratigraphiesByBorehole
 } from '@ist-supsi/bmsjs';
 
 class DetailsContainer extends React.Component {
-  componentDidMount(){
+  componentDidMount() {
     const {
       id
     } = this.props;
-    this.props.getBorehole(id);
-    this.props.getStratigraphiesByBorehole(id);
+    if (!_.isNil(id)) {
+      this.props.getBorehole(id);
+      // this.props.getStratigraphiesByBorehole(id);
+    }
   }
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     const {
       id, detail
     } = this.props;
-    if(
+    if (
       detail.borehole !== null
       && id !== null
       && detail.borehole.id !== id
-    ){
+    ) {
       this.props.getBorehole(id);
-      this.props.getStratigraphiesByBorehole(id);
+      // this.props.getStratigraphiesByBorehole(id);
+    } else if (detail.error !== null){
+
     }
+  }
+  componentWillUnmount(){
+    this.props.getBorehole();
   }
   render() {
     const {
-      detail, t
+      detail, domains
     } = this.props;
-    return (
-      detail.borehole?
-        <div style={{
-            flex: "1 1 0%",
-            // overflowY: 'auto',
-            padding: '1em',
-            height: '100%'
-          }}>
-          <Tab
-            activeIndex={detail.tab}
-            menu={{
-              secondary: true,
-              pointing: true
-            }}
-            onTabChange={(e, d, i) => {
-              this.props.setTab(d.activeIndex)
-            }}
-            panes={[
-              {
-                menuItem: t('meta_location'),
-                render: () => <MetaComponent
-                  data={detail.borehole}/>
-              },
-              {
-                menuItem: t('meta_borehole'),
-                render: () => <BoreholeComponent
-                  data={detail.borehole}/>
-              },
-              // {
-              //   menuItem: t('form_admin'),
-              //   render: () => null
-              // },
-              {
-                menuItem: t('meta_stratigraphy'),
-                render: () => <StratigraphiesComponent
-                  stratigraphies={detail.stratigraphies}/>
-              }
-            ]}
-            style={{
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column'
-            }}
-          />
-        </div>:
+    if (detail.error !== null){
+      return (
         <div>
-          Nothing selected
+          Locked
         </div>
-    )
+      );
+    }
+    return (
+      <DetailsComponent
+        detail={detail}
+        domains={domains}
+      />
+    );
   }
 }
 
 DetailsContainer.propTypes = {
-  detail: PropTypes.object
-}
+  detail: PropTypes.object,
+  domains: PropTypes.object,
+  getBorehole: PropTypes.func,
+  getStratigraphiesByBorehole: PropTypes.func,
+  id: PropTypes.number
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
     detail: state.detail_borehole,
+    domains: state.core_domain_list,
     ...ownProps
-  }
-}
+  };
+};
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
     setTab: (tab) => {
       dispatch({
         type: 'DETCNTTABCHG',
         tab: tab
-      })
+      });
     },
-    getBorehole: (id) => {
+    getBorehole: (id = null) => {
       dispatch({
         type: 'GETBOREHOLEDETAILS'
-      })
-      getBorehole(
-        id
-      ).then(function(response) {
-        if(response.data.success){
-          dispatch({
-            type: 'GETBOREHOLEDETAILS_OK',
-            borehole: response.data.data
-          })
-        }else{
-          dispatch({
-            type: 'GETBOREHOLEDETAILS_ERROR',
-            message: response.message
-          })
-        }
-      }).catch(function (error) {
-        console.log(error);
-      })
+      });
+      if (id!==null){
+        getBorehole(
+          id
+        ).then(function (response) {
+          if (response.data.success) {
+            dispatch({
+              type: 'GETBOREHOLEDETAILS_OK',
+              borehole: response.data.data
+            });
+            getStratigraphiesByBorehole(
+              id
+            ).then(function (response) {
+              if (response.data.success) {
+                dispatch({
+                  type: 'GET_BOREHOLE_STRATIGRAPHIES_OK',
+                  stratigraphies: response.data.data
+                });
+              } else {
+                dispatch({
+                  type: 'GET_BOREHOLE_STRATIGRAPHIES_ERROR',
+                  message: response.message
+                });
+              }
+            }).catch(function (error) {
+              console.log(error);
+            });
+          } else {
+            dispatch({
+              type: 'GETBOREHOLEDETAILS_ERROR',
+              error: response.error
+            });
+          }
+        }).catch(function (error) {
+          console.log(error);
+        });
+      };
     },
     getStratigraphiesByBorehole: (id) => {
       dispatch({
         type: 'GET_BOREHOLE_STRATIGRAPHIES'
-      })
+      });
       getStratigraphiesByBorehole(
         id
-      ).then(function(response) {
-        if(response.data.success){
+      ).then(function (response) {
+        if (response.data.success) {
           dispatch({
             type: 'GET_BOREHOLE_STRATIGRAPHIES_OK',
             stratigraphies: response.data.data
-          })
-        }else{
+          });
+        } else {
           dispatch({
             type: 'GET_BOREHOLE_STRATIGRAPHIES_ERROR',
             message: response.message
-          })
+          });
         }
       }).catch(function (error) {
         console.log(error);
-      })
+      });
     }
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate('borehole_form')(DetailsContainer))
+)(translate('borehole_form')(DetailsContainer));

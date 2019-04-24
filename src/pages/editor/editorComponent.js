@@ -1,317 +1,169 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   Route,
   Switch,
   withRouter
 } from "react-router-dom";
 
+import {
+  lockBorehole
+} from '@ist-supsi/bmsjs';
+
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
 import BoreholeForm from '../../commons/form/borehole/boreholeForm';
-import MultipleForm from '../../commons/form/multiple/multipleForm';
 import BoreholeEditorTable from '../../commons/table/boreholeEditorTable';
 import MenuEditorSearch from '../../commons/menu/editor/menuEditorSearch';
 import MenuEditorForm from '../../commons/menu/editor/menuEditorForm';
 import MenuContainer from '../../commons/menu/menuContainer';
 
 
-class EditorComponent extends React.Component {
+const EditorComponent = function (props) {
 
-  render(){
-    const {
-      history
-    } = this.props;
+  // const {
+  //   history
+  // } = props;
 
-    return (
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%'
+      }}
+    >
+      <MenuContainer />
       <div
         style={{
+          flex: '1 1 100%',
           display: 'flex',
-          flexDirection: 'column',
-          height: '100%'
+          flexDirection: 'row',
+          overflow: 'hidden'
         }}
       >
-        <MenuContainer/>
         <div
           style={{
-            flex: '1 1 100%',
-            display: 'flex',
-            flexDirection: 'row',
-            overflow: 'hidden'
-          }}
-        >
-          <div style={{
             // borderRight: 'thin solid #dfe0e0',
             boxShadow: 'rgba(0, 0, 0, 0.17) 2px 6px 6px 0px',
             display: 'flex',
             flexDirection: 'column',
             width: '250px'
-          }}>
-            <Switch>
-              <Route
-                exact={true}
-                path={process.env.PUBLIC_URL + "/editor"}
-                component={MenuEditorSearch}
-              />
-              <Route
-                exact={false}
-                path={process.env.PUBLIC_URL + "/editor/:id"}
-                component={MenuEditorForm}
-              />
-            </Switch>
-            {/* <MenuEditor /> */}
-          </div>
+          }}
+        >
+          <Switch>
+            <Route
+              component={MenuEditorSearch}
+              exact
+              path={process.env.PUBLIC_URL + "/editor"}
+            />
+            <Route
+              component={MenuEditorForm}
+              path={process.env.PUBLIC_URL + "/editor/:id"}
+            />
+          </Switch>
+        </div>
 
-          <div style={{
+        <div
+          style={{
             flex: '1 1 0%',
             display: 'flex',
             flexDirection: 'row'
-          }}>
-            <Switch>
-              <Route
-                exact={true}
-                path={process.env.PUBLIC_URL + "/editor"}
-                render={()=>(
-
-                  <div style={{
+          }}
+        >
+          <Switch>
+            <Route
+              exact
+              path={process.env.PUBLIC_URL + "/editor"}
+              render={() => (
+                <div
+                  style={{
                     flex: '1 1.5 100%',
                     padding: "1em",
                     // boxShadow: 'rgba(0, 0, 0, 0.5) 0px 0px 8px 0px inset',
                     display: 'flex',
                     flexDirection: 'column'
-                  }}>
-                    <BoreholeEditorTable
-                      activeItem={
-                        !_.isNil(this.props.store.bselected)?
-                          this.props.store.bselected.id: null
-                      }
-                      filter={{
-                        ...this.props.search.filter
-                      }}
-                      onSelected={(borehole)=>{
-                        // this.props.boreholeSelected(borehole);
-                        history.push(
-                          process.env.PUBLIC_URL + "/editor/" + borehole.id
-                        )
-                      }}
-                      onMultiple={(selection)=>{
-                        this.props.multipleSelected(
-                          selection, this.props.search.filter
-                        )
-                      }}
-                      onDelete={(selection)=>{
-                        this.props.delete(
-                          selection, this.props.search.filter
-                        )
-                      }}
-                    />
-                  </div>
-                )}
-              />
-              <Route
-                exact={false}
-                path={process.env.PUBLIC_URL + "/editor/:id"}
-                render={()=>(
-                  <div style={{
-                    overflow: 'hidden',
-                    height: '100%',
-                    display: 'flex',
-                    flex: '1 1 100%',
-                    flexDirection: 'column',
-                    padding: '1em'
-                  }}>
-                    <BoreholeForm
-                      // id={match.params.id}
-                    />
-                  </div>
-                )}
-              />
-              <Route
-                path={process.env.PUBLIC_URL + "/setting/account"}
-                render={()=>(
-                  <div
-                    style={{
-                      padding: '2em',
-                      flex: 1
-                    }}
-                  >
-                    coming soon
-                  </div>
-                )}
-              />
-            </Switch>
-            {/*
-              !_.isNil(this.props.store.bselected)?
-                <div style={{
-                  overflow: 'hidden',
-                  height: '100%',
-                  display: 'flex',
-                  flex: '1 1 100%',
-                  flexDirection: 'column',
-                  padding: '1em'
-                }}>
-                  <BoreholeForm
-                    id={
-                      !_.isNil(this.props.store.bselected)?
-                        this.props.store.bselected.id: undefined
-                    }/>
-                </div>:
-                !_.isNil(this.props.store.mselected)?
-                  <div style={{
-                    overflow: 'hidden',
-                    height: '100%',
-                    display: 'flex',
-                    flex: '1 1 100%',
-                    flexDirection: 'column',
-                    padding: '1em'
-                  }}>
-                    <MultipleForm
-                      selected={this.props.store.mselected}
-                    />
-                  </div>:
-                  <div style={{
-                    flex: '1 1.5 100%',
-                    padding: "1em",
-                    // boxShadow: 'rgba(0, 0, 0, 0.5) 0px 0px 8px 0px inset',
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}>
-                    <BoreholeEditorTable
-                      activeItem={
-                        !_.isNil(this.props.store.bselected)?
-                          this.props.store.bselected.id: null
-                      }
-                      filter={{
-                        ...this.props.search.filter
-                      }}
-                      onSelected={(borehole)=>{
-                        this.props.boreholeSelected(borehole)
-                      }}
-                      onMultiple={(selection)=>{
-                        this.props.multipleSelected(
-                          selection, this.props.search.filter
-                        )
-                      }}
-                      onDelete={(selection)=>{
-                        this.props.delete(
-                          selection, this.props.search.filter
-                        )
-                      }}
-                    />
-                  </div>
-            */}
-          </div>
-        </div>
-      </div>
-    );
-  }
-  _render() {
-    return (
-      <div style={{
-        flex: '1 1 0%',
-        display: 'flex',
-        height: '100%',
-        flexDirection: 'row'
-      }}>
-        {
-          false? null:
-          <div style={{
-            width: '300px',
-            // boxShadow: '2px 0px 5px 0px rgba(0,0,0,0.75)',
-            borderRight: 'thin solid #c7c7c7'
-          }}>
-            <MenuContainer>
-              <MenuEditorSearch/>
-            </MenuContainer>
-          </div>
-        }
-        <div style={{
-          flex: '1 1 0%',
-          display: 'flex',
-          flexDirection: 'row'
-        }}>
-          {
-            !_.isNil(this.props.store.bselected)?
-              <div style={{
-                overflow: 'hidden',
-                height: '100%',
-                display: 'flex',
-                flex: '1 1 100%',
-                flexDirection: 'column',
-                padding: '1em'
-              }}>
-                <BoreholeForm
-                  id={
-                    !_.isNil(this.props.store.bselected)?
-                      this.props.store.bselected.id: undefined
-                  }/>
-              </div>:
-              !_.isNil(this.props.store.mselected)?
-                <div style={{
-                  overflow: 'hidden',
-                  height: '100%',
-                  display: 'flex',
-                  flex: '1 1 100%',
-                  flexDirection: 'column',
-                  padding: '1em'
-                }}>
-                  <MultipleForm
-                    selected={this.props.store.mselected}
-                  />
-                </div>:
-                <div style={{
-                  flex: '1 1.5 100%',
-                  padding: "1em",
-                  // boxShadow: 'rgba(0, 0, 0, 0.5) 0px 0px 8px 0px inset',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}>
+                  }}
+                >
                   <BoreholeEditorTable
                     activeItem={
-                      !_.isNil(this.props.store.bselected)?
-                        this.props.store.bselected.id: null
+                      !_.isNil(props.store.bselected) ?
+                        props.store.bselected.id : null
                     }
-                    /*filter={{
-                      project: !_.isNil(this.props.store.pselected)?
-                        this.props.store.pselected.id: undefined
-                    }}*/
                     filter={{
-                      ...this.props.search.filter
+                      ...props.search.filter
                     }}
-                    onSelected={(borehole)=>{
-                      this.props.boreholeSelected(borehole)
+                    onDelete={(selection) => {
+                      props.delete(
+                        selection, props.search.filter
+                      );
                     }}
-                    onMultiple={(selection)=>{
-                      this.props.multipleSelected(
-                        selection, this.props.search.filter
-                      )
+                    onMultiple={(selection) => {
+                      props.multipleSelected(
+                        selection, props.search.filter
+                      );
                     }}
-                    onDelete={(selection)=>{
-                      this.props.delete(
-                        selection, this.props.search.filter
-                      )
+                    onSelected={(borehole) => {
+                      // Lock borehole
+                      if (borehole !== null) {
+                        props.lock(borehole.id);
+                      }
                     }}
                   />
                 </div>
-          }
+              )}
+            />
+            <Route
+              exact={false}
+              path={process.env.PUBLIC_URL + "/editor/:id"}
+              render={() => (
+                <div
+                  style={{
+                    overflow: 'hidden',
+                    height: '100%',
+                    display: 'flex',
+                    flex: '1 1 100%',
+                    flexDirection: 'column',
+                    padding: '1em'
+                  }}
+                >
+                  <BoreholeForm />
+                </div>
+              )}
+            />
+          </Switch>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+  // }
 
-const mapStateToProps = (state, ownProps) => {
+};
+
+EditorComponent.propTypes = {
+  delete: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+  lock: PropTypes.func,
+  multipleSelected: PropTypes.func,
+  search: PropTypes.object,
+  store: PropTypes.object
+};
+
+const mapStateToProps = (state) => {
   return {
     pcnt: state.core_project_list.dlen,
     bcnt: state.core_borehole_list.dlen,
     scnt: state.core_stratigraphy_list.dlen,
     store: state.editor,
     search: state.searchEditor
-  }
+  };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch, ownprops) => {
   return {
     dispatch: dispatch,
     projectSelected: (project) => {
@@ -326,8 +178,35 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         selected: borehole
       });
     },
+    lock: (id) => {
+      ownprops.history.push(
+        process.env.PUBLIC_URL + "/editor/" + id
+      );
+
+      // dispatch({
+      //   type: 'EDITOR_BOREHOLE_LOCKING'
+      // });
+      // console.log("ownprops", ownprops);
+      // lockBorehole(
+      //   id
+      // ).then(function (response) {
+      //   if (response.data.success) {
+      //     console.log("locked");
+      //     ownprops.history.push(
+      //       process.env.PUBLIC_URL + "/editor/" + id
+      //     );
+      //   } else {
+      //     console.log("not locked");
+      //     dispatch({
+      //       type: 'EDITOR_BOREHOLE_LOCKING_ERROR',
+      //       data: response.data
+      //     });
+      //   }
+      // }).catch(function (error) {
+      //   console.log(error);
+      // });
+    },
     multipleSelected: (selection, filter = null) => {
-      debugger;
       dispatch({
         type: 'EDITOR_MULTIPLE_SELECTED',
         selection: selection,
@@ -345,8 +224,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 export default withRouter(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
   )(translate('editor')(EditorComponent))
 );

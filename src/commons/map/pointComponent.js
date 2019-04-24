@@ -48,7 +48,7 @@ const projections = {
   "EPSG:21782": "+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=0 +y_0=0 +ellps=bessel +towgs84=674.4,15.1,405.3,0,0,0,0 +units=m +no_defs",
   "EPSG:4149": "+proj=longlat +ellps=bessel +towgs84=674.4,15.1,405.3,0,0,0,0 +no_defs",
   "EPSG:4150": "+proj=longlat +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +no_defs"
-}
+};
 
 class PointComponent extends React.Component {
 
@@ -67,7 +67,7 @@ class PointComponent extends React.Component {
     });
     register(proj4);
 
-    if(
+    if (
       _.isNumber(props.x)
       && _.isNumber(props.y)
       && !_.isNil(props.srs)
@@ -83,7 +83,7 @@ class PointComponent extends React.Component {
         municipality: null,
         address: false
       };
-    }else{
+    } else {
       this.state = {
         point: null,
         toPoint: null,
@@ -98,41 +98,7 @@ class PointComponent extends React.Component {
     }
   }
 
-  transform(point, srs){
-    if(srs === this.srs) return point;
-    if(this.fromSRS === undefined){
-      this.fromSRS = getTransform(
-        srs, this.srs
-      );
-    }
-    return this.fromSRS(point);
-  }
-
-  btransform(point, srs){
-    if(srs === this.srs) return point;
-    if(this.toSRS === undefined){
-      this.toSRS = getTransform(
-        this.srs, srs
-      );
-    }
-    return this.toSRS(point);
-  }
-
-  zoomtopoly(coords){
-    var feature = new Feature({
-      geometry: new Polygon(coords)
-    });
-    this.map.getView().fit(
-      feature.getGeometry()
-      , {
-        // padding: [170, 100, 30, 100],
-        // minResolution: 1,
-        nearest: true,
-        duration: 500
-      }
-    );
-  }
-
+  
   componentDidMount(){
     const resolutions = [
       4000, 3750, 3500, 3250, 3000, 2750, 2500, 2250, 2000, 1750, 1500, 1250,
@@ -308,6 +274,45 @@ class PointComponent extends React.Component {
         this.position.on('addfeature', this.changefeature, this);
       }
     }
+  }
+
+  transform(point, srs){
+    if (srs === this.srs){
+      return point;
+    };
+    if (this.fromSRS === undefined){
+      this.fromSRS = getTransform(
+        srs, this.srs
+      );
+    }
+    return this.fromSRS(point);
+  }
+
+  btransform(point, srs){
+    if (srs === this.srs){
+      return point;
+    };
+    if (this.toSRS === undefined){
+      this.toSRS = getTransform(
+        this.srs, srs
+      );
+    }
+    return this.toSRS(point);
+  }
+
+  zoomtopoly(coords){
+    var feature = new Feature({
+      geometry: new Polygon(coords)
+    });
+    this.map.getView().fit(
+      feature.getGeometry()
+      , {
+        // padding: [170, 100, 30, 100],
+        // minResolution: 1,
+        nearest: true,
+        duration: 500
+      }
+    );
   }
 
   /*

@@ -12,54 +12,57 @@ const initialState = {
       orderby: null,
       direction: null
     },
+    appearance: {
+      explorer: 'mode-1'
+    },
     filter: {
       mapfilter: true,
       zoom2selected: true,
       kind: true,
       restriction: true,
-      restriction_until: true,
-      location_x: true,
-      location_y: true,
+      "restriction_until": true,
+      "location_x": true,
+      "location_y": true,
       srs: true,
-      elevation_z: true,
+      "elevation_z": true,
       hrs: true,
-      drilling_date: true,
-      bore_inc: true,
-      bore_inc_dir: true,
+      "drilling_date": true,
+      "bore_inc": true,
+      "bore_inc_dir": true,
       length: true,
       extended: {
-        original_name: true,
+        "original_name": true,
         method: true,
         purpose: true,
         status: true,
-        top_bedrock: true,
+        "top_bedrock": true,
         groundwater: true
       },
       custom: {
-        public_name: true,
-        project_name: true,
+        "public_name": true,
+        "project_name": true,
         canton: true,
         city: true,
         address: true,
         landuse: true,
         cuttings: true,
-        drill_diameter: true,
-        lit_pet_top_bedrock: true,
-        lit_str_top_bedrock: true,
-        chro_str_top_bedrock: true,
+        "drill_diameter": true,
+        "lit_pet_top_bedrock": true,
+        "lit_str_top_bedrock": true,
+        "chro_str_top_bedrock": true,
         remarks: true,
         mistakes: true,
-        processing_status: true,
-        national_relevance: true,
-        attributes_to_edit: true
+        "processing_status": true,
+        "national_relevance": true,
+        "attributes_to_edit": true
       }
     }
   }
 };
 
 const setting = (state = initialState, action) => {
-  const {path} = action;
-  if(path === '/setting'){
+  const { path } = action;
+  if (path === '/setting') {
     switch (action.type) {
       case 'GET': {
         return {
@@ -79,14 +82,33 @@ const setting = (state = initialState, action) => {
             new Date()
           ).getTime() - state.rtime,
           data: _.merge(state.data, action.json.data)
-        }
-        return copy
+        };
+        return copy;
       }
       case 'PATCH': {
-        const copy = {...state};
-        _.set(
-          copy, `data.${action.field}`, action.value
-        );
+        const copy = { ...state };
+        let path = null;
+        if (_.has(action, 'key')){
+          path = _.union(
+            ['data'],
+            action.tree.split('.'),
+            [action.key]
+          );
+        } else {
+          path = _.union(
+            ['data'],
+            action.tree.split('.')
+          );
+        }
+        if (action.value === null){
+          _.unset(
+            copy, path, action.value
+          );
+        } else {
+          _.set(
+            copy, path, action.value
+          );
+        }
         return copy;
       }
       default:
@@ -95,7 +117,7 @@ const setting = (state = initialState, action) => {
   }
   switch (action.type) {
     case 'SETTING_TOGGLE_FILTER': {
-      const copy = {...state};
+      const copy = { ...state };
       _.set(
         copy, `data.filter.${action.filter}`, action.enabled
       );

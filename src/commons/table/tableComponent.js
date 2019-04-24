@@ -27,63 +27,63 @@ class TableComponent extends React.Component {
       filter
     } = this.props;
     this.state = {
-      activeItem: activeItem !== undefined? activeItem: null,
-      filter: filter !== undefined? filter: {},
+      activeItem: activeItem !== undefined ? activeItem : null,
+      filter: filter !== undefined ? filter : {},
       selected: [],
       all: false
     };
   }
-  componentDidMount(){
+  componentDidMount() {
     const {
       filter
     } = this.props;
     this.props.loadData(1, filter); //, setting.orderby, setting.direction);
   }
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     const {
       filter
     } = this.props;
-    if(!_.isEqual(filter, prevProps.filter)){
-      if(this.delay){
+    if (!_.isEqual(filter, prevProps.filter)) {
+      if (this.delay) {
         clearTimeout(this.delay);
         this.delay = false;
       }
       this.setState({
         selected: [],
         all: false
-      }, ()=>{
-        this.delay = setTimeout(function(){
+      }, () => {
+        this.delay = setTimeout(function () {
           this.props.loadData(1, filter); //, setting.orderby, setting.direction);
         }.bind(this), 10);
-      })
+      });
     }
   }
   handleClick(selected) {
     const {
       onSelected
     } = this.props;
-    if(this.state.activeItem === selected.id){
-      if(onSelected!==undefined){
+    if (this.state.activeItem === selected.id) {
+      if (onSelected !== undefined) {
         onSelected(null);
       }
-      this.setState({activeItem: null});
-    }else{
-      if(onSelected!==undefined){
+      this.setState({ activeItem: null });
+    } else {
+      if (onSelected !== undefined) {
         onSelected(selected);
       }
-      this.setState({activeItem: selected.id});
+      this.setState({ activeItem: selected.id });
     }
   }
-  handleMultipleClick(){
+  handleMultipleClick() {
     const {
       filter,
       onMultiple
     } = this.props;
-    if(this.state.all === true || this.state.selected.length>0){
+    if (this.state.all === true || this.state.selected.length > 0) {
       // Load selected id if all is true
-      if(onMultiple!==undefined){
-        if(this.state.all === true){
-          getdBoreholeIds(filter).then((response)=>{
+      if (onMultiple !== undefined) {
+        if (this.state.all === true) {
+          getdBoreholeIds(filter).then((response) => {
             if (
               response.data.success
             ) {
@@ -94,68 +94,68 @@ class TableComponent extends React.Component {
           }).catch((err) => {
             console.log(err);
           })
-        }else{
+        } else {
           onMultiple(this.state.selected);
         }
       }
     }
   }
-  handleHover(selected){
+  handleHover(selected) {
     const {
       onHover
     } = this.props;
-    if(onHover!==undefined){
+    if (onHover !== undefined) {
       onHover(selected);
     }
   }
-  deleteList(){
+  deleteList() {
     const {
       filter
     } = this.props;
-    if(this.state.all === true || this.state.selected.length>0){
-      if(this.state.all === true){
-        getdBoreholeIds(filter).then((response)=>{
+    if (this.state.all === true || this.state.selected.length > 0) {
+      if (this.state.all === true) {
+        getdBoreholeIds(filter).then((response) => {
           if (
             response.data.success
           ) {
             deleteBoreholes(
               _.pullAll(response.data.data, this.state.selected)
-            ).then(()=>{
+            ).then(() => {
               this.setState({
                 selected: [],
                 all: false
-              }, ()=>{
+              }, () => {
                 this.props.loadData(1, filter);
-              })
+              });
             });
           }
         }).catch((err) => {
           console.log(err);
-        })
-      }else{
+        });
+      } else {
         deleteBoreholes(
           this.state.selected
-        ).then(()=>{
+        ).then(() => {
           this.setState({
             selected: [],
             all: false
-          }, ()=>{
+          }, () => {
             this.props.loadData(1, filter);
-          })
+          });
         });
       }
     }
   }
-  
-  add2selection(id){
+
+  add2selection(id) {
     const {
       selected
     } = this.state;
     const tmp = [...selected];
     const index = tmp.indexOf(id);
-    if(index>=0){
-      tmp.splice(index,1);
-    }else{
+    if (index >= 0) {
+      tmp.splice(index, 1);
+    } else {
       tmp.push(id);
     }
     this.setState({
@@ -163,31 +163,31 @@ class TableComponent extends React.Component {
     });
   }
 
-  inSelection(id){
+  inSelection(id) {
     const {
       selected, all
     } = this.state;
     const index = selected.indexOf(id);
-    if(all === true){
-      if(index>=0){
+    if (all === true) {
+      if (index >= 0) {
         return false;
-      }else{
+      } else {
         return true;
       }
-    }else{
-      if(index>=0){
+    } else {
+      if (index >= 0) {
         return true;
-      }else{
+      } else {
         return false;
       }
     }
   }
 
-  getHeader(){
+  getHeader() {
     console.error("Please overwrite getHeader method");
   }
 
-  getCols(item, idx){
+  getCols(item, idx) {
     console.error("Please overwrite getCols method");
   }
 
@@ -205,18 +205,20 @@ class TableComponent extends React.Component {
         basic
         loading={store.isFetching}
         style={{
-          flex: "1 1 0%",
+          flex: "1 1 100%",
           display: 'flex',
           flexDirection: 'column',
-          height: '100%',
+          // height: '100%',
           overflow: 'hidden'
-        }}>
-        <div style={{
-          textAlign: 'center',
-          // padding: '0px 1em 0px 1em'
-        }}>
+        }}
+      >
+        <div
+          style={{
+            textAlign: 'center',
+          }}
+        >
           {
-            all === true || selected.length>0?
+            all === true || selected.length > 0 ?
               <div
                 style={{
                   backgroundColor: '#FFEB3B',
@@ -231,56 +233,59 @@ class TableComponent extends React.Component {
                   }}
                 >
                   {
-                    all === true?
-                      'All':
-                      selected.length === 1?
-                        'One':
+                    all === true ?
+                      'All' :
+                      selected.length === 1 ?
+                        'One' :
                         selected.length
                   } borehole{
-                    all === true || selected.length>1?
-                      's': null
+                    all === true || selected.length > 1 ?
+                      's' : null
                   } selected.
-                </span> (<span
-                  style={{
-                    color: '#2196f3',
-                    textDecoration: 'underline',
-                    cursor: 'pointer'
-                  }}
-                  onClick={()=>{
+                </span> (
+                <span
+                  onClick={() => {
                     this.setState({
                       selected: [],
                       all: false
                     });
                   }}
-                >Reset selection</span>) <Button
+                  style={{
+                    color: '#2196f3',
+                    textDecoration: 'underline',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Reset selection
+                </span>) <Button
                   color='black'
-                  onClick={()=>{
+                  onClick={() => {
                     this.handleMultipleClick();
                   }}
                   size='mini'
                 >
                   Bulk editing
                 </Button> {
-                  all === false && selected.length === 1?
-                  <Button
-                    primary
-                    onClick={()=>{
-                      console.log('clone click');
-                    }}
-                    size='mini'
-                  >
-                    Clone
-                  </Button>: null
+                  all === false && selected.length === 1 ?
+                    <Button
+                      primary
+                      onClick={() => {
+                        console.log('clone click');
+                      }}
+                      size='mini'
+                    >
+                      Clone
+                  </Button> : null
                 } <Button
-                    negative
-                    onClick={()=>{
-                      this.deleteList()
-                    }}
-                    size='mini'
-                  >
-                    Delete
+                  negative
+                  onClick={() => {
+                    this.deleteList();
+                  }}
+                  size='mini'
+                >
+                  Delete
                 </Button>
-              </div>: null
+              </div> : null
           }
           <Table fixed compact='very' basic='very'>
             <Table.Header>
@@ -289,62 +294,63 @@ class TableComponent extends React.Component {
           </Table>
         </div>
         <div style={{
-            flex: "1 1 0%",
-            overflowY: 'auto',
-            // border: 'thin solid #d2d2d2',
-            // padding: '0px 1em'
-          }}>
+          flex: "1 1 0%",
+          overflowY: 'auto',
+          // border: 'thin solid #d2d2d2',
+          // padding: '0px 1em'
+        }}>
           <Table fixed compact='very' basic='very' selectable>
             <Table.Body>
-            {
-              store.data.map((item, idx) => (
-                <Table.Row
-                  style={{
-                    cursor: all === true || selected.length>0?
-                      'copy': 'pointer'
-                  }}
-                  key={this.uid+"_"+idx}
-                  active={
-                    activeItem === item.id
-                    || this.props.highlight === item.id
-                  }
-                  onClick={e=>{
-                    if(all === true || selected.length>0){
-                      this.add2selection(item.id);
-                    }else{
-                      this.handleClick(item);
+              {
+                store.data.map((item, idx) => (
+                  <Table.Row
+                    style={{
+                      cursor: 'pointer'
+                      // cursor: all === true || selected.length > 0 ?
+                      //   'copy' : 'pointer'
+                    }}
+                    key={this.uid + "_" + idx}
+                    active={
+                      activeItem === item.id
+                      || this.props.highlight === item.id
                     }
-                  }}
-                  onMouseEnter={e=>this.handleHover(item)}
-                  onMouseLeave={e=>this.handleHover(null)}
-                >
+                    onClick={e => {
+                      if (all === true || selected.length > 0) {
+                        this.add2selection(item.id);
+                      } else {
+                        this.handleClick(item);
+                      }
+                    }}
+                    onMouseEnter={e => this.handleHover(item)}
+                    onMouseLeave={e => this.handleHover(null)}
+                  >
                     {
                       this.getCols(item, idx)
                     }
-                </Table.Row>
-              ))
-            }
+                  </Table.Row>
+                ))
+              }
             </Table.Body>
           </Table>
         </div>
         {
-          store.pages > 1?
-          <div style={{
-            textAlign: 'center',
-            padding: '1em 0px 0px 1em'
-          }}>
-            <Pagination
-              secondary
-              pointing
-              activePage={store.page}
-              onPageChange={(ev, data)=>{
-                this.props.loadData(
-                  data.activePage,
-                  filter
-                );
-              }}
-              totalPages={store.pages}/>
-          </div>: null
+          store.pages > 1 ?
+            <div style={{
+              textAlign: 'center',
+              padding: '1em 0px 0px 1em'
+            }}>
+              <Pagination
+                secondary
+                pointing
+                activePage={store.page}
+                onPageChange={(ev, data) => {
+                  this.props.loadData(
+                    data.activePage,
+                    filter
+                  );
+                }}
+                totalPages={store.pages} />
+            </div> : null
         }
       </Segment>
     );

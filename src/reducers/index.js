@@ -6,6 +6,7 @@ import detail_borehole from '../commons/detail/detailsState';
 import search from '../commons/search/searchState';
 import searchEditor from '../commons/search/editor/searchEditorState';
 import setting from '../pages/settings/settingState';
+import wmts from '../commons/map/mapState';
 
 export const appReducers = {
   leftmenu,
@@ -15,5 +16,6 @@ export const appReducers = {
   search,
   searchEditor,
   editor,
-  setting
+  setting,
+  wmts
 };

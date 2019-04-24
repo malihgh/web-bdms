@@ -16,9 +16,9 @@ import {
 } from '@ist-supsi/bmsjs';
 
 class BoreholeEditorTable extends TableComponent {
-  reorder(orderby){
+  reorder(orderby) {
     const { filter, loadData, store } = this.props;
-    let dir = store.direction === 'DESC'? 'ASC': 'DESC';
+    let dir = store.direction === 'DESC' ? 'ASC' : 'DESC';
     loadData(
       store.page,
       filter,
@@ -26,205 +26,75 @@ class BoreholeEditorTable extends TableComponent {
       dir
     );
   }
-  getHeaderLabel(key, disableOrdering = false){
-    const { store, t } = this.props
+  add2selection(id) {
+    const {
+      selected
+    } = this.state;
+    const {
+      store
+    } = this.props;
+    for (let index = 0; index < store.data.length; index++) {
+      const item = store.data[index];
+      if (item.id === id && item.lock !== null){
+        return;
+      }
+    }
+    const tmp = [...selected];
+    const index = tmp.indexOf(id);
+    if (index >= 0) {
+      tmp.splice(index, 1);
+    } else {
+      tmp.push(id);
+    }
+    this.setState({
+      selected: tmp
+    });
+  }
+  getHeaderLabel(key, disableOrdering = false) {
+    const { store, t } = this.props;
     return (
       <Table.HeaderCell
-        onClick={()=>{
-          if(disableOrdering === false){
+        onClick={() => {
+          if (disableOrdering === false) {
             this.reorder(key);
           }
         }}
         style={{
-          cursor: disableOrdering === true? null: 'pointer'
+          cursor: disableOrdering === true ? null : 'pointer'
         }}
         verticalAlign='top'
       >
         {
-            disableOrdering === false && store.orderby === key?
-              <Icon
-                name={
-                  store.direction === 'DESC'?
-                    'sort down': 'sort up'
-                }
-              />: null
-          } {t(key)}
-        <br/>
-        <span style={{
-          fontSize: '0.8em',
-          color: '#787878'
-        }}>
+          disableOrdering === false && store.orderby === key ?
+            <Icon
+              name={
+                store.direction === 'DESC' ?
+                  'sort down' : 'sort up'
+              }
+            /> : null
+        } {t(key)}
+        <br />
+        <span
+          style={{
+            fontSize: '0.8em',
+            color: '#787878'
+          }}
+        >
           {key}
         </span>
       </Table.HeaderCell>
-    )
+    );
   }
-  _getHeader(){
-    const { t } = this.props
-    return (
-      <Table.Row>
-        <Table.HeaderCell
-          verticalAlign='top'>
-          Status
-          <br/>
-          <span
-            style={{
-              color: '#787878',
-              fontSize: '0.8em'
-            }}>
-            Completness
-          </span>
-        </Table.HeaderCell>
-        <Table.HeaderCell
-          verticalAlign='top'>
-          {t('original_name')}
-          <br/>
-          <span
-            style={{
-              color: '#787878',
-              fontSize: '0.8em'
-            }}>
-            {t('kind')}
-          </span>
-        </Table.HeaderCell>
-        <Table.HeaderCell
-          verticalAlign='top'>
-          {t('restriction')}
-          <br/>
-          <span
-            style={{
-              color: '#787878',
-              fontSize: '0.8em'
-            }}>
-            {t('restriction_until')}
-          </span>
-        </Table.HeaderCell>
-        {/*<Table.HeaderCell
-          verticalAlign='top'>
-          {t('coordinates')}
-          <br/>
-          <span
-            style={{
-              color: '#787878',
-              fontSize: '0.8em'
-            }}>
-            {t('srs')}
-          </span>
-        </Table.HeaderCell>*/}
-        <Table.HeaderCell
-          verticalAlign='top'>
-          {t('elevation_z')} ({t('hrs')})
-          <br/>
-          <span
-            style={{
-              color: '#787878',
-              fontSize: '0.8em'
-            }}>
-            {t('length')}
-          </span>
-        </Table.HeaderCell>
-        <Table.HeaderCell
-          verticalAlign='top'>
-          {t('status')}
-          <br/>
-          <span
-            style={{
-              color: '#787878',
-              fontSize: '0.8em'
-            }}>
-            {t('drilling_date')}
-          </span>
-        </Table.HeaderCell>
-      </Table.Row>
-    )
-  }
-  _getCols(item, idx){
-    let colIdx = 0
-    return ([
-      // <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-      //   {item.id}
-      // </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {
-          item.percentage < 100?
-            <Icon name='exclamation circle' color='red'/>:
-            <Icon name='check circle' color='green'/>
-        } {item.percentage}%
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {item.original_name}
-        <br/>
-        <span
-          style={{
-            color: '#787878',
-            fontSize: '0.8em'
-          }}>
-            <DomainText id={item.kind} schema='kind'/>
-        </span>
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.restriction} schema='restriction'/>
-        <br/>
-        <span
-          style={{
-            color: '#787878',
-            fontSize: '0.8em'
-          }}>
-          <DateText date={item.restriction_until}/>
-        </span>
-      </Table.Cell>,
-      // <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-      //   {item.location_x}, {item.location_y}
-      //   <br/>
-      //   <span
-      //     style={{
-      //       color: '#787878',
-      //       fontSize: '0.8em'
-      //     }}>
-      //     <DomainText id={item.srs} schema='srs'/>
-      //   </span>
-      // </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {
-          _.isNil(item.elevation_z)?
-          null:
-          item.elevation_z + ' m'
-        } {
-          _.isNil(item.hrs)?
-          null: <span>(<DomainText id={item.hrs} schema='hrs'/>)</span>
-        }
-        <br/>
-        <span
-          style={{
-            color: '#787878',
-            fontSize: '0.8em'
-          }}>
-            {_.isNil(item.length)? 'n/p': item.length + ' m'}
-        </span>
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.extended.status} schema='extended.status'/>
-        <br/>
-        <span
-          style={{
-            color: '#787878',
-            fontSize: '0.8em'
-          }}>
-            <DateText date={item.drilling_date}/>
-        </span>
-      </Table.Cell>,
-    ])
-  }
-  getHeader(){
+  getHeader() {
     const {
       all
     } = this.state;
     return (
       <Table.Row>
-        <Table.HeaderCell style={{width: '2em'}}>
+        <Table.HeaderCell style={{ width: '2em' }}>
           <Checkbox
             checked={all === true}
-            onClick={(e)=>{
+            onClick={(e) => {
               e.stopPropagation();
               this.setState({
                 all: !all,
@@ -248,38 +118,58 @@ class BoreholeEditorTable extends TableComponent {
         {this.getHeaderLabel('status')}
         {this.getHeaderLabel('length')}
       </Table.Row>
-    )
+    );
   }
-  getCols(item, idx){
-    let colIdx = 0
+  getCols(item, idx) {
+    let colIdx = 0;
     return ([
       <Table.Cell
         key={this.uid + "_" + idx + "_" + colIdx++}
-        onClick={(e)=>{
+        onClick={(e) => {
           e.stopPropagation();
-          this.add2selection(item.id);
+          if (item.lock === null){
+            this.add2selection(item.id);
+          }
         }}
-        style={{width: '2em'}}
+        style={{ width: '2em' }}
       >
-        <Checkbox checked={this.inSelection(item.id)}/>
+        {
+          item.lock === null?
+            <Checkbox
+              checked={this.inSelection(item.id)}
+            />:
+            <Icon
+              color='red'
+              name='lock'
+              size='small'
+            />
+        }
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {
-          item.percentage < 100?
-            null:
-            <Icon name='check circle' color='green'/>
+          item.percentage < 100 ?
+            null :
+            <Icon
+              color='green'
+              name='check circle'
+            />
         } {item.percentage}%
       </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
+      <Table.Cell
+        key={this.uid + "_" + idx + "_" + colIdx++}
+      >
         <span
           style={{
             fontSize: '0.8em',
             color: '#787878'
           }}
         >
-          <DateText fromnow={true} date={item.author.date}/>
-        </span><br/>
-        <DateText date={item.author.date}/>
+          <DateText
+            date={item.author.date}
+            fromnow
+          />
+        </span><br />
+        <DateText date={item.author.date} />
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {item.author.username}
@@ -288,43 +178,48 @@ class BoreholeEditorTable extends TableComponent {
         {item.original_name}
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.kind} schema='kind'/>
+        <DomainText
+          id={item.kind}
+          schema='kind'
+        />
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.restriction} schema='restriction'/>
-        <br/>
-        <span style={{
-          fontSize: '0.9em',
-          color: 'rgb(60, 137, 236)'
-        }}>
-          <DateText date={item.restriction_until}/>
+        <DomainText
+          id={item.restriction}
+          schema='restriction'
+        />
+        <br />
+        <span
+          style={{
+            fontSize: '0.9em',
+            color: 'rgb(60, 137, 236)'
+          }}
+        >
+          <DateText date={item.restriction_until} />
         </span>
       </Table.Cell>,
-      /*<Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {item.location_x}
+      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
+        {_.isNil(item.elevation_z) ? null : item.elevation_z + ' m'}
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {item.location_y}
+        <DomainText
+          id={item.hrs}
+          schema='hrs'
+        />
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.srs} schema='srs'/>
-      </Table.Cell>,*/
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {_.isNil(item.elevation_z)? null: item.elevation_z + ' m'}
+        <DateText date={item.drilling_date} />
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.hrs} schema='hrs'/>
+        <DomainText
+          id={item.extended.status}
+          schema='extended.status'
+        />
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DateText date={item.drilling_date}/>
+        {_.isNil(item.length) ? null : item.length + ' m'}
       </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText id={item.extended.status} schema='extended.status'/>
-      </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {_.isNil(item.length)? null: item.length + ' m'}
-      </Table.Cell>,
-    ])
+    ]);
   }
 };
 
@@ -332,10 +227,10 @@ const mapStateToProps = (state, ownProps) => {
   return {
     store: state.core_borehole_editor_list,
     ...ownProps
-  }
+  };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
     loadData: (page, filter = {}, orderby = null, direction = null) => {
@@ -345,10 +240,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         )
       );
     }
-  }
+  };
 };
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(translate('borehole_form')(BoreholeEditorTable));

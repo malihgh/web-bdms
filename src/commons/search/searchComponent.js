@@ -32,66 +32,74 @@ class SearchComponent extends React.Component {
     }
   }
   isVisible(filter){
-    const {search, setting} = this.props;
+    const {search, settings} = this.props;
     if(search.advanced === true) return true;
-    if(_.get(setting, filter)===true){
+    if(_.get(settings.data.filter, filter)===true){
       return true;
     }
     return false;
   }
   render() {
-    const {search, setting, t} = this.props;
+    const {search, settings, t} = this.props;
+    const filter = settings.data.filter;
     return (
       <Form size='tiny'>
-        <Form.Field
-          style={{
-            display: (
-              search.advanced === true
-              || setting.mapfilter === true
-            )? null: 'none'
-          }}
-        >
-          <label>Filter by Map</label>
-          <Checkbox
-            toggle
-            checked={search.mapfilter}
-            onChange={(e, d)=>{
-              this.props.setmapfilter(d.checked)
-            }}/>
-        </Form.Field>
-        <Form.Group
-          widths='equal'
-          style={{
-            display: (
-              search.advanced === true
-              || setting.zoom2selected === true
-            )? null: 'none'
-          }}
-        >
-          <Form.Field>
-            <label>Center to selected</label>
-            <Checkbox
-              toggle
-              checked={search.center2selected}
-              onChange={(e, d)=>{
-                this.props.setcenter2filter(d.checked)
-              }}/>
-          </Form.Field>
-          <Form.Field
-            style={{
-              textAlign: 'right',
-              display: search.center2selected === true? null: 'none'
-            }}
-          >
-            <label>...and zoom</label>
-            <Checkbox
-              toggle
-              checked={search.zoom2selected}
-              onChange={(e, d)=>{
-                this.props.setzoom2filter(d.checked)
-              }}/>
-          </Form.Field>
-        </Form.Group>
+        {
+          settings.data.appearance.explorer === 0? 
+          null: [
+            <Form.Field
+              key='msc-1'
+              style={{
+                display: (
+                  search.advanced === true
+                  || filter.mapfilter === true
+                )? null: 'none'
+              }}
+            >
+              <label>Filter by Map</label>
+              <Checkbox
+                toggle
+                checked={search.mapfilter}
+                onChange={(e, d)=>{
+                  this.props.setmapfilter(d.checked)
+                }}/>
+            </Form.Field>,
+            <Form.Group
+              key='msc-2'
+              widths='equal'
+              style={{
+                display: (
+                  search.advanced === true
+                  || filter.zoom2selected === true
+                )? null: 'none'
+              }}
+            >
+              <Form.Field>
+                <label>Center to selected</label>
+                <Checkbox
+                  toggle
+                  checked={search.center2selected}
+                  onChange={(e, d)=>{
+                    this.props.setcenter2filter(d.checked)
+                  }}/>
+              </Form.Field>
+              <Form.Field
+                style={{
+                  textAlign: 'right',
+                  display: search.center2selected === true? null: 'none'
+                }}
+              >
+                <label>...and zoom</label>
+                <Checkbox
+                  toggle
+                  checked={search.zoom2selected}
+                  onChange={(e, d)=>{
+                    this.props.setzoom2filter(d.checked)
+                  }}/>
+              </Form.Field>
+            </Form.Group>
+          ]
+        }
         {
           this.isVisible('extended.original_name')?
             <Form.Field>
@@ -754,7 +762,7 @@ SearchComponent.propTypes = {
 const mapStateToProps = (state, ownProps) => {
   return {
     search: state.search,
-    setting: state.setting.data.filter
+    settings: state.setting
   }
 }
 

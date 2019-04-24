@@ -7,23 +7,15 @@ import {
 } from 'react-router-dom'
 
 import {
-  Button,
   Header,
   Icon,
   Menu,
-  Segment,
-  Table,
-  List
 } from 'semantic-ui-react'
 
 import {
-  createBorehole,
-  getBorehole,
-  deleteBorehole
+  createBorehole
 } from '@ist-supsi/bmsjs'
 
-import DateText from '../../form/dateText';
-import DomainText from '../../form/domain/domainText'
 import SearchEditorComponent from '../../search/editor/searchEditorComponent'
 
 class MenuEditorSearch extends React.Component {
@@ -65,7 +57,7 @@ class MenuEditorSearch extends React.Component {
 
   render() {
     const {
-      history, boreholeSelected, boreholes
+      history, boreholes
     } = this.props
     return(
       [
