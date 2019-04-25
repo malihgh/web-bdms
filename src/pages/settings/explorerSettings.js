@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
+import Highlight from 'react-highlighter';
 
 import {
   Button,
@@ -420,7 +421,11 @@ class ExplorerSettings extends React.Component {
                                       flex: 1
                                     }}
                                   >
-                                    {layer.Title}
+                                    <Highlight
+                                      search={this.state.searchWmts}
+                                    >
+                                      {layer.Title}
+                                    </Highlight>
                                   </div>
                                   <div>
                                     <Button
@@ -466,14 +471,22 @@ class ExplorerSettings extends React.Component {
                                     fontSize: '0.8em'
                                   }}
                                 >
-                                  {layer.Identifier}
+                                  <Highlight
+                                    search={this.state.searchWmts}
+                                  >
+                                    {layer.Identifier}
+                                  </Highlight>
                                 </div>
                                 <div
                                   style={{
                                     fontSize: '0.8em'
                                   }}
                                 >
-                                  {layer.Abstract}
+                                  <Highlight
+                                    search={this.state.searchWmts}
+                                  >
+                                    {layer.Abstract}
+                                  </Highlight>
                                 </div>
                               </div>: null
                           ))

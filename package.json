@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:8888",
-  "homepage": "https://geoservice.ist.supsi.ch/bms",
+  "homepage": "https://geoservice.ist.supsi.ch/bms-demo",
   "dependencies": {
     "eslint": "^5.7.0",
     "i18next": "^11.3.3",
@@ -16,6 +16,7 @@
     "react": "^16.4.1",
     "react-datepicker": "^1.5.0",
     "react-dom": "^16.4.1",
+    "react-highlighter": "^0.4.3",
     "react-i18next": "^7.7.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
