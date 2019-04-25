@@ -4,6 +4,8 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 let resources = {
   en: {
     common: {
+      "borehole": "borehole",
+      "boreholes": "boreholes",
       "you": "you",
       "title": "BMS",
       "start": "This page is in English.",
@@ -21,7 +23,9 @@ let resources = {
       'from': 'from',
       'to': 'to',
       'meter': 'meter',
-      'degree': 'degree'
+      'degree': 'degree',
+      'result': 'result',
+      'results': 'results'
     },
     error: {
       'E-900': 'Borehole locked by {{user}}'
@@ -173,6 +177,8 @@ let resources = {
   },
   de: {
     common: {
+      "borehole": "borehole",
+      "boreholes": "bohrung",
       "you": "dir",
       "title": "BMS",
       "start": "Diese Seite ist auf deutsch.",
@@ -190,7 +196,9 @@ let resources = {
       'from': 'von',
       'to': 'zu',
       'meter': 'meter',
-      'degree': 'grad'
+      'degree': 'grad',
+      'result': 'ergebnis',
+      'results': 'ergebnisse'
     },
     error: {
       'E-900': `Borehole locked by {{user}}`
@@ -341,6 +349,8 @@ let resources = {
   },
   it: {
     common: {
+      "borehole": "perforazione",
+      "boreholes": "perforazioni",
       "you": "te",
       "title": "BMS",
       "start": "Questa pagina è in Italiano",
@@ -358,7 +368,9 @@ let resources = {
       'from': 'da',
       'to': 'a',
       'meter': 'metri',
-      'degree': 'gradi'
+      'degree': 'gradi',
+      'result': 'risultato',
+      'results': 'risultati'
     },
     error: {
       'E-900': 'Modifica in corso da parte di "{{user}}"'

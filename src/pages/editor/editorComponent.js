@@ -7,10 +7,6 @@ import {
   withRouter
 } from "react-router-dom";
 
-import {
-  lockBorehole
-} from '@ist-supsi/bmsjs';
-
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 

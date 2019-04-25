@@ -117,6 +117,7 @@ class HomeComponent extends React.Component {
           flex: '1 1 100%',
           display: 'flex',
           flexDirection: 'column',
+          overflow: 'hidden',
           zIndex: 1
         }}
       >
@@ -246,7 +247,6 @@ class HomeComponent extends React.Component {
   render() {
     const {
       detail,
-      home,
       setting
     } = this.props;
     return (
@@ -271,7 +271,8 @@ class HomeComponent extends React.Component {
               boxShadow: 'rgba(0, 0, 0, 0.17) 2px 6px 6px 0px',
               display: 'flex',
               flexDirection: 'column',
-              width: '250px'
+              width: '250px',
+              minWidth: '250px'
             }}
           >
             <MenuExplorer />

@@ -7,8 +7,6 @@ import {
 } from "react-router-dom";
 
 import {
-  Button,
-  Divider,
   Icon,
   List,
   Menu

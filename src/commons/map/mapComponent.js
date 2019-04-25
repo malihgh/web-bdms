@@ -73,6 +73,7 @@ class MapComponent extends React.Component {
       satellite: false,
       geologie500: false,
       hover: null,
+      featureExtent: [],
       maps: [
         {
           key: 'nomap',
@@ -243,7 +244,7 @@ class MapComponent extends React.Component {
         attributionOptions: {
           collapsed: false,
           collapsible: false,
-          collapseLabel: 'tettine'
+          collapseLabel: ''
         }
       }),
       layers: this.layers,
@@ -725,14 +726,21 @@ class MapComponent extends React.Component {
   */
   moveEnd() {
     const { moveend } = this.props;
-    // console.log(this.map.getView().getResolution())
+    var extent = this.map.getView().calculateExtent(this.map.getSize());
     if (moveend !== undefined) {
-      var extent = this.map.getView().calculateExtent(this.map.getSize());
       let features = [];
       this.points.forEachFeatureInExtent(extent, function (feature) {
         features.push(feature.get('id'));
       });
-      moveend(features, extent);
+      if (
+        !_.isEqual(this.state.featureExtent, features)
+      ){
+        this.setState({
+          featureExtent: features
+        }, ()=>{
+          moveend(features, extent);
+        });
+      }
     }
   }
 

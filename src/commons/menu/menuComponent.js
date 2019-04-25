@@ -57,7 +57,7 @@ const MenuComponent = function (props) {
                     <span
                       style={{ color: '#ed1d24' }}
                     >
-                      <Icon name='binoculars' /> Explorer mode
+                      <Icon name='binoculars' /> Viewer mode
                     </span>
                   );
                 case 'editor':

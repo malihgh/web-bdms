@@ -109,7 +109,8 @@ class MetaComponent extends React.Component {
     return (
       <div
         style={{
-          overflowY: 'auto',
+          // overflowY: 'auto',
+          minWidth: '250px',
           padding: '1em'
         }}
       >

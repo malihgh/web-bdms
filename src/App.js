@@ -50,7 +50,9 @@ class App extends React.Component {
     if (Object.keys(domains.data).length === 0) {
       this.props.loadDomains();
     }
-    if (cantons.data.length === 0) this.props.loadCantons();
+    if (cantons.data.length === 0) {
+      this.props.loadCantons()
+    };
     this.props.loadSettings();
     this.props.loadUser();
     // this.props.loadWmts();
@@ -60,7 +62,7 @@ class App extends React.Component {
     scrollDiv.className = "scrollbar-measure";
     document.body.appendChild(scrollDiv);
     var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-    // console.warn(scrollbarWidth); // Mac:  15
+    console.warn(scrollbarWidth); // Mac:  15
     this.props.setScrollbarWidth(scrollbarWidth + 'px');
     // Delete the DIV 
     document.body.removeChild(scrollDiv);

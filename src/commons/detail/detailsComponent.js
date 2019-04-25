@@ -20,6 +20,7 @@ class DetailsComponent extends React.Component {
     } = this.props;
     return (
       <div
+        id='DetailsComponent'
         style={{
           flex: "1 1 100%",
           overflowY: 'hidden',
@@ -31,6 +32,7 @@ class DetailsComponent extends React.Component {
           detail.borehole ?
             [
               <div
+                id="bms-dc-1"
                 key='bms-dc-1'
                 style={{
                   padding: '1em',
@@ -39,7 +41,8 @@ class DetailsComponent extends React.Component {
                   display: 'flex',
                   flexDirection: 'row'
                 }
-                }>
+                }
+              >
                 <div>
                   <div
                     style={{
@@ -259,7 +262,9 @@ class DetailsComponent extends React.Component {
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
-                  paddingBottom: '1em'
+                  flex: '1 1 100%',
+                  paddingBottom: '1em',
+                  overflowY: 'hidden'
                 }}
               >
                 <Scroller>

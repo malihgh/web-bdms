@@ -54,11 +54,9 @@ class MenuExplorer extends React.Component {
   render() {
     const {
       history,
-      home,
       boreholes,
       t,
-      detail,
-      search
+      detail
     } = this.props;
     return (
       <Switch>
@@ -149,23 +147,33 @@ class MenuExplorer extends React.Component {
               <div
                 key='sb-em-1'
                 style={{
-                  padding: '1em'
-                }}>
-                <Header size='medium'>
-                  Boreholes: {
-                    boreholes.isFetching ?
-                      ' searching...' :
-                      boreholes.dlen + ' founds'
-                  }
-                </Header>
+                  color: '#767676',
+                  // fontWeight: 'bold',
+                  padding: '1em 1em 0px 1em'
+                }}
+              >
+                {
+                  t("common:boreholes").charAt(0).toUpperCase()
+                  + t("common:boreholes").slice(1)
+                }: {
+                  boreholes.isFetching ?
+                    <Icon
+                      loading
+                      name='spinner'
+                    /> :
+                    boreholes.dlen + ' ' + (
+                      boreholes.dlen > 1 || boreholes.dlen === 0?
+                        t("common:results"): t("common:result")
+                    )
+                }
               </div>,
               <div
                 className={
                   this.state.scroller === true ?
                     'scroller' : null
                 }
-                ref={divElement => this.menu = divElement}
                 key='sb-em-2'
+                ref={divElement => this.menu = divElement}
                 style={{
                   padding: '1em',
                   flex: '1 1 100%',
@@ -174,11 +182,13 @@ class MenuExplorer extends React.Component {
                   overflowY: 'hidden',
                   marginRight: this.state.scroller === true ?
                     this.props.setting.scrollbar : '0px'
-                }}>
+                }}
+              >
                 <SearchComponent
                   onChange={(filter) => {
                     //console.log(filter)
-                  }} />
+                  }}
+                />
               </div>,
               <Menu
                 icon='labeled'
