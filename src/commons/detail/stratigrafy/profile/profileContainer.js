@@ -14,14 +14,14 @@ class ProfileContainer extends React.Component {
     this.state = {
       layer: null,
       isFetchingLayer: false
-    }
+    };
   }
   componentDidMount(){
     const {
       id
-    } = this.props
+    } = this.props;
     if(id !== null){
-      this.props.loadLayers(id)
+      this.props.loadLayers(id);
     }
   }
   componentDidUpdate(prevProps) {
@@ -36,16 +36,14 @@ class ProfileContainer extends React.Component {
   render() {
     const {
       layers
-    } = this.props
+    } = this.props;
     if (layers.data.length === 0){
-      return null
+      return null;
     }
     return (
       <ProfileView
         data={layers.data}
-        layer={this.state.layer}
-        isFetchingLayer={this.state.isFetchingLayer}
-        onSelected={(selected)=>{
+        handleSelected={(selected)=>{
           this.setState({
             isFetchingLayer: true,
             layer: null
@@ -54,37 +52,40 @@ class ProfileContainer extends React.Component {
               this.setState({
                 isFetchingLayer: false,
                 layer: result.data.data
-              })
+              });
             }).catch((err) => {
               // handling error
-            })
-          })
-        }}/>
-    )
+            });
+          });
+        }}
+        isFetchingLayer={this.state.isFetchingLayer}
+        layer={this.state.layer}
+      />
+    );
   }
 }
 
 ProfileContainer.propTypes = {
   id: PropTypes.number
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
     layers: state.core_layers_list,
     ...ownProps
-  }
-}
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
     loadLayers: (id) => {
-      dispatch(loadLayers(id))
+      dispatch(loadLayers(id));
     }
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate('borehole_form')(ProfileContainer))
+)(translate('borehole_form')(ProfileContainer));

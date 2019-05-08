@@ -267,11 +267,8 @@ class DetailsComponent extends React.Component {
                   overflowY: 'hidden'
                 }}
               >
-                <Scroller>
-                  <MetaComponent
-                    data={detail.borehole} />
-                </Scroller>
                 <StratigraphiesComponent
+                  data={detail}
                   stratigraphies={detail.stratigraphies}
                 />
               </div>
