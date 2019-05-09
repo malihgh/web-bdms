@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef }  from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
@@ -27,6 +27,7 @@ class LayerForm extends React.Component {
   constructor(props) {
     super(props);
     this.isVisible = this.isVisible.bind(this);
+    this.depthToRef = createRef();
     this.empty = {
       id: props.hasOwnProperty('id')? props.id: null,
       kind: null,
@@ -84,8 +85,8 @@ class LayerForm extends React.Component {
   componentDidMount(){
     const {
       id
-    } = this.props
-    this.load(id)
+    } = this.props;
+    this.load(id);
   }
 
   componentDidUpdate(prevProps) {
@@ -95,22 +96,26 @@ class LayerForm extends React.Component {
   }
 
   load(id){
-    if(_.isInteger(id)){
+    if (_.isInteger(id)){
       this.setState({
         isFetching: true,
         layer: this.empty
       }, () => {
         getLayer(id).then(function(response) {
-          if(response.data.success){
+          if (response.data.success){
             this.setState({
               isFetching: false,
               layer: response.data.data
-            })
+            }, () => {
+              if (_.isNil(this.state.layer.depth_to)){
+                this.depthToRef.current.focus();
+              }
+            });
           }
         }.bind(this)).catch(function (error) {
-          console.log(error)
-        })
-      })
+          console.log(error);
+        });
+      });
     }
   }
 
@@ -125,9 +130,9 @@ class LayerForm extends React.Component {
         ...this.state.layer
       }
     };
-    _.set(state.layer, attribute, value)
+    _.set(state.layer, attribute, value);
     this.setState(state, () => {
-      if(
+      if (
         this.updateAttributeDelay.hasOwnProperty(attribute) &&
         this.updateAttributeDelay[attribute]
       ){
@@ -140,32 +145,32 @@ class LayerForm extends React.Component {
           attribute,
           value
         ).then(function(response) {
-          if(response.data.success){
+          if (response.data.success){
             this.setState({
               isPatching: false
             }, () => {
-              if(_.isFunction(onUpdated)){
+              if (_.isFunction(onUpdated)){
                 onUpdated(this.state.layer.id, attribute, value);
               }
             });
           }
         }.bind(this)).catch(function (error) {
           console.error(error);
-        })
+        });
       }.bind(this), to? 500: 0);
-    })
+    });
   }
 
   isVisible(name, field){
     const {
       conf
     } = this.props;
-    if(
+    if (
       this.state.allfields === false
       && conf!==null
       && conf.hasOwnProperty('fields')
     ){
-      if(conf.fields.indexOf(name)>=0){
+      if (conf.fields.indexOf(name)>=0){
         return field;
       }
       return null;
@@ -179,7 +184,7 @@ class LayerForm extends React.Component {
     } = this.props;
     const size = 'small';
     let fields = [];
-    if(conf!==null && conf.hasOwnProperty('fields')){
+    if (conf!==null && conf.hasOwnProperty('fields')){
       fields = conf.fields;
     }
 
@@ -192,7 +197,8 @@ class LayerForm extends React.Component {
           active={
             this.state.isFetching === true
           }
-          inverted>
+          inverted
+        >
           <Loader>
           {(()=>{
             if(this.state.loading_fetch === true){
@@ -261,22 +267,24 @@ class LayerForm extends React.Component {
           >
             <label>{t('depth_to')}</label>
             <Input
-              type='number'
-              value={
-                _.isNil(this.state.layer.depth_to)?
-                '': this.state.layer.depth_to
-              }
+              autoCapitalize="off"
+              autoComplete="off"
+              autoCorrect="off"
               onChange={(e)=>{
                 this.updateChange(
                   'depth_to',
                   e.target.value === ''?
-                  null: _.toNumber(e.target.value)
-                )
+                    null: _.toNumber(e.target.value)
+                );
               }}
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck="false"/>
+              ref={this.depthToRef}
+              spellCheck="false"
+              type='number'
+              value={
+                _.isNil(this.state.layer.depth_to)?
+                  '': this.state.layer.depth_to
+              }
+            />
           </Form.Field>
           {
             this.isVisible(
@@ -657,7 +665,7 @@ class LayerForm extends React.Component {
                       'grain_shape',
                       selected.map(gsh=>gsh.id),
                       false
-                    )
+                    );
                   }}/>
               </Form.Field>
             )
@@ -677,7 +685,7 @@ class LayerForm extends React.Component {
                       'grain_granularity',
                       selected.map(ggr=>ggr.id),
                       false
-                    )
+                    );
                   }}/>
               </Form.Field>
             )
@@ -693,7 +701,7 @@ class LayerForm extends React.Component {
                   onSelected={(selected)=>{
                     this.updateChange(
                       'cohesion', selected.id, false
-                    )
+                    );
                   }}/>
               </Form.Field>
             )
@@ -713,7 +721,7 @@ class LayerForm extends React.Component {
                       'further_properties',
                       selected.map(ftp=>ftp.id),
                       false
-                    )
+                    );
                   }}/>
               </Form.Field>
             )
@@ -729,7 +737,7 @@ class LayerForm extends React.Component {
                   onSelected={(selected)=>{
                     this.updateChange(
                       'uscs_1', selected.id, false
-                    )
+                    );
                   }}/>
               </Form.Field>
             )
@@ -745,7 +753,7 @@ class LayerForm extends React.Component {
                   onSelected={(selected)=>{
                     this.updateChange(
                       'uscs_2', selected.id, false
-                    )
+                    );
                   }}/>
               </Form.Field>
             )
@@ -765,7 +773,7 @@ class LayerForm extends React.Component {
                       'uscs_3',
                       selected.map(ftp=>ftp.id),
                       false
-                    )
+                    );
                   }}/>
               </Form.Field>
             )
@@ -779,7 +787,7 @@ class LayerForm extends React.Component {
                   onChange={(e)=>{
                     this.updateChange(
                       'uscs_original', e.target.value
-                    )
+                    );
                   }}
                   value={this.state.layer.uscs_original}
                   autoComplete="off"
@@ -804,7 +812,7 @@ class LayerForm extends React.Component {
                       'uscs_determination',
                       selected.map(ftp=>ftp.id),
                       false
-                    )
+                    );
                   }}/>
               </Form.Field>
             )
@@ -836,7 +844,7 @@ class LayerForm extends React.Component {
                       'debris',
                       selected.map(gsh=>gsh.id),
                       false
-                    )
+                    );
                   }}/>
               </Form.Field>
             )
@@ -856,7 +864,7 @@ class LayerForm extends React.Component {
                       'lit_pet_deb',
                       selected.map(gsh=>gsh.id),
                       false
-                    )
+                    );
                   }}/>
               </Form.Field>
             )
@@ -897,7 +905,7 @@ class LayerForm extends React.Component {
                   onChange={(e)=>{
                     this.updateChange(
                       'notes', e.target.value
-                    )
+                    );
                   }}
                   value={this.state.layer.notes}
                 />
@@ -906,7 +914,7 @@ class LayerForm extends React.Component {
           }
         </Form>
       </Dimmer.Dimmable>
-    )
+    );
   }
 }
 
@@ -914,11 +922,11 @@ LayerForm.propTypes = {
   id: PropTypes.number,
   conf: PropTypes.object,
   onUpdated: PropTypes.func
-}
+};
 
 LayerForm.defaultProps = {
   id: undefined,
   conf: {}
-}
+};
 
-export default translate(['layer_form', 'common'])(LayerForm)
+export default translate(['layer_form', 'common'])(LayerForm);

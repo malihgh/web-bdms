@@ -1,6 +1,6 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import _ from 'lodash'
+import React, { createRef } from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 
 // import {
@@ -9,7 +9,10 @@ import { connect } from 'react-redux';
 
 import {
   Button,
+  Form,
   Icon,
+  Input,
+  Radio,
   Table
 } from 'semantic-ui-react';
 
@@ -19,70 +22,34 @@ class LayersList extends React.Component {
 
   constructor(props) {
     super(props);
+    this.inputRef = createRef();
     this.getColor = this.getColor.bind(this);
+    this.handleDeleteAction = this.handleDeleteAction.bind(this);
+    this.handleResolvingAction = this.handleResolvingAction.bind(this);
+    this.handleValue = this.handleValue.bind(this);
     this.getPattern = this.getPattern.bind(this);
-    // this.state = {
-    //   isFetching: false,
-    //   // Stratigraphy id
-    //   id: props.hasOwnProperty('id')? props.id: null,
-    //   selected: this.props.selected !== undefined?
-    //     this.props.selected: null,
-    //   layers: []
-    // }
+    this.state = {
+      resolving: null,
+      resolvingAction: 0,
+      deleting: null,
+      deleteAction: 0,
+      value: null
+    };
   }
-
-  // componentDidMount(){
-  //   this.load(this.state.id)
-  // }
-  //
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.id !== prevProps.id) {
-  //     this.load(this.props.id);
-  //   }
-  // }
-
-  // static getDerivedStateFromProps(nextProps, prevState){
-  //   if (
-  //     !_.isNil(nextProps.selected) &&
-  //     nextProps.selected !== prevState.select
-  //   ){
-  //     return {selected: nextProps.selected}
-  //   }
-  //   return null
-  // }
-
-  // load(id){
-  //   if(_.isInteger(id)){
-  //     this.setState({
-  //       id: id,
-  //       isFetching: true,
-  //       stratigraphy: this.empty
-  //     }, () => {
-  //       getLayers(id).then(function(response) {
-  //         if(response.data.success){
-  //           this.setState({
-  //             isFetching: false,
-  //             layers: response.data.data
-  //           })
-  //         }
-  //       }.bind(this)).catch(function (error) {
-  //         console.log(error)
-  //       })
-  //     })
-  //   }
-  // }
 
   getPattern(id){
     const {
       domains
     } = this.props;
     let domain = domains.data['custom.lit_pet_top_bedrock'].find(function(element) {
-      return element.id === id
+      return element.id === id;
     });
     if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('img')){
-      return 'url("' + process.env.PUBLIC_URL + '/img/lit/' + domain.conf.img + '")'
+      return 'url("' + process.env.PUBLIC_URL + '/img/lit/' + domain.conf.img + '")';
     }
-    else return null;
+    else {
+      return null;
+    }
   }
 
   getColor(id){
@@ -90,117 +57,505 @@ class LayersList extends React.Component {
       domains
     } = this.props;
     let domain = domains.data['custom.lit_str_top_bedrock'].find(function(element) {
-      return element.id === id
+      return element.id === id;
     });
     if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('color')){
       const color = domain.conf.color;
-      return 'rgb(' + color.join(',') + ')'
+      return 'rgb(' + color.join(',') + ')';
     }
-    else return null;
+    else {
+      return null;
+    }
+  }
+
+  handleDeleteAction (e, { value }) {
+    this.setState({
+      deleteAction: value,
+      value: null
+    }, () => {
+      if (value === 3) {
+        this.inputRef.current.focus();
+      }
+    });
+  }
+
+  handleResolvingAction (e, { value }) {
+    this.setState({
+      resolvingAction: value,
+      value: null
+    }/*, () => {
+      if (value === 3) {
+        this.inputRef.current.focus();
+      }
+    }*/);
+  }
+
+  handleValue (e, { value }) {
+    this.setState({ 'value': value });
   }
 
   render(){
     const {
       layers
-    } = this.props
+    } = this.props;
+    const length = layers.length;
     return (
-      <Table basic selectable structured>
+      <Table
+        basic
+        selectable
+        structured
+      >
         <Table.Body>
           {
-            layers.map((item, idx) => (
-              <Table.Row
-                key={'ll-rw-'+idx}
-                active={item.id === this.props.selected}
-                style={{
-                  cursor: 'pointer'
-                }}
-                onClick={()=>{
-                  if(_.isFunction(this.props.onSelected)){
-                    this.props.onSelected(item);
-                  }
-                }}>
-                <Table.Cell
-                  collapsing
-                  style={{
-                    width: '4em',
-                    backgroundColor: this.getColor(item.lithostratigraphy),
-                    backgroundImage: this.getPattern(item.lithology),
-                    backgroundSize: 'cover'
-                  }}
-                >
-                </Table.Cell>
-                <Table.Cell collapsing>
-                  <span
+            layers.map((item, idx) => {
+              const ret = [];
+              const resolving = this.state.resolving !== null
+                && this.state.resolving.id === item.id;
+              if (
+                _.isFunction(this.props.onResolveGap)
+                && (
+                  (
+                    idx === 0
+                    && item.depth_from !== 0
+                  ) || (
+                    idx > 0
+                    && layers[(idx-1)].depth_to !== item.depth_from
+                  )
+                )
+              ){
+                ret.push(
+                  <Table.Row
+                    active={false}
+                    key={'ll-info-'+idx}
+                    negative
                     style={{
-                      fontWeight: 'bold'
+                      cursor: 'pointer'
                     }}
                   >
-                    <DomainText
-                        schema='custom.lit_str_top_bedrock'
-                        id={item.lithostratigraphy}/>
-                  </span>
-                  <br/>
-                  <span
+                    <Table.Cell
+                      colSpan={
+                        resolving === true?
+                          '3': _.isFunction(this.props.onDelete)?
+                            '2': '1'
+                      }
+                      collapsing
+                      style={{
+                        width: '100%'
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontWeight: 'bold'
+                        }}
+                      >
+                        <Icon name='warning sign' /> Non continuos data found
+                      </div>
+                      {
+                        resolving === true?
+                          <div>
+                            <div
+                              style={{
+                                fontSize: '0.8em'
+                              }}
+                            >
+                              How to resolve this issue?
+                            </div>
+                            <div
+                              style={{
+                                marginTop: '0.5em'
+                              }}
+                            >
+                              <Form>
+                                <Form.Field>
+                                  <Radio
+                                    checked={this.state.resolvingAction === 0}
+                                    label='Fill gap with "undefined" layer'
+                                    name='radioGroup'
+                                    onChange={this.handleResolvingAction}
+                                    value={0}
+                                  />
+                                </Form.Field>
+                                {
+                                  idx > 0?
+                                    <Form.Field>
+                                      <Radio
+                                        checked={this.state.resolvingAction === 1}
+                                        label='Extend upper layer to bottom'
+                                        name='radioGroup'
+                                        onChange={this.handleResolvingAction}
+                                        value={1}
+                                      />
+                                    </Form.Field>: null
+                                }
+                                {
+                                  (idx + 1) < length?
+                                    <Form.Field>
+                                      <Radio
+                                        checked={this.state.resolvingAction === 2}
+                                        label='Extend lower layer to top'
+                                        name='radioGroup'
+                                        onChange={this.handleResolvingAction}
+                                        value={2}
+                                      />
+                                    </Form.Field>: null
+                                }
+                              </Form>
+                            </div>
+                            <div
+                              style={{
+                                marginTop: '0.5em',
+                                textAlign: 'right'
+                              }}
+                            >
+                              <Button
+                                basic
+                                icon
+                                onClick={(e)=>{
+                                  e.stopPropagation();
+                                  this.setState({
+                                    resolving: null,
+                                    resolvingAction: 0
+                                  });
+                                }}
+                                size='mini'
+                              >
+                                <Icon name='cancel' /> Cancel
+                              </Button>
+                              <Button
+                                icon
+                                onClick={(e)=>{
+                                  e.stopPropagation();
+                                  const resolvingAction = this.state.resolvingAction;
+                                  this.setState({
+                                    resolving: null,
+                                    resolvingAction: 0
+                                  }, () => {
+                                    this.props.onResolveGap(
+                                      item, resolvingAction
+                                    );
+                                  });
+                                }}
+                                secondary
+                                size='mini'
+                              >
+                                <Icon name='check' /> Confirm
+                              </Button>
+                            </div>
+                          </div>: null
+                      }
+                    </Table.Cell>
+                    {
+                      this.state.resolving === null
+                      || this.state.resolving.id !== item.id?
+                        <Table.Cell
+                          collapsing
+                        >
+                          <Button
+                            basic
+                            icon
+                            onClick={(e)=>{
+                              e.stopPropagation();
+                              this.setState({
+                                resolving: item,
+                                resolvingAction: 0,
+                                deleting: null,
+                                deleteAction: 0,
+                                value: null
+                              });
+                            }}
+                            size='mini'
+                          >
+                            <Icon name='question' />
+                          </Button>
+                        </Table.Cell>: null
+                    }
+                  </Table.Row>
+                );
+              }
+
+              if (
+                this.state.deleting !== null
+                && this.state.deleting.id === item.id
+              ){
+                ret.push(
+                  <Table.Row
+                    active={false}
+                    key={'ll-rw-'+idx}
+                    negative
                     style={{
-                      color: '#787878',
-                      fontSize: '0.8em'
-                    }}>
-                    <DomainText
-                      schema='custom.lit_pet_top_bedrock'
-                      id={item.lithology}/>
-                  </span>
-                  <br/>
-                  <span
-                    style={{
-                      color: '#787878',
-                      fontSize: '0.8em'
-                    }}>
-                    {item.depth_from} m ({item.msm_from} m)
-                  </span>
-                  <br/>
-                  {item.depth_to} m ({item.msm_to} m)
-                </Table.Cell>
-                {
-                _.isFunction(this.props.onDelete)?
-                  <Table.Cell
-                    collapsing
+                      cursor: 'pointer'
+                    }}
                   >
-                    <Button icon size='mini' circular basic negative
-                      onClick={(e)=>{
-                        e.stopPropagation()
-                        if(_.isFunction(this.props.onDelete)){
-                          this.props.onDelete(item)
+                    <Table.Cell
+                      colSpan={
+                        _.isFunction(this.props.onDelete)? '3': '2'
+                      }
+                      collapsing
+                    >
+                      <div
+                        style={{
+                          fontWeight: 'bold'
+                        }}
+                      >
+                        Attention:
+                      </div>
+                      <div
+                        style={{
+                          fontSize: '0.8em'
+                        }}
+                      >
+                        You are about to delete this level, 
+                        how do you want to procede?
+                      </div>
+                      <div
+                        style={{
+                          marginTop: '0.5em'
+                        }}
+                      >
+                        <Form>
+                          <Form.Field>
+                            <Radio
+                              checked={this.state.deleteAction === 0}
+                              label='Just delete this layer'
+                              name='radioGroup'
+                              onChange={this.handleDeleteAction}
+                              value={0}
+                            />
+                          </Form.Field>
+                          {
+                            idx > 0?
+                              <Form.Field>
+                                <Radio
+                                  checked={this.state.deleteAction === 1}
+                                  label='Extend upper layer to bottom'
+                                  name='radioGroup'
+                                  onChange={this.handleDeleteAction}
+                                  value={1}
+                                />
+                              </Form.Field>: null
+                          }
+                          {
+                            (idx + 1) < length?
+                              <Form.Field>
+                                <Radio
+                                  checked={this.state.deleteAction === 2}
+                                  label='Extend lower layer to top'
+                                  name='radioGroup'
+                                  onChange={this.handleDeleteAction}
+                                  value={2}
+                                />
+                              </Form.Field>: null
+                          }
+                          {
+                            idx > 0?
+                              <Form.Field>
+                                <Radio
+                                  checked={this.state.deleteAction === 3}
+                                  label='Set manually'
+                                  name='radioGroup'
+                                  onChange={this.handleDeleteAction}
+                                  value={3}
+                                />
+                              </Form.Field>: null
+                          }
+                          {
+                            idx > 0?
+                              <Form.Field>
+                                <Input
+                                  disabled={this.state.deleteAction !== 3}
+                                  onChange={this.handleValue}
+                                  ref={this.inputRef}
+                                  type="number"
+                                />
+                              </Form.Field>: null
+                          }
+                        </Form>
+                      </div>
+                      <div
+                        style={{
+                          marginTop: '0.5em',
+                          textAlign: 'right'
+                        }}
+                      >
+                        <Button
+                          basic
+                          icon
+                          onClick={(e)=>{
+                            e.stopPropagation();
+                            this.setState({
+                              deleting: null,
+                              deleteAction: 0,
+                              value: null
+                            });
+                          }}
+                          size='mini'
+                        >
+                          <Icon name='cancel' /> Cancel
+                        </Button>
+                        <Button
+                          icon
+                          negative
+                          onClick={(e)=>{
+                            e.stopPropagation();
+                            const deleteAction = this.state.deleteAction;
+                            const value = _.isNil(this.state.value) === false?
+                              parseFloat(this.state.value): null;
+                            this.setState({
+                              deleting: null,
+                              deleteAction: 0,
+                              value: value
+                            }, () => {
+                              this.props.onDelete(
+                                item, deleteAction, value
+                              );
+                            });
+                          }}
+                          size='mini'
+                        >
+                          <Icon name='trash alternate outline' /> Confirm
+                        </Button>
+                      </div>
+                    </Table.Cell>
+                    
+                  </Table.Row>
+                );
+              } else {
+                ret.push(
+                  (
+                    <Table.Row
+                      active={item.id === this.props.selected}
+                      key={'ll-rw-'+idx}
+                      onClick={()=>{
+                        if (_.isFunction(this.props.onSelected)){
+                          this.setState({
+                            resolving: null,
+                            resolvingAction: 0,
+                            deleting: null,
+                            deleteAction: 0,
+                            value: null
+                          }, () => {
+                            this.props.onSelected(item);
+                          });
                         }
-                      }}>
-                      <Icon name='trash alternate outline' />
-                    </Button>
-                  </Table.Cell>: null
-                }
-              </Table.Row>
-            ))
+                      }}
+                      style={{
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <Table.Cell
+                        collapsing
+                        style={{
+                          maxWidth: '40px',
+                          width: '40px',
+                          minWidth: '40px',
+                          backgroundColor: item.unknown === true?
+                            null: this.getColor(item.lithostratigraphy),
+                          backgroundImage: item.unknown === true?
+                            null: this.getPattern(item.lithology),
+                          backgroundSize: 'cover'
+                        }}
+                      >
+                      </Table.Cell>
+                      <Table.Cell
+                        collapsing
+                        style={{
+                          width: '100%'
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          <DomainText
+                            id={item.lithostratigraphy}
+                            schema='custom.lit_str_top_bedrock'
+                          />
+                        </div>
+                        <div
+                          style={{
+                            color: '#787878',
+                            fontSize: '0.8em'
+                          }}
+                        >
+                          <DomainText
+                            id={item.lithology}
+                            schema='custom.lit_pet_top_bedrock'
+                          />
+                        </div>
+                        <div
+                          style={{
+                            color: (
+                              idx > 0 && layers[(idx-1)].depth_to !== item.depth_from?
+                                'red': '#787878'
+                            ),
+                            fontSize: '0.8em'
+                          }}
+                        >
+                          {
+                            idx > 0 && layers[(idx-1)].depth_to !== item.depth_from?
+                              <Icon name='warning sign' />: null
+                          } {item.depth_from} m
+                        </div>
+                        <div>
+                          {item.depth_to} m
+                        </div>
+                      </Table.Cell>
+                      {
+                        _.isFunction(this.props.onDelete)?
+                          <Table.Cell
+                            collapsing
+                          >
+                            <Button
+                              basic
+                              icon
+                              onClick={(e)=>{
+                                e.stopPropagation();
+                                this.setState({
+                                  resolving: null,
+                                  resolvingAction: 0,
+                                  deleting: item,
+                                  deleteAction: 0,
+                                  value: null
+                                });
+                                // if (_.isFunction(this.props.onDelete)){
+                                //   this.props.onDelete(item);
+                                // }
+                              }}
+                              size='mini'
+                            >
+                              <Icon name='trash alternate outline' />
+                            </Button>
+                          </Table.Cell>: null
+                      }
+                    </Table.Row>
+                  )
+                );
+              }
+              return ret;
+            })
           }
         </Table.Body>
       </Table>
-    )
+    );
   }
 }
 
 LayersList.propTypes = {
-  // id: PropTypes.number,
-  onSelected: PropTypes.func,
+  layers: PropTypes.array,
   onDelete: PropTypes.func,
-  layers: PropTypes.array
-}
+  onResolveGap: PropTypes.func,
+  onSelected: PropTypes.func
+};
 
 LayersList.defaultProps = {
   layers: []
 };
 
-
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
     domains: state.core_domain_list
-  }
+  };
 };
 
 export default connect(

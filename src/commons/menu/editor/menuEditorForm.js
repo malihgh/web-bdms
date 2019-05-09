@@ -92,7 +92,6 @@ class MenuEditorForm extends React.Component {
                 + match.params.id
               }
               onClick={() => {
-                console.log(match);
                 history.push(
                   process.env.PUBLIC_URL + "/editor/"
                   + match.params.id
@@ -124,7 +123,6 @@ class MenuEditorForm extends React.Component {
                 + match.params.id + "/borehole"
               }
               onClick={() => {
-                console.log(match);
                 history.push(
                   process.env.PUBLIC_URL + "/editor/"
                   + match.params.id + "/borehole"
@@ -156,7 +154,6 @@ class MenuEditorForm extends React.Component {
                 + match.params.id + "/stratigraphy"
               }
               onClick={() => {
-                // console.log(match);
                 history.push(
                   process.env.PUBLIC_URL + "/editor/"
                   + match.params.id + "/stratigraphy"

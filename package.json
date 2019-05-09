@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:8888",
-  "homepage": "https://geoservice.ist.supsi.ch/bms-demo",
+  "homepage": "https://geoservice.ist.supsi.ch/bms",
+  "author": "mantonovic",
   "dependencies": {
     "eslint": "^5.7.0",
     "i18next": "^11.3.3",

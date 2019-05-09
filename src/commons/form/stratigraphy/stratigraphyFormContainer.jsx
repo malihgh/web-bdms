@@ -17,6 +17,7 @@ import {
   getStratigraphy,
   getLayers,
   deleteLayer,
+  gapLayer,
   createLayer,
   patchStratigraphy,
   deleteStratigraphy,
@@ -421,9 +422,32 @@ class StratigraphyFormContainer extends React.Component {
                   >
                     <LayersList
                       layers={this.state.layers}
-                      onDelete={layer => {
+                      onDelete={(layer, precess, value = null) => {
                         deleteLayer(
-                          layer.id
+                          layer.id, precess, value
+                        ).then(
+                          function(response) {
+                            if (response.data.success){
+                              getLayers(
+                                this.state.stratigraphy.id
+                              ).then(function(response) {
+                                if (response.data.success){
+                                  this.setState({
+                                    layers: response.data.data,
+                                    layer: null
+                                  });
+                                }
+                              }.bind(this)).catch(function (error) {
+                                console.log(error);
+                              });
+                            }
+                          }.bind(this)).catch(function (error) {
+                          console.log(error);
+                        });
+                      }}
+                      onResolveGap={(layer, precess) => {
+                        gapLayer(
+                          layer.id, precess
                         ).then(
                           function(response) {
                             if (response.data.success){
