@@ -179,7 +179,9 @@ class LayersList extends React.Component {
                                   idx > 0?
                                     <Form.Field>
                                       <Radio
-                                        checked={this.state.resolvingAction === 1}
+                                        checked={
+                                          this.state.resolvingAction === 1
+                                        }
                                         label='Extend upper layer to bottom'
                                         name='radioGroup'
                                         onChange={this.handleResolvingAction}
@@ -188,7 +190,7 @@ class LayersList extends React.Component {
                                     </Form.Field>: null
                                 }
                                 {
-                                  (idx + 1) < length?
+                                  (idx + 1) <= length?
                                     <Form.Field>
                                       <Radio
                                         checked={this.state.resolvingAction === 2}
@@ -506,26 +508,32 @@ class LayersList extends React.Component {
                           <Table.Cell
                             collapsing
                           >
-                            <Button
-                              basic
-                              icon
-                              onClick={(e)=>{
-                                e.stopPropagation();
-                                this.setState({
-                                  resolving: null,
-                                  resolvingAction: 0,
-                                  deleting: item,
-                                  deleteAction: 0,
-                                  value: null
-                                });
-                                // if (_.isFunction(this.props.onDelete)){
-                                //   this.props.onDelete(item);
-                                // }
-                              }}
-                              size='mini'
-                            >
-                              <Icon name='trash alternate outline' />
-                            </Button>
+                            {
+                              this.props.borehole.data.lock === null
+                              || this.props.borehole.data.lock.username !==
+                                  this.props.user.data.username?
+                                null:
+                                <Button
+                                  basic
+                                  icon
+                                  onClick={(e)=>{
+                                    e.stopPropagation();
+                                    this.setState({
+                                      resolving: null,
+                                      resolvingAction: 0,
+                                      deleting: item,
+                                      deleteAction: 0,
+                                      value: null
+                                    });
+                                    // if (_.isFunction(this.props.onDelete)){
+                                    //   this.props.onDelete(item);
+                                    // }
+                                  }}
+                                  size='mini'
+                                >
+                                  <Icon name='trash alternate outline' />
+                                </Button>
+                            }
                           </Table.Cell>: null
                       }
                     </Table.Row>
@@ -554,7 +562,9 @@ LayersList.defaultProps = {
 
 const mapStateToProps = (state) => {
   return {
-    domains: state.core_domain_list
+    borehole: state.core_borehole,
+    domains: state.core_domain_list,
+    user: state.core_user,
   };
 };
 

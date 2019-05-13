@@ -120,6 +120,15 @@ class LayerForm extends React.Component {
   }
 
   updateChange(attribute, value, to = true){
+
+    if (
+      this.props.borehole.data.lock === null
+      || this.props.borehole.data.lock.username !== this.props.user.data.username
+    ){
+      alert("Borehole not locked");
+      return;
+    }
+
     const {
       onUpdated
     } = this.props;
@@ -919,9 +928,11 @@ class LayerForm extends React.Component {
 }
 
 LayerForm.propTypes = {
-  id: PropTypes.number,
+  borehole: PropTypes.object,
   conf: PropTypes.object,
-  onUpdated: PropTypes.func
+  id: PropTypes.number,
+  onUpdated: PropTypes.func,
+  user: PropTypes.object
 };
 
 LayerForm.defaultProps = {

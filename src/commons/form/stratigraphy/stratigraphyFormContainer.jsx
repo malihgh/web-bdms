@@ -101,56 +101,15 @@ class StratigraphyFormContainer extends React.Component {
     }.bind(this));
   }
 
-  _load(borehole, kind) {
-    // Get Stratigraphy by borehole and stratigraphy kind
-    this.setState({
-      stratigraphy: null,
-      stratigraphyEmpty: false,
-      fetchingStratigraphy: true,
-      layers: null,
-      layer: null
-    }, function(){
-      
-      getStratigraphies(
-        borehole, kind
-      ).then(
-        function(response){
-          if (
-            response.data.success &&
-            response.data.data.length===1
-          ) {
-            this.setState({
-              stratigraphy: response.data.data[0]
-            }, function(){
-              // Load Stratigraphy Layers
-              getLayers(
-                this.state.stratigraphy.id
-              ).then(
-                function(response){
-                  if (response.data.success){
-                    this.setState({
-                      layers: response.data.data
-                    });
-                  }
-                }.bind(this)
-              ).catch((error) => {
-                console.log(error);
-              });
-            }.bind(this));
-          } else {
-            // Stratigraphy not created yet
-            this.setState({
-              stratigraphyEmpty: true
-            });
-          }
-        }.bind(this)
-      ).catch((err) => {
-        console.log(err);
-      });
-    }.bind(this));
-  }
-
   updateChange(attribute, value, to = true){
+    if (
+      this.props.borehole.data.lock === null
+      || this.props.borehole.data.lock.username !== this.props.user.data.username
+    ){
+      alert("Borehole not locked");
+      return;
+    }
+
     const {
       onUpdated
     } = this.props;
@@ -336,84 +295,90 @@ class StratigraphyFormContainer extends React.Component {
                     flexDirection: 'column'
                   }}
                 >
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      marginBottom: '0.5em'
-                    }}
-                  >
-                    <Button
-                      fluid
-                      negative
-                      onClick={()=>{
-                        cloneStratigraphy(
-                          stratigraphy.id
-                        ).then((response)=>{
-                          if (_.isFunction(onClone)){
-                            onClone(stratigraphy.id);
-                          }
-                          this.setState({
-                            stratigraphy: null
-                          });
-                        });
-                      }}
-                      size='tiny'
-                    >
-                      Clone
-                    </Button>
-                    <Button
-                      fluid
-                      negative
-                      onClick={()=>{
-                        deleteStratigraphy(
-                          stratigraphy.id
-                        ).then((response)=>{
-                          if (_.isFunction(onDeleted)){
-                            onDeleted(stratigraphy.id);
-                          }
-                          this.setState({
-                            stratigraphy: null
-                          });
-                        });
-                      }}
-                      size='tiny'
-                    >
-                      Delete stratigraphy
-                    </Button>
-                    <Button
-                      fluid
-                      onClick={()=>{
-                        createLayer(
-                          this.state.stratigraphy.id
-                        ).then(
-                          function(response) {
-                            if (response.data.success){
-                              let layerId = response.data.id;
-                              getLayers(
-                                this.state.stratigraphy.id
-                              ).then(function(response) {
+                  {
+                    this.props.borehole.data.lock === null
+                    || this.props.borehole.data.lock.username !==
+                        this.props.user.data.username?
+                      null:
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          marginBottom: '0.5em'
+                        }}
+                      >
+                        <Button
+                          fluid
+                          negative
+                          onClick={()=>{
+                            cloneStratigraphy(
+                              stratigraphy.id
+                            ).then((response)=>{
+                              if (_.isFunction(onClone)){
+                                onClone(stratigraphy.id);
+                              }
+                              this.setState({
+                                stratigraphy: null
+                              });
+                            });
+                          }}
+                          size='tiny'
+                        >
+                          Clone
+                        </Button>
+                        <Button
+                          fluid
+                          negative
+                          onClick={()=>{
+                            deleteStratigraphy(
+                              stratigraphy.id
+                            ).then((response)=>{
+                              if (_.isFunction(onDeleted)){
+                                onDeleted(stratigraphy.id);
+                              }
+                              this.setState({
+                                stratigraphy: null
+                              });
+                            });
+                          }}
+                          size='tiny'
+                        >
+                          Delete stratigraphy
+                        </Button>
+                        <Button
+                          fluid
+                          onClick={()=>{
+                            createLayer(
+                              this.state.stratigraphy.id
+                            ).then(
+                              function(response) {
                                 if (response.data.success){
-                                  this.setState({
-                                    layers: response.data.data,
-                                    layer: layerId
+                                  let layerId = response.data.id;
+                                  getLayers(
+                                    this.state.stratigraphy.id
+                                  ).then(function(response) {
+                                    if (response.data.success){
+                                      this.setState({
+                                        layers: response.data.data,
+                                        layer: layerId
+                                      });
+                                    }
+                                  }.bind(this)).catch(function (error) {
+                                    console.log(error);
                                   });
                                 }
-                              }.bind(this)).catch(function (error) {
-                                console.log(error);
-                              });
-                            }
-                          }.bind(this)
-                        ).catch(function (error) {
-                          console.log(error);
-                        });
-                      }}
-                      positive
-                      size='tiny'
-                    >
-                      Add layer
-                    </Button>
-                  </div>
+                              }.bind(this)
+                            ).catch(function (error) {
+                              console.log(error);
+                            });
+                          }}
+                          positive
+                          size='tiny'
+                        >
+                          Add layer
+                        </Button>
+                      </div>
+                  }
                   <div
                     style={{
                       flex: 1,
@@ -489,6 +454,7 @@ class StratigraphyFormContainer extends React.Component {
             {
               this.state.layer !== null?
                 <LayerForm
+                  borehole={this.props.borehole}
                   conf={
                     domains.data.layer_kind.find(function(element) {
                       return element.id === stratigraphy.kind;
@@ -507,6 +473,7 @@ class StratigraphyFormContainer extends React.Component {
                       layers: layers
                     });
                   }}
+                  user={this.props.user}
                 />: null
             }
           </Segment>
@@ -531,7 +498,9 @@ StratigraphyFormContainer.defaultProps = {
 
 const mapStateToProps = (state) => {
   return {
-    domains: state.core_domain_list
+    borehole: state.core_borehole,
+    domains: state.core_domain_list,
+    user: state.core_user,
   };
 };
 

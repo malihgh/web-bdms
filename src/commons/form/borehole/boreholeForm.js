@@ -237,7 +237,6 @@ class BoreholeForm extends React.Component {
       alert("Borehole not locked");
       return;
     }
-
     const state = {
       ...this.state,
       patchFetch: true,
@@ -1233,29 +1232,35 @@ class BoreholeForm extends React.Component {
                       flexDirection: 'row'
                     }}
                   >
-                    <Button
-                      content={t('meta_stratigraphy')}
-                      icon='add'
-                      onClick={() => {
-                        createStratigraphy(
-                          borehole.id
-                        ).then(
-                          (response) => {
-                            if (response.data.success) {
-                              this.setState({
-                                "stratigraphy_id": response.data.id
-                              }, () => {
-                                this.loadOrCreate(borehole.id);
-                              });
-                            }
-                          }
-                        ).catch(function (error) {
-                          console.log(error);
-                        });
-                      }}
-                      secondary
-                      size='small'
-                    />
+                    {
+                      this.props.borehole.data.lock === null
+                      || this.props.borehole.data.lock.username !==
+                         this.props.user.data.username?
+                        null:
+                        <Button
+                          content={t('meta_stratigraphy')}
+                          icon='add'
+                          onClick={() => {
+                            createStratigraphy(
+                              borehole.id
+                            ).then(
+                              (response) => {
+                                if (response.data.success) {
+                                  this.setState({
+                                    "stratigraphy_id": response.data.id
+                                  }, () => {
+                                    this.loadOrCreate(borehole.id);
+                                  });
+                                }
+                              }
+                            ).catch(function (error) {
+                              console.log(error);
+                            });
+                          }}
+                          secondary
+                          size='small'
+                        />
+                    }
                     {
                       _.isArray(borehole.stratigraphy) ?
                         borehole.stratigraphy.map((stratigraphy, sx) => (
@@ -1301,7 +1306,7 @@ class BoreholeForm extends React.Component {
                     }
                   </div>
                   <StratigraphyFormContainer
-                    borehole={borehole.id}
+                    // borehole={borehole.id}
                     id={this.state.stratigraphy_id}
                     kind={this.state.layer_kind}
                     onClone={(id) => {
