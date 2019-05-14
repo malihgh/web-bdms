@@ -183,19 +183,42 @@ class ProfileView extends React.Component {
             color: 'lithostratigraphy',
             pattern: 'lithology'
           }}
+          // minimapSelectedLayerStyle={{
+          //   border: '2px solid #2185d0',
+          //   boxShadow: 'rgba(0, 0, 0, 0.2) 4px 4px 12px'
+          // }}
           onSelected={handleSelected}
-          unit='m'
+          overLayerStyle={{
+            backgroundColor: 'rgb(245, 245, 245)'
+          }}
+          selectedLayerStyle={{
+            backgroundColor: 'rgb(245, 245, 245)',
+            borderTop: '2px solid #787878',
+            borderBottom: '2px solid #787878'
+          }}
+          unselectedLayerStyle={{
+            borderRight: '2px solid #787878'
+          }}
         />
         <Scroller
           style={{
             flex: "1 1 100%",
             // overflowY: 'auto'
-            padding: '1em'
+            padding: '1em',
+            ...(
+              this.props.layer !== null?
+                {
+                  backgroundColor: 'rgb(245, 245, 245)',
+                  borderTop: '2px solid #787878',
+                  borderRight: '2px solid #787878',
+                  borderBottom: '2px solid #787878'
+                }: null
+            )
           }}
         >
           {
             this.props.layer === null?
-              '':
+              null:
               <div>
                 <div
                   style={{

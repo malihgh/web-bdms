@@ -1,16 +1,16 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 import {
   loadLayers,
   getLayer
-} from '@ist-supsi/bmsjs'
-import ProfileView from './view/profileViewComponent'
+} from '@ist-supsi/bmsjs';
+import ProfileView from './view/profileViewComponent';
 
 class ProfileContainer extends React.Component {
   constructor(props){
-    super(props)
+    super(props);
     this.state = {
       layer: null,
       isFetchingLayer: false
@@ -20,7 +20,7 @@ class ProfileContainer extends React.Component {
     const {
       id
     } = this.props;
-    if(id !== null){
+    if (id !== null){
       this.props.loadLayers(id);
     }
   }
@@ -48,14 +48,16 @@ class ProfileContainer extends React.Component {
             isFetchingLayer: true,
             layer: null
           }, ()=>{
-            getLayer(selected.id).then((result) => {
-              this.setState({
-                isFetchingLayer: false,
-                layer: result.data.data
+            if (selected !== null){
+              getLayer(selected.id).then((result) => {
+                this.setState({
+                  isFetchingLayer: false,
+                  layer: result.data.data
+                });
+              }).catch((err) => {
+                // handling error
               });
-            }).catch((err) => {
-              // handling error
-            });
+            }
           });
         }}
         isFetchingLayer={this.state.isFetchingLayer}
