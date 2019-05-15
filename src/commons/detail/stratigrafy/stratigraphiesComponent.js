@@ -83,6 +83,7 @@ class StratigraphiesComponent extends React.Component {
                       <Icon
                         name='check'
                         size='small'
+                        title='Primary'
                       />: null
                   }
                   {/*
@@ -95,55 +96,60 @@ class StratigraphiesComponent extends React.Component {
                     item.name === null || item.name === ''?
                       t('common:np'): item.name
                   }
-                  <Dropdown
-                    icon={null}
-                    onChange={(ev, data) => {
-                      this.setState({
-                        index: data.value
-                      });
-                    }}
-                    options={
-                      data.borehole.stratigraphy.map((ditem, idx2) => ({
-                        value: idx2, // ditem.id,
-                        selected: ditem.id === item.id,
-                        // content: ditem.name === null || ditem.name === ''?
-                        //   t('common:np'): ditem.name,
-                        text: (
-                          <div>
-                            {
-                              ditem.primary === true?
-                                <Icon
-                                  name='check'
-                                  size='mini'
+                  {
+                    data.borehole.stratigraphy.length<=1?
+                      null:
+                      <Dropdown
+                        icon={null}
+                        onChange={(ev, data) => {
+                          this.setState({
+                            index: data.value
+                          });
+                        }}
+                        options={
+                          data.borehole.stratigraphy.map((ditem, idx2) => ({
+                            value: idx2, // ditem.id,
+                            selected: ditem.id === item.id,
+                            // content: ditem.name === null || ditem.name === ''?
+                            //   t('common:np'): ditem.name,
+                            text: (
+                              <div>
+                                {
+                                  ditem.primary === true?
+                                    <Icon
+                                      name='check'
+                                      size='mini'
+                                      style={{
+                                        margin: '0em 0.25rem 0em 0em'
+                                      }}
+                                      title='Primary'
+                                    />: null
+                                }{
+                                  ditem.name === null || ditem.name === ''?
+                                    t('common:np'): ditem.name
+                                }
+                                <br />
+                                <span
                                   style={{
-                                    margin: '0em 0.25rem 0em 0em'
+                                    fontSize: '0.7em'
                                   }}
-                                />: null
-                            }{
-                              ditem.name === null || ditem.name === ''?
-                                t('common:np'): ditem.name
-                            }
-                            <br />
-                            <span
-                              style={{
-                                fontSize: '0.7em'
-                              }}
-                            >
-                              <DateText
-                                date={ditem.date}
-                              />
-                            </span>
-                          </div>
-                        )
-                      }))
-                    }
-                    pointing='top right'
-                    trigger={
-                      <Icon
-                        name='caret down'
+                                >
+                                  <DateText
+                                    date={ditem.date}
+                                  />
+                                </span>
+                              </div>
+                            )
+                          }))
+                        }
+                        pointing='top right'
+                        trigger={
+                          <Icon
+                            name='caret down'
+                          />
+                        }
                       />
-                    }
-                  />
+                  }
                   <br />
                   <span
                     style={{
