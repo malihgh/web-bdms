@@ -200,10 +200,10 @@ class ProfileView extends React.Component {
             borderRight: '2px solid #787878'
           }}
         />
-        <Scroller
+        <div
           style={{
             flex: "1 1 100%",
-            // overflowY: 'auto'
+            overflowY: 'auto',
             padding: '1em',
             ...(
               this.props.layer !== null?
@@ -423,7 +423,7 @@ class ProfileView extends React.Component {
               </div>
             
           }
-        </Scroller>
+        </div>
       </div>
     );
   }

@@ -6,14 +6,16 @@ import _ from 'lodash';
 import LayerForm from '../layer/layerForm';
 import LayersList from '../../layers/layerList';
 import DateField from '../dateField';
-import DomainDropdown from '../domain/dropdown/domainDropdown';
+// import DomainDropdown from '../domain/dropdown/domainDropdown';
 import {
   Button,
+  Checkbox,
+  Input,
   Segment,
   Form
 } from 'semantic-ui-react';
 import {
-  getStratigraphies,
+  // getStratigraphies,
   getStratigraphy,
   getLayers,
   deleteLayer,
@@ -160,52 +162,6 @@ class StratigraphyFormContainer extends React.Component {
       onClone
     } = this.props;
     
-    /*if(this.state.stratigraphyEmpty){
-      return (
-        <div
-          style={{
-            flex: '1 1 0%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <div>
-            Stratigraphy not yet created.
-            <div
-              style={{
-                padding: '1em',
-                textAlign: 'center'
-              }}
-            >
-              <Button
-                secondary
-                size='small'
-                onClick={()=>{
-                  const self = this
-                  createStratigraphy(
-                    borehole, kind
-                  ).then(
-                    function(response) {
-                      if(response.data.success){
-                        self.load(borehole, kind)
-                      }
-                    }).catch(function (error) {
-                    console.log(error)
-                  })
-                }}
-              >
-                <Icon name='add' />
-                Create <DomainText
-                  schema='layer_kind'
-                  id={kind}/>
-              </Button>
-            </div>
-          </div>
-        </div>
-      )
-    }else 
-    */
     if (this.state.stratigraphyEmpty || _.isNil(stratigraphy)) {
       return (
         <div
@@ -231,7 +187,6 @@ class StratigraphyFormContainer extends React.Component {
           height: '100%'
         }}
       >
-        {/*<StratigraphyForm id={stratigraphy.id}/>*/}
         <div
           style={{
             display: 'flex',
@@ -247,9 +202,33 @@ class StratigraphyFormContainer extends React.Component {
           >
             <Form
               size='small'
+              style={{
+                marginBottom: '1em'
+              }}
             >
               <Form.Group widths='equal'>
                 <Form.Field
+                  required
+                  style={{
+                    width: '50%'
+                  }}
+                >
+                  <label>{t('stratigraphy_name')}</label>
+                  <Input
+                    autoCapitalize="off"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    onChange={(e)=>{
+                      this.updateChange(
+                        'name', e.target.value
+                      );
+                    }}
+                    ref={this.depthToRef}
+                    spellCheck="false"
+                    value={stratigraphy.name}
+                  />
+                </Form.Field>
+                {/* <Form.Field
                   required
                   style={{
                     width: '50%'
@@ -266,7 +245,7 @@ class StratigraphyFormContainer extends React.Component {
                     schema='layer_kind'
                     selected={stratigraphy.kind}
                   />
-                </Form.Field>
+                </Form.Field> */}
                 <Form.Field
                   error={_.isNil(stratigraphy.date)}
                   required
@@ -284,6 +263,16 @@ class StratigraphyFormContainer extends React.Component {
                     }} />
                 </Form.Field>
               </Form.Group>
+              <Checkbox
+                checked={stratigraphy.primary}
+                label='This is the main stratigraphy'
+                onChange={(ev, data)=>{
+                  this.updateChange(
+                    'primary', data.checked, false
+                  );
+                }}
+                toggle
+              />
             </Form>
             {
               _.isNil(this.state.layers)?

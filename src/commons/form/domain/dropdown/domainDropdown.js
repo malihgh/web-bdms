@@ -224,16 +224,16 @@ DomainDropdown.defaultProps = {
 const mapStateToProps = (state, ownProps) => {
   return {
     domains: state.core_domain_list
-  }
+  };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     dispatch: dispatch,
     loadDomains: () => {
-      dispatch(loadDomains())
+      dispatch(loadDomains());
     }
-  }
+  };
 };
 
 export default connect(

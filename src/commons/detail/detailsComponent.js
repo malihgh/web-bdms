@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
-import MetaComponent from './meta/metaComponent';
 import StratigraphiesComponent from './stratigrafy/stratigraphiesComponent';
 import MunicipalityText from '../form/municipality/municipalityText';
 import CantonText from '../form/cantons/cantonText';
 import DomainText from '../form/domain/domainText';
-import Scroller from '../scroller';
 import ExportLink from '../exportlink';
 import {
   Icon
@@ -36,8 +34,6 @@ class DetailsComponent extends React.Component {
                 key='bms-dc-1'
                 style={{
                   padding: '1em',
-                  // borderBottom: 'thin solid #cecece',
-                  // boxShadow: 'rgba(0, 0, 0, 0.17) 0px 2px 4px',
                   display: 'flex',
                   flexDirection: 'row'
                 }
@@ -46,7 +42,6 @@ class DetailsComponent extends React.Component {
                 <div>
                   <div
                     style={{
-                      // color: '#2185d0',
                       fontSize: '1em',
                       margin: '0px 0px 0.4em'
                     }}
@@ -87,7 +82,6 @@ class DetailsComponent extends React.Component {
                             }
                             style={{
                               height: '0.75em',
-                              // marginRight: '0.5em',
                               width: 'auto'
                             }}
                           />
@@ -102,7 +96,6 @@ class DetailsComponent extends React.Component {
                             }
                             style={{
                               height: '0.75em',
-                              // marginRight: '0.5em',
                               width: 'auto'
                             }}
                           />
@@ -173,8 +166,8 @@ class DetailsComponent extends React.Component {
                       }}
                     >
                       <DomainText
-                        schema={'extended.purpose'}
                         id={detail.borehole.extended.purpose}
+                        schema={'extended.purpose'}
                       />
                     </div>
                     <div

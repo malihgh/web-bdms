@@ -112,7 +112,8 @@ let resources = {
       'national_relevance': 'Nationale relevance',
       'attributes_to_edit': 'Attributes to edit',
       'mistakes': 'Mistakes',
-      'remarks': 'Remarks'
+      'remarks': 'Remarks',
+      'stratigraphy_name': 'Name / Version'
     },
     layer_form: {
       'layers': 'Layers',
@@ -285,7 +286,8 @@ let resources = {
       'national_relevance': 'Nationale Relevanz',
       'attributes_to_edit': 'Attributes zu bearbeiten',
       'mistakes': 'Fehler',
-      'remarks': 'Bemerkungen'
+      'remarks': 'Bemerkungen',
+      'stratigraphy_name': 'Name / Version'
     },
     layer_form: {
       'loading_fetch': 'Lade Schicht..',
@@ -457,7 +459,8 @@ let resources = {
       'national_relevance': 'Rilevanza nazionale',
       'attributes_to_edit': 'Attributi da modificare',
       'mistakes': 'Errori',
-      'remarks': 'Osservazioni'
+      'remarks': 'Osservazioni',
+      'stratigraphy_name': 'Nome / Versione'
     },
     layer_form: {
       'layers': 'Livelli',

@@ -1285,10 +1285,15 @@ class BoreholeForm extends React.Component {
                                 fontWeight: 'bold'
                               }}
                             >
-                              <DomainText
+                              {
+                                stratigraphy.name === null
+                                || stratigraphy.name === ''?
+                                  t('common:np'): stratigraphy.name
+                              }
+                              {/* <DomainText
                                 id={stratigraphy.kind}
                                 schema={'layer_kind'}
-                              />
+                              /> */}
                             </span>
                             <br />
                             <span

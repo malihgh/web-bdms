@@ -232,7 +232,7 @@ class LayerForm extends React.Component {
               onChange={(ev, data)=>{
                 this.setState({
                   allfields: data.checked
-                })
+                });
               }}
             />
           </div>: null
