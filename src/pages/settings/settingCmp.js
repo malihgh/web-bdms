@@ -10,6 +10,7 @@ import {
 import MenuSettings from '../../commons/menu/settings/menuSettings';
 import MenuContainer from '../../commons/menu/menuContainer';
 import ExplorerSettings from './explorerSettings';
+import EditorSettings from './editorSettings';
 
 const SettingCmp = (props) => {
   return (
@@ -47,33 +48,24 @@ const SettingCmp = (props) => {
             overflowY: 'auto'
           }}
         >
-          {/* {
-              match.params.id === 'explorer'?
-                <ExplorerSettings/>: null
-            }
-            {
-              match.params.id === 'editor'?
-                <div>
-                  ciao
-                </div>: null
-            } */}
           <Switch>
             <Route
               component={ExplorerSettings}
               path={process.env.PUBLIC_URL + "/setting/explorer"}
             />
             <Route
+              component={EditorSettings}
               path={process.env.PUBLIC_URL + "/setting/editor"}
-              render={() => (
-                <div
-                  style={{
-                    padding: '2em',
-                    flex: 1
-                  }}
-                >
-                  coming soon
-                </div>
-              )}
+              // render={() => (
+              //   <div
+              //     style={{
+              //       padding: '2em',
+              //       flex: 1
+              //     }}
+              //   >
+              //     coming soon
+              //   </div>
+              // )}
             />
             <Route
               path={process.env.PUBLIC_URL + "/setting/account"}

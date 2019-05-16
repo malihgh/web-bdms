@@ -26,7 +26,9 @@ let resources = {
       'degree': 'degree',
       'result': 'result',
       'results': 'results',
-      'refresh': 'refresh'
+      'refresh': 'refresh',
+      'expand': 'expand',
+      'collapse': 'collapse'
     },
     error: {
       'E-900': 'Borehole locked by {{user}}'
@@ -202,7 +204,9 @@ let resources = {
       'degree': 'grad',
       'result': 'ergebnis',
       'results': 'ergebnisse',
-      'refresh': 'aufladen'
+      'refresh': 'aufladen',
+      'expand': 'erweitern',
+      'collapse': 'zusammenbruch'
     },
     error: {
       'E-900': `Borehole locked by {{user}}`
@@ -377,7 +381,9 @@ let resources = {
       'degree': 'gradi',
       'result': 'risultato',
       'results': 'risultati',
-      'refresh': 'ricarica'
+      'refresh': 'ricarica',
+      'expand': 'espandere',
+      'collapse': 'collassare'
     },
     error: {
       'E-900': 'Modifica in corso da parte di "{{user}}"'
@@ -442,7 +448,7 @@ let resources = {
       'city': 'Città',
       'address': 'Indirizzo',
       'landuse': 'Uso del suolo',
-      'method': 'Tipologia di perforazione',
+      'method': 'Metodologia di perforazione',
       'drilling_date': 'Data fine perforazione',
       'cuttings': 'Taglio',
       'purpose': 'Scopo',

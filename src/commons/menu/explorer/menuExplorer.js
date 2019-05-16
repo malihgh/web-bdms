@@ -184,11 +184,7 @@ class MenuExplorer extends React.Component {
                     this.props.setting.scrollbar : '0px'
                 }}
               >
-                <SearchComponent
-                  onChange={(filter) => {
-                    //console.log(filter)
-                  }}
-                />
+                <SearchComponent />
               </div>,
               <Menu
                 icon='labeled'
@@ -278,7 +274,7 @@ const mapDispatchToProps = (dispatch) => {
         type: 'SEARCH_FILTER_RESET'
       });
     }
-  }
+  };
 };
 
 export default withRouter(

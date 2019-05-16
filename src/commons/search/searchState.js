@@ -47,15 +47,15 @@ const initialState = {
 };
 
 const search = (
-    state = {
-      ...initialState,
-      filter: {
-        ...initialState.filter
-      }
-    }, action) => {
+  state = {
+    ...initialState,
+    filter: {
+      ...initialState.filter
+    }
+  }, action) => {
   switch (action.type) {
     case 'SEARCH_MAPFILTER_CHANGED': {
-      if(action.active === true){
+      if (action.active === true) {
         return {
           ...state,
           filter: {
@@ -75,7 +75,7 @@ const search = (
       };
     }
     case 'SEARCH_CENTER2_CHANGED': {
-      if(action.active === true){
+      if (action.active === true) {
         return {
           ...state,
           center2selected: action.active
@@ -87,7 +87,7 @@ const search = (
       };
     }
     case 'SEARCH_ZOOM2_CHANGED': {
-      if(action.active === true){
+      if (action.active === true) {
         return {
           ...state,
           zoom2selected: action.active
@@ -99,13 +99,13 @@ const search = (
       };
     }
     case 'SEARCH_FILTER_CHANGED': {
-      const copy = {...state};
+      const copy = { ...state };
       const path = `filter.${action.key}`;
-      if (_.has(copy, path)){
-        if (_.isNil(action.value) || action.value===''){
-          if (_.isString(action.value)){
+      if (_.has(copy, path)) {
+        if (_.isNil(action.value) || action.value === '') {
+          if (_.isString(action.value)) {
             _.set(copy, path, '');
-          }else{
+          } else {
             _.set(copy, path, null);
           }
         } else {
@@ -115,55 +115,55 @@ const search = (
       return copy;
     }
     case 'SEARCH_FILTER_RESET_RESTRICTION': {
-      const copy = {...state};
+      const copy = { ...state };
       copy.filter.restriction_until_from = '';
       copy.filter.restriction_until_to = '';
       return copy;
     }
     case 'SEARCH_FILTER_RESET_DRILLING': {
-      const copy = {...state};
+      const copy = { ...state };
       copy.filter.drilling_date_from = '';
       copy.filter.drilling_date_to = '';
       return copy;
     }
     case 'SEARCH_FILTER_RESET_DRILL_DIAMETER': {
-      const copy = {...state};
-      copy.filter.drill_diameter_from= '';
-      copy.filter.drill_diameter_to= '';
+      const copy = { ...state };
+      copy.filter.drill_diameter_from = '';
+      copy.filter.drill_diameter_to = '';
       return copy;
     }
     case 'SEARCH_FILTER_RESET_BORE_INC': {
-      const copy = {...state};
+      const copy = { ...state };
       copy.filter.bore_inc_from = '';
       copy.filter.bore_inc_to = '';
       return copy;
     }
     case 'SEARCH_FILTER_RESET_BORE_INC_DIR': {
-      const copy = {...state};
+      const copy = { ...state };
       copy.filter.bore_inc_dir_from = '';
       copy.filter.bore_inc_dir_to = '';
       return copy;
     }
     case 'SEARCH_FILTER_RESET_ELEVATION': {
-      const copy = {...state};
+      const copy = { ...state };
       copy.filter.elevation_z_from = '';
       copy.filter.elevation_z_to = '';
       return copy;
     }
     case 'SEARCH_FILTER_RESET_DEPTH': {
-      const copy = {...state};
+      const copy = { ...state };
       copy.filter.length_from = '';
       copy.filter.length_to = '';
       return copy;
     }
     case 'SEARCH_FILTER_RESET_TOP_BEDROCK': {
-      const copy = {...state};
+      const copy = { ...state };
       copy.filter.top_bedrock_from = '';
       copy.filter.top_bedrock_to = '';
       return copy;
     }
     case 'SEARCH_FILTER_REFRESH': {
-      const copy = {...state};
+      const copy = { ...state };
       copy.filter.refresh = copy.filter.refresh + 1;
       return copy;
     }
@@ -176,7 +176,7 @@ const search = (
       };
     }
     case 'SEARCH_EXTENT_CHANGED': {
-      if(state.mapfilter === true){
+      if (state.mapfilter === true) {
         return {
           ...state,
           extent: action.extent,

@@ -181,14 +181,14 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:method')}</label>
               <DomainDropdown
-                schema='extended.method'
-                selected={search.filter.method}
                 onSelected={(selected) => {
                   this.props.setFilter(
                     'method', selected.id
                   );
                 }}
                 reset={false}
+                schema='extended.method'
+                selected={search.filter.method}
               />
               <LabelReset
                 onClick={() => {
@@ -204,19 +204,22 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:project_name')}</label>
               <Input
-                placeholder={t('borehole_form:project_name')}
-                value={search.filter.project_name}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'project_name',
                     eve.target.value
-                  )
-                }} />
-              <LabelReset onClick={() => {
-                this.props.setFilter(
-                  'project_name', ''
-                )
-              }} />
+                  );
+                }}
+                placeholder={t('borehole_form:project_name')}
+                value={search.filter.project_name}
+              />
+              <LabelReset
+                onClick={() => {
+                  this.props.setFilter(
+                    'project_name', ''
+                  );
+                }}
+              />
             </Form.Field> : null
         }
         {
@@ -224,14 +227,14 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:restriction')}</label>
               <DomainDropdown
-                schema='restriction'
-                selected={search.filter.restriction}
                 onSelected={(selected) => {
                   this.props.setFilter(
                     'restriction', selected.id
                   );
                 }}
                 reset={false}
+                schema='restriction'
+                selected={search.filter.restriction}
               />
               <LabelReset
                 onClick={() => {
@@ -247,14 +250,14 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:landuse')}</label>
               <DomainDropdown
-                schema='custom.landuse'
-                selected={search.filter.landuse}
                 onSelected={(selected) => {
                   this.props.setFilter(
                     'landuse', selected.id
                   );
                 }}
                 reset={false}
+                schema='custom.landuse'
+                selected={search.filter.landuse}
               />
               <LabelReset
                 onClick={() => {
@@ -300,26 +303,26 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:elevation_z')}</label>
               <Input
-                placeholder='Elevation from meters'
-                value={search.filter.elevation_z_from}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'elevation_z_from',
                     eve.target.value
-                  )
+                  );
                 }}
+                placeholder='Elevation from meters'
                 type='number'
+                value={search.filter.elevation_z_from}
               />
               <Input
-                placeholder='Elevation to meters'
-                value={search.filter.elevation_z_to}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'elevation_z_to',
                     eve.target.value
-                  )
+                  );
                 }}
+                placeholder='Elevation to meters'
                 type='number'
+                value={search.filter.elevation_z_to}
               />
               <LabelReset
                 onClick={() => {
@@ -333,26 +336,26 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:length')}</label>
               <Input
-                placeholder='Depth from meters'
-                value={search.filter.length_from}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'length_from',
                     eve.target.value
-                  )
+                  );
                 }}
+                placeholder='Depth from meters'
                 type='number'
+                value={search.filter.length_from}
               />
               <Input
-                placeholder='Depth to meters'
-                value={search.filter.length_to}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'length_to',
                     eve.target.value
-                  )
+                  );
                 }}
+                placeholder='Depth to meters'
                 type='number'
+                value={search.filter.length_to}
               />
               <LabelReset
                 onClick={() => {
@@ -367,23 +370,23 @@ class SearchComponent extends React.Component {
               <label>{t('borehole_form:groundwater')}</label>
               <Form.Group inline>
                 <Form.Radio
-                  label={t('common:yes')}
                   checked={search.filter.groundwater === true}
+                  label={t('common:yes')}
                   onChange={(e, d) => {
                     this.props.setFilter('groundwater', true);
                   }}
                 />
                 <Form.Radio
-                  label={t('common:no')}
                   checked={search.filter.groundwater === false}
+                  label={t('common:no')}
                   onChange={(e, d) => {
                     this.props.setFilter('groundwater', false);
                   }}
                 />
               </Form.Group>
               <Form.Radio
-                label={t('common:np')}
                 checked={search.filter.groundwater === null}
+                label={t('common:np')}
                 onChange={(e, d) => {
                   this.props.setFilter('groundwater', null);
                 }}
@@ -400,26 +403,26 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:top_bedrock')}</label>
               <Input
-                placeholder='From meters'
-                value={search.filter.top_bedrock_from}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'top_bedrock_from',
                     eve.target.value
-                  )
+                  );
                 }}
+                placeholder='From meters'
                 type='number'
+                value={search.filter.top_bedrock_from}
               />
               <Input
-                placeholder='To meters'
-                value={search.filter.top_bedrock_to}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'top_bedrock_to',
                     eve.target.value
-                  )
+                  );
                 }}
+                placeholder='To meters'
                 type='number'
+                value={search.filter.top_bedrock_to}
               />
               <LabelReset
                 onClick={() => {
@@ -429,18 +432,18 @@ class SearchComponent extends React.Component {
             </Form.Field> : null
         }
         {
-          this.isVisible('status') ?
+          this.isVisible('extended.status') ?
             <Form.Field>
               <label>{t('borehole_form:status')}</label>
               <DomainDropdown
-                schema='extended.status'
-                selected={search.filter.status}
                 onSelected={(selected) => {
                   this.props.setFilter(
                     'status', selected.id
                   );
                 }}
                 reset={false}
+                schema='extended.status'
+                selected={search.filter.status}
               />
               <LabelReset
                 onClick={() => {
@@ -456,14 +459,14 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:purpose')}</label>
               <DomainDropdown
-                schema='extended.purpose'
-                selected={search.filter.purpose}
                 onSelected={(selected) => {
                   this.props.setFilter(
                     'purpose', selected.id
                   );
                 }}
                 reset={false}
+                schema='extended.purpose'
+                selected={search.filter.purpose}
               />
               <LabelReset
                 onClick={() => {
@@ -479,14 +482,14 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:cuttings')}</label>
               <DomainDropdown
-                schema='custom.cuttings'
-                selected={search.filter.cuttings}
                 onSelected={(selected) => {
                   this.props.setFilter(
                     'cuttings', selected.id
                   );
                 }}
                 reset={false}
+                schema='custom.cuttings'
+                selected={search.filter.cuttings}
               />
               <LabelReset
                 onClick={() => {
@@ -532,26 +535,26 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:drill_diameter')}</label>
               <Input
-                placeholder='From meters'
-                value={search.filter.drill_diameter_from}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'drill_diameter_from',
                     eve.target.value
-                  )
+                  );
                 }}
+                placeholder='From meters'
                 type='number'
+                value={search.filter.drill_diameter_from}
               />
               <Input
-                placeholder='To meters'
-                value={search.filter.drill_diameter_to}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'drill_diameter_to',
                     eve.target.value
-                  )
+                  );
                 }}
+                placeholder='To meters'
                 type='number'
+                value={search.filter.drill_diameter_to}
               />
               <LabelReset
                 onClick={() => {
@@ -565,26 +568,26 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:bore_inc')}</label>
               <Input
-                placeholder={t('common:from') + " " + t('common:degree')}
-                value={search.filter.bore_inc_from}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'bore_inc_from',
                     eve.target.value
-                  )
+                  );
                 }}
+                placeholder={t('common:from') + " " + t('common:degree')}
                 type='number'
+                value={search.filter.bore_inc_from}
               />
               <Input
-                placeholder={t('common:to') + " " + t('common:degree')}
-                value={search.filter.bore_inc_to}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'bore_inc_to',
                     eve.target.value
-                  )
+                  );
                 }}
+                placeholder={t('common:to') + " " + t('common:degree')}
                 type='number'
+                value={search.filter.bore_inc_to}
               />
               <LabelReset
                 onClick={() => {
@@ -594,30 +597,30 @@ class SearchComponent extends React.Component {
             </Form.Field> : null
         }
         {
-          this.isVisible('bore_inc') ?
+          this.isVisible('bore_inc_dir') ?
             <Form.Field>
               <label>{t('borehole_form:bore_inc_dir')}</label>
               <Input
-                placeholder={t('common:from') + " " + t('common:degree')}
-                value={search.filter.bore_inc_dir_from}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'bore_inc_dir_from',
                     eve.target.value
-                  )
+                  );
                 }}
+                placeholder={t('common:from') + " " + t('common:degree')}
                 type='number'
+                value={search.filter.bore_inc_dir_from}
               />
               <Input
-                placeholder={t('common:to') + " " + t('common:degree')}
-                value={search.filter.bore_inc_dir_to}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'bore_inc_dir_to',
                     eve.target.value
-                  )
+                  );
                 }}
+                placeholder={t('common:to') + " " + t('common:degree')}
                 type='number'
+                value={search.filter.bore_inc_dir_to}
               />
               <LabelReset
                 onClick={() => {
@@ -631,14 +634,14 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:lit_pet_top_bedrock')}</label>
               <DomainDropdown
-                schema='custom.lit_pet_top_bedrock'
-                selected={search.filter.lit_pet_top_bedrock}
                 onSelected={(selected) => {
                   this.props.setFilter(
                     'lit_pet_top_bedrock', selected.id
                   );
                 }}
                 reset={false}
+                schema='custom.lit_pet_top_bedrock'
+                selected={search.filter.lit_pet_top_bedrock}
               />
               <LabelReset
                 onClick={() => {
@@ -654,14 +657,14 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:lit_str_top_bedrock')}</label>
               <DomainDropdown
-                schema='custom.lit_str_top_bedrock'
-                selected={search.filter.lit_str_top_bedrock}
                 onSelected={(selected) => {
                   this.props.setFilter(
                     'lit_str_top_bedrock', selected.id
                   );
                 }}
                 reset={false}
+                schema='custom.lit_str_top_bedrock'
+                selected={search.filter.lit_str_top_bedrock}
               />
               <LabelReset
                 onClick={() => {
@@ -677,14 +680,14 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:chro_str_top_bedrock')}</label>
               <DomainDropdown
-                schema='custom.chro_str_top_bedrock'
-                selected={search.filter.chro_str_top_bedrock}
                 onSelected={(selected) => {
                   this.props.setFilter(
                     'chro_str_top_bedrock', selected.id
                   );
                 }}
                 reset={false}
+                schema='custom.chro_str_top_bedrock'
+                selected={search.filter.chro_str_top_bedrock}
               />
               <LabelReset
                 onClick={() => {
@@ -700,7 +703,6 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>{t('borehole_form:canton')}</label>
               <CantonDropdown
-                selected={search.filter.canton}
                 onSelected={(selected) => {
                   if (search.filter.municipality !== null) {
                     this.props.setFilter(
@@ -710,7 +712,9 @@ class SearchComponent extends React.Component {
                   this.props.setFilter(
                     'canton', selected.id
                   );
-                }} />
+                }}
+                selected={search.filter.canton}
+              />
               <LabelReset
                 onClick={() => {
                   this.props.setFilter(
@@ -725,14 +729,14 @@ class SearchComponent extends React.Component {
             <Form.Field>
               <label>Municipality</label>
               <MunicipalityDropdown
-                selected={search.filter.municipality}
-                disabled={search.filter.canton === null}
                 canton={search.filter.canton}
+                disabled={search.filter.canton === null}
                 onSelected={(selected) => {
                   this.props.setFilter(
                     'municipality', selected.id
                   );
                 }}
+                selected={search.filter.municipality}
               />
               <LabelReset
                 onClick={() => {
@@ -741,43 +745,52 @@ class SearchComponent extends React.Component {
                   );
                 }}
               />
-            </Form.Field> : null
+            </Form.Field>: null
         }
         {
           this.isVisible('custom.canton') ?
             <Form.Field>
               <label>{t('borehole_form:address')}</label>
               <Input
-                placeholder={t('borehole_form:address')}
-                value={search.filter.address}
                 onChange={(eve) => {
                   this.props.setFilter(
                     'address',
                     eve.target.value
-                  )
-                }} />
-              <LabelReset onClick={() => {
-                this.props.setFilter(
-                  'address', ''
-                )
-              }} />
+                  );
+                }}
+                placeholder={t('borehole_form:address')}
+                value={search.filter.address}
+              />
+              <LabelReset
+                onClick={() => {
+                  this.props.setFilter(
+                    'address', ''
+                  );
+                }}
+              />
             </Form.Field> : null
         }
       </Form>
-    )
+    );
   }
 }
 
 SearchComponent.propTypes = {
-  onChange: PropTypes.func
-}
+  onChange: PropTypes.func,
+  resetBoreInc: PropTypes.func,
+  resetBoreIncDir: PropTypes.func,
+  resetDrillDiameter: PropTypes.func,
+  resetDrilling: PropTypes.func,
+  resetTotBedrock: PropTypes.func,
+  setFilter: PropTypes.func
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {
     search: state.search,
     settings: state.setting
-  }
-}
+  };
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
@@ -847,10 +860,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         type: 'SEARCH_FILTER_RESET_BORE_INC_DIR'
       });
     }
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate(['search', 'borehole_form', 'common'])(SearchComponent))
+)(translate(['search', 'borehole_form', 'common'])(SearchComponent));

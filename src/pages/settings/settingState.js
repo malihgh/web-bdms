@@ -56,6 +56,43 @@ const initialState = {
         "national_relevance": true,
         "attributes_to_edit": true
       }
+    },
+    efilter: {
+      kind: true,
+      restriction: true,
+      "restriction_until": true,
+      "elevation_z": true,
+      hrs: true,
+      "drilling_date": true,
+      "bore_inc": true,
+      "bore_inc_dir": true,
+      length: true,
+      extended: {
+        "original_name": true,
+        method: true,
+        purpose: true,
+        status: true,
+        "top_bedrock": true,
+        groundwater: true
+      },
+      custom: {
+        "public_name": true,
+        "project_name": true,
+        canton: true,
+        city: true,
+        address: true,
+        landuse: true,
+        cuttings: true,
+        "drill_diameter": true,
+        "lit_pet_top_bedrock": true,
+        "lit_str_top_bedrock": true,
+        "chro_str_top_bedrock": true,
+        remarks: true,
+        mistakes: true,
+        "processing_status": true,
+        "national_relevance": true,
+        "attributes_to_edit": true
+      }
     }
   }
 };

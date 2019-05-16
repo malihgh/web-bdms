@@ -799,7 +799,8 @@ class ExplorerSettings extends React.Component {
                       'custom.project_name',
                       d.checked
                     );
-                  }} />
+                  }}
+                />
                 <div
                   style={{
                     paddingTop: '0.5em',
@@ -923,7 +924,8 @@ class ExplorerSettings extends React.Component {
                       'length',
                       d.checked
                     );
-                  }} />
+                  }}
+                />
                 <div
                   style={{
                     paddingTop: '0.5em',
@@ -971,8 +973,9 @@ class ExplorerSettings extends React.Component {
                     toggleFilter(
                       'extended.top_bedrock',
                       d.checked
-                    )
-                  }} />
+                    );
+                  }}
+                />
                 <div
                   style={{
                     paddingTop: '0.5em',
@@ -995,8 +998,9 @@ class ExplorerSettings extends React.Component {
                     toggleFilter(
                       'extended.status',
                       d.checked
-                    )
-                  }} />
+                    );
+                  }}
+                />>
                 <div
                   style={{
                     paddingTop: '0.5em',
@@ -1019,8 +1023,9 @@ class ExplorerSettings extends React.Component {
                     toggleFilter(
                       'extended.purpose',
                       d.checked
-                    )
-                  }} />
+                    );
+                  }}
+                />
                 <div
                   style={{
                     paddingTop: '0.5em',
@@ -1043,8 +1048,9 @@ class ExplorerSettings extends React.Component {
                     toggleFilter(
                       'custom.cuttings',
                       d.checked
-                    )
-                  }} />
+                    );
+                  }}
+                />
                 <div
                   style={{
                     paddingTop: '0.5em',
@@ -1068,7 +1074,8 @@ class ExplorerSettings extends React.Component {
                       'drilling_date',
                       d.checked
                     );
-                  }} />
+                  }}
+                />
                 <div
                   style={{
                     paddingTop: '0.5em',
@@ -1092,7 +1099,8 @@ class ExplorerSettings extends React.Component {
                       'custom.drill_diameter',
                       d.checked
                     );
-                  }} />
+                  }}
+                />
                 <div
                   style={{
                     paddingTop: '0.5em',
@@ -1117,7 +1125,8 @@ class ExplorerSettings extends React.Component {
                       'bore_inc',
                       d.checked
                     );
-                  }} />
+                  }}
+                />
                 <div
                   style={{
                     paddingTop: '0.5em',
@@ -1142,7 +1151,8 @@ class ExplorerSettings extends React.Component {
                       'custom.lit_pet_top_bedrock',
                       d.checked
                     );
-                  }} />
+                  }}
+                />
                 <div
                   style={{
                     paddingTop: '0.5em',
@@ -1167,7 +1177,8 @@ class ExplorerSettings extends React.Component {
                       'custom.lit_str_top_bedrock',
                       d.checked
                     );
-                  }} />
+                  }}
+                />
                 <div
                   style={{
                     paddingTop: '0.5em',
@@ -1192,7 +1203,8 @@ class ExplorerSettings extends React.Component {
                       'custom.chro_str_top_bedrock',
                       d.checked
                     );
-                  }} />
+                  }}
+                />
                 <div
                   style={{
                     paddingTop: '0.5em',
