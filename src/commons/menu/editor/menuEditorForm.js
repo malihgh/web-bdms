@@ -9,7 +9,8 @@ import {
 import {
   Icon,
   List,
-  Menu
+  Menu,
+  Progress
 } from 'semantic-ui-react';
 
 import DomainText from '../../form/domain/domainText';
@@ -24,12 +25,15 @@ import {
 
 import Scroller from '../../scroller';
 
+const timeout = 10;
+
 class MenuEditorForm extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      delete: false
+      delete: false,
+      timeout: 0
     };
   }
 
@@ -45,6 +49,7 @@ class MenuEditorForm extends React.Component {
     if (borehole.isFetching === true) {
       return 'Loading..';
     }
+
     return (
       [
         <Scroller
@@ -200,7 +205,7 @@ class MenuEditorForm extends React.Component {
           </List>
         </Scroller>,
         <div
-          key='ciao-ciao'
+          key='medf-prps'
           style={{
             padding: '2em'
           }}
@@ -226,7 +231,7 @@ class MenuEditorForm extends React.Component {
                       color: 'red'
                     }}
                   >
-                    Locked
+                    {t('editor:editingEnabled')}
                   </span>:
                   <DomainText
                     id={borehole.data.version.code}
@@ -292,21 +297,96 @@ class MenuEditorForm extends React.Component {
             </div>
             <div
               style={{
-                fontSize: '0.8em'
+                fontSize: '0.8em',
+                marginBottom: '0.25em'
               }}
             >
               {
                 borehole.data.lock !== null?
-                  <DateText
-                    date={borehole.data.lock.date}
-                    fromnow
-                  />:
+                  <span
+                    style={{
+                      color: this.state.timeout >= 90? 'red': null
+                    }}
+                  >
+                    <DateText
+                      date={borehole.data.lock.date}
+                      fromnow
+                      onTick={(d, m)=>{
+                        this.setState({
+                          timeout: (
+                            moment().diff(m, 'seconds') / (timeout * 60) * 100
+                          )
+                        }, ()=>{
+                          if (
+                            this.state.timeout > 100
+                          ) {
+                            this.props.unlock(
+                              borehole.data.id
+                            );
+                          }
+                        });
+                      }}
+                      timer={1}
+                    />
+                  </span>:
                   <DateText
                     date={borehole.data.updater.date}
                     fromnow
                   />
               }
             </div>
+            {
+              borehole.data.lock !== null?
+                <Progress
+                  color={
+                    this.state.timeout >= 90?
+                      'red': this.state.timeout >= 80?
+                        'orange': 'black'
+                  }
+                  percent={this.state.timeout}
+                  size='tiny'
+                  style={{
+                    margin: '0.5em 0em 0.2em'
+                  }}
+                />: null
+            }
+            {
+              borehole.data.lock !== null?
+                <div
+                  style={{
+                    // textAlign: 'right'
+                    display: 'flex',
+                    flexDirection: 'row',
+                    fontSize: '0.8em'
+                  }}
+                >
+                  <div style={{ flex: '1 1 100%' }}>
+                    {(()=>{
+                      let d = moment.duration(
+                        moment(
+                          borehole.data.lock.date
+                        ).add(10, 'minutes').diff(moment())
+                      );
+                      return (
+                        d.minutes().toString().padStart(2, '0') + ':'
+                        + d.seconds().toString().padStart(2, '0')
+                      );
+                    })()}
+                  </div>
+                  <div>
+                    <span
+                      className='linker'
+                      onClick={()=>{
+                        this.props.lock(
+                          borehole.data.id
+                        );
+                      }}
+                    >
+                      {t('refresh')}
+                    </span>
+                  </div>
+                </div>: null
+            }
           </div>
         </div>,
         <Menu
@@ -322,10 +402,6 @@ class MenuEditorForm extends React.Component {
             disabled={
               borehole.data.lock === null
               || borehole.data.lock.username !== user.data.username
-              // && moment().diff(
-              //   moment(borehole.data.lock.date),
-              //   'minutes'
-              // ) < 10
             }
             onClick={() => {
               deleteBorehole(borehole.data.id).then(
@@ -349,10 +425,6 @@ class MenuEditorForm extends React.Component {
             disabled={
               borehole.data.lock !== null
               && borehole.data.lock.username !== user.data.username
-              // && moment().diff(
-              //   moment(borehole.data.lock.date),
-              //   'minutes'
-              // ) < 10
             }
             onClick={() => {
               if (
@@ -379,62 +451,21 @@ class MenuEditorForm extends React.Component {
                 borehole.data.lock !== null
                 && moment().diff(
                   moment(borehole.data.lock.date),
-                  'minutes'
-                ) < 10?
-                  'lock': 'lock open'
+                  'seconds'
+                ) < (timeout * 60)?
+                  'stop': 'play'
               }
             />
             {
               borehole.data.lock !== null
               && moment().diff(
                 moment(borehole.data.lock.date),
-                'minutes'
-              ) < 10?
-                'Lock': 'Unlock'
+                'seconds'
+              ) < (timeout * 60)?
+                'Stop editing': 'Start editing'
             }
           </Menu.Item>
         </Menu>
-        /*
-        <Button
-          color={this.state.delete === true ? 'black' : 'red'}
-          fluid
-          icon={
-            this.state.delete === true ? false : true
-          }
-          key='sb-em-3'
-          onClick={e => {
-            if (this.state.delete === false) {
-              this.setState({
-                delete: true
-              });
-            } else {
-              this.setState({
-                delete: false
-              }, () => {
-                deleteBorehole(borehole.data.id).then(
-                  function (response) {
-                    history.push(
-                      process.env.PUBLIC_URL + "/editor"
-                    );
-                  }
-                );
-              });
-            }
-          }}
-        >
-          {
-            this.state.delete === true ?
-              null :
-              <Icon name='trash alternate' />
-          }
-
-          {
-            this.state.delete === true ?
-              t('common:sure') :
-              t('common:delete')
-          }
-        </Button>
-        */
       ]
     );
   }

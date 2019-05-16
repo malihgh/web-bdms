@@ -55,6 +55,12 @@ class DateText extends React.Component {
     return null;
   }
 
+  componentDidMount() {
+    if (this.props.fromnow === true) {
+      this.countdown();
+    }
+  }
+
   componentWillUnmount() {
     if (this.state.intervalId !== null){
       window.clearInterval(this.state.intervalId);
@@ -64,6 +70,10 @@ class DateText extends React.Component {
   countdown() {
     this.setState({
       fromnow: getFromNow(this.props)
+    }, () => {
+      if (this.props.onTick !== undefined) {
+        this.props.onTick(this.props.date, moment(this.props.date));
+      }
     });
   }
 
@@ -100,6 +110,7 @@ DateText.propTypes = {
     locale: PropTypes.func
   }),
   nullValue: PropTypes.string,
+  onTick: PropTypes.func,
   timer: PropTypes.number,
 };
 

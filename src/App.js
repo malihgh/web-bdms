@@ -51,7 +51,7 @@ class App extends React.Component {
       this.props.loadDomains();
     }
     if (cantons.data.length === 0) {
-      this.props.loadCantons()
+      this.props.loadCantons();
     };
     this.props.loadSettings();
     this.props.loadUser();

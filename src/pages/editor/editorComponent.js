@@ -57,6 +57,9 @@ const EditorComponent = function (props) {
             />
             <Route
               component={MenuEditorForm}
+              // onTimeout={()=>{
+
+              // }}
               path={process.env.PUBLIC_URL + "/editor/:id"}
             />
           </Switch>

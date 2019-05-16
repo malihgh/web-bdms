@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 import DomainText from '../../../../form/domain/domainText';
-import Scroller from '../../../../scroller';
-import Draggable from 'react-draggable';
+// import Scroller from '../../../../scroller';
+// import Draggable from 'react-draggable';
 import { Stratigraphy } from '@ist-supsi/stratigraphy';
 
 import {

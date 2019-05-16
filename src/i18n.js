@@ -25,7 +25,8 @@ let resources = {
       'meter': 'meter',
       'degree': 'degree',
       'result': 'result',
-      'results': 'results'
+      'results': 'results',
+      'refresh': 'refresh'
     },
     error: {
       'E-900': 'Borehole locked by {{user}}'
@@ -54,7 +55,8 @@ let resources = {
       'project_name': 'Project name',
       'create_new': 'Create new project',
       'create': 'Create',
-      'locked_by': 'Locked by',
+      'editingEnabled': 'Editing started',
+      'locked_by': 'Change in progress by',
       'locked_at': 'Locked at',
       'locked_status': 'Status'
     },
@@ -199,7 +201,8 @@ let resources = {
       'meter': 'meter',
       'degree': 'grad',
       'result': 'ergebnis',
-      'results': 'ergebnisse'
+      'results': 'ergebnisse',
+      'refresh': 'aufladen'
     },
     error: {
       'E-900': `Borehole locked by {{user}}`
@@ -228,7 +231,8 @@ let resources = {
       'project_name': 'Projektname',
       'create_new': 'Neues Projekt erstellen',
       'create': 'Erstellen',
-      'locked_by': 'Gesperrt durch',
+      'editingEnabled': 'Die Bearbeitung hat begonnen',
+      'locked_by': 'Änderung in Bearbeitung von',
       'locked_at': 'Gesperrt am',
       'locked_status': 'Zustand'
     },
@@ -372,7 +376,8 @@ let resources = {
       'meter': 'metri',
       'degree': 'gradi',
       'result': 'risultato',
-      'results': 'risultati'
+      'results': 'risultati',
+      'refresh': 'ricarica'
     },
     error: {
       'E-900': 'Modifica in corso da parte di "{{user}}"'
@@ -401,7 +406,8 @@ let resources = {
       'search': 'Ricerca progetto',
       'create_new': 'Crea nuovo',
       'create': 'Crea',
-      'locked_by': 'Bloccato da',
+      'editingEnabled': 'Modifica avviata',
+      'locked_by': 'Modifiche in corso da parte di',
       'locked_at': 'Bloccato il',
       'locked_status': 'Stato'
     },

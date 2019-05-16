@@ -28,7 +28,7 @@ import DateField from '../dateField';
 import DateText from '../dateText';
 // import StratigraphyForm from '../stratigraphy/stratigraphyForm';
 import StratigraphyFormContainer from '../stratigraphy/stratigraphyFormContainer';
-import DomainText from '../domain/domainText';
+// import DomainText from '../domain/domainText';
 
 import {
   Form,
