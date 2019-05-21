@@ -131,7 +131,22 @@ class ProfileView extends React.Component {
     }
   }
 
+
   isVisible(name, field, conf){
+    if (
+      this.state.allfields === false
+      && _.isObject(conf)
+      && _.has(conf, `fields.${name}`)
+    ){
+      if (conf.fields[name] === true){
+        return field;
+      }
+      return null;
+    }
+    return field;
+  }
+
+  _isVisible(name, field, conf){
     if (
       this.state.allfields === false
       && conf!==null

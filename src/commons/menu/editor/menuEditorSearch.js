@@ -1,35 +1,32 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import _ from 'lodash'
-import { translate } from 'react-i18next'
+import React from 'react';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+import { translate } from 'react-i18next';
 import {
-    withRouter
-} from 'react-router-dom'
+  withRouter
+} from 'react-router-dom';
 
 import {
-  Header,
   Icon,
   Menu,
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
 
 import {
   createBorehole
-} from '@ist-supsi/bmsjs'
+} from '@ist-supsi/bmsjs';
 
 import SearchEditorComponent from '../../search/editor/searchEditorComponent'
 
 class MenuEditorSearch extends React.Component {
-  
+
   constructor(props) {
     super(props);
-    // this.cntMenu = React.createRef();
-    // this.menu = React.createRef();
     this.updateDimensions = this.updateDimensions.bind(this);
     this.state = {
       creating: false,
       delete: false,
       scroller: false
-    }
+    };
   }
 
   componentDidMount() {
@@ -41,14 +38,14 @@ class MenuEditorSearch extends React.Component {
     window.removeEventListener("resize", this.updateDimensions.bind(this));
   }
 
-  updateDimensions(){
-    if(!_.isNil(this.menu) && this.menu.children.length>0){
+  updateDimensions() {
+    if (!_.isNil(this.menu) && this.menu.children.length > 0) {
       const height = this.menu.clientHeight;
-      const children_height = this.menu.children[0].clientHeight;
+      const childrenHeight = this.menu.children[0].clientHeight;
       this.setState({
-        scroller: children_height>height
+        scroller: childrenHeight > height
       });
-    }else{
+    } else {
       this.setState({
         scroller: true
       });
@@ -58,18 +55,9 @@ class MenuEditorSearch extends React.Component {
   render() {
     const {
       history, boreholes, t
-    } = this.props
-    return(
+    } = this.props;
+    return (
       [
-        // <div
-        //   key='sb-em-1'
-        //   style={{
-        //     padding: '1em'
-        //   }}>
-        //   <Header size='medium'>
-        //     Boreholes (drafts)
-        //   </Header>
-        // </div>,
         <div
           key='sb-em-1'
           style={{
@@ -88,42 +76,43 @@ class MenuEditorSearch extends React.Component {
                 name='spinner'
               /> :
               boreholes.dlen + ' ' + (
-                boreholes.dlen > 1 || boreholes.dlen === 0?
-                  t("common:results"): t("common:result")
+                boreholes.dlen > 1 || boreholes.dlen === 0 ?
+                  t("common:results") : t("common:result")
               )
           }
         </div>,
         <div
           className={
-            this.state.scroller === true?
-              'scroller': null
+            this.state.scroller === true ?
+              'scroller' : null
           }
-          ref={ divElement => this.menu = divElement}
           key='sb-em-2'
+          ref={divElement => this.menu = divElement}
           style={{
             padding: '1em',
             flex: '1 1 100%',
             display: 'flex',
             flexDirection: 'column',
             overflowY: 'hidden',
-            marginRight: this.state.scroller === true?
-              this.props.setting.scrollbar: '0px'
+            marginRight: this.state.scroller === true ?
+              this.props.setting.scrollbar : '0px'
           }}>
           <SearchEditorComponent
-            onChange={(filter)=>{
+            onChange={(filter) => {
               //console.log(filter)
-            }}/>
+            }}
+          />
         </div>,
         <Menu
           icon='labeled'
-          size='mini'
           key='sb-em-3'
+          size='mini'
           style={{
             margin: '0px'
           }}
         >
           <Menu.Item
-            onClick={()=>{
+            onClick={() => {
               this.props.refresh();
             }}
             style={{
@@ -131,13 +120,13 @@ class MenuEditorSearch extends React.Component {
             }}
           >
             <Icon
-              name='refresh'
               loading={boreholes.isFetching}
+              name='refresh'
             />
             Refresh
           </Menu.Item>
           <Menu.Item
-            onClick={()=>{
+            onClick={() => {
               this.props.reset();
             }}
             style={{
@@ -148,22 +137,22 @@ class MenuEditorSearch extends React.Component {
             Reset
           </Menu.Item>
           <Menu.Item
-            onClick={()=>{
-              const self = this
+            onClick={() => {
+              const self = this;
               this.setState({
                 creating: true
               }, () => {
                 createBorehole().then(
-                  function(response) {
-                    if(response.data.success){
+                  function (response) {
+                    if (response.data.success) {
                       self.setState({
                         creating: false
-                      }, ()=>{
+                      }, () => {
                         history.push(
                           process.env.PUBLIC_URL
                           + "/editor/"
                           + response.data.id
-                        )
+                        );
                       });
                       // getBorehole(response.data.id).then(
                       //   function(response) {
@@ -178,7 +167,7 @@ class MenuEditorSearch extends React.Component {
                     }
                   }//.bind(this)
                 ).catch(function (error) {
-                  console.log(error)
+                  console.log(error);
                 })
               })
             }}
@@ -191,11 +180,11 @@ class MenuEditorSearch extends React.Component {
           </Menu.Item>
         </Menu>
       ]
-    )
+    );
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
     leftmenu: state.leftmenu,
     home: state.home,
@@ -204,10 +193,10 @@ const mapStateToProps = (state, ownProps) => {
     borehole: state.core_borehole,
     boreholes: state.core_borehole_editor_list,
     setting: state.setting
-  }
-}
+  };
+};
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
     boreholeSelected: (borehole) => {
@@ -230,7 +219,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         type: 'SEARCH_EDITOR_FILTER_RESET'
       });
     }
-  }
+  };
 };
 
 export default withRouter(
@@ -238,6 +227,6 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps
   )(
-    translate(['home','common', 'borehole_form'])(MenuEditorSearch)
+    translate(['home', 'common', 'borehole_form'])(MenuEditorSearch)
   )
 );

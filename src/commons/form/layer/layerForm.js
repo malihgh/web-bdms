@@ -176,10 +176,10 @@ class LayerForm extends React.Component {
     } = this.props;
     if (
       this.state.allfields === false
-      && conf!==null
-      && conf.hasOwnProperty('fields')
+      && _.isObject(conf)
+      && _.has(conf, `fields.${name}`)
     ){
-      if (conf.fields.indexOf(name)>=0){
+      if (conf.fields[name] === true){
         return field;
       }
       return null;
@@ -189,13 +189,13 @@ class LayerForm extends React.Component {
 
   render() {
     const {
-      t, conf
+      t
     } = this.props;
     const size = 'small';
-    let fields = [];
-    if (conf!==null && conf.hasOwnProperty('fields')){
-      fields = conf.fields;
-    }
+    // let fields = false;
+    // if (conf!==null && conf.hasOwnProperty('fields')){
+    //   fields = conf.fields;
+    // }
 
     return (
       <Dimmer.Dimmable
@@ -209,60 +209,59 @@ class LayerForm extends React.Component {
           inverted
         >
           <Loader>
-          {(()=>{
-            if(this.state.loading_fetch === true){
-              return (t('loading_fetch'))
-            }else if(this.state.creation_fetch === true){
-              return (t('creation_fetch'))
-            }
-          })()}
+            {(()=>{
+              if (this.state.loading_fetch === true){
+                return (t('loading_fetch'));
+              } else if (this.state.creation_fetch === true){
+                return (t('creation_fetch'));
+              }
+            })()}
           </Loader>
         </Dimmer>
-        {
-          fields.length<30?
-          <div
-            style={{
-              textAlign: 'right'
+        <div
+          style={{
+            textAlign: 'right'
+          }}
+        >
+          <Checkbox
+            checked={this.state.allfields}
+            label='Show all fields'
+            onChange={(ev, data)=>{
+              this.setState({
+                allfields: data.checked
+              });
             }}
-          >
-            <Checkbox
-              label='Show all fields'
-              toggle
-              checked={this.state.allfields}
-              onChange={(ev, data)=>{
-                this.setState({
-                  allfields: data.checked
-                });
-              }}
-            />
-          </div>: null
-        }
+            toggle
+          />
+        </div>
         <Form
+          autoComplete="off"
           error
           size={size}
-          autoComplete="off">
+        >
           <Form.Field
             error={this.state.layer.depth_from===null}
             required
           >
             <label>{t('depth_from')}</label>
             <Input
-              type='number'
-              value={
-                _.isNil(this.state.layer.depth_from)?
-                '': this.state.layer.depth_from
-              }
+              autoCapitalize="off"
+              autoComplete="off"
+              autoCorrect="off"
               onChange={(e)=>{
                 this.updateChange(
                   'depth_from',
                   e.target.value === ''?
-                  null: _.toNumber(e.target.value)
-                )
+                    null: _.toNumber(e.target.value)
+                );
               }}
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck="false"/>
+              spellCheck="false"
+              type='number'
+              value={
+                _.isNil(this.state.layer.depth_from)?
+                  '': this.state.layer.depth_from
+              }
+            />
           </Form.Field>
           <Form.Field
             error={
@@ -305,9 +304,10 @@ class LayerForm extends React.Component {
                   onChange={(e)=>{
                     this.updateChange(
                       'description', e.target.value
-                    )
+                    );
                   }}
-                  value={this.state.layer.description}/>
+                  value={this.state.layer.description}
+                />
               </Form.Field>
             )
           }
@@ -334,23 +334,23 @@ class LayerForm extends React.Component {
                 <label>{t('last')}</label>
                 <Form.Group inline>
                   <Form.Radio
+                    checked={this.state.layer.last === true}
                     label={
                       t('common:yes')
                     }
-                    checked={this.state.layer.last === true}
                     onChange={(e, d)=>{
                       this.updateChange(
-                        'last', true, false)
+                        'last', true, false);
                     }}
                   />
                   <Form.Radio
+                    checked={this.state.layer.last === false}
                     label={
                       t('common:no')
                     }
-                    checked={this.state.layer.last === false}
                     onChange={(e, d)=>{
                       this.updateChange(
-                        'last', false, false)
+                        'last', false, false);
                     }}
                   />
                 </Form.Group>
@@ -363,13 +363,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('qt_description')}</label>
                 <DomainDropdown
-                  schema='qt_description'
-                  selected={this.state.layer.qt_description}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'qt_description', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='qt_description'
+                  selected={this.state.layer.qt_description}
+                />
               </Form.Field>
             )
           }
@@ -381,13 +382,14 @@ class LayerForm extends React.Component {
               >
                 <label>{t('lithology')}</label>
                 <DomainDropdown
-                  schema='custom.lit_pet_top_bedrock'
-                  selected={this.state.layer.lithology}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'lithology', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='custom.lit_pet_top_bedrock'
+                  selected={this.state.layer.lithology}
+                />
               </Form.Field>
             )
           }
@@ -399,13 +401,14 @@ class LayerForm extends React.Component {
               >
                 <label>{t('lithostratigraphy')}</label>
                 <DomainDropdown
-                  schema='custom.lit_str_top_bedrock'
-                  selected={this.state.layer.lithostratigraphy}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'lithostratigraphy', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='custom.lit_str_top_bedrock'
+                  selected={this.state.layer.lithostratigraphy}
+                />
               </Form.Field>
             )
           }
@@ -415,13 +418,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('chronostratigraphy')}</label>
                 <DomainDropdown
-                  schema='custom.chro_str_top_bedrock'
-                  selected={this.state.layer.chronostratigraphy}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'chronostratigraphy', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='custom.chro_str_top_bedrock'
+                  selected={this.state.layer.chronostratigraphy}
+                />
               </Form.Field>
             )
           }
@@ -431,13 +435,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('tectonic_unit')}</label>
                 <DomainDropdown
-                  schema='vtec404'
-                  selected={this.state.layer.tectonic_unit}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'tectonic_unit', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='vtec404'
+                  selected={this.state.layer.tectonic_unit}
+                />
               </Form.Field>
             )
           }
@@ -447,17 +452,18 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('color')}</label>
                 <DomainDropdown
-                  schema='mlpr112'
-                  selected={this.state.layer.color}
-                  multiple={true}
-                  search={true}
+                  multiple
                   onSelected={(selected)=>{
                     this.updateChange(
                       'color',
                       selected.map(mlpr=>mlpr.id),
                       false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='mlpr112'
+                  search
+                  selected={this.state.layer.color}
+                />
               </Form.Field>
             )
           }
@@ -467,13 +473,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('plasticity')}</label>
                 <DomainDropdown
-                  schema='mlpr101'
-                  selected={this.state.layer.plasticity}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'plasticity', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='mlpr101'
+                  selected={this.state.layer.plasticity}
+                />
               </Form.Field>
             )
           }
@@ -483,13 +490,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('humidity')}</label>
                 <DomainDropdown
-                  schema='mlpr105'
-                  selected={this.state.layer.humidity}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'humidity', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='mlpr105'
+                  selected={this.state.layer.humidity}
+                />
               </Form.Field>
             )
           }
@@ -499,13 +507,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('consistance')}</label>
                 <DomainDropdown
-                  schema='mlpr103'
-                  selected={this.state.layer.consistance}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'consistance', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='mlpr103'
+                  selected={this.state.layer.consistance}
+                />
               </Form.Field>
             )
           }
@@ -515,13 +524,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('alteration')}</label>
                 <DomainDropdown
-                  schema='mlpr106'
-                  selected={this.state.layer.alteration}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'alteration', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='mlpr106'
+                  selected={this.state.layer.alteration}
+                />
               </Form.Field>
             )
           }
@@ -531,13 +541,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('compactness')}</label>
                 <DomainDropdown
-                  schema='mlpr102'
-                  selected={this.state.layer.compactness}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'compactness', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='mlpr102'
+                  selected={this.state.layer.compactness}
+                />
               </Form.Field>
             )
           }
@@ -547,17 +558,18 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('jointing')}</label>
                 <DomainDropdown
-                  schema='mlpr113'
-                  selected={this.state.layer.jointing}
-                  multiple={true}
-                  search={true}
+                  multiple
                   onSelected={(selected)=>{
                     this.updateChange(
                       'jointing',
                       selected.map(jng=>jng.id),
                       false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='mlpr113'
+                  search
+                  selected={this.state.layer.jointing}
+                />
               </Form.Field>
             )
           }
@@ -567,13 +579,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('soil_state')}</label>
                 <DomainDropdown
-                  schema='mlpr108'
-                  selected={this.state.layer.soil_state}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'soil_state', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='mlpr108'
+                  selected={this.state.layer.soil_state}
+                />
               </Form.Field>
             )
           }
@@ -583,17 +596,18 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('organic_component')}</label>
                 <DomainDropdown
-                  schema='mlpr108'
-                  selected={this.state.layer.organic_component}
-                  multiple={true}
-                  search={true}
+                  multiple
                   onSelected={(selected)=>{
                     this.updateChange(
                       'organic_component',
                       selected.map(jng=>jng.id),
                       false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='mlpr108'
+                  search
+                  selected={this.state.layer.organic_component}
+                />
               </Form.Field>
             )
           }
@@ -604,23 +618,23 @@ class LayerForm extends React.Component {
                 <label>{t('striae')}</label>
                 <Form.Group inline>
                   <Form.Radio
+                    checked={this.state.layer.striae === true}
                     label={
                       t('common:yes')
                     }
-                    checked={this.state.layer.striae === true}
                     onChange={(e, d)=>{
                       this.updateChange(
-                        'striae', true, false)
+                        'striae', true, false);
                     }}
                   />
                   <Form.Radio
+                    checked={this.state.layer.striae === false}
                     label={
                       t('common:no')
                     }
-                    checked={this.state.layer.striae === false}
                     onChange={(e, d)=>{
                       this.updateChange(
-                        'striae', false, false)
+                        'striae', false, false);
                     }}
                   />
                 </Form.Group>
@@ -633,13 +647,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('grain_size_1')}</label>
                 <DomainDropdown
-                  schema='mlpr109'
-                  selected={this.state.layer.grain_size_1}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'grain_size_1', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='mlpr109'
+                  selected={this.state.layer.grain_size_1}
+                />
               </Form.Field>
             )
           }
@@ -649,13 +664,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('grain_size_2')}</label>
                 <DomainDropdown
-                  schema='mlpr109'
-                  selected={this.state.layer.grain_size_2}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'grain_size_2', selected.id, false
-                    )
-                  }}/>
+                    );
+                  }}
+                  schema='mlpr109'
+                  selected={this.state.layer.grain_size_2}
+                />
               </Form.Field>
             )
           }
@@ -665,17 +681,18 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('grain_shape')}</label>
                 <DomainDropdown
-                  schema='mlpr110'
-                  selected={this.state.layer.grain_shape}
-                  multiple={true}
-                  search={true}
+                  multiple
                   onSelected={(selected)=>{
                     this.updateChange(
                       'grain_shape',
                       selected.map(gsh=>gsh.id),
                       false
                     );
-                  }}/>
+                  }}
+                  schema='mlpr110'
+                  search
+                  selected={this.state.layer.grain_shape}
+                />
               </Form.Field>
             )
           }
@@ -685,17 +702,18 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('grain_granularity')}</label>
                 <DomainDropdown
-                  schema='mlpr115'
-                  selected={this.state.layer.grain_granularity}
-                  multiple={true}
-                  search={true}
+                  multiple
                   onSelected={(selected)=>{
                     this.updateChange(
                       'grain_granularity',
                       selected.map(ggr=>ggr.id),
                       false
                     );
-                  }}/>
+                  }}
+                  schema='mlpr115'
+                  search
+                  selected={this.state.layer.grain_granularity}
+                />
               </Form.Field>
             )
           }
@@ -705,13 +723,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('cohesion')}</label>
                 <DomainDropdown
-                  schema='mlpr116'
-                  selected={this.state.layer.cohesion}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'cohesion', selected.id, false
                     );
-                  }}/>
+                  }}
+                  schema='mlpr116'
+                  selected={this.state.layer.cohesion}
+                />
               </Form.Field>
             )
           }
@@ -721,17 +740,18 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('further_properties')}</label>
                 <DomainDropdown
-                  schema='mlpr117'
-                  selected={this.state.layer.further_properties}
-                  multiple={true}
-                  search={true}
+                  multiple
                   onSelected={(selected)=>{
                     this.updateChange(
                       'further_properties',
                       selected.map(ftp=>ftp.id),
                       false
                     );
-                  }}/>
+                  }}
+                  schema='mlpr117'
+                  search
+                  selected={this.state.layer.further_properties}
+                />
               </Form.Field>
             )
           }
@@ -741,13 +761,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('uscs_1')}</label>
                 <DomainDropdown
-                  schema='mcla101'
-                  selected={this.state.layer.uscs_1}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'uscs_1', selected.id, false
                     );
-                  }}/>
+                  }}
+                  schema='mcla101'
+                  selected={this.state.layer.uscs_1}
+                />
               </Form.Field>
             )
           }
@@ -757,13 +778,14 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('uscs_2')}</label>
                 <DomainDropdown
-                  schema='mcla101'
-                  selected={this.state.layer.uscs_2}
                   onSelected={(selected)=>{
                     this.updateChange(
                       'uscs_2', selected.id, false
                     );
-                  }}/>
+                  }}
+                  schema='mcla101'
+                  selected={this.state.layer.uscs_2}
+                />
               </Form.Field>
             )
           }
@@ -773,17 +795,18 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('uscs_3')}</label>
                 <DomainDropdown
-                  schema='mcla101'
-                  selected={this.state.layer.uscs_3}
-                  multiple={true}
-                  search={true}
+                  multiple
                   onSelected={(selected)=>{
                     this.updateChange(
                       'uscs_3',
                       selected.map(ftp=>ftp.id),
                       false
                     );
-                  }}/>
+                  }}
+                  schema='mcla101'
+                  search
+                  selected={this.state.layer.uscs_3}
+                />
               </Form.Field>
             )
           }
@@ -793,16 +816,17 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('uscs_original')}</label>
                 <Input
+                  autoCapitalize="off"
+                  autoComplete="off"
+                  autoCorrect="off"
                   onChange={(e)=>{
                     this.updateChange(
                       'uscs_original', e.target.value
                     );
                   }}
+                  spellCheck="false"
                   value={this.state.layer.uscs_original}
-                  autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="off"
-                  spellCheck="false"/>
+                />
               </Form.Field>
             )
           }
@@ -812,17 +836,18 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('uscs_determination')}</label>
                 <DomainDropdown
-                  schema='mcla104'
-                  selected={this.state.layer.uscs_determination}
-                  multiple={true}
-                  search={true}
+                  multiple
                   onSelected={(selected)=>{
                     this.updateChange(
                       'uscs_determination',
                       selected.map(ftp=>ftp.id),
                       false
                     );
-                  }}/>
+                  }}
+                  schema='mcla104'
+                  search
+                  selected={this.state.layer.uscs_determination}
+                />
               </Form.Field>
             )
           }
@@ -844,17 +869,18 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('debris')}</label>
                 <DomainDropdown
-                  schema='mcla107'
-                  selected={this.state.layer.debris}
-                  multiple={true}
-                  search={true}
+                  multiple
                   onSelected={(selected)=>{
                     this.updateChange(
                       'debris',
                       selected.map(gsh=>gsh.id),
                       false
                     );
-                  }}/>
+                  }}
+                  schema='mcla107'
+                  search
+                  selected={this.state.layer.debris}
+                />
               </Form.Field>
             )
           }
@@ -864,17 +890,18 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('lit_pet_deb')}</label>
                 <DomainDropdown
-                  schema='custom.lit_pet_top_bedrock'
-                  selected={this.state.layer.lit_pet_deb}
-                  multiple={true}
-                  search={true}
+                  multiple
                   onSelected={(selected)=>{
                     this.updateChange(
                       'lit_pet_deb',
                       selected.map(gsh=>gsh.id),
                       false
                     );
-                  }}/>
+                  }}
+                  schema='custom.lit_pet_top_bedrock'
+                  search
+                  selected={this.state.layer.lit_pet_deb}
+                />
               </Form.Field>
             )
           }

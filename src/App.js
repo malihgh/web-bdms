@@ -42,14 +42,16 @@ const cpaths = [
 
 // console.log('process.env.PUBLIC_URL: ' + process.env.PUBLIC_URL)
 class App extends React.Component {
+
   componentDidMount() {
     const {
       cantons,
       domains
     } = this.props;
-    if (Object.keys(domains.data).length === 0) {
-      this.props.loadDomains();
-    }
+    // if (Object.keys(domains.data).length === 0) {
+    //   this.props.loadDomains();
+    // }
+    this.props.loadDomains();
     if (cantons.data.length === 0) {
       this.props.loadCantons();
     };
@@ -66,19 +68,25 @@ class App extends React.Component {
     this.props.setScrollbarWidth(scrollbarWidth + 'px');
     // Delete the DIV 
     document.body.removeChild(scrollDiv);
+    console.log("App.componentDidMount");
 
+  }
+  shouldComponentUpdate(nextProps, nextState){
+    console.log("App.shouldComponentUpdate");
+    return true;
   }
   isFetching() {
     const {
       cantons,
       domains
     } = this.props;
-    if (
-      Object.keys(domains.data).length === 0
-      || domains.isFetching === true
-    ) {
-      return true;
-    }
+    // if (
+    //   Object.keys(domains.data).length === 0
+    //   || domains.isFetching === true
+    // ) {
+    //   console.debug('App.isFetching');
+    //   return true;
+    // }
     if (
       cantons.data.length === 0
       || cantons.isFetching === true
@@ -178,7 +186,7 @@ class App extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     cantons: state.core_canton_list,
-    domains: state.core_domain_list,
+    // domains: state.core_domain_list,
     user: state.core_user
   };
 };

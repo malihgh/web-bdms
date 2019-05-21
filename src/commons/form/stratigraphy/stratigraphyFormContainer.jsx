@@ -197,7 +197,8 @@ class StratigraphyFormContainer extends React.Component {
           <div
             style={{
               display: 'flex',
-              flexDirection: 'column'
+              flexDirection: 'column',
+              flex: '0 0 0%'
             }}
           >
             <Form
@@ -445,9 +446,12 @@ class StratigraphyFormContainer extends React.Component {
                 <LayerForm
                   borehole={this.props.borehole}
                   conf={
-                    domains.data.layer_kind.find(function(element) {
-                      return element.id === stratigraphy.kind;
-                    }).conf
+                    (()=>{
+                      const element = domains.data.layer_kind.find(function(element) {
+                        return element.id === stratigraphy.kind;
+                      });
+                      return element.conf;
+                    })()
                   }
                   id={this.state.layer}
                   onUpdated={(id, attribute, value) => {

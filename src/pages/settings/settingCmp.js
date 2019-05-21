@@ -12,79 +12,87 @@ import MenuContainer from '../../commons/menu/menuContainer';
 import ExplorerSettings from './explorerSettings';
 import EditorSettings from './editorSettings';
 
-const SettingCmp = (props) => {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%'
-      }}
-    >
-      <MenuContainer />
+// const SettingCmp = (props) => {
+class SettingCmp extends React.Component {
+
+  componentDidMount(){
+    console.log("SettingCmp.componentDidMount");
+  }
+  
+  render() {
+    return (
       <div
         style={{
-          flex: '1 1 100%',
-          // height: '100%',
           display: 'flex',
-          flexDirection: 'row',
-          overflow: 'hidden'
+          flexDirection: 'column',
+          height: '100%'
         }}
       >
+        <MenuContainer />
         <div
           style={{
-            // borderRight: 'thin solid #dfe0e0',
-            boxShadow: 'rgba(0, 0, 0, 0.17) 2px 6px 6px 0px',
+            flex: '1 1 100%',
+            // height: '100%',
             display: 'flex',
-            flexDirection: 'column',
-            width: '250px'
+            flexDirection: 'row',
+            overflow: 'hidden'
           }}
         >
-          <MenuSettings />
-        </div>
-        <div
-          style={{
-            flex: '1 1 0%',
-            overflowY: 'auto'
-          }}
-        >
-          <Switch>
-            <Route
-              component={ExplorerSettings}
-              path={process.env.PUBLIC_URL + "/setting/explorer"}
-            />
-            <Route
-              component={EditorSettings}
-              path={process.env.PUBLIC_URL + "/setting/editor"}
-              // render={() => (
-              //   <div
-              //     style={{
-              //       padding: '2em',
-              //       flex: 1
-              //     }}
-              //   >
-              //     coming soon
-              //   </div>
-              // )}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + "/setting/account"}
-              render={() => (
-                <div
-                  style={{
-                    padding: '2em',
-                    flex: 1
-                  }}
-                >
-                  coming soon
-                </div>
-              )}
-            />
-          </Switch>
+          <div
+            style={{
+              // borderRight: 'thin solid #dfe0e0',
+              boxShadow: 'rgba(0, 0, 0, 0.17) 2px 6px 6px 0px',
+              display: 'flex',
+              flexDirection: 'column',
+              width: '250px'
+            }}
+          >
+            <MenuSettings />
+          </div>
+          <div
+            style={{
+              flex: '1 1 0%',
+              overflowY: 'auto'
+            }}
+          >
+            <Switch>
+              <Route
+                component={ExplorerSettings}
+                path={process.env.PUBLIC_URL + "/setting/explorer"}
+              />
+              <Route
+                component={EditorSettings}
+                path={process.env.PUBLIC_URL + "/setting/editor"}
+                // render={() => (
+                //   <div
+                //     style={{
+                //       padding: '2em',
+                //       flex: 1
+                //     }}
+                //   >
+                //     coming soon
+                //   </div>
+                // )}
+              />
+              <Route
+                path={process.env.PUBLIC_URL + "/setting/account"}
+                render={() => (
+                  <div
+                    style={{
+                      padding: '2em',
+                      flex: 1
+                    }}
+                  >
+                    coming soon
+                  </div>
+                )}
+              />
+            </Switch>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default withRouter(translate('common')(SettingCmp));

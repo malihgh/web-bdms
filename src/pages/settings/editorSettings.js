@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
-// import _ from 'lodash';
+import _ from 'lodash';
 
 import {
   Button,
@@ -15,24 +15,147 @@ import {
 } from 'semantic-ui-react';
 
 import {
+  patchCodeConfig,
   patchSettings
 } from '@ist-supsi/bmsjs';
 
+const fields = [
+  {
+    name: 'description'
+  },
+  {
+    name: 'geology'
+  },
+  {
+    name: 'qt_description'
+  },
+  {
+    name: 'lithology'
+  },
+  {
+    name: 'lithostratigraphy'
+  },
+  {
+    name: 'chronostratigraphy'
+  },
+  {
+    name: 'tectonic_unit'
+  },
+  {
+    name: 'color'
+  },
+  {
+    name: 'plasticity'
+  },
+  {
+    name: 'humidity'
+  },
+  {
+    name: 'consistance'
+  },
+  {
+    name: 'alteration'
+  },
+  {
+    name: 'compactness'
+  },
+  {
+    name: 'jointing'
+  },
+  {
+    name: 'soil_state'
+  },
+  {
+    name: 'organic_component'
+  },
+  {
+    name: 'striae'
+  },
+  {
+    name: 'grain_size_1'
+  },
+  {
+    name: 'grain_size_2'
+  },
+  {
+    name: 'grain_shape'
+  },
+  {
+    name: 'grain_granularity'
+  },
+  {
+    name: 'cohesion'
+  },
+  {
+    name: 'further_properties'
+  },
+  {
+    name: 'uscs_1'
+  },
+  {
+    name: 'uscs_2'
+  },
+  {
+    name: 'uscs_3'
+  },
+  {
+    name: 'uscs_original'
+  },
+  {
+    name: 'uscs_determination'
+  },
+  {
+    name: 'debris'
+  },
+  {
+    name: 'lit_pet_deb'
+  },
+  {
+    name: 'notes'
+  }
+];
 
-// import Scroller from '../../commons/scroller';
 
 class EditorSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      "fields": false,
       "search": false
     };
+  }
+
+  isVisible(field){
+    const {
+      geocode,
+      stratigraphies
+    } = this.props;
+    if (
+      _.has(stratigraphies, 'data.layer_kind')
+      && _.isArray(stratigraphies.data.layer_kind)
+    ){
+      for (let idx = 0; idx < stratigraphies.data.layer_kind.length; idx++) {
+        const element = stratigraphies.data.layer_kind[idx];
+        if (element.code === geocode){
+          if (
+            _.isObject(element.conf)
+            && _.has(element.conf, `fields.${field}`)
+          ){
+            return  element.conf.fields[field];
+          } else {
+            return false;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   render() {
     const {
       setting,
       t,
+      toggleField,
       toggleFilter
     } = this.props;
     return (
@@ -599,26 +722,107 @@ class EditorSettings extends React.Component {
             </Segment.Group>
             : <Divider />
         }
+        <div
+          style={{
+            flexDirection: 'row',
+            display: 'flex'
+          }}
+        >
+          <Header
+            as='h3'
+            className='link'
+            onClick={() => {
+              this.setState({
+                "fields": !this.state.fields
+              });
+            }}
+            style={{
+              margin: '0px'
+            }}
+          >
+            Stratigraphy fields
+          </Header>
+          <div
+            style={{
+              flex: 1,
+              textAlign: 'right'
+            }}
+          >
+            <Button
+              color='red'
+              onClick={() => {
+                this.setState({
+                  "fields": !this.state.fields
+                });
+              }}
+              size='small'
+            >
+              {
+                this.state.fields === true ?
+                  t('common:collapse') : t('common:expand')
+              }
+            </Button>
+          </div>
+        </div>
+        <div>
+          Pellentesque scelerisque orci dolor, vel posuere nisi imperdiet ut
+          Nunc condimentum erat risus, in dictum erat rhoncus sit amet.
+        </div>
+        {
+          this.state.fields === true ?
+            <Segment.Group>
+              {
+                fields.map( (field, idx) => (
+                  <Segment
+                    key={'bms-es-fds-'+idx}
+                  >
+                    <Checkbox
+                      checked={
+                        this.isVisible(field.name)
+                      }
+                      label={t(`layer_form:${field.name}`)}
+                      onChange={(e, d) => {
+                        toggleField(field.name, d.checked);
+                      }}
+                    />
+                  </Segment>
+                ))
+              }
+
+            </Segment.Group>
+            : <Divider />
+        }
       </div>
     );
   }
 };
 
 EditorSettings.propTypes = {
+  geocode: PropTypes.string,
   setting: PropTypes.object,
+  stratigraphies: PropTypes.object,
   t: PropTypes.func,
-  toggleFilter: PropTypes.func,
+  toggleField: PropTypes.func,
+  toggleFilter: PropTypes.func
+};
+
+EditorSettings.defaultProps = {
+  geocode: "Or"
 };
 
 const mapStateToProps = (state) => {
   return {
-    setting: state.setting
+    setting: state.setting,
+    stratigraphies: state.core_domain_list
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
+    toggleField: (filter, enabled) => {
+      dispatch(patchCodeConfig(`fields.${filter}`, enabled));
+    },
     toggleFilter: (filter, enabled) => {
       dispatch(patchSettings(`efilter.${filter}`, enabled));
     }
@@ -628,4 +832,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate(['borehole_form', 'common'])(EditorSettings));
+)(translate(['borehole_form', 'common', 'layer_form'])(EditorSettings));

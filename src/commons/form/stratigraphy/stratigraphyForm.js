@@ -50,13 +50,13 @@ class StratigraphyForm extends React.Component {
   }
 
   load(id){
-    if(_.isInteger(id)){
+    if (_.isInteger(id)){
       this.setState({
         isFetching: true,
         stratigraphy: this.empty
       }, () => {
         getStratigraphy(id).then(function(response) {
-          if(response.data.success){
+          if (response.data.success){
             this.setState({
               isFetching: false,
               stratigraphy: response.data.data
@@ -64,35 +64,15 @@ class StratigraphyForm extends React.Component {
           }
         }.bind(this)).catch(function (error) {
           console.log(error);
-        })
-      })
+        });
+      });
     }
-  }
-
-  render() {
-    const size = null; // 'small'
-    return (
-      <Form
-        error
-        size={size}
-        autoComplete="off"
-        style={{
-          padding: '0.5em 0px 1em 0px'
-        }}>
-        <Form.Field>
-          <label>Stratigraphy type</label>
-          <DomainText
-            schema='layer_kind'
-            id={this.state.stratigraphy.kind}/>
-        </Form.Field>
-      </Form>
-    )
   }
 
   _render() {
     const {
       t
-    } = this.props
+    } = this.props;
 
     return (
       <div
@@ -100,65 +80,73 @@ class StratigraphyForm extends React.Component {
           display: 'flex',
           flexDirection: 'row',
           height: '100%'
-        }}>
-        <div style={{
-          overflow: 'hidden',
-          height: '100%',
-          display: 'flex',
-          flex: '0.4 1 0%',
-          flexDirection: 'column',
-          // maxWidth: '400px',
-          padding: '1em'
-        }}>
+        }}
+      >
+        <div
+          style={{
+            overflow: 'hidden',
+            height: '100%',
+            display: 'flex',
+            flex: '0.4 1 0%',
+            flexDirection: 'column',
+            // maxWidth: '400px',
+            padding: '1em'
+          }}
+        >
           <div>
             <Form
+              autoComplete="off"
               error
-              autoComplete="off">
+            >
               <Form.Group widths='equal'>
                 <Form.Field>
                   <DomainDropdown
+                    onSelected={(selected)=>{
+                      this.setState({
+                        layer_kind: selected.id
+                      });
+                    }}
                     schema='layer_kind'
                     selected={
                       this.state.layer_kind
                     }
-                    onSelected={(selected)=>{
-                      this.setState({
-                        layer_kind: selected.id
-                      })
-                    }}/>
+                  />
                 </Form.Field>
                 <Form.Button
-                  fluid
+                  content={t('create')}
                   disabled={
                     this.state.layer_kind === null
                   }
-                  content={t('create')}
-                  secondary
+                  fluid
                   onClick={()=>{
                     createStratigraphy(
                       this.props.id,
                       this.state.layer_kind
                     ).then(
                       function(response) {
-                        debugger
-                        if(response.data.success){
+                        // debugger;
+                        if (response.data.success){
                           // let bh = response.data.data
                           this.setState({
-                            layer_kind: null,
+                            "layer_kind": null,
                             stratigraphy: response.data.id
-                          })
+                          });
                         }
-                    }.bind(this)).catch(function (error) {
-                      console.log(error)
-                    })
-                  }}/>
+                      }.bind(this)).catch(function (error) {
+                      console.log(error);
+                    });
+                  }}
+                  secondary
+                />
               </Form.Group>
             </Form>
           </div>
-          <div style={{
+          <div
+            style={{
               flex: "0.6 1 0%",
               overflowY: "auto"
-            }}>
+            }}
+          >
             <StartigraphyTable
               filter={{
                 borehole: this.props.hasOwnProperty(
@@ -168,33 +156,59 @@ class StratigraphyForm extends React.Component {
               onSelected={selected => {
                 this.setState({
                   stratigraphy: selected.id
-                })
-              }}/>
+                });
+              }}
+            />
           </div>
         </div>
-        <div style={{
+        <div
+          style={{
             flex: "0.6 1 0%",
             padding: "1em",
             overflowY: "auto"
-          }}>
+          }}
+        >
           {
             this.state.stratigraphy === null ?
-            'Please select an inserted stratigraphy or create a new one':
-            <LayerForm
-              id={this.state.stratigraphy}/>
+              'Please select an inserted stratigraphy or create a new one':
+              <LayerForm
+                id={this.state.stratigraphy}
+              />
           }
         </div>
       </div>
-    )
+    );
+  }
+
+  render() {
+    const size = null; // 'small'
+    return (
+      <Form
+        autoComplete="off"
+        error
+        size={size}
+        style={{
+          padding: '0.5em 0px 1em 0px'
+        }}
+      >
+        <Form.Field>
+          <label>Stratigraphy type</label>
+          <DomainText
+            id={this.state.stratigraphy.kind}
+            schema='layer_kind'
+          />
+        </Form.Field>
+      </Form>
+    );
   }
 }
 
 StratigraphyForm.propTypes = {
   id: PropTypes.number
-}
+};
 
 StratigraphyForm.defaultProps = {
   id: undefined
-}
+};
 
-export default translate('borehole_form')(StratigraphyForm)
+export default translate('borehole_form')(StratigraphyForm);
