@@ -46,7 +46,7 @@ class App extends React.Component {
   componentDidMount() {
     const {
       cantons,
-      domains
+      // domains
     } = this.props;
     // if (Object.keys(domains.data).length === 0) {
     //   this.props.loadDomains();
@@ -64,21 +64,15 @@ class App extends React.Component {
     scrollDiv.className = "scrollbar-measure";
     document.body.appendChild(scrollDiv);
     var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-    console.warn(scrollbarWidth); // Mac:  15
     this.props.setScrollbarWidth(scrollbarWidth + 'px');
     // Delete the DIV 
     document.body.removeChild(scrollDiv);
-    console.log("App.componentDidMount");
 
-  }
-  shouldComponentUpdate(nextProps, nextState){
-    console.log("App.shouldComponentUpdate");
-    return true;
   }
   isFetching() {
     const {
       cantons,
-      domains
+      // domains
     } = this.props;
     // if (
     //   Object.keys(domains.data).length === 0

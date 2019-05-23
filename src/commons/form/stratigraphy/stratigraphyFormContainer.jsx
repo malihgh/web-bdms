@@ -12,7 +12,9 @@ import {
   Checkbox,
   Input,
   Segment,
-  Form
+  Form,
+  Icon,
+  Popup
 } from 'semantic-ui-react';
 import {
   // getStratigraphies,
@@ -34,6 +36,7 @@ class StratigraphyFormContainer extends React.Component {
     this.load = this.load.bind(this);
     this.updateAttributeDelay = {};
     this.state = {
+      consistency: {},
       stratigraphy: null,
       isPatching: false,
       stratigraphyEmpty: false,
@@ -60,6 +63,7 @@ class StratigraphyFormContainer extends React.Component {
   load(id) {
     // Get Stratigraphy by borehole and stratigraphy kind
     this.setState({
+      consistency: {},
       stratigraphy: null,
       stratigraphyEmpty: false,
       fetchingStratigraphy: true,
@@ -83,6 +87,8 @@ class StratigraphyFormContainer extends React.Component {
                   if (response.data.success){
                     this.setState({
                       layers: response.data.data
+                    }, ()=>{
+                      this.checkConsistency();
                     });
                   }
                 }.bind(this)
@@ -153,6 +159,71 @@ class StratigraphyFormContainer extends React.Component {
     });
   }
 
+  checkConsistency(){
+    const {
+      layers
+    } = this.state;
+
+    const consistency = {};
+
+    for (let idx = 0; idx < layers.length; idx++) {
+      const item = layers[idx];
+
+      // First layer not starting from 0 meters
+      const errorStartWrong = (
+        idx === 0 && item.depth_from !== 0
+      );
+
+      // Bottom higher then top
+      const errorInverted = (
+        item.depth_from > item.depth_to
+      );
+
+      // There is a gap between two layers
+      const errorGap = (
+        idx > 0
+        && layers[(idx-1)].depth_to < item.depth_from
+      );
+
+      // There is an overlapping between two layers
+      const errorOverlap = (
+        idx > 0
+        && errorInverted === false
+        && item.depth_from < layers[(idx-1)].depth_to
+      );
+
+      const error = (
+        errorStartWrong
+        || errorGap
+        || errorOverlap
+      );
+
+      const message = (
+        errorStartWrong === true?
+          'First layer not starting from the surface':
+          errorOverlap === true?
+            'Overlapping layers':
+            'Non continuos data found'
+      );
+
+      if (error === true){
+        consistency[item.id] = {
+          errorStartWrong: errorStartWrong,
+          errorInverted: errorInverted,
+          errorGap: errorGap,
+          errorOverlap: errorOverlap,
+          message: message
+        };
+      }
+
+    }
+
+    this.setState({
+      consistency: consistency,
+    });
+
+  }
+
   render() {
     const { stratigraphy } = this.state;
     const {
@@ -198,14 +269,11 @@ class StratigraphyFormContainer extends React.Component {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              flex: '0 0 0%'
+              flex: '0 0 0%',
             }}
           >
             <Form
               size='small'
-              style={{
-                marginBottom: '1em'
-              }}
             >
               <Form.Group widths='equal'>
                 <Form.Field
@@ -264,17 +332,105 @@ class StratigraphyFormContainer extends React.Component {
                     }} />
                 </Form.Field>
               </Form.Group>
-              <Checkbox
-                checked={stratigraphy.primary}
-                label='This is the main stratigraphy'
-                onChange={(ev, data)=>{
-                  this.updateChange(
-                    'primary', data.checked, false
-                  );
-                }}
-                toggle
-              />
             </Form>
+            <div
+              style={{
+                alignItems: 'baseline',
+                display: 'flex',
+                flexDirection: 'row',
+                marginBottom: '0.5em'
+              }}
+            >
+              <div
+                style={{
+                  flex: '1 1 100%'
+                }}
+              >
+                <Form
+                  size='small'
+                  style={{
+                    marginBottom: '1em'
+                  }}
+                >
+                  <Checkbox
+                    checked={stratigraphy.primary}
+                    label='This is the main stratigraphy'
+                    onChange={(ev, data)=>{
+                      this.updateChange(
+                        'primary', data.checked, false
+                      );
+                    }}
+                    toggle
+                  />
+                </Form>
+              </div>
+              {
+                this.props.borehole.data.lock === null
+                || this.props.borehole.data.lock.username !==
+                    this.props.user.data.username?
+                  null:
+                  <div
+                    style={{
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
+                    <Button
+                      disabled={!_.isEmpty(this.state.consistency)}
+                      icon
+                      onClick={()=>{
+                        cloneStratigraphy(
+                          stratigraphy.id
+                        ).then((response)=>{
+                          if (_.isFunction(onClone)){
+                            onClone(stratigraphy.id);
+                          }
+                          this.setState({
+                            stratigraphy: null
+                          });
+                        });
+                      }}
+                      size='tiny'
+                    >
+                      <Icon name='clone outline' />
+                    </Button>
+                    <Popup
+                      flowing
+                      hoverable
+                      on='click'
+                      position='right center'
+                      trigger={
+                        <Button
+                          icon
+                          size='tiny'
+                        >
+                          <Icon name='trash alternate' />
+                        </Button>
+                      }
+                    >
+                      Delete?
+                      <br />
+                      <Button
+                        icon
+                        onClick={()=>{
+                          deleteStratigraphy(
+                            stratigraphy.id
+                          ).then((response)=>{
+                            if (_.isFunction(onDeleted)){
+                              onDeleted(stratigraphy.id);
+                            }
+                            this.setState({
+                              stratigraphy: null
+                            });
+                          });
+                        }}
+                        size='tiny'
+                      >
+                        Confirm
+                      </Button>
+                    </Popup>
+                  </div>
+              }
+            </div>
             {
               _.isNil(this.state.layers)?
                 null:
@@ -282,7 +438,8 @@ class StratigraphyFormContainer extends React.Component {
                   style={{
                     flex: 1,
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    overflow: 'hidden',
                   }}
                 >
                   {
@@ -298,44 +455,7 @@ class StratigraphyFormContainer extends React.Component {
                         }}
                       >
                         <Button
-                          fluid
-                          negative
-                          onClick={()=>{
-                            cloneStratigraphy(
-                              stratigraphy.id
-                            ).then((response)=>{
-                              if (_.isFunction(onClone)){
-                                onClone(stratigraphy.id);
-                              }
-                              this.setState({
-                                stratigraphy: null
-                              });
-                            });
-                          }}
-                          size='tiny'
-                        >
-                          Clone
-                        </Button>
-                        <Button
-                          fluid
-                          negative
-                          onClick={()=>{
-                            deleteStratigraphy(
-                              stratigraphy.id
-                            ).then((response)=>{
-                              if (_.isFunction(onDeleted)){
-                                onDeleted(stratigraphy.id);
-                              }
-                              this.setState({
-                                stratigraphy: null
-                              });
-                            });
-                          }}
-                          size='tiny'
-                        >
-                          Delete stratigraphy
-                        </Button>
-                        <Button
+                          disabled={!_.isEmpty(this.state.consistency)}
                           fluid
                           onClick={()=>{
                             createLayer(
@@ -349,8 +469,11 @@ class StratigraphyFormContainer extends React.Component {
                                   ).then(function(response) {
                                     if (response.data.success){
                                       this.setState({
+                                        consistency: {},
                                         layers: response.data.data,
                                         layer: layerId
+                                      }, ()=>{
+                                        this.checkConsistency();
                                       });
                                     }
                                   }.bind(this)).catch(function (error) {
@@ -362,11 +485,33 @@ class StratigraphyFormContainer extends React.Component {
                               console.log(error);
                             });
                           }}
-                          positive
+                          secondary
                           size='tiny'
                         >
                           Add layer
                         </Button>
+                      </div>
+                  }
+                  {
+                    _.isEmpty(this.state.consistency)?
+                      null:
+                      <div
+                        style={{
+                          color: 'red',
+                          fontSize: '0.9em',
+                          paddingBottom: '0.5em',
+                          textAlign: 'right',
+                        }}
+                      >
+                        <Icon
+                          name='warning sign'
+                        /> {(()=>{
+                          const l = Object.keys(this.state.consistency).length;
+                          if (l === 1) {
+                            return 'One error found.';
+                          }
+                          return `${l} errors found.`;
+                        })()}
                       </div>
                   }
                   <div
@@ -375,11 +520,20 @@ class StratigraphyFormContainer extends React.Component {
                       overflowY: 'auto'
                     }}
                   >
+                    
                     <LayersList
+                      consistency={this.state.consistency}
                       layers={this.state.layers}
-                      onDelete={(layer, precess, value = null) => {
+                      onDelete={(layer, solution, value = null) => {
+                        if (
+                          this.props.borehole.data.lock === null
+                          || this.props.borehole.data.lock.username !== this.props.user.data.username
+                        ){
+                          alert("Borehole not locked");
+                          return;
+                        }
                         deleteLayer(
-                          layer.id, precess, value
+                          layer.id, solution, value
                         ).then(
                           function(response) {
                             if (response.data.success){
@@ -390,6 +544,8 @@ class StratigraphyFormContainer extends React.Component {
                                   this.setState({
                                     layers: response.data.data,
                                     layer: null
+                                  }, () => {
+                                    this.checkConsistency();
                                   });
                                 }
                               }.bind(this)).catch(function (error) {
@@ -400,9 +556,16 @@ class StratigraphyFormContainer extends React.Component {
                           console.log(error);
                         });
                       }}
-                      onResolveGap={(layer, precess) => {
+                      onResolve={(layer, solution) => {
+                        if (
+                          this.props.borehole.data.lock === null
+                          || this.props.borehole.data.lock.username !== this.props.user.data.username
+                        ){
+                          alert("Borehole not locked");
+                          return;
+                        }
                         gapLayer(
-                          layer.id, precess
+                          layer.id, solution
                         ).then(
                           function(response) {
                             if (response.data.success){
@@ -411,8 +574,11 @@ class StratigraphyFormContainer extends React.Component {
                               ).then(function(response) {
                                 if (response.data.success){
                                   this.setState({
+                                    consistency: {},
                                     layers: response.data.data,
                                     layer: null
+                                  }, () => {
+                                    this.checkConsistency();
                                   });
                                 }
                               }.bind(this)).catch(function (error) {
@@ -464,6 +630,13 @@ class StratigraphyFormContainer extends React.Component {
                     }
                     this.setState({
                       layers: layers
+                    }, () => {
+                      if (
+                        attribute === 'depth_to'
+                        || attribute === 'depth_from'
+                      ){
+                        this.checkConsistency();
+                      }
                     });
                   }}
                   user={this.props.user}
@@ -477,10 +650,12 @@ class StratigraphyFormContainer extends React.Component {
 }
 
 StratigraphyFormContainer.propTypes = {
+  borehole: PropTypes.object,
   id: PropTypes.number,
   onClone: PropTypes.func,
   onDeleted: PropTypes.func,
-  onUpdated: PropTypes.func
+  onUpdated: PropTypes.func,
+  user: PropTypes.object
 };
 
 StratigraphyFormContainer.defaultProps = {

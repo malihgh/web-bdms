@@ -30,7 +30,7 @@ class LayersList extends React.Component {
     this.getPattern = this.getPattern.bind(this);
     this.state = {
       resolving: null,
-      resolvingAction: 0,
+      resolvingAction: null,
       deleting: null,
       deleteAction: 0,
       value: null
@@ -56,7 +56,9 @@ class LayersList extends React.Component {
     const {
       domains
     } = this.props;
-    let domain = domains.data['custom.lit_str_top_bedrock'].find(function(element) {
+    let domain = domains.data[
+      'custom.lit_str_top_bedrock'
+    ].find(function(element) {
       return element.id === id;
     });
     if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('color')){
@@ -96,6 +98,7 @@ class LayersList extends React.Component {
 
   render(){
     const {
+      consistency,
       layers
     } = this.props;
     const length = layers.length;
@@ -108,171 +111,181 @@ class LayersList extends React.Component {
         <Table.Body>
           {
             layers.map((item, idx) => {
+
               const ret = [];
+
               const resolving = this.state.resolving !== null
                 && this.state.resolving.id === item.id;
-              if (
-                _.isFunction(this.props.onResolveGap)
-                && (
-                  (
-                    idx === 0
-                    && item.depth_from !== 0
-                  ) || (
-                    idx > 0
-                    && layers[(idx-1)].depth_to !== item.depth_from
-                  )
-                )
-              ){
-                ret.push(
-                  <Table.Row
-                    active={false}
-                    key={'ll-info-'+idx}
-                    negative
-                    style={{
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <Table.Cell
-                      colSpan={
-                        resolving === true?
-                          '3': _.isFunction(this.props.onDelete)?
-                            '2': '1'
-                      }
-                      collapsing
+
+              console.log(consistency);
+
+              if (_.isFunction(this.props.onResolve)){
+
+                if (
+                  consistency.hasOwnProperty(item.id)
+                ){
+                  ret.push(
+                    <Table.Row
+                      active={false}
+                      key={'ll-info-'+idx}
+                      negative
                       style={{
-                        width: '100%'
+                        cursor: 'pointer'
                       }}
                     >
-                      <div
+                      <Table.Cell
+                        colSpan={
+                          resolving === true?
+                            '3': _.isFunction(this.props.onDelete)?
+                              '2': '1'
+                        }
+                        collapsing
                         style={{
-                          fontWeight: 'bold'
+                          width: '100%'
                         }}
                       >
-                        <Icon name='warning sign' /> Non continuos data found
-                      </div>
-                      {
-                        resolving === true?
-                          <div>
-                            <div
-                              style={{
-                                fontSize: '0.8em'
-                              }}
-                            >
-                              How to resolve this issue?
-                            </div>
-                            <div
-                              style={{
-                                marginTop: '0.5em'
-                              }}
-                            >
-                              <Form>
-                                <Form.Field>
-                                  <Radio
-                                    checked={this.state.resolvingAction === 0}
-                                    label='Fill gap with "undefined" layer'
-                                    name='radioGroup'
-                                    onChange={this.handleResolvingAction}
-                                    value={0}
-                                  />
-                                </Form.Field>
-                                {
-                                  idx > 0?
-                                    <Form.Field>
-                                      <Radio
-                                        checked={
-                                          this.state.resolvingAction === 1
-                                        }
-                                        label='Extend upper layer to bottom'
-                                        name='radioGroup'
-                                        onChange={this.handleResolvingAction}
-                                        value={1}
-                                      />
-                                    </Form.Field>: null
-                                }
-                                {
-                                  (idx + 1) <= length?
-                                    <Form.Field>
-                                      <Radio
-                                        checked={this.state.resolvingAction === 2}
-                                        label='Extend lower layer to top'
-                                        name='radioGroup'
-                                        onChange={this.handleResolvingAction}
-                                        value={2}
-                                      />
-                                    </Form.Field>: null
-                                }
-                              </Form>
-                            </div>
-                            <div
-                              style={{
-                                marginTop: '0.5em',
-                                textAlign: 'right'
-                              }}
-                            >
-                              <Button
-                                basic
-                                icon
-                                onClick={(e)=>{
-                                  e.stopPropagation();
-                                  this.setState({
-                                    resolving: null,
-                                    resolvingAction: 0
-                                  });
-                                }}
-                                size='mini'
-                              >
-                                <Icon name='cancel' /> Cancel
-                              </Button>
-                              <Button
-                                icon
-                                onClick={(e)=>{
-                                  e.stopPropagation();
-                                  const resolvingAction = this.state.resolvingAction;
-                                  this.setState({
-                                    resolving: null,
-                                    resolvingAction: 0
-                                  }, () => {
-                                    this.props.onResolveGap(
-                                      item, resolvingAction
-                                    );
-                                  });
-                                }}
-                                secondary
-                                size='mini'
-                              >
-                                <Icon name='check' /> Confirm
-                              </Button>
-                            </div>
-                          </div>: null
-                      }
-                    </Table.Cell>
-                    {
-                      this.state.resolving === null
-                      || this.state.resolving.id !== item.id?
-                        <Table.Cell
-                          collapsing
+                        <div
+                          style={{
+                            fontWeight: 'bold'
+                          }}
                         >
-                          <Button
-                            basic
-                            icon
-                            onClick={(e)=>{
-                              e.stopPropagation();
-                              this.setState({
-                                resolving: item,
-                                resolvingAction: 0,
-                                deleting: null,
-                                deleteAction: 0,
-                                value: null
-                              });
-                            }}
-                            size='mini'
+                          <Icon name='warning sign' /> {
+                            consistency[item.id].message
+                          }
+                        </div>
+                        {
+                          resolving === true?
+                            <div>
+                              <div
+                                style={{
+                                  fontSize: '0.8em'
+                                }}
+                              >
+                                How to resolve this issue?
+                              </div>
+                              <div
+                                style={{
+                                  marginTop: '0.5em'
+                                }}
+                              >
+                                <Form>
+                                  {
+                                    consistency[item.id].errorGap === true
+                                    || consistency[item.id].errorStartWrong === true?
+                                      <Form.Field>
+                                        <Radio
+                                          checked={this.state.resolvingAction === 0}
+                                          label='Fill gap with "undefined" layer'
+                                          name='radioGroup'
+                                          onChange={this.handleResolvingAction}
+                                          value={0}
+                                        />
+                                      </Form.Field>: null
+                                  }
+                                  {
+                                    idx > 0?
+                                      <Form.Field>
+                                        <Radio
+                                          checked={
+                                            this.state.resolvingAction === 1
+                                          }
+                                          label='Replace upper layer base with top from lower layer'
+                                          name='radioGroup'
+                                          onChange={this.handleResolvingAction}
+                                          value={1}
+                                        />
+                                      </Form.Field>: null
+                                  }
+                                  {
+                                    (idx + 1) <= length?
+                                      <Form.Field>
+                                        <Radio
+                                          checked={this.state.resolvingAction === 2}
+                                          label={
+                                            consistency[item.id].errorStartWrong === true?
+                                              'Replace lower layer top with 0 meters':
+                                              'Replace lower layer top with base from upper layer'
+                                          }
+                                          name='radioGroup'
+                                          onChange={this.handleResolvingAction}
+                                          value={2}
+                                        />
+                                      </Form.Field>: null
+                                  }
+                                </Form>
+                              </div>
+                              <div
+                                style={{
+                                  marginTop: '0.5em',
+                                  textAlign: 'right'
+                                }}
+                              >
+                                <Button
+                                  basic
+                                  icon
+                                  onClick={(e)=>{
+                                    e.stopPropagation();
+                                    this.setState({
+                                      resolving: null,
+                                      resolvingAction: null
+                                    });
+                                  }}
+                                  size='mini'
+                                >
+                                  <Icon name='cancel' /> Cancel
+                                </Button>
+                                <Button
+                                  disabled={this.state.resolvingAction === null}
+                                  icon
+                                  onClick={(e)=>{
+                                    e.stopPropagation();
+                                    const resolvingAction = this.state.resolvingAction;
+                                    this.setState({
+                                      resolving: null,
+                                      resolvingAction: null
+                                    }, () => {
+                                      this.props.onResolve(
+                                        item, resolvingAction
+                                      );
+                                    });
+                                  }}
+                                  secondary
+                                  size='mini'
+                                >
+                                  <Icon name='check' /> Confirm
+                                </Button>
+                              </div>
+                            </div>: null
+                        }
+                      </Table.Cell>
+                      {
+                        this.state.resolving === null
+                        || this.state.resolving.id !== item.id?
+                          <Table.Cell
+                            collapsing
                           >
-                            <Icon name='question' />
-                          </Button>
-                        </Table.Cell>: null
-                    }
-                  </Table.Row>
-                );
+                            <Button
+                              basic
+                              icon
+                              onClick={(e)=>{
+                                e.stopPropagation();
+                                this.setState({
+                                  resolving: item,
+                                  resolvingAction: null,
+                                  deleting: null,
+                                  deleteAction: 0,
+                                  value: null
+                                });
+                              }}
+                              size='mini'
+                            >
+                              <Icon name='question' />
+                            </Button>
+                          </Table.Cell>: null
+                      }
+                    </Table.Row>
+                  );
+                }
               }
 
               if (
@@ -431,7 +444,7 @@ class LayersList extends React.Component {
                         if (_.isFunction(this.props.onSelected)){
                           this.setState({
                             resolving: null,
-                            resolvingAction: 0,
+                            resolvingAction: null,
                             deleting: null,
                             deleteAction: 0,
                             value: null
@@ -456,8 +469,7 @@ class LayersList extends React.Component {
                             null: this.getPattern(item.lithology),
                           backgroundSize: 'cover'
                         }}
-                      >
-                      </Table.Cell>
+                      />
                       <Table.Cell
                         collapsing
                         style={{
@@ -466,13 +478,30 @@ class LayersList extends React.Component {
                       >
                         <div
                           style={{
+                            color: (
+                              idx > 0 && layers[(idx-1)].depth_to !== item.depth_from?
+                                'red': null // '#787878'
+                            ),
+                            // fontSize: '0.8em'
+                          }}
+                        >
+                          {
+                            idx > 0 && layers[(idx-1)].depth_to !== item.depth_from?
+                              <Icon name='warning sign' />: null
+                          } {item.depth_from} m
+                        </div>
+                        <div
+                          style={{
                             fontWeight: 'bold'
                           }}
                         >
-                          <DomainText
-                            id={item.lithostratigraphy}
-                            schema='custom.lit_str_top_bedrock'
-                          />
+                          {
+                            item.lithostratigraphy !== null?
+                              <DomainText
+                                id={item.lithostratigraphy}
+                                schema='custom.lit_str_top_bedrock'
+                              />: '-'
+                          }
                         </div>
                         <div
                           style={{
@@ -488,19 +517,20 @@ class LayersList extends React.Component {
                         <div
                           style={{
                             color: (
-                              idx > 0 && layers[(idx-1)].depth_to !== item.depth_from?
-                                'red': '#787878'
-                            ),
-                            fontSize: '0.8em'
+                              consistency.hasOwnProperty(item.id)
+                              && consistency[item.id].errorInverted?
+                                'red': null // '#787878'
+                            )
                           }}
                         >
                           {
-                            idx > 0 && layers[(idx-1)].depth_to !== item.depth_from?
-                              <Icon name='warning sign' />: null
-                          } {item.depth_from} m
-                        </div>
-                        <div>
-                          {item.depth_to} m
+                            consistency.hasOwnProperty(item.id)
+                            && consistency[item.id].errorInverted?
+                              <Icon
+                                name='warning sign'
+                                title='Inverted depths'
+                              />: null
+                          } {item.depth_to} m
                         </div>
                       </Table.Cell>
                       {
@@ -510,8 +540,8 @@ class LayersList extends React.Component {
                           >
                             {
                               this.props.borehole.data.lock === null
-                              || this.props.borehole.data.lock.username !==
-                                  this.props.user.data.username?
+                              || this.props.borehole.data.lock.username
+                                 !== this.props.user.data.username?
                                 null:
                                 <Button
                                   basic
@@ -520,14 +550,11 @@ class LayersList extends React.Component {
                                     e.stopPropagation();
                                     this.setState({
                                       resolving: null,
-                                      resolvingAction: 0,
+                                      resolvingAction: null,
                                       deleting: item,
                                       deleteAction: 0,
                                       value: null
                                     });
-                                    // if (_.isFunction(this.props.onDelete)){
-                                    //   this.props.onDelete(item);
-                                    // }
                                   }}
                                   size='mini'
                                 >
@@ -550,13 +577,18 @@ class LayersList extends React.Component {
 }
 
 LayersList.propTypes = {
+  consistency: PropTypes.object,
+  borehole: PropTypes.object,
   layers: PropTypes.array,
   onDelete: PropTypes.func,
-  onResolveGap: PropTypes.func,
-  onSelected: PropTypes.func
+  onResolve: PropTypes.func,
+  onSelected: PropTypes.func,
+  selected: PropTypes.number,
+  user: PropTypes.object
 };
 
 LayersList.defaultProps = {
+  consistency: {},
   layers: []
 };
 

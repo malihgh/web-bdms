@@ -1,6 +1,7 @@
 
-# Bohrhole Management System - Web App
+# Borhole Management System
 
+Lorem ipsum...
 
 ## Build App
 
@@ -8,33 +9,12 @@
 yarn build
 ```
 
-ssh to bms VM
+## App served on a subpath url
 
-``` 
-sudo mv  /var/www/html/bms /var/www/html/bmsold
-sudo scp -r milan@[IP]:/[PATH_TO_BUILD_DIR]/build
+To specify the path from where the app is served you can specify the
+environment variable as follows:
+
+```bash
+PUBLIC_URL=http://www.supsi.ch/ist npm run build
 ```
 
-
-Sites Enables (Nginx)
-
-```
-location /bms {
-    auth_basic "Borohole Management System";
-    auth_basic_user_file /etc/nginx/.htpasswd;
-    #add_header Access-Control-Allow-Origin https://api3.geo.admin.ch;
-    #add_header 'Access-Control-Allow-Methods' 'GET';
-
-    add_header 'Access-Control-Allow-Credentials' 'true';
-
-    add_header 'Access-Control-Allow-Origin' '*';
-    add_header 'Access-Control-Allow-Methods' 'GET';
-    add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
-    add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
-}
-location /bms/api/v1 {
-    proxy_pass      http://localhost:8888/api/v1;
-    include         /etc/nginx/proxy.conf;
-}
-
-```
