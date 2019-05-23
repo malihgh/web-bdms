@@ -285,7 +285,7 @@ class BoreholeTable extends TableComponent {
         <Button
           color={
             _.findIndex(this.props.checkout.cart, ['id', item.id]) >= 0 ?
-              'grey' : 'blue'
+              'grey' : 'black'
           }
           icon={
             _.findIndex(this.props.checkout.cart, ['id', item.id]) >= 0 ?
