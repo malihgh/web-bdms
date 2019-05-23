@@ -179,7 +179,7 @@ class BoreholeForm extends React.Component {
         clearTimeout(self.checkattribute);
         self.checkattribute = false;
       }
-      this.props.updateBorehole(borehole);
+      // this.props.updateBorehole(borehole);
 
       self.checkattribute = setTimeout(function () {
         checkBorehole(
@@ -310,6 +310,12 @@ class BoreholeForm extends React.Component {
       );
     }
     const borehole = this.props.borehole.data;
+    console.log(borehole);
+    console.log(
+      "is NULL?",
+      borehole.custom.drill_diameter,
+      _.isNil(borehole.custom.drill_diameter)
+    );
     const size = null; // 'small'
     return (
       <Dimmer.Dimmable
@@ -580,7 +586,7 @@ class BoreholeForm extends React.Component {
                               type='number'
                               value={
                                 _.isNil(borehole.location_x) ?
-                                  '' : borehole.location_x
+                                  NaN : borehole.location_x
                               }
                             />
                           </Form.Field>
@@ -604,7 +610,7 @@ class BoreholeForm extends React.Component {
                               type='number'
                               value={
                                 _.isNil(borehole.location_y) ?
-                                  '' : borehole.location_y
+                                  NaN : borehole.location_y
                               }
                             />
                           </Form.Field>
@@ -643,7 +649,7 @@ class BoreholeForm extends React.Component {
                               type='number'
                               value={
                                 _.isNil(borehole.elevation_z) ?
-                                  '' : borehole.elevation_z
+                                  NaN : borehole.elevation_z
                               }
                             />
                           </Form.Field>
@@ -957,7 +963,7 @@ class BoreholeForm extends React.Component {
                           type='number'
                           value={
                             _.isNil(borehole.custom.drill_diameter) ?
-                              '' : borehole.custom.drill_diameter
+                              NaN : borehole.custom.drill_diameter
                           }
                         />
                       </Form.Field>
@@ -995,7 +1001,7 @@ class BoreholeForm extends React.Component {
                           type='number'
                           value={
                             _.isNil(borehole.bore_inc) ?
-                              '' : borehole.bore_inc
+                              NaN : borehole.bore_inc
                           }
                         />
                       </Form.Field>
@@ -1018,7 +1024,7 @@ class BoreholeForm extends React.Component {
                           type='number'
                           value={
                             _.isNil(borehole.bore_inc_dir) ?
-                              '' : borehole.bore_inc_dir
+                              NaN : borehole.bore_inc_dir
                           }
                         />
                       </Form.Field>
@@ -1064,7 +1070,7 @@ class BoreholeForm extends React.Component {
                           type='number'
                           value={
                             _.isNil(borehole.length) ?
-                              '' : borehole.length
+                              NaN : borehole.length
                           }
                         />
                       </Form.Field>
@@ -1103,7 +1109,7 @@ class BoreholeForm extends React.Component {
                           type='number'
                           value={
                             _.isNil(borehole.extended.top_bedrock) ?
-                              '' : borehole.extended.top_bedrock
+                              NaN : borehole.extended.top_bedrock
                           }
                         />
                       </Form.Field>
