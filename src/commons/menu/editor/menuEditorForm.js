@@ -184,11 +184,23 @@ class MenuEditorForm extends React.Component {
               </List.Content>
             </List.Item>
             <List.Item
+              active={
+                location.pathname ===
+                process.env.PUBLIC_URL + "/editor/"
+                + match.params.id + "/finish"
+              }
               onClick={() => {
-
+                history.push(
+                  process.env.PUBLIC_URL + "/editor/"
+                  + match.params.id + "/finish"
+                );
               }}
               style={{
-                padding: '1em'
+                padding: '1em',
+                borderLeft: location.pathname ===
+                  process.env.PUBLIC_URL + "/editor/"
+                  + match.params.id + "/finish" ?
+                  '0.25em solid rgb(237, 29, 36)' : null
               }}
             >
               <List.Icon
@@ -224,20 +236,17 @@ class MenuEditorForm extends React.Component {
                 fontWeight: 'bold'
               }}
             >
-              {
-                borehole.data.lock !== null?
-                  <span
-                    style={{
-                      color: 'red'
-                    }}
-                  >
-                    {t('editor:editingEnabled')}
-                  </span>:
-                  <DomainText
-                    id={borehole.data.version.code}
-                    schema={'version'}
-                  />
-              }
+              <span
+                style={{
+                  color: 'red'
+                }}
+              >
+                {
+                  borehole.data.lock !== null?
+                    t('editor:editingEnabled'):
+                    t(`version:${borehole.data.version.code}`)
+                }
+              </span>
             </div>
           </div>
           <div>
@@ -394,8 +403,8 @@ class MenuEditorForm extends React.Component {
           key='sb-em-3'
           size='mini'
           style={{
-            margin: '0px',
-            minHeight: '60px'
+            margin: '0py',
+            minHeight: '70px'
           }}
         >
           <Menu.Item
@@ -462,7 +471,7 @@ class MenuEditorForm extends React.Component {
                 moment(borehole.data.lock.date),
                 'seconds'
               ) < (timeout * 60)?
-                'Stop editing': 'Start editing'
+                t('borehole_form:editingStop'): t('borehole_form:editingStart')
             }
           </Menu.Item>
         </Menu>
@@ -535,5 +544,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(translate(['common', 'borehole_form', 'editor'])(MenuEditorForm))
+  )(translate(['common', 'borehole_form', 'editor', 'version'])(MenuEditorForm))
 );

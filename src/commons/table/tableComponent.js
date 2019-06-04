@@ -93,7 +93,7 @@ class TableComponent extends React.Component {
             }
           }).catch((err) => {
             console.log(err);
-          })
+          });
         } else {
           onMultiple(this.state.selected);
         }

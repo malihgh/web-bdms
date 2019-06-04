@@ -179,31 +179,35 @@ const MenuComponent = function (props) {
                 </List.Description>
               </List.Content>
             </List.Item>
-            <List.Item
-              onClick={() => {
-                if (_.isFunction(handleModeChange)) {
-                  handleModeChange('editor');
-                }
-              }}
-              style={{
-                padding: '0.5em',
-                // borderLeft: mode !== 'editor'?
-                //   '0.5em solid rgb(237, 29, 36)': null
-              }}
-            >
-              <List.Icon
-                name='edit'
-                verticalAlign='middle'
-              />
-              <List.Content>
-                <List.Header as='h4'>
-                  Editor mode
-                </List.Header>
-                <List.Description>
-                  Create and modify
-                </List.Description>
-              </List.Content>
-            </List.Item>
+            {
+              props.user.data !== null
+              && props.user.data.roles.indexOf('EDIT') >= 0?
+                <List.Item
+                  onClick={() => {
+                    if (_.isFunction(handleModeChange)) {
+                      handleModeChange('editor');
+                    }
+                  }}
+                  style={{
+                    padding: '0.5em',
+                    // borderLeft: mode !== 'editor'?
+                    //   '0.5em solid rgb(237, 29, 36)': null
+                  }}
+                >
+                  <List.Icon
+                    name='edit'
+                    verticalAlign='middle'
+                  />
+                  <List.Content>
+                    <List.Header as='h4'>
+                      Editor mode
+                    </List.Header>
+                    <List.Description>
+                      Create and modify
+                    </List.Description>
+                  </List.Content>
+                </List.Item>: null
+            }
             <List.Item
               onClick={() => {
                 if (_.isFunction(handleModeChange)) {

@@ -15,6 +15,6 @@ To specify the path from where the app is served you can specify the
 environment variable as follows:
 
 ```bash
-PUBLIC_URL=http://www.supsi.ch/ist npm run build
+PUBLIC_URL=/bdms npm run build
 ```
 

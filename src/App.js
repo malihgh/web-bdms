@@ -90,14 +90,14 @@ class App extends React.Component {
     return false;
   }
   render() {
-    const fpaths = cpaths.filter(rt => {
-      return (
-        rt.path === '/'
-        || (
-          this.props.user.data !== null
-          && this.props.user.data.roles.indexOf('producer') >= 0
-        ));
-    });
+    // const fpaths = cpaths.filter(rt => {
+    //   return (
+    //     rt.path === '/'
+    //     || (
+    //       this.props.user.data !== null
+    //       && this.props.user.data.roles.indexOf('EDIT') >= 0
+    //     ));
+    // });
     return (
       this.isFetching() ?
         <div
@@ -149,7 +149,7 @@ class App extends React.Component {
         <Router>
           <Switch>
             {
-              fpaths.map((route, index) => {
+              cpaths.map((route, index) => {
                 return (
                   <Route
                     component={(r) => (

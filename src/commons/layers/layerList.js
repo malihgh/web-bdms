@@ -117,8 +117,6 @@ class LayersList extends React.Component {
               const resolving = this.state.resolving !== null
                 && this.state.resolving.id === item.id;
 
-              console.log(consistency);
-
               if (_.isFunction(this.props.onResolve)){
 
                 if (

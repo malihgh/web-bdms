@@ -15,23 +15,23 @@ import {
 class ProjectDropdown extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       selected: this.props.selected
-    }
-    this.handleChange = this.handleChange.bind(this)
+    };
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const {
       projects
-    } = this.props
-    if(
+    } = this.props;
+    if (
       projects.data.length === 0
       && projects.isFetching === false
-    ){
+    ) {
       this.props.loadProjects()
-    }
+    };
   }
 
   // shouldComponentUpdate(nextProps, nextState){
@@ -41,10 +41,10 @@ class ProjectDropdown extends React.Component {
   //   return false
   // }
 
-  static getDerivedStateFromProps(nextProps, prevState){
-    const state = {...prevState}
-    if (_.isNil(nextProps.selected)){
-      if(nextProps.multiple === true) {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const state = { ...prevState }
+    if (_.isNil(nextProps.selected)) {
+      if (nextProps.multiple === true) {
         state.selected = []
       } else {
         state.selected = null
@@ -62,28 +62,28 @@ class ProjectDropdown extends React.Component {
       projects,
       multiple
     } = this.props
-    if(multiple===true){
+    if (multiple === true) {
       const selection = []
       for (let i = 0; i < projects.data.length; i++) {
         let h = projects.data[i]
         for (var f = 0; f < data.value.length; f++) {
           const s = data.value[f]
-          if(h.id === s){
-            selection.push({...h})
+          if (h.id === s) {
+            selection.push({ ...h })
           }
         }
       }
-      this.setState({selected: data.value})
-      if(onSelected!==undefined){
+      this.setState({ selected: data.value })
+      if (onSelected !== undefined) {
         onSelected(selection)
       }
-    }else{
+    } else {
       for (let i = 0; i < projects.data.length; i++) {
         let h = projects.data[i]
-        if(h.id === data.value){
-          this.setState({selected: h.id})
-          if(onSelected!==undefined){
-            onSelected({...h})
+        if (h.id === data.value) {
+          this.setState({ selected: h.id })
+          if (onSelected !== undefined) {
+            onSelected({ ...h })
           }
           break
         }
@@ -97,9 +97,9 @@ class ProjectDropdown extends React.Component {
       search,
       multiple
     } = this.props, {
-        selected
+      selected
     } = this.state
-    if(projects.isFetching === true){
+    if (projects.isFetching === true) {
       return 'loading projects'
     }
     return (
@@ -116,12 +116,12 @@ class ProjectDropdown extends React.Component {
               content={
                 project.name
               }
-              // subheader={domain.name}
+            // subheader={domain.name}
             />
           }))
         }
         value={selected}
-        onChange={this.handleChange}/>
+        onChange={this.handleChange} />
     )
   }
 }

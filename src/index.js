@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import {
   createStore,
   applyMiddleware,
+  compose
 } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { I18nextProvider } from 'react-i18next';
@@ -18,13 +19,21 @@ import 'semantic-ui-css/semantic.css';
 import { appReducers } from './reducers';
 import { createReducer } from '@ist-supsi/bmsjs';
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   createReducer(appReducers),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  applyMiddleware(
-    thunkMiddleware
+  composeEnhancers(
+    applyMiddleware(thunkMiddleware)
   )
 );
+
+// const store = createStore(
+//   createReducer(appReducers),
+//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+//   applyMiddleware(
+//     thunkMiddleware
+//   )
+// );
 
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>

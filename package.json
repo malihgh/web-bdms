@@ -4,7 +4,10 @@
   "description": "Bohrehole Data Management System",
   "private": true,
   "proxy": "http://localhost:8888",
-  "author": "IST-SUPSI",
+  "author": "SUPSI <geoservice@supsi.ch> (https://github.com/ist-supsi)",
+  "contributors": [
+    "Milan P. Antonovic <milan.antonovic@supsi.ch> (https://github.com/mantonovic)"
+  ],
   "dependencies": {
     "eslint": "^5.7.0",
     "i18next": "^11.3.3",
@@ -20,13 +23,16 @@
     "react-draggable": "^3.3.0",
     "react-highlighter": "^0.4.3",
     "react-i18next": "^7.7.0",
+    "react-mentions": "^3.0.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.3.2",
-    "semantic-ui-react": "^0.81.2"
+    "semantic-ui-react": "^0.81.2",
+    "@ist-supsi/stratigraphy": "~1.0.4",
+    "@ist-supsi/bmsjs": "~1.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

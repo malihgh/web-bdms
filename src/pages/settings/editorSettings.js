@@ -117,6 +117,7 @@ const fields = [
 
 
 class EditorSettings extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -128,14 +129,14 @@ class EditorSettings extends React.Component {
   isVisible(field){
     const {
       geocode,
-      stratigraphies
+      codes
     } = this.props;
     if (
-      _.has(stratigraphies, 'data.layer_kind')
-      && _.isArray(stratigraphies.data.layer_kind)
+      _.has(codes, 'data.layer_kind')
+      && _.isArray(codes.data.layer_kind)
     ){
-      for (let idx = 0; idx < stratigraphies.data.layer_kind.length; idx++) {
-        const element = stratigraphies.data.layer_kind[idx];
+      for (let idx = 0; idx < codes.data.layer_kind.length; idx++) {
+        const element = codes.data.layer_kind[idx];
         if (element.code === geocode){
           if (
             _.isObject(element.conf)
@@ -214,6 +215,7 @@ class EditorSettings extends React.Component {
         {
           this.state.search === true ?
             <Segment.Group>
+
               <Segment>
                 <Checkbox
                   checked={
@@ -788,7 +790,6 @@ class EditorSettings extends React.Component {
                   </Segment>
                 ))
               }
-
             </Segment.Group>
             : <Divider />
         }
@@ -798,9 +799,9 @@ class EditorSettings extends React.Component {
 };
 
 EditorSettings.propTypes = {
+  codes: PropTypes.object,
   geocode: PropTypes.string,
   setting: PropTypes.object,
-  stratigraphies: PropTypes.object,
   t: PropTypes.func,
   toggleField: PropTypes.func,
   toggleFilter: PropTypes.func
@@ -813,7 +814,7 @@ EditorSettings.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     setting: state.setting,
-    stratigraphies: state.core_domain_list
+    codes: state.core_domain_list
   };
 };
 

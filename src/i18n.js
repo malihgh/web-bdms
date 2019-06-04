@@ -63,6 +63,8 @@ let resources = {
       'locked_status': 'Status'
     },
     borehole_form: {
+      'editingStart': 'Start editing',
+      'editingStop': 'Stop editing',
       'completness': 'Completness',
       'creation': 'Creation date',
       'author': 'Author',
@@ -178,6 +180,13 @@ let resources = {
       'legend': 'Map legend',
       'attribute_filter': 'Filter',
       'spatial_filter': 'Spatial filter'
+    },
+    version: {
+      '0': 'Completed',
+      '1': 'Change in progress',
+      '2': 'Technical check',
+      '3': 'Validation',
+      '4': 'Pubblic'
     }
   },
   de: {
@@ -241,6 +250,8 @@ let resources = {
       'locked_status': 'Zustand'
     },
     borehole_form: {
+      'editingStart': 'Beginnen Bearbeitung',
+      'editingStop': 'Beenden Bearbeitung',
       'completness': 'Vollständigkeit',
       'creation': 'Erstellungsdatum',
       'author': 'Autor',
@@ -355,6 +366,13 @@ let resources = {
       'legend': 'Legende',
       'attribute_filter': 'Filter',
       'spatial_filter': 'Räumlicher Filter'
+    },
+    version: {
+      '0': 'Fertiggestellt',
+      '1': 'Änderung in Bearbeitung',
+      '2': 'Technische Prüfung',
+      '3': 'Bestätigung',
+      '4': 'Öffentlichkeit'
     }
   },
   it: {
@@ -418,6 +436,8 @@ let resources = {
       'locked_status': 'Stato'
     },
     borehole_form: {
+      'editingStart': 'Inizia modifica',
+      'editingStop': 'Interrompi modifica',
       'completness': 'Completezza',
       'creation': 'Data di creazione',
       'author': 'Author',
@@ -452,7 +472,7 @@ let resources = {
       'drilling_date': 'Data fine perforazione',
       'cuttings': 'Taglio',
       'purpose': 'Scopo',
-      'drill_diameter': 'diametro perforazione (m)',
+      'drill_diameter': 'Diametro perforazione (m)',
       'status': 'Stato del sondaggio',
       'bore_inc': 'Inclinazione (°)',
       'bore_inc_dir': 'Direzione inclinazione (°)',
@@ -533,6 +553,13 @@ let resources = {
       'legend': 'Map legend',
       'attribute_filter': 'Filtro',
       'spatial_filter': 'Filtro spaziale'
+    },
+    version: {
+      '0': 'Completato',
+      '1': 'Incompleto',
+      '2': 'Controllo tecnico',
+      '3': 'Validazione',
+      '4': 'Pubblico'
     }
   }
 };

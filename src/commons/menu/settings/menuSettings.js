@@ -1,20 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import {
-    withRouter
+  withRouter
 } from 'react-router-dom';
 
 import {
-  // Icon,
-  // Button,
   List
 } from 'semantic-ui-react';
 
 
 const MenuSettings = (props) => {
   const {
-    history, t, location
+    history,
+    t,
+    location
   } = props;
 
   return (
@@ -68,29 +69,33 @@ const MenuSettings = (props) => {
             </List.Header>
           </List.Content>
         </List.Item>
-        <List.Item
-          onClick={()=>{
-            history.push(
-              process.env.PUBLIC_URL + '/setting/editor'
-            );
-          }}
-          style={{
-            padding: '1em',
-            borderLeft: location.pathname.indexOf('/setting/editor') >= 0?
-              '0.25em solid rgb(237, 29, 36)': null
-          }}
-        >
-          <List.Icon
-            name='edit'
-            size='large'
-            verticalAlign='middle'
-          />
-          <List.Content>
-            <List.Header as='h3'>
-              Editor mode  
-            </List.Header>
-          </List.Content>
-        </List.Item>
+        {
+          props.user.data !== null
+          && props.user.data.roles.indexOf('EDIT') >= 0?
+            <List.Item
+              onClick={()=>{
+                history.push(
+                  process.env.PUBLIC_URL + '/setting/editor'
+                );
+              }}
+              style={{
+                padding: '1em',
+                borderLeft: location.pathname.indexOf('/setting/editor') >= 0?
+                  '0.25em solid rgb(237, 29, 36)': null
+              }}
+            >
+              <List.Icon
+                name='edit'
+                size='large'
+                verticalAlign='middle'
+              />
+              <List.Content>
+                <List.Header as='h3'>
+                  Editor mode  
+                </List.Header>
+              </List.Content>
+            </List.Item>: null
+        }
         <List.Item
           onClick={()=>{
             history.push(
@@ -119,13 +124,24 @@ const MenuSettings = (props) => {
   );
 };
 
-const mapStateToProps = (state, ownProps) => {
+MenuSettings.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }).isRequired,
+  t: PropTypes.func
+};
+
+const mapStateToProps = (state) => {
   return {
-    setting: state.setting
+    setting: state.setting,
+    user: state.core_user
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
     boreholeSelected: (borehole) => {

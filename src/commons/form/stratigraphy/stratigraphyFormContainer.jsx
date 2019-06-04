@@ -69,21 +69,21 @@ class StratigraphyFormContainer extends React.Component {
       fetchingStratigraphy: true,
       layers: null,
       layer: null
-    }, function(){
+    },() => {
       
       getStratigraphy(id).then(
-        function(response){
+        (response) => {
           if (
             response.data.success
           ) {
             this.setState({
               stratigraphy: response.data.data
-            }, function(){
+            }, () => {
               // Load Stratigraphy Layers
               getLayers(
                 this.state.stratigraphy.id
               ).then(
-                function(response){
+                (response) => {
                   if (response.data.success){
                     this.setState({
                       layers: response.data.data
@@ -91,22 +91,22 @@ class StratigraphyFormContainer extends React.Component {
                       this.checkConsistency();
                     });
                   }
-                }.bind(this)
+                }
               ).catch((error) => {
                 console.log(error);
               });
-            }.bind(this));
+            });
           } else {
             // Stratigraphy not created yet
             this.setState({
               stratigraphyEmpty: true
             });
           }
-        }.bind(this)
+        }
       ).catch((err) => {
         console.log(err);
       });
-    }.bind(this));
+    });
   }
 
   updateChange(attribute, value, to = true){

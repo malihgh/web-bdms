@@ -134,6 +134,21 @@ const EditorComponent = function (props) {
             />
           </Switch>
         </div>
+
+        <Switch>
+          <Route
+            component={(r) => (
+              <div
+                style={{
+                  width: '400px'
+                }}
+              >
+                ciao
+              </div>
+            )}
+            path={process.env.PUBLIC_URL + "/editor/:id"}
+          />
+        </Switch>
       </div>
     </div>
   );

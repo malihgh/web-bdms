@@ -4,6 +4,11 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 import moment from 'moment';
+
+import { MentionsInput, Mention } from 'react-mentions';
+import defaultStyle from './defaultStyle';
+import defaultMentionStyle from './defaultMentionStyle';
+
 import {
   Route,
   Switch,
@@ -31,14 +36,15 @@ import StratigraphyFormContainer from '../stratigraphy/stratigraphyFormContainer
 // import DomainText from '../domain/domainText';
 
 import {
+  Button,
   Form,
   Input,
   Segment,
   Message,
   Dimmer,
   Loader,
-  Progress,
-  Button,
+  // Progress,
+  // TextArea,
   Icon
 } from 'semantic-ui-react';
 
@@ -63,7 +69,10 @@ class BoreholeForm extends React.Component {
       "stratigraphy_id": null,
       "layer": null,
       "layers": [],
-      "layerUpdated": null
+      "layerUpdated": null,
+
+      // Finish
+      "note": ""
     };
   }
 
@@ -309,13 +318,16 @@ class BoreholeForm extends React.Component {
         </div>
       );
     }
-    const borehole = this.props.borehole.data;
-    console.log(borehole);
+    debugger;
     console.log(
-      "is NULL?",
-      borehole.custom.drill_diameter,
-      _.isNil(borehole.custom.drill_diameter)
-    );
+      'domains',
+      this.props.domains.data.hasOwnProperty('borehole_form')?
+        this.props.domains.data.borehole_form.map((item, idx) => ({
+          id: item.code,
+          display: item['en'].text,
+        })): []
+    )
+    const borehole = this.props.borehole.data;
     const size = null; // 'small'
     return (
       <Dimmer.Dimmable
@@ -539,7 +551,6 @@ class BoreholeForm extends React.Component {
                     </Form.Group>
                   </Form>
                 </Segment>
-
                 <div
                   style={{
                     display: 'flex',
@@ -1214,7 +1225,6 @@ class BoreholeForm extends React.Component {
               </div>
             )}
           />
-
           <Route
             exact
             path={process.env.PUBLIC_URL + "/editor/:id/stratigraphy"}
@@ -1231,7 +1241,8 @@ class BoreholeForm extends React.Component {
                     display: 'flex',
                     flexDirection: 'column',
                     height: '100%'
-                  }}>
+                  }}
+                >
                   <div
                     style={{
                       display: 'flex',
@@ -1354,15 +1365,66 @@ class BoreholeForm extends React.Component {
               </div>
             )}
           />
+          <Route
+            exact
+            path={process.env.PUBLIC_URL + "/editor/:id/finish"}
+            render={() => (
+              <div
+                style={{
+                  flex: "1 1 0%",
+                  padding: "1em",
+                  overflowY: "hidden"
+                }}
+              >
+                Lorem ipsum...
+                <br /><br />
+                Comments for the Controller:
+                <br />
+                <MentionsInput
+                  onChange={(event, newValue, newPlainTextValue, mentions)=>{
+                    this.setState({
+                      note: newValue
+                    });
+                  }}
+                  style={
+                    _.merge({}, defaultStyle, {
+                      input: {
+                        overflow: 'auto',
+                        height: 70,
+                      },
+                    })
+                  }
+                  value={this.state.note}
+                >
+                  <Mention
+                    data={
+                      this.props.domains.data.hasOwnProperty('borehole_form')?
+                        this.props.domains.data.borehole_form.map((item, idx) => ({
+                          id: item.code,
+                          display: item['en'].text,
+                        })): []
+                    }
+                    renderSuggestion={(suggestion, search, highlightedDisplay) => (
+                      <div
+                        title='ciao'
+                      >{highlightedDisplay}</div>
+                    )}
+                    style={defaultMentionStyle}
+                    trigger="@"
+                  />
+                </MentionsInput>
+              </div>
+            )}
+          />
         </Switch>
-        <Progress
+        {/* <Progress
           color={
             borehole.percentage === 100 ? 'green' : 'black'
           }
           percent={borehole.percentage}
           progress
           size='medium'
-        />
+        /> */}
       </Dimmer.Dimmable>
     );
   }
