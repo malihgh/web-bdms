@@ -15,13 +15,10 @@ import BoreholeEditorTable from '../../commons/table/boreholeEditorTable';
 import MenuEditorSearch from '../../commons/menu/editor/menuEditorSearch';
 import MenuEditorForm from '../../commons/menu/editor/menuEditorForm';
 import MenuContainer from '../../commons/menu/menuContainer';
+import WorkflowForm from '../../commons/form/workflow/workflowForm';
 
 
 const EditorComponent = function (props) {
-
-  // const {
-  //   history
-  // } = props;
 
   return (
     <div
@@ -136,14 +133,20 @@ const EditorComponent = function (props) {
         </div>
 
         <Switch>
-          <Route
-            component={(r) => (
+          <Route 
+            component={({ match }) => (
               <div
                 style={{
-                  width: '400px'
+                  width: '400px',
+                  boxShadow: 'rgba(0, 0, 0, 0.17) -2px 6px 6px 0px',
+                  padding: '1em'
                 }}
               >
-                ciao
+                <WorkflowForm
+                  id={
+                    parseInt(match.params.id, 10)
+                  }
+                />
               </div>
             )}
             path={process.env.PUBLIC_URL + "/editor/:id"}
@@ -173,7 +176,8 @@ const mapStateToProps = (state) => {
     bcnt: state.core_borehole_list.dlen,
     scnt: state.core_stratigraphy_list.dlen,
     store: state.editor,
-    search: state.searchEditor
+    search: state.searchEditor,
+    user: state.core_user
   };
 };
 

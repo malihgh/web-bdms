@@ -24,9 +24,10 @@ class DomainText extends React.Component {
   render() {
     const {
       domains,
-      schema,
+      geocode,
       id,
-      i18n
+      i18n,
+      schema,
     } = this.props;
     if (id === null) {
       return '';
@@ -37,26 +38,36 @@ class DomainText extends React.Component {
       }
       return '';
     }
-    return (
-      domains.data[schema].find(function (element) {
-        return element.id === id;
-      })[i18n.language].text
-    )
+    if (geocode !== undefined){
+      return (
+        domains.data[schema].find(function (element) {
+          return element.code === geocode;
+        })[i18n.language].text
+      );
+    } else {
+      return (
+        domains.data[schema].find(function (element) {
+          return element.id === id;
+        })[i18n.language].text
+      );
+    }
   }
 }
 
 DomainText.propTypes = {
-  schema: PropTypes.string,
-  id: PropTypes.number
+  domains: PropTypes.object,
+  geocode: PropTypes.string,
+  id: PropTypes.number,
+  schema: PropTypes.string
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
     domains: state.core_domain_list
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
     loadDomains: () => {

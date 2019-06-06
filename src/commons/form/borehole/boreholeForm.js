@@ -5,10 +5,6 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 import moment from 'moment';
 
-import { MentionsInput, Mention } from 'react-mentions';
-import defaultStyle from './defaultStyle';
-import defaultMentionStyle from './defaultMentionStyle';
-
 import {
   Route,
   Switch,
@@ -33,7 +29,7 @@ import DateField from '../dateField';
 import DateText from '../dateText';
 // import StratigraphyForm from '../stratigraphy/stratigraphyForm';
 import StratigraphyFormContainer from '../stratigraphy/stratigraphyFormContainer';
-// import DomainText from '../domain/domainText';
+import DomainText from '../domain/domainText';
 
 import {
   Button,
@@ -304,9 +300,11 @@ class BoreholeForm extends React.Component {
   }
 
   render() {
+
     const {
-      t
+      t, workflow
     } = this.props;
+
     if (this.props.borehole.error !== null){
       return (
         <div>
@@ -318,17 +316,14 @@ class BoreholeForm extends React.Component {
         </div>
       );
     }
-    debugger;
-    console.log(
-      'domains',
-      this.props.domains.data.hasOwnProperty('borehole_form')?
-        this.props.domains.data.borehole_form.map((item, idx) => ({
-          id: item.code,
-          display: item['en'].text,
-        })): []
-    )
+
     const borehole = this.props.borehole.data;
     const size = null; // 'small'
+
+    // Handle highlithing of mentions in comments
+    const mentions = workflow.previous !== null?
+      workflow.previous.mentions: [];
+
     return (
       <Dimmer.Dimmable
         as={'div'}
@@ -388,10 +383,16 @@ class BoreholeForm extends React.Component {
                             this.state['extended.original_name_check'] === false
                             && this.state['extended.original_name_fetch'] === false
                           )
+                          || mentions.indexOf('original_name') >= 0
                         }
                         required
                       >
-                        <label>{t('original_name')}</label>
+                        <label>
+                          <DomainText
+                            geocode='original_name'
+                            schema='borehole_form'
+                          />
+                        </label>
                         <Input
                           autoCapitalize="off"
                           autoComplete="off"
@@ -414,8 +415,17 @@ class BoreholeForm extends React.Component {
                           value={borehole.extended.original_name}
                         />
                       </Form.Field>
-                      <Form.Field>
-                        <label>{t('project_name')}</label>
+                      <Form.Field
+                        error={
+                          mentions.indexOf('project_name') >= 0
+                        }
+                      >
+                        <label>  
+                          <DomainText
+                            geocode='project_name'
+                            schema='borehole_form'
+                          />
+                        </label>
                         <Input
                           autoCapitalize="off"
                           autoComplete="off"
@@ -450,10 +460,16 @@ class BoreholeForm extends React.Component {
                             this.state['custom.public_name_check'] === false
                             && this.state['custom.public_name_fetch'] === false
                           )
+                          || mentions.indexOf('public_name') >= 0
                         }
                         required
                       >
-                        <label>{t('public_name')}</label>
+                        <label>  
+                          <DomainText
+                            geocode='public_name'
+                            schema='borehole_form'
+                          />
+                        </label>
                         <Input
                           autoCapitalize="off"
                           autoComplete="off"
@@ -480,10 +496,18 @@ class BoreholeForm extends React.Component {
                         />
                       </Form.Field>
                       <Form.Field
-                        error={borehole.kind === null}
+                        error={
+                          borehole.kind === null
+                          || mentions.indexOf('kind') >= 0
+                        }
                         required
                       >
-                        <label>{t('kind')}</label>
+                        <label>  
+                          <DomainText
+                            geocode='kind'
+                            schema='borehole_form'
+                          />
+                        </label>
                         <DomainDropdown
                           onSelected={(selected) => {
                             this.updateChange('kind', selected.id, false);
@@ -512,9 +536,17 @@ class BoreholeForm extends React.Component {
                     size={size}>
                     <Form.Group widths='equal'>
                       <Form.Field
+                        error={
+                          mentions.indexOf('restriction') >= 0
+                        }
                         required
                       >
-                        <label>{t('restriction')}</label>
+                        <label>  
+                          <DomainText
+                            geocode='restriction'
+                            schema='borehole_form'
+                          />
+                        </label>
                         <DomainDropdown
                           onSelected={(selected) => {
                             this.updateChange(
@@ -536,17 +568,24 @@ class BoreholeForm extends React.Component {
                             borehole.restriction_until !== '' &&
                             moment(borehole.restriction_until).isValid()
                           )
+                          || mentions.indexOf('restriction_until') >= 0
                         }
                         required={borehole.restriction === 29}
                       >
-                        <label>{t('restriction_until')} ({t('date_format')})</label>
+                        <label>
+                          <DomainText
+                            geocode='restriction_until'
+                            schema='borehole_form'
+                          /> ({t('date_format')})
+                        </label>
                         <DateField
                           date={borehole.restriction_until}
                           onChange={(selected) => {
                             this.updateChange(
                               'restriction_until', selected, false
                             );
-                          }} />
+                          }}
+                        />
                       </Form.Field>
                     </Form.Group>
                   </Form>
@@ -566,6 +605,9 @@ class BoreholeForm extends React.Component {
                       <Form size={size}>
                         <Form.Group widths='equal'>
                           <Form.Field
+                            error={
+                              mentions.indexOf('srs') >= 0
+                            }
                             required
                           >
                             <label>{t('srs')}</label>
@@ -578,6 +620,28 @@ class BoreholeForm extends React.Component {
                             />
                           </Form.Field>
                           <Form.Field
+                            error={
+                              mentions.indexOf('qt_location') >= 0
+                            }
+                            required
+                          >
+                            <label>{t('qt_location')}</label>
+                            <DomainDropdown
+                              onSelected={(selected) => {
+                                this.updateChange(
+                                  'qt_location', selected.id, false
+                                );
+                              }}
+                              schema='qt_location'
+                              selected={borehole.qt_location}
+                            />
+                          </Form.Field>
+                        </Form.Group>
+                        <Form.Group widths='equal'>
+                          <Form.Field
+                            error={
+                              mentions.indexOf('location_x') >= 0
+                            }
                             required
                           >
                             <label>{t('location_x')}</label>
@@ -597,11 +661,14 @@ class BoreholeForm extends React.Component {
                               type='number'
                               value={
                                 _.isNil(borehole.location_x) ?
-                                  NaN : borehole.location_x
+                                  '' : borehole.location_x
                               }
                             />
                           </Form.Field>
                           <Form.Field
+                            error={
+                              mentions.indexOf('location_y') >= 0
+                            }
                             required
                           >
                             <label>{t('location_y')}</label>
@@ -621,27 +688,16 @@ class BoreholeForm extends React.Component {
                               type='number'
                               value={
                                 _.isNil(borehole.location_y) ?
-                                  NaN : borehole.location_y
+                                  '' : borehole.location_y
                               }
-                            />
-                          </Form.Field>
-                          <Form.Field
-                            required
-                          >
-                            <label>{t('qt_location')}</label>
-                            <DomainDropdown
-                              onSelected={(selected) => {
-                                this.updateChange(
-                                  'qt_location', selected.id, false
-                                );
-                              }}
-                              schema='qt_location'
-                              selected={borehole.qt_location}
                             />
                           </Form.Field>
                         </Form.Group>
                         <Form.Group widths='equal'>
                           <Form.Field
+                            error={
+                              mentions.indexOf('elevation_z') >= 0
+                            }
                             required
                           >
                             <label>{t('elevation_z')}</label>
@@ -659,12 +715,15 @@ class BoreholeForm extends React.Component {
                               spellCheck="false"
                               type='number'
                               value={
-                                _.isNil(borehole.elevation_z) ?
-                                  NaN : borehole.elevation_z
+                                _.isNil(borehole.elevation_z)?
+                                  '' : borehole.elevation_z
                               }
                             />
                           </Form.Field>
                           <Form.Field
+                            error={
+                              mentions.indexOf('hrs') >= 0
+                            }
                             required
                           >
                             <label>{t('hrs')}</label>
@@ -677,6 +736,9 @@ class BoreholeForm extends React.Component {
                             />
                           </Form.Field>
                           <Form.Field
+                            error={
+                              mentions.indexOf('qt_elevation') >= 0
+                            }
                             required
                           >
                             <label>{t('qt_elevation')}</label>
@@ -704,6 +766,9 @@ class BoreholeForm extends React.Component {
                       >
                         <Form.Group widths='equal'>
                           <Form.Field
+                            error={
+                              mentions.indexOf('country') >= 0
+                            }
                             required
                           >
                             <label>{t('country')}</label>
@@ -711,6 +776,9 @@ class BoreholeForm extends React.Component {
                               value={'Switzerland'} />
                           </Form.Field>
                           <Form.Field
+                            error={
+                              mentions.indexOf('canton') >= 0
+                            }
                             required
                           >
                             <label>
@@ -757,6 +825,9 @@ class BoreholeForm extends React.Component {
                             />
                           </Form.Field>
                           <Form.Field
+                            error={
+                              mentions.indexOf('city') >= 0
+                            }
                             required
                           >
                             <label>
@@ -809,7 +880,11 @@ class BoreholeForm extends React.Component {
                           </Form.Field>
                         </Form.Group>
                         <Form.Group widths='equal'>
-                          <Form.Field>
+                          <Form.Field
+                            error={
+                              mentions.indexOf('address') >= 0
+                            }
+                          >
                             <label>{t('address')}</label>
                             <Input
                               autoCapitalize="off"
@@ -827,7 +902,11 @@ class BoreholeForm extends React.Component {
                               }
                             />
                           </Form.Field>
-                          <Form.Field>
+                          <Form.Field
+                            error={
+                              mentions.indexOf('landuse') >= 0
+                            }
+                          >
                             <label>{t('landuse')}</label>
                             <DomainDropdown
                               onSelected={(selected) => {
@@ -857,10 +936,17 @@ class BoreholeForm extends React.Component {
                       id={this.props.id}
                       ref={pmap => this.map = pmap}
                       srs={
-                        borehole.srs !== null ?
-                          'EPSG:' + this.props.domains.data.srs.find(function (element) {
-                            return element.id === borehole.srs;
-                          })['code'] :
+                        borehole.srs !== null
+                        && this.props.domains.data.hasOwnProperty('srs')?
+                          (()=>{
+                            const code = this.props.domains.data.srs.find((element) => {
+                              return element.id === borehole.srs;
+                            });
+                            if (code !== undefined){
+                              return 'EPSG:' + code['code'];
+                            }
+                            return null;
+                          })():
                           null
                       }
                       x={
@@ -898,6 +984,9 @@ class BoreholeForm extends React.Component {
                   >
                     <Form.Group widths='equal'>
                       <Form.Field
+                        error={
+                          mentions.indexOf('method') >= 0
+                        }
                         required
                       >
                         <label>{t('method')}</label>
@@ -912,9 +1001,12 @@ class BoreholeForm extends React.Component {
                       </Form.Field>
                       <Form.Field
                         error={
-                          _.isString(borehole.drilling_date) &&
-                          borehole.drilling_date !== '' &&
-                          !moment(borehole.drilling_date).isValid()
+                          (
+                            _.isString(borehole.drilling_date)
+                            && borehole.drilling_date !== ''
+                            && !moment(borehole.drilling_date).isValid()
+                          )
+                          || mentions.indexOf('method') >= 0
                         }
                         required
                       >
@@ -930,6 +1022,9 @@ class BoreholeForm extends React.Component {
                     </Form.Group>
                     <Form.Group widths='equal'>
                       <Form.Field
+                        error={
+                          mentions.indexOf('cuttings') >= 0
+                        }
                         required
                       >
                         <label>{t('cuttings')}</label>
@@ -943,6 +1038,9 @@ class BoreholeForm extends React.Component {
                         />
                       </Form.Field>
                       <Form.Field
+                        error={
+                          mentions.indexOf('purpose') >= 0
+                        }
                         required
                       >
                         <label>{t('purpose')}</label>
@@ -957,7 +1055,11 @@ class BoreholeForm extends React.Component {
                       </Form.Field>
                     </Form.Group>
                     <Form.Group widths='equal'>
-                      <Form.Field>
+                      <Form.Field
+                        error={
+                          mentions.indexOf('drill_diameter') >= 0
+                        }
+                      >
                         <label>{t('drill_diameter')}</label>
                         <Input
                           autoCapitalize="off"
@@ -974,11 +1076,14 @@ class BoreholeForm extends React.Component {
                           type='number'
                           value={
                             _.isNil(borehole.custom.drill_diameter) ?
-                              NaN : borehole.custom.drill_diameter
+                              '' : borehole.custom.drill_diameter
                           }
                         />
                       </Form.Field>
                       <Form.Field
+                        error={
+                          mentions.indexOf('status') >= 0
+                        }
                         required
                       >
                         <label>{t('status')}</label>
@@ -994,6 +1099,9 @@ class BoreholeForm extends React.Component {
                     </Form.Group>
                     <Form.Group widths='equal'>
                       <Form.Field
+                        error={
+                          mentions.indexOf('bore_inc') >= 0
+                        }
                         required
                       >
                         <label>{t('bore_inc')}</label>
@@ -1012,11 +1120,14 @@ class BoreholeForm extends React.Component {
                           type='number'
                           value={
                             _.isNil(borehole.bore_inc) ?
-                              NaN : borehole.bore_inc
+                              '' : borehole.bore_inc
                           }
                         />
                       </Form.Field>
                       <Form.Field
+                        error={
+                          mentions.indexOf('bore_inc_dir') >= 0
+                        }
                         required
                       >
                         <label>{t('bore_inc_dir')}</label>
@@ -1035,11 +1146,14 @@ class BoreholeForm extends React.Component {
                           type='number'
                           value={
                             _.isNil(borehole.bore_inc_dir) ?
-                              NaN : borehole.bore_inc_dir
+                              '' : borehole.bore_inc_dir
                           }
                         />
                       </Form.Field>
                       <Form.Field
+                        error={
+                          mentions.indexOf('qt_bore_inc_dir') >= 0
+                        }
                         required
                       >
                         <label>{t('qt_bore_inc_dir')}</label>
@@ -1063,6 +1177,9 @@ class BoreholeForm extends React.Component {
                   >
                     <Form.Group widths='equal'>
                       <Form.Field
+                        error={
+                          mentions.indexOf('length') >= 0
+                        }
                         required
                       >
                         <label>{t('length')}</label>
@@ -1081,11 +1198,14 @@ class BoreholeForm extends React.Component {
                           type='number'
                           value={
                             _.isNil(borehole.length) ?
-                              NaN : borehole.length
+                              '' : borehole.length
                           }
                         />
                       </Form.Field>
                       <Form.Field
+                        error={
+                          mentions.indexOf('qt_length') >= 0
+                        }
                         required
                       >
                         <label>{t('qt_length')}</label>
@@ -1102,6 +1222,9 @@ class BoreholeForm extends React.Component {
                     </Form.Group>
                     <Form.Group widths='equal'>
                       <Form.Field
+                        error={
+                          mentions.indexOf('top_bedrock') >= 0
+                        }
                         required
                       >
                         <label>{t('top_bedrock')}</label>
@@ -1120,11 +1243,14 @@ class BoreholeForm extends React.Component {
                           type='number'
                           value={
                             _.isNil(borehole.extended.top_bedrock) ?
-                              NaN : borehole.extended.top_bedrock
+                              '' : borehole.extended.top_bedrock
                           }
                         />
                       </Form.Field>
                       <Form.Field
+                        error={
+                          mentions.indexOf('qt_top_bedrock') >= 0
+                        }
                         required
                       >
                         <label>{t('qt_top_bedrock')}</label>
@@ -1142,6 +1268,9 @@ class BoreholeForm extends React.Component {
                       </Form.Field>
                     </Form.Group>
                     <Form.Field
+                      error={
+                        mentions.indexOf('groundwater') >= 0
+                      }
                       required
                     >
                       <label>{t('groundwater')}</label>
@@ -1173,6 +1302,9 @@ class BoreholeForm extends React.Component {
                       </Form.Group>
                     </Form.Field>
                     <Form.Field
+                      error={
+                        mentions.indexOf('lit_pet_top_bedrock') >= 0
+                      }
                       required
                     >
                       <label>{t('lit_pet_top_bedrock')}</label>
@@ -1189,6 +1321,9 @@ class BoreholeForm extends React.Component {
                       />
                     </Form.Field>
                     <Form.Field
+                      error={
+                        mentions.indexOf('lit_str_top_bedrock') >= 0
+                      }
                       required
                     >
                       <label>{t('lit_str_top_bedrock')}</label>
@@ -1205,6 +1340,9 @@ class BoreholeForm extends React.Component {
                       />
                     </Form.Field>
                     <Form.Field
+                      error={
+                        mentions.indexOf('chro_str_top_bedrock') >= 0
+                      }
                       required
                     >
                       <label>{t('chro_str_top_bedrock')}</label>
@@ -1380,39 +1518,6 @@ class BoreholeForm extends React.Component {
                 <br /><br />
                 Comments for the Controller:
                 <br />
-                <MentionsInput
-                  onChange={(event, newValue, newPlainTextValue, mentions)=>{
-                    this.setState({
-                      note: newValue
-                    });
-                  }}
-                  style={
-                    _.merge({}, defaultStyle, {
-                      input: {
-                        overflow: 'auto',
-                        height: 70,
-                      },
-                    })
-                  }
-                  value={this.state.note}
-                >
-                  <Mention
-                    data={
-                      this.props.domains.data.hasOwnProperty('borehole_form')?
-                        this.props.domains.data.borehole_form.map((item, idx) => ({
-                          id: item.code,
-                          display: item['en'].text,
-                        })): []
-                    }
-                    renderSuggestion={(suggestion, search, highlightedDisplay) => (
-                      <div
-                        title='ciao'
-                      >{highlightedDisplay}</div>
-                    )}
-                    style={defaultMentionStyle}
-                    trigger="@"
-                  />
-                </MentionsInput>
               </div>
             )}
           />
@@ -1440,7 +1545,8 @@ BoreholeForm.propTypes = {
     })
   }),
   t: PropTypes.func,
-  updateBorehole: PropTypes.func
+  updateBorehole: PropTypes.func,
+  workflow: PropTypes.object
 };
 
 BoreholeForm.defaultProps = {
@@ -1450,6 +1556,7 @@ BoreholeForm.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     borehole: state.core_borehole,
+    workflow: state.core_workflow,
     domains: state.core_domain_list,
     cantons: state.core_canton_list.data,
     municipalities: state.core_municipality_list.data,

@@ -13,7 +13,7 @@ import {
   Progress
 } from 'semantic-ui-react';
 
-import DomainText from '../../form/domain/domainText';
+// import DomainText from '../../form/domain/domainText';
 import DateText from '../../form/dateText';
 import moment from 'moment';
 
@@ -270,9 +270,11 @@ class MenuEditorForm extends React.Component {
               {
                 borehole.data.lock !== null?
                   borehole.data.lock.username === this.props.user.data.username?
-                    t('common:you'): borehole.data.lock.fullname:
+                    borehole.data.updater.fullname + ' (' + t('common:you') + ')':
+                    borehole.data.lock.fullname:
                   borehole.data.updater.username === this.props.user.data.username?
-                    t('common:you'): borehole.data.updater.fullname
+                    borehole.data.updater.fullname + ' (' + t('common:you') + ')':
+                    borehole.data.updater.fullname
               }
             </div>
             <div

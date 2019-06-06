@@ -139,7 +139,11 @@ class App extends React.Component {
                       textAlign: 'left'
                     }}
                   >
-                    Loading <Icon loading name='spinner' />
+                    Loading <Icon
+                      loading
+                      name='spinner'
+                      size='small'
+                    />
                   </div>
                 </div>
               </div>

@@ -6,6 +6,7 @@ let resources = {
     common: {
       "borehole": "borehole",
       "boreholes": "boreholes",
+      "saving": "saving",
       "you": "you",
       "title": "BMS",
       "start": "This page is in English.",
@@ -193,6 +194,7 @@ let resources = {
     common: {
       "borehole": "borehole",
       "boreholes": "bohrung",
+      "saving": "sparen",
       "you": "dir",
       "title": "BMS",
       "start": "Diese Seite ist auf deutsch.",
@@ -379,6 +381,7 @@ let resources = {
     common: {
       "borehole": "perforazione",
       "boreholes": "perforazioni",
+      "saving": "salvataggio",
       "you": "te",
       "title": "BMS",
       "start": "Questa pagina è in Italiano",

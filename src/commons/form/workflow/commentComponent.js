@@ -1,91 +1,90 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import { MentionsInput, Mention } from 'react-mentions';
 
-const defaultStyle = {
-  backgroundColor: '#dcdcdc'
-};
-
-const defaultMentionStyle = {
-  control: {
-    backgroundColor: '#fff',
-
-    fontSize: 14,
-    fontWeight: 'normal',
-  },
-  highlighter: {
-    overflow: 'hidden',
-  },
-  input: {
-    margin: 0,
-  },
-  '&singleLine': {
-    control: {
-      display: 'inline-block',
-
-      width: 130,
-    },
-    highlighter: {
-      padding: 1,
-      border: '2px inset transparent',
-    },
-    input: {
-      padding: 1,
-
-      border: '2px inset',
-    },
-  },
-  '&multiLine': {
-    control: {
-      fontFamily: 'monospace',
-
-      border: '1px solid silver',
-    },
-    highlighter: {
-      padding: 9,
-    },
-    input: {
-      padding: 9,
-      minHeight: 63,
-      outline: 0,
-      border: 0,
-    },
-  },
-  suggestions: {
-    list: {
-      backgroundColor: 'white',
-      border: '1px solid rgba(0,0,0,0.15)',
-      fontSize: 14,
-    },
-    item: {
-      padding: '5px 15px',
-      borderBottom: '1px solid rgba(0,0,0,0.15)',
-
-      '&focused': {
-        backgroundColor: '#cee4e5',
-      },
-    },
-  }
-};
+import defaultStyle from './defaultStyle';
 
 class CommentComponent extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      "value": props.value
+      value: props.value
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.value !== prevProps.value) {
+      this.setState({
+        "value": this.props.value
+      });
+    }
+  }
+
   render() {
-    return '';
+    const {
+      readOnly,
+      fields,
+      onChange
+    } = this.props;
+    return (
+      <MentionsInput
+        onChange={(event, newValue, newPlainTextValue, mentions) => {
+          if (readOnly===false){
+            this.setState({
+              value: newValue
+            }, () => {
+              if (_.isFunction(onChange)){
+                onChange(newValue);
+              }
+            });
+          }
+        }}
+        style={
+          _.merge({}, defaultStyle, {
+            input: {
+              overflow: 'auto',
+              height: this.props.height
+            },
+          })
+        }
+        value={this.state.value}
+      >
+        <Mention
+          // appendSpaceOnAdd
+          data={fields}
+          renderSuggestion={(suggestion, search, highlightedDisplay) => (
+            <div>
+              {highlightedDisplay}
+            </div>
+          )}
+          style={{
+            backgroundColor: '#ff000024',
+            fontSize: "14px",
+            margin: '0px'
+          }}
+          trigger="@"
+        />
+      </MentionsInput>
+    );
   }
 }
 
 CommentComponent.propTypes = {
+  fields: PropTypes.array,
+  height: PropTypes.number,
+  onChange: PropTypes.func,
+  readOnly: PropTypes.bool,
   value: PropTypes.string
+};
+
+CommentComponent.defaultProps = {
+  fields: [],
+  height: 150,
+  language: 'en',
+  readOnly: false
 };
 
 export default CommentComponent;
