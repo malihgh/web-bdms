@@ -47,6 +47,11 @@ class DetailsComponent extends React.Component {
                     }}
                   >
                     {(() => {
+
+                      if (!this.props.domains.data.hasOwnProperty('kind')){
+                        return null;
+                      }
+
                       const kind = this.props.domains.data[
                         'kind'
                       ].find(function (element) {

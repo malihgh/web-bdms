@@ -36,21 +36,31 @@ class DomainText extends React.Component {
       if (domains.isFetching === true) {
         return 'loading translations';
       }
+      console.debug(`asked domain (${schema},${
+        geocode !== undefined? geocode: id
+      }) but still loading..`);
       return '';
     }
+    let found = null;
     if (geocode !== undefined){
-      return (
-        domains.data[schema].find(function (element) {
-          return element.code === geocode;
-        })[i18n.language].text
-      );
+      found = domains.data[schema].find(function (element) {
+        return element.code === geocode;
+      });
     } else {
-      return (
-        domains.data[schema].find(function (element) {
-          return element.id === id;
-        })[i18n.language].text
-      );
+      found = domains.data[schema].find(function (element) {
+        return element.id === id;
+      });
     }
+    if (found === undefined){
+      console.error(`asked domain (${schema}:${
+        geocode !== undefined? geocode: id
+      }:${i18n.language}) but not found.`);
+      return null;
+    }
+
+    return (
+      found[i18n.language].text
+    );
   }
 }
 
