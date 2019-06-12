@@ -8,8 +8,8 @@ import _ from 'lodash';
 
 import DomainText from '../../form/domain/domainText';
 import DateText from '../../form/dateText';
-// import MunicipalityText from '../../form/municipality/municipalityText';
-// import CantonText from '../../form/cantons/cantonText';
+import MunicipalityText from '../../form/municipality/municipalityText';
+import CantonText from '../../form/cantons/cantonText';
 // import FromNowText from '../../form/fromNowText';
 
 class MetaComponent extends React.Component {
@@ -22,7 +22,8 @@ class MetaComponent extends React.Component {
         <div>
           <DomainText
             schema={schema}
-            id={id} />
+            id={id}
+          />
         </div>
     );
     // return (
@@ -52,21 +53,10 @@ class MetaComponent extends React.Component {
       //     date={isodate}/> (<FromNowText date={isodate}/>)
       // </div>
     );
-    // return (
-    //   <Table.Row>
-    //     <Table.Cell collapsing singleLine>
-    //       {t(schema)}
-    //     </Table.Cell>
-    //     <Table.Cell>
-    //       <DateText
-    //         date={isodate}/> (<FromNowText date={isodate}/>)
-    //     </Table.Cell>
-    //   </Table.Row>
-    // )
   }
 
   getTextRow(schema, text) {
-    const { t } = this.props
+    const { t } = this.props;
     return (
       <div>
         <div
@@ -90,163 +80,317 @@ class MetaComponent extends React.Component {
           }
         </div>
       </div>
-    )
-    // return (
-    //   <Table.Row>
-    //     <Table.Cell collapsing singleLine>
-    //       {t(schema)}
-    //     </Table.Cell>
-    //     <Table.Cell>
-    //       {text}
-    //     </Table.Cell>
-    //   </Table.Row>
-    // )
+    );
   }
   render() {
     const {
       data, t
     } = this.props;
+    const margin = '0.5em 0px';
+    const padding = '0.5em';
     return (
       <div
         style={{
-          // overflowY: 'auto',
           minWidth: '250px',
-          padding: '1em'
         }}
       >
-        {/* {this.getTextRow(
-            'original_name', data.extended.original_name
-          )} */}
-        {this.getTextRow(
-          'public_name', data.custom.public_name
-        )}
-        {/* {this.getDomainRow(
-            'kind', data.kind
-          )} */}
-        {this.getTextRow(
-          'project_name', data.custom.project_name
-        )}
+        <div
+          style={{
+            border: 'thin solid rgba(0, 0, 0, 0.15)',
+            display: 'flex',
+            flexDirection: 'row',
+            margin: margin,
+            padding: padding
+          }}
+        >
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {this.getTextRow(
+              'original_name', data.extended.original_name
+            )}
+            {this.getTextRow(
+              'public_name', data.custom.public_name
+            )}
+          </div>
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {this.getTextRow(
+              'project_name', data.custom.project_name
+            )}
+            {this.getDomainRow(
+              'kind', data.kind
+            )}
+          </div>
+        </div>
 
-        {this.getTextRow(
-          'restriction',
-          <div>
-            <DomainText
-              id={data.restriction}
-              schema={'restriction'}
-            /> {
+        <div
+          style={{
+            border: 'thin solid rgba(0, 0, 0, 0.15)',
+            display: 'flex',
+            flexDirection: 'row',
+            margin: margin,
+            padding: padding
+          }}
+        >
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {this.getTextRow(
+              'restriction', data.restriction
+            )}
+          </div>
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {
               data.restriction_until !== null
               && data.restriction_until !== '' ?
-                <DateText
-                  date={data.restriction_until}
-                /> : null
+                this.getTextRow(
+                  'restriction_until',
+                  <DateText
+                    date={data.restriction_until}
+                  />
+                ): null
             }
           </div>
+        </div>
 
-        )}
+        <div
+          style={{
+            border: 'thin solid rgba(0, 0, 0, 0.15)',
+            display: 'flex',
+            flexDirection: 'row',
+            margin: margin,
+            padding: padding
+          }}
+        >
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {this.getTextRow(
+              'coordinates',
+              data.location_x + ", " + data.location_y
+            )}
+            {this.getTextRow(
+              'elevation_z', data.elevation_z
+            )}
+          </div>
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {this.getDomainRow(
+              'qt_location', data.qt_location
+            )}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row'
+              }}
+            >
+              <div
+                style={{
+                  flex: '1 1 100%'
+                }}
+              >
+                {this.getDomainRow(
+                  'hrs', data.hrs
+                )}
+              </div>
+              <div
+                style={{
+                  flex: '1 1 100%'
+                }}
+              >
+                {this.getDomainRow(
+                  'qt_elevation', data.qt_elevation
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
         
-        {this.getTextRow(
-          'coordinates',
-          data.location_x + ", " + data.location_y
-        )}
+        <div
+          style={{
+            border: 'thin solid rgba(0, 0, 0, 0.15)',
+            display: 'flex',
+            flexDirection: 'row',
+            margin: margin,
+            padding: padding
+          }}
+        >
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {this.getDomainRow(
+              'custom.landuse', data.custom.landuse, 'landuse'
+            )}
+            {this.getTextRow(
+              'city', <MunicipalityText id={data.custom.city} />
+            )}
+          </div>
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {this.getTextRow(
+              'canton', <CantonText id={data.custom.canton} />
+            )}
+            {this.getTextRow(
+              'address', data.custom.address
+            )}
+          </div>
+        </div>
+        
+        <div
+          style={{
+            border: 'thin solid rgba(0, 0, 0, 0.15)',
+            margin: margin,
+            padding: padding
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row'
+            }}
+          >
+            <div
+              style={{
+                flex: '1 1 100%'
+              }}
+            >
+              {this.getDomainRow(
+                'extended.method', data.extended.method, 'method'
+              )}
+              {this.getDomainRow(
+                'custom.cuttings', data.custom.cuttings, 'cuttings'
+              )}
+              {this.getTextRow(
+                'drill_diameter',
+                data.custom.drill_diameter !== null ?
+                  data.custom.drill_diameter + " m" : null
+              )}
+              {this.getTextRow(
+                'bore_inc',
+                data.bore_inc !== null ?
+                  data.bore_inc + "°" : null
+              )}
+            </div>
+            <div
+              style={{
+                flex: '1 1 100%'
+              }}
+            >
+              {this.getDateRow(
+                'drilling_date', data.drilling_date
+              )}
+              {this.getDomainRow(
+                'extended.purpose', data.extended.purpose, 'purpose'
+              )}
+              {this.getDomainRow(
+                'extended.status', data.extended.status, 'status'
+              )}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row'
+                }}
+              >
+                <div
+                  style={{
+                    flex: '1 1 100%'
+                  }}
+                >
+                  {this.getTextRow(
+                    'bore_inc_dir',
+                    data.bore_inc_dir !== null ?
+                      data.bore_inc_dir + "°" : null
+                  )}
+                </div>
+                <div
+                  style={{
+                    flex: '1 1 100%'
+                  }}
+                >
+                  {this.getDomainRow(
+                    'custom.qt_bore_inc_dir',
+                    data.custom.qt_bore_inc_dir,
+                    'qt_bore_inc_dir'
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        {/* {this.getTextRow(
-            'location_x', data.location_x
-          )}
-          {this.getTextRow(
-            'location_y', data.location_y
-          )} */}
+        <div
+          style={{
+            border: 'thin solid rgba(0, 0, 0, 0.15)',
+            display: 'flex',
+            flexDirection: 'row',
+            margin: margin,
+            padding: padding
+          }}
+        >
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {this.getTextRow(
+              'length',
+              data.length !== null ?
+                data.length + " m" : null
+            )}
+            {this.getTextRow(
+              'top_bedrock',
+              data.extended.top_bedrock !== null ?
+                data.extended.top_bedrock + " m" : null
+            )}
+            {this.getTextRow(
+              'groundwater',
+              data.extended.groundwater === true ?
+                t("yes") :
+                data.extended.groundwater === false ?
+                  t("no") : null
+            )}
+            
+          </div>
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {this.getDomainRow(
+              'custom.qt_length',
+              data.custom.qt_length,
+              'qt_length'
+            )}
+            {this.getDomainRow(
+              'custom.qt_top_bedrock',
+              data.custom.qt_top_bedrock,
+              'qt_top_bedrock'
+            )}
+          </div>
+        </div>
 
-        {/* {this.getDomainRow(
-            'srs', data.srs
-          )} */}
-
-        {this.getDomainRow(
-          'qt_location', data.qt_location
-        )}
-
-        {this.getTextRow(
-          'elevation_z', data.elevation_z
-        )}
-        {this.getDomainRow(
-          'hrs', data.hrs
-        )}
-        {this.getDomainRow(
-          'qt_elevation', data.qt_elevation
-        )}
-        {this.getDomainRow(
-          'custom.landuse', data.custom.landuse, 'landuse'
-        )}
-        {/* {this.getTextRow(
-            'canton', <CantonText id={data.custom.canton}/>
-          )}
-          {this.getTextRow(
-            'city', <MunicipalityText id={data.custom.city}/>
-          )}
-          {this.getTextRow(
-            'address', data.custom.address
-          )} */}
-        {this.getDomainRow(
-          'extended.method', data.extended.method, 'method'
-        )}
-        {this.getDateRow(
-          'drilling_date', data.drilling_date
-        )}
-        {this.getDomainRow(
-          'custom.cuttings', data.custom.cuttings, 'cuttings'
-        )}
-        {this.getDomainRow(
-          'extended.purpose', data.extended.purpose, 'purpose'
-        )}
-        {this.getTextRow(
-          'drill_diameter',
-          data.custom.drill_diameter !== null ?
-            data.custom.drill_diameter + " m" : null
-        )}
-        {this.getDomainRow(
-          'extended.status', data.extended.status, 'status'
-        )}
-        {this.getTextRow(
-          'bore_inc',
-          data.bore_inc !== null ?
-            data.bore_inc + "°" : null
-        )}
-        {this.getTextRow(
-          'bore_inc_dir',
-          data.bore_inc_dir !== null ?
-            data.bore_inc_dir + "°" : null
-        )}
-        {this.getDomainRow(
-          'custom.qt_bore_inc_dir',
-          data.custom.qt_bore_inc_dir,
-          'qt_bore_inc_dir'
-        )}
-        {this.getTextRow(
-          'length',
-          data.length !== null ?
-            data.length + " m" : null
-        )}
-        {this.getDomainRow(
-          'custom.qt_length',
-          data.custom.qt_length,
-          'qt_length'
-        )}
-        {this.getTextRow(
-          'top_bedrock',
-          data.extended.top_bedrock !== null ?
-            data.extended.top_bedrock + " m" : null
-        )}
-        {this.getDomainRow(
-          'custom.qt_top_bedrock',
-          data.custom.qt_top_bedrock,
-          'qt_top_bedrock'
-        )}
-        {this.getTextRow(
-          'groundwater',
-          data.extended.groundwater === true ?
-            t("yes") :
-            data.extended.groundwater === false ?
-              t("no") : null
-        )}
       </div>
     );
   }

@@ -146,14 +146,42 @@ class BoreholeEditorTable extends TableComponent {
         }
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {
+        <span
+          style={{
+            fontSize: '0.8em',
+            color: '#787878'
+          }}
+        >
+          {
+            item.workgroup !== null? item.workgroup.name: null
+          }
+        </span><br />
+        {/* {
           item.percentage < 100 ?
             null :
             <Icon
               color='green'
               name='check circle'
             />
-        } {item.percentage}%
+        } {item.percentage}% */}
+        {
+          this.props.t(`version:${item.role}`)
+        } {
+          item.role === 'EDIT'?
+            <span>
+              ({
+                item.percentage < 100 ?
+                  null :
+                  <Icon
+                    color='green'
+                    name='check circle'
+                    style={{
+                      marginRight: '0.2em'
+                    }}
+                  />
+              }{item.percentage}%)
+            </span>: null
+        }
       </Table.Cell>,
       <Table.Cell
         key={this.uid + "_" + idx + "_" + colIdx++}
@@ -246,4 +274,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate('borehole_form')(BoreholeEditorTable));
+)(translate(['borehole_form', 'version'])(BoreholeEditorTable));

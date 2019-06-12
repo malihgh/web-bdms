@@ -15,7 +15,7 @@ import {
   updateBorehole,
   loadBorehole,
   checkBorehole,
-  createBorehole,
+  // createBorehole,
   createStratigraphy,
   patchBorehole
 } from '@ist-supsi/bmsjs';
@@ -132,28 +132,38 @@ class BoreholeForm extends React.Component {
           console.log(error);
         });
       });
-    } else {
-      // request the creation of a new borehole if id is not given
-      this.setState({
-        "creationFetch": true
-      }, () => {
-        setTimeout(function () {
-          createBorehole().then(function (response) {
-            if (response.data.success) {
-              self.setState({
-                "creationFetch": false,
-                "borehole": {
-                  ...self.state.borehole,
-                  "id": response.data.id
-                }
-              });
-            }
-          }).catch(function (error) {
-            console.log(error);
-          });
-        }, 100);
-      });
     }
+    // else if (id === null) {
+    //   this.setState({
+    //     "loadingFetch": false,
+    //     "layer_kind": null,
+    //     "stratigraphy_id": null,
+    //     "layers": [],
+    //     "layer": null,
+    //     "borehole": this.empty
+    //   });
+    // } else {
+    //   // request the creation of a new borehole if id is not given
+    //   this.setState({
+    //     "creationFetch": true
+    //   }, () => {
+    //     setTimeout(function () {
+    //       createBorehole().then(function (response) {
+    //         if (response.data.success) {
+    //           self.setState({
+    //             "creationFetch": false,
+    //             "borehole": {
+    //               ...self.state.borehole,
+    //               "id": response.data.id
+    //             }
+    //           });
+    //         }
+    //       }).catch(function (error) {
+    //         console.log(error);
+    //       });
+    //     }, 100);
+    //   });
+    // }
   }
 
   check(attribute, value) {
@@ -328,8 +338,9 @@ class BoreholeForm extends React.Component {
       <Dimmer.Dimmable
         as={'div'}
         dimmed={
-          this.state.loadingFetch === true ||
-          this.state.creationFetch === true
+          this.props.borehole.isFetching === true
+          || this.state.loadingFetch === true
+          || this.state.creationFetch === true
         }
         style={{
           flex: 1,
@@ -340,14 +351,18 @@ class BoreholeForm extends React.Component {
       >
         <Dimmer
           active={
-            this.state.loadingFetch === true ||
-            this.state.creationFetch === true
+            this.props.borehole.isFetching === true
+            || this.state.loadingFetch === true
+            || this.state.creationFetch === true
           }
           inverted
         >
           <Loader>
             {(() => {
-              if (this.state.loadingFetch === true) {
+              if (
+                this.props.borehole.isFetching
+                || this.state.loadingFetch === true
+              ) {
                 return (t('loadingFetch'));
               } else if (this.state.creationFetch === true) {
                 return (t('creationFetch'));
@@ -1441,6 +1456,10 @@ class BoreholeForm extends React.Component {
                               }}
                             >
                               {
+                                stratigraphy.primary === true?
+                                  <Icon name='check' />: null
+                              }
+                              {
                                 stratigraphy.name === null
                                 || stratigraphy.name === ''?
                                   t('common:np'): stratigraphy.name
@@ -1466,7 +1485,6 @@ class BoreholeForm extends React.Component {
                     }
                   </div>
                   <StratigraphyFormContainer
-                    // borehole={borehole.id}
                     id={this.state.stratigraphy_id}
                     kind={this.state.layer_kind}
                     onClone={(id) => {
@@ -1493,31 +1511,18 @@ class BoreholeForm extends React.Component {
                       for (var i = 0; i < bh.stratigraphy.length; i++) {
                         if (id === bh.stratigraphy[i].id) {
                           bh.stratigraphy[i][attribute] = value;
-                          break;
+                          if (attribute !== 'primary'){
+                            break;
+                          }
+                        } else if (attribute === 'primary'){
+                          bh.stratigraphy[i][attribute] = false;
                         }
                       }
                       this.props.updateBorehole(bh);
                     }}
+                    refresh={this.props.borehole.fcnt}
                   />
                 </div>
-              </div>
-            )}
-          />
-          <Route
-            exact
-            path={process.env.PUBLIC_URL + "/editor/:id/finish"}
-            render={() => (
-              <div
-                style={{
-                  flex: "1 1 0%",
-                  padding: "1em",
-                  overflowY: "hidden"
-                }}
-              >
-                Lorem ipsum...
-                <br /><br />
-                Comments for the Controller:
-                <br />
               </div>
             )}
           />

@@ -19,8 +19,9 @@ import moment from 'moment';
 
 import {
   deleteBorehole,
+  loadBorehole,
   lockBorehole,
-  unlockBorehole
+  unlockBorehole,
 } from '@ist-supsi/bmsjs';
 
 import Scroller from '../../scroller';
@@ -43,12 +44,19 @@ class MenuEditorForm extends React.Component {
       history,
       location,
       match,
+      reload,
       t,
       user
     } = this.props;
     if (borehole.isFetching === true) {
-      return 'Loading..';
+      return null;
     }
+
+    const editableByCurrentUser = borehole.data.id !== null && user.data.workgroups.find(
+      workgroup => (
+        workgroup.id === borehole.data.workgroup.id
+      )
+    ).roles.indexOf(borehole.data.role) === -1;
 
     return (
       [
@@ -183,37 +191,6 @@ class MenuEditorForm extends React.Component {
                 </List.Header>
               </List.Content>
             </List.Item>
-            <List.Item
-              active={
-                location.pathname ===
-                process.env.PUBLIC_URL + "/editor/"
-                + match.params.id + "/finish"
-              }
-              onClick={() => {
-                history.push(
-                  process.env.PUBLIC_URL + "/editor/"
-                  + match.params.id + "/finish"
-                );
-              }}
-              style={{
-                padding: '1em',
-                borderLeft: location.pathname ===
-                  process.env.PUBLIC_URL + "/editor/"
-                  + match.params.id + "/finish" ?
-                  '0.25em solid rgb(237, 29, 36)' : null
-              }}
-            >
-              <List.Icon
-                name='cloud upload'
-                size='large'
-                verticalAlign='middle'
-              />
-              <List.Content>
-                <List.Header as='h3'>
-                  Publish
-                </List.Header>
-              </List.Content>
-            </List.Item>
           </List>
         </Scroller>,
         <div
@@ -244,7 +221,7 @@ class MenuEditorForm extends React.Component {
                 {
                   borehole.data.lock !== null?
                     t('editor:editingEnabled'):
-                    t(`version:${borehole.data.version.code}`)
+                    t(`version:${borehole.data.role}`)
                 }
               </span>
             </div>
@@ -347,7 +324,8 @@ class MenuEditorForm extends React.Component {
               }
             </div>
             {
-              borehole.data.lock !== null?
+              borehole.data.lock !== null
+              && editableByCurrentUser === false?
                 <Progress
                   color={
                     this.state.timeout >= 90?
@@ -362,7 +340,8 @@ class MenuEditorForm extends React.Component {
                 />: null
             }
             {
-              borehole.data.lock !== null?
+              borehole.data.lock !== null
+              && editableByCurrentUser === false?
                 <div
                   style={{
                     // textAlign: 'right'
@@ -409,73 +388,99 @@ class MenuEditorForm extends React.Component {
             minHeight: '70px'
           }}
         >
-          <Menu.Item
-            disabled={
-              borehole.data.lock === null
-              || borehole.data.lock.username !== user.data.username
-            }
-            onClick={() => {
-              deleteBorehole(borehole.data.id).then(
-                function () {
-                  history.push(
-                    process.env.PUBLIC_URL + "/editor"
-                  );
+          {
+            editableByCurrentUser === true?
+              null:
+              <Menu.Item
+                disabled={
+                  borehole.data.lock === null
+                  || borehole.data.lock.username !== user.data.username
                 }
-              );
-            }}
-            style={{
-              flex: 1
-            }}
-          >
-            <Icon
-              name='trash alternate'
-            />
-            {t('common:delete')}
-          </Menu.Item>
-          <Menu.Item
-            disabled={
-              borehole.data.lock !== null
-              && borehole.data.lock.username !== user.data.username
-            }
-            onClick={() => {
-              if (
-                borehole.data.lock !== null
-                && borehole.data.lock.username === user.data.username
-              ){
-                this.props.unlock(
-                  borehole.data.id
-                );
-              } else if (
-                borehole.data.lock === null
-              ) {
-                this.props.lock(
-                  borehole.data.id
-                );
-              }
-            }}
-            style={{
-              flex: 1
-            }}
-          >
-            <Icon
-              name={
-                borehole.data.lock !== null
-                && moment().diff(
-                  moment(borehole.data.lock.date),
-                  'seconds'
-                ) < (timeout * 60)?
-                  'stop': 'play'
-              }
-            />
-            {
-              borehole.data.lock !== null
-              && moment().diff(
-                moment(borehole.data.lock.date),
-                'seconds'
-              ) < (timeout * 60)?
-                t('borehole_form:editingStop'): t('borehole_form:editingStart')
-            }
-          </Menu.Item>
+                onClick={() => {
+                  deleteBorehole(borehole.data.id).then(
+                    function () {
+                      history.push(
+                        process.env.PUBLIC_URL + "/editor"
+                      );
+                    }
+                  );
+                }}
+                style={{
+                  flex: 1
+                }}
+              >
+                <Icon
+                  name='trash alternate'
+                />
+                {t('common:delete')}
+              </Menu.Item>
+          }
+          {
+            editableByCurrentUser === true?
+              null:
+              <Menu.Item
+                disabled={
+                  borehole.data.lock !== null
+                  && borehole.data.lock.username !== user.data.username
+                }
+                onClick={() => {
+                  if (
+                    borehole.data.lock !== null
+                    && borehole.data.lock.username === user.data.username
+                  ){
+                    this.props.unlock(
+                      borehole.data.id
+                    );
+                  } else if (
+                    borehole.data.lock === null
+                  ) {
+                    this.props.lock(
+                      borehole.data.id
+                    );
+                  }
+                }}
+                style={{
+                  flex: 1
+                }}
+              >
+                <Icon
+                  name={
+                    borehole.data.lock !== null
+                    && moment().diff(
+                      moment(borehole.data.lock.date),
+                      'seconds'
+                    ) < (timeout * 60)?
+                      'stop': 'play'
+                  }
+                />
+                {
+                  borehole.data.lock !== null
+                  && moment().diff(
+                    moment(borehole.data.lock.date),
+                    'seconds'
+                  ) < (timeout * 60)?
+                    t('borehole_form:editingStop'): t('borehole_form:editingStart')
+                }
+              </Menu.Item>
+          }
+          {
+            editableByCurrentUser === true?
+              <Menu.Item
+                disabled={borehole.isFetching === true}
+                onClick={() => {
+                  reload(borehole.data.id);
+                }}
+                style={{
+                  flex: 1
+                }}
+              >
+                <Icon
+                  loading={borehole.isFetching === true}
+                  name='refresh'
+                />
+                {t('common:refresh')}
+              </Menu.Item>: null
+          }
         </Menu>
       ]
     );
@@ -496,8 +501,10 @@ MenuEditorForm.propTypes = {
       id: PropTypes.string
     })
   }),
+  reload: PropTypes.func,
   t: PropTypes.func,
   unlock: PropTypes.func,
+  user: PropTypes.object
 };
 
 const mapStateToProps = (state) => {
@@ -526,11 +533,11 @@ const mapDispatchToProps = (dispatch) => {
         lockBorehole(id)
       );
     },
-    refresh: () => {
-      dispatch({
-        type: 'SEARCH_EDITOR_FILTER_REFRESH'
-      });
-    },
+    // refresh: () => {
+    //   dispatch({
+    //     type: 'FSEARCH_EDITOR_FILTER_REFRESH'
+    //   });
+    // },
     reset: () => {
       dispatch({
         type: 'SEARCH_EDITOR_FILTER_RESET'
@@ -538,6 +545,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     unlock: (id) => {
       return dispatch(unlockBorehole(id));
+    },
+    reload: (id) => {
+      dispatch(loadBorehole(id));
     }
   };
 };

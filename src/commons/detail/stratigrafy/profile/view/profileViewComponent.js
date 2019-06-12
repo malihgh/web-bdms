@@ -105,6 +105,9 @@ class ProfileView extends React.Component {
     const {
       domains
     } = this.props;
+    if (!domains.data.hasOwnProperty('custom.lit_pet_top_bedrock')){
+      return null;
+    }
     let domain = domains.data['custom.lit_pet_top_bedrock'].find(function(element) {
       return element.id === id;
     });
@@ -119,6 +122,9 @@ class ProfileView extends React.Component {
     const {
       domains
     } = this.props;
+    if (!domains.data.hasOwnProperty('custom.lit_str_top_bedrock')){
+      return null;
+    }
     let domain = domains.data['custom.lit_str_top_bedrock'].find(function(element) {
       return element.id === id;
     });

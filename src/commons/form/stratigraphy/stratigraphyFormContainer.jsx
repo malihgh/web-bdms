@@ -54,8 +54,11 @@ class StratigraphyFormContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { id } = this.props;
-    if (id !== prevProps.id) {
+    const { id, refresh } = this.props;
+    if (
+      id !== prevProps.id
+      || refresh !== prevProps.refresh
+    ) {
       this.load(id);
     }
   }
@@ -655,13 +658,15 @@ StratigraphyFormContainer.propTypes = {
   onClone: PropTypes.func,
   onDeleted: PropTypes.func,
   onUpdated: PropTypes.func,
-  user: PropTypes.object
+  refresh: PropTypes.number,
+  user: PropTypes.object,
 };
 
 StratigraphyFormContainer.defaultProps = {
   borehole: undefined,
   kind: undefined,
-  id: undefined
+  id: undefined,
+  refresh: undefined
 };
 
 const mapStateToProps = (state) => {

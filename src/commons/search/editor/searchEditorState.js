@@ -4,6 +4,8 @@ const initialState = {
   "isFetching": false,
   "filter": {
     "refresh": 1,
+    "role": 'all',
+    "workgroup": 'all',
     "original_name": '',
     "public_name": '',
     "kind": null,

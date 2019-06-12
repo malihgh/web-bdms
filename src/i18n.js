@@ -7,6 +7,7 @@ let resources = {
       "borehole": "borehole",
       "boreholes": "boreholes",
       "saving": "saving",
+      "submit": "Submit",
       "you": "you",
       "title": "BMS",
       "start": "This page is in English.",
@@ -184,10 +185,10 @@ let resources = {
     },
     version: {
       '0': 'Completed',
-      '1': 'Change in progress',
-      '2': 'Technical check',
-      '3': 'Validation',
-      '4': 'Pubblic'
+      'EDIT': 'Change in progress',
+      'CONTROL': 'Technical check',
+      'VALID':'Validation',
+      'PUBLIC': 'Pubblic'
     }
   },
   de: {
@@ -195,6 +196,7 @@ let resources = {
       "borehole": "borehole",
       "boreholes": "bohrung",
       "saving": "sparen",
+      "submit": "Einreichen",
       "you": "dir",
       "title": "BMS",
       "start": "Diese Seite ist auf deutsch.",
@@ -371,10 +373,10 @@ let resources = {
     },
     version: {
       '0': 'Fertiggestellt',
-      '1': 'Änderung in Bearbeitung',
-      '2': 'Technische Prüfung',
-      '3': 'Bestätigung',
-      '4': 'Öffentlichkeit'
+      'EDIT': 'Änderung in Bearbeitung',
+      'CONTROL':'Technische Prüfung',
+      'VALID': 'Bestätigung',
+      'PUBLIC': 'Öffentlichkeit'
     }
   },
   it: {
@@ -382,6 +384,7 @@ let resources = {
       "borehole": "perforazione",
       "boreholes": "perforazioni",
       "saving": "salvataggio",
+      "submit": "Applica",
       "you": "te",
       "title": "BMS",
       "start": "Questa pagina è in Italiano",
@@ -559,10 +562,10 @@ let resources = {
     },
     version: {
       '0': 'Completato',
-      '1': 'Incompleto',
-      '2': 'Controllo tecnico',
-      '3': 'Validazione',
-      '4': 'Pubblico'
+      'EDIT': 'Modifica',
+      'CONTROL': 'Controllo tecnico',
+      'VALID': 'Validazione',
+      'PUBLIC': 'Pubblico'
     }
   }
 };

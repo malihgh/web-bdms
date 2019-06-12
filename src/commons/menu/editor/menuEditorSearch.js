@@ -61,7 +61,8 @@ class MenuEditorSearch extends React.Component {
         <div
           key='sb-em-1'
           style={{
-            color: '#767676',
+            color: boreholes.isFetching === false && boreholes.dlen === 0?
+              'red': '#767676',
             // fontWeight: 'bold',
             padding: '1em 1em 0px 1em'
           }}
