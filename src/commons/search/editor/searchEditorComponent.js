@@ -85,58 +85,55 @@ class SearchEditorComponent extends React.Component {
               }
             </Form>: null
         }
-        {
-          user.data.roles.length > 1?
-            <Form
-              size='tiny'
-              style={{
-                marginBottom: '1em'
+        <Form
+          size='tiny'
+          style={{
+            marginBottom: '1em'
+          }}
+        >
+          <Form.Field >
+            <label>Status</label>
+            <Radio
+              checked={search.filter.role === 'all'}
+              label={t('all')}
+              name='radioGroup'
+              onChange={()=>{
+                this.props.setFilter(
+                  'role', 'all'
+                );
               }}
-            >
-              <Form.Field >
-                <label>Status</label>
+            />
+          </Form.Field>
+          {
+            [
+              "EDIT",
+              "CONTROL",
+              "VALID",
+              "PUBLIC",
+            ].map((role, idx)=>(
+              <Form.Field
+                key={"sec-" + role}
+              >
                 <Radio
-                  checked={search.filter.role === 'all'}
-                  label={t('all')}
+                  checked={search.filter.role === role}
+                  label={
+                    t(`version:${role}`)
+                    + (
+                      user.data.roles.indexOf(role) >= 0?
+                        ' *': ''
+                    )
+                  }
                   name='radioGroup'
                   onChange={()=>{
                     this.props.setFilter(
-                      'role', 'all'
+                      'role', role
                     );
                   }}
                 />
               </Form.Field>
-              {
-                [
-                  "EDIT",
-                  "CONTROL",
-                  "VALID",
-                  "PUBLIC",
-                ].map((role, idx)=>(
-                  <Form.Field
-                    key={"sec-" + role}
-                  >
-                    <Radio
-                      checked={search.filter.role === role}
-                      label={
-                        t(`version:${role}`)
-                        + (
-                          user.data.roles.indexOf(role) >= 0?
-                            ' *': ''
-                        )
-                      }
-                      name='radioGroup'
-                      onChange={()=>{
-                        this.props.setFilter(
-                          'role', role
-                        );
-                      }}
-                    />
-                  </Form.Field>
-                ))
-              }
-            </Form>: null
-        }
+            ))
+          }
+        </Form>
         <Form size='tiny'>
           <Form.Field >
             <label>{t('completness')}</label>

@@ -181,7 +181,12 @@ const MenuComponent = function (props) {
             </List.Item>
             {
               props.user.data !== null
-              && props.user.data.roles.indexOf('EDIT') >= 0?
+              && (
+                props.user.data.roles.indexOf('EDIT') >= 0
+                || props.user.data.roles.indexOf('CONTROL') >= 0
+                || props.user.data.roles.indexOf('VALID') >= 0
+                || props.user.data.roles.indexOf('PUBLIC') >= 0
+              )?
                 <List.Item
                   onClick={() => {
                     if (_.isFunction(handleModeChange)) {

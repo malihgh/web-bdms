@@ -56,8 +56,11 @@ class StratigraphyFormContainer extends React.Component {
   componentDidUpdate(prevProps) {
     const { id, refresh } = this.props;
     if (
-      id !== prevProps.id
-      || refresh !== prevProps.refresh
+      id !== null 
+      && (
+        id !== prevProps.id
+        || refresh !== prevProps.refresh
+      )
     ) {
       this.load(id);
     }
@@ -357,11 +360,13 @@ class StratigraphyFormContainer extends React.Component {
                 >
                   <Checkbox
                     checked={stratigraphy.primary}
-                    label='This is the main stratigraphy'
+                    label={t('mainStratigraphy')}
                     onChange={(ev, data)=>{
-                      this.updateChange(
-                        'primary', data.checked, false
-                      );
+                      if (data.checked===true){
+                        this.updateChange(
+                          'primary', data.checked, false
+                        );
+                      }
                     }}
                     toggle
                   />
@@ -687,5 +692,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )((
-  translate('borehole_form')(StratigraphyFormContainer)
+  translate(['borehole_form', 'common'])(StratigraphyFormContainer)
 ));

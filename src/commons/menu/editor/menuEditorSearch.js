@@ -7,8 +7,12 @@ import {
 } from 'react-router-dom';
 
 import {
+  Button,
+  Dropdown,
+  Header,
   Icon,
   Menu,
+  Modal
 } from 'semantic-ui-react';
 
 import {
@@ -25,7 +29,10 @@ class MenuEditorSearch extends React.Component {
     this.state = {
       creating: false,
       delete: false,
-      scroller: false
+      scroller: false,
+      modal: false,
+      workgroup: this.props.user.data.workgroups.length === 1?
+        this.props.user.data.workgroups[0].id: null
     };
   }
 
@@ -138,39 +145,12 @@ class MenuEditorSearch extends React.Component {
             Reset
           </Menu.Item>
           <Menu.Item
+            disabled={this.props.user.data.roles.indexOf('EDIT')===-1}
             onClick={() => {
               const self = this;
               this.setState({
-                creating: true
-              }, () => {
-                createBorehole().then(
-                  function (response) {
-                    if (response.data.success) {
-                      self.setState({
-                        creating: false
-                      }, () => {
-                        history.push(
-                          process.env.PUBLIC_URL
-                          + "/editor/"
-                          + response.data.id
-                        );
-                      });
-                      // getBorehole(response.data.id).then(
-                      //   function(response) {
-                      //     if(response.data.success){
-                      //       boreholeSelected(response.data.data)
-                      //     }
-                      //     self.setState({
-                      //       creating: false
-                      //     })
-                      //   }
-                      // )
-                    }
-                  }//.bind(this)
-                ).catch(function (error) {
-                  console.log(error);
-                })
-              })
+                modal: true
+              });
             }}
             style={{
               flex: 1
@@ -179,7 +159,97 @@ class MenuEditorSearch extends React.Component {
             <Icon name='add' />
             New
           </Menu.Item>
-        </Menu>
+        </Menu>,
+        <Modal
+          closeIcon
+          key='sb-em-4'
+          onClose={()=>{
+            this.setState({
+              modal: false
+            });
+          }}
+          onOpen={()=>{
+            console.log("onOpen");
+          }}
+          open={this.state.modal===true}
+          size='mini'
+        >
+          <Header
+            content={t(`common:newBorehole`)}
+            // icon='archive'
+          />
+          <Modal.Content>
+            <p>
+              Workgroup: {
+                this.props.user.data.workgroups.length === 1?
+                  this.props.user.data.workgroups[0].workgroup:
+                  <Dropdown
+                    item
+                    onChange={(ev, data) => {
+                      this.setState({
+                        workgroup: data.value
+                      });
+                    }}
+                    options={
+                      this.props.user.data.workgroups.filter(
+                        w => w.roles.indexOf('EDIT') >= 0
+                      ).map(wg => (
+                        {
+                          key: wg['id'],
+                          text: wg['workgroup'],
+                          value: wg['id']
+                        }
+                      ))
+                    }
+                    simple
+                    text='Dropdown'
+                  />
+              }
+            </p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button
+              // disabled={
+              //   readOnly
+              //   || workflows.isRejecting
+              // }
+              loading={
+                this.state.creating === true
+              }
+              onClick={()=>{
+                this.setState({
+                  creating: true,
+                }, ()=>{
+                  createBorehole(
+                    this.state.workgroup
+                  ).then(
+                    (response) => {
+                      if (response.data.success) {
+                        this.setState({
+                          creating: false,
+                          modal: false
+                        }, () => {
+                          history.push(
+                            process.env.PUBLIC_URL
+                            + "/editor/"
+                            + response.data.id
+                          );
+                        });
+                      }
+                    }
+                  ).catch(function (error) {
+                    console.log(error);
+                  });
+                });
+              }}
+              secondary
+            >
+              <Icon
+                name='add'
+              /> {t('editor:create')}
+            </Button>
+          </Modal.Actions>
+        </Modal>
       ]
     );
   }
@@ -193,7 +263,8 @@ const mapStateToProps = (state) => {
     editor: state.editor,
     borehole: state.core_borehole,
     boreholes: state.core_borehole_editor_list,
-    setting: state.setting
+    setting: state.setting,
+    user: state.core_user
   };
 };
 
@@ -228,6 +299,6 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps
   )(
-    translate(['home', 'common', 'borehole_form'])(MenuEditorSearch)
+    translate(['home', 'common', 'borehole_form', 'editor'])(MenuEditorSearch)
   )
 );

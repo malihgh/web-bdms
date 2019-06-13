@@ -4,6 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 let resources = {
   en: {
     common: {
+      "newBorehole": "New borehole",
       "borehole": "borehole",
       "boreholes": "boreholes",
       "saving": "saving",
@@ -70,6 +71,7 @@ let resources = {
       'completness': 'Completness',
       'creation': 'Creation date',
       'author': 'Author',
+      'mainStratigraphy': 'This is the main stratigraphy',
       'meta_location': 'Location',
       'meta_borehole': 'Borehole',
       'form_admin': 'Admin',
@@ -193,6 +195,7 @@ let resources = {
   },
   de: {
     common: {
+      "newBorehole": "Neue borehole",
       "borehole": "borehole",
       "boreholes": "bohrung",
       "saving": "sparen",
@@ -259,6 +262,7 @@ let resources = {
       'completness': 'Vollständigkeit',
       'creation': 'Erstellungsdatum',
       'author': 'Autor',
+      'mainStratigraphy': 'Dies ist die Hauptstratigraphie',
       'meta_location': 'Standort',
       'meta_borehole': 'Bohrloch',
       'form_admin': 'Admin',
@@ -381,6 +385,7 @@ let resources = {
   },
   it: {
     common: {
+      "newBorehole": "Nuova perforazione",
       "borehole": "perforazione",
       "boreholes": "perforazioni",
       "saving": "salvataggio",
@@ -447,6 +452,7 @@ let resources = {
       'completness': 'Completezza',
       'creation': 'Data di creazione',
       'author': 'Author',
+      'mainStratigraphy': 'Questa è la stratigrafia principale',
       'meta_location': 'Posizione',
       'meta_borehole': 'Sondaggio',
       'form_admin': 'Amministrativo',

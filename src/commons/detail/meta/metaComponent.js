@@ -96,7 +96,7 @@ class MetaComponent extends React.Component {
       >
         <div
           style={{
-            border: 'thin solid rgba(0, 0, 0, 0.15)',
+            borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
             display: 'flex',
             flexDirection: 'row',
             margin: margin,
@@ -131,7 +131,7 @@ class MetaComponent extends React.Component {
 
         <div
           style={{
-            border: 'thin solid rgba(0, 0, 0, 0.15)',
+            borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
             display: 'flex',
             flexDirection: 'row',
             margin: margin,
@@ -167,7 +167,7 @@ class MetaComponent extends React.Component {
 
         <div
           style={{
-            border: 'thin solid rgba(0, 0, 0, 0.15)',
+            borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
             display: 'flex',
             flexDirection: 'row',
             margin: margin,
@@ -225,7 +225,7 @@ class MetaComponent extends React.Component {
         
         <div
           style={{
-            border: 'thin solid rgba(0, 0, 0, 0.15)',
+            borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
             display: 'flex',
             flexDirection: 'row',
             margin: margin,
@@ -260,7 +260,7 @@ class MetaComponent extends React.Component {
         
         <div
           style={{
-            border: 'thin solid rgba(0, 0, 0, 0.15)',
+            borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
             margin: margin,
             padding: padding
           }}
@@ -342,7 +342,7 @@ class MetaComponent extends React.Component {
 
         <div
           style={{
-            border: 'thin solid rgba(0, 0, 0, 0.15)',
+            // borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
             display: 'flex',
             flexDirection: 'row',
             margin: margin,

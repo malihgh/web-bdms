@@ -7,7 +7,6 @@ import _ from 'lodash';
 import {
   Button,
   Checkbox,
-  Form,
   Header,
   Icon,
   Label,
@@ -463,9 +462,6 @@ class WorkflowForm extends React.Component {
                                           // icon='archive'
                                         />
                                         <Modal.Content>
-                                          <p>
-                                            bla bla bla
-                                          </p>
                                           <p>
                                             {
                                               this.state.modal === 2?
