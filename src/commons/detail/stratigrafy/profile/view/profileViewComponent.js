@@ -9,7 +9,7 @@ import DomainText from '../../../../form/domain/domainText';
 import { Stratigraphy } from '@ist-supsi/stratigraphy';
 
 import {
-  Checkbox
+  Checkbox, Icon
 } from 'semantic-ui-react';
 
 // import DateText from '../../form/dateText'
@@ -239,7 +239,24 @@ class ProfileView extends React.Component {
         >
           {
             this.props.layer === null?
-              null:
+              <div
+                style={{
+                  flex: '1 1 0%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '100%'
+                }}
+              >
+                <div
+                  style={{
+                    color: '#787878'
+                  }}
+                >
+                  <Icon name='arrow left' />
+                  {t('common:clickLayer')}
+                </div>
+              </div>:
               <div>
                 <div
                   style={{

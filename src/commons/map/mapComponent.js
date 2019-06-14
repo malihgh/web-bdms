@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
+import TileWMS from 'ol/source/TileWMS';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 // import Projection from 'ol/proj/Projection';
 import LayerGroup from 'ol/layer/Group';
@@ -223,19 +224,6 @@ class MapComponent extends React.Component {
           requestEncoding: 'REST'
         })
       }),
-      // new TileLayer({
-      //   visible: this.state.basemap === 'geologie500',
-      //   name: 'geologie500',
-      //   source: new WMTS({
-      //     crossOrigin: 'anonymous',
-      //     attributions: attribution,
-      //     url: 'https://wmts10.geo.admin.ch/1.0.0/{Layer}/default/20080630/2056/{TileMatrix}/{TileCol}/{TileRow}.png',
-      //     tileGrid: tileGrid,
-      //     projection: getProjection(this.srs),
-      //     layer: "ch.swisstopo.geologie-geologische_karte",
-      //     requestEncoding: 'REST'
-      //   })
-      // })
     ];
 
     this.map = new Map({
@@ -280,25 +268,44 @@ class MapComponent extends React.Component {
         //   }
         // }
 
-        this.overlays.push(
-          new TileLayer({
-            visible: this.state.basemap === identifier,
-            name: identifier,
-            opacity: 1,
-            source: new WMTS({ //layer.conf)
-              ...layer.conf,
-              projection: getProjection(
-                layer.conf.projection
-              ),
-              tileGrid: new WMTSTileGrid(
-                layer.conf.tileGrid
-              )
+        if (layer.type === 'WMS'){
+          this.overlays.push(
+            new TileLayer({
+              visible: this.state.basemap === identifier,
+              name: identifier,
+              extent: extent,
+              source: new TileWMS({
+                // url: 'https://wms.swisstopo.admin.ch',
+                url: 'http://wms0.geo.admin.ch',
+                params: {
+                  'LAYERS': layer.Identifier,
+                  'TILED': true,
+                  "SRS": this.srs
+                },
+                // Countries have transparency, so do not fade tiles:
+                transition: 0
+              })
             })
-          })
-        );
-
+          );
+        } else if (layer.type === 'WMTS'){
+          this.overlays.push(
+            new TileLayer({
+              visible: this.state.basemap === identifier,
+              name: identifier,
+              opacity: 1,
+              source: new WMTS({ //layer.conf)
+                ...layer.conf,
+                projection: getProjection(
+                  layer.conf.projection
+                ),
+                tileGrid: new WMTSTileGrid(
+                  layer.conf.tileGrid
+                )
+              })
+            })
+          );
+        }
         this.map.addLayer(this.overlays[this.overlays.length-1]);
-
       }
     }
 
@@ -474,116 +481,116 @@ class MapComponent extends React.Component {
     return [new Style(conf)];
   }
 
-  loadWmtsCapabilities() {
-    console.info("Parsing Swisstopo Capabilities");
-    getWmts().then((response) => {
-      var result = this.parser.read(response.data);
+  // loadWmtsCapabilities() {
+  //   console.info("Parsing Swisstopo Capabilities");
+  //   getWmts().then((response) => {
+  //     var result = this.parser.read(response.data);
 
-      // console.log(result);
-      const layers = [];
-      const list = [];
-      for (let index = 0; index < result.Contents.Layer.length; index++) {
-        const layer = result.Contents.Layer[index];
-        if (this.props.layers.hasOwnProperty(layer.Identifier)){
-          console.log(
-            optionsFromCapabilities(result, {
-              layer: layer.Identifier
-            }),
-            this.props.layers[layer.Identifier].conf
-          );
-        }
-        layers.push(
-          new TileLayer({
-            visible: false,
-            name: layer.Identifier,
-            opacity: 1,
-            source: new WMTS(
-              optionsFromCapabilities(result, {
-                layer: layer.Identifier
-              })
-            )
-          })
-        );
-        list.push(
-          {
-            key: layer.Identifier,
-            value: layer.Identifier,
-            text: layer.Title
-          }
-        );
-      }
-      this.setState({
-        maps: _.union(list, this.state.maps)
-      }, () => {
-        this.map.getLayers().extend(layers);
+  //     // console.log(result);
+  //     const layers = [];
+  //     const list = [];
+  //     for (let index = 0; index < result.Contents.Layer.length; index++) {
+  //       const layer = result.Contents.Layer[index];
+  //       if (this.props.layers.hasOwnProperty(layer.Identifier)){
+  //         console.log(
+  //           optionsFromCapabilities(result, {
+  //             layer: layer.Identifier
+  //           }),
+  //           this.props.layers[layer.Identifier].conf
+  //         );
+  //       }
+  //       layers.push(
+  //         new TileLayer({
+  //           visible: false,
+  //           name: layer.Identifier,
+  //           opacity: 1,
+  //           source: new WMTS(
+  //             optionsFromCapabilities(result, {
+  //               layer: layer.Identifier
+  //             })
+  //           )
+  //         })
+  //       );
+  //       list.push(
+  //         {
+  //           key: layer.Identifier,
+  //           value: layer.Identifier,
+  //           text: layer.Title
+  //         }
+  //       );
+  //     }
+  //     this.setState({
+  //       maps: _.union(list, this.state.maps)
+  //     }, () => {
+  //       this.map.getLayers().extend(layers);
 
-        this.points = new VectorSource();
-        this.map.addLayer(new VectorLayer({
-          name: 'points',
-          source: this.points,
-          style: this.styleFunction.bind(this)
-        }));
+  //       this.points = new VectorSource();
+  //       this.map.addLayer(new VectorLayer({
+  //         name: 'points',
+  //         source: this.points,
+  //         style: this.styleFunction.bind(this)
+  //       }));
 
-        this.popup = new Overlay({
-          position: undefined,
-          positioning: 'bottom-center',
-          element: document.getElementById('popup-overlay'),
-          stopEvent: false
-        });
-        this.map.addOverlay(this.popup);
+  //       this.popup = new Overlay({
+  //         position: undefined,
+  //         positioning: 'bottom-center',
+  //         element: document.getElementById('popup-overlay'),
+  //         stopEvent: false
+  //       });
+  //       this.map.addOverlay(this.popup);
 
-        // Register map events
-        this.map.on('moveend', this.moveEnd);
+  //       // Register map events
+  //       this.map.on('moveend', this.moveEnd);
 
-        // On point over interaction
-        const selectPointerMove = new Select({
-          condition: pointerMove,
-          // style: this.styleHover.bind(this)
-        });
-        selectPointerMove.on('select', this.hover);
-        this.map.addInteraction(selectPointerMove);
+  //       // On point over interaction
+  //       const selectPointerMove = new Select({
+  //         condition: pointerMove,
+  //         // style: this.styleHover.bind(this)
+  //       });
+  //       selectPointerMove.on('select', this.hover);
+  //       this.map.addInteraction(selectPointerMove);
 
-        this.selectClick = new Select({
-          condition: click,
-          style: this.styleFunction.bind(this)
-        });
-        this.selectClick.on('select', this.selected);
-        this.map.addInteraction(this.selectClick);
+  //       this.selectClick = new Select({
+  //         condition: click,
+  //         style: this.styleFunction.bind(this)
+  //       });
+  //       this.selectClick.on('select', this.selected);
+  //       this.map.addInteraction(this.selectClick);
 
-        getGeojson().then(function (response) {
-          if (response.data.success) {
-            this.points.addFeatures(
-              (
-                new GeoJSON()
-              ).readFeatures(response.data.data)
-            );
-            this.map.getView().fit(
-              this.points.getExtent()
-            );
-            this.moveEnd();
-          }
-        }.bind(this)).catch(function (error) {
-          console.log(error);
-        });
-      });
+  //       getGeojson().then(function (response) {
+  //         if (response.data.success) {
+  //           this.points.addFeatures(
+  //             (
+  //               new GeoJSON()
+  //             ).readFeatures(response.data.data)
+  //           );
+  //           this.map.getView().fit(
+  //             this.points.getExtent()
+  //           );
+  //           this.moveEnd();
+  //         }
+  //       }.bind(this)).catch(function (error) {
+  //         console.log(error);
+  //       });
+  //     });
       
-      /*
-      var options = optionsFromCapabilities(result, {
-        layer: 'ch.swisstopo.hiks-dufour'
-      });
-      console.log(options);
-      this.map.addLayer(
-        new TileLayer({
-          name: 'test',
-          opacity: 0.5,
-          source: new WMTS(options)
-        })
-      );
-      */
-    }).catch(function (error) {
-      console.log(error);
-    });
-  }
+  //     /*
+  //     var options = optionsFromCapabilities(result, {
+  //       layer: 'ch.swisstopo.hiks-dufour'
+  //     });
+  //     console.log(options);
+  //     this.map.addLayer(
+  //       new TileLayer({
+  //         name: 'test',
+  //         opacity: 0.5,
+  //         source: new WMTS(options)
+  //       })
+  //     );
+  //     */
+  //   }).catch(function (error) {
+  //     console.log(error);
+  //   });
+  // }
 
   styleFunction(feature, resolution) {
     const {

@@ -16,11 +16,13 @@ import {
 
 import {
   patchSettings,
-  getWmts
+  getWmts,
+  getWms
 } from '@ist-supsi/bmsjs';
 
 
-import WMTSCapabilities from 'ol/format/WMTSCapabilities';
+// import WMTSCapabilities from 'ol/format/WMTSCapabilities';
+import WMSCapabilities from 'ol/format/WMSCapabilities';
 import { optionsFromCapabilities } from 'ol/source/WMTS';
 import { register } from 'ol/proj/proj4';
 import proj4 from 'proj4';
@@ -45,10 +47,16 @@ class ExplorerSettings extends React.Component {
       "appearance": false,
       "search_filter": false,
       "map": false,
+
       "wmtsFetch": false,
       "searchWmts": '',
       "searchWmtsUser": '',
-      "wmts": null
+      "wmts": null,
+
+      "wmsFetch": false,
+      "searchWms": '',
+      "searchWmsUser": '',
+      "wms": null
     };
   }
 
@@ -110,10 +118,6 @@ class ExplorerSettings extends React.Component {
               }
             </Button>
           </div>
-        </div>
-        <div>
-          Pellentesque scelerisque orci dolor, vel posuere nisi imperdiet ut
-          Nunc condimentum erat risus, in dictum erat rhoncus sit amet.
         </div>
         {
           this.state.appearance === true ?
@@ -301,10 +305,6 @@ class ExplorerSettings extends React.Component {
             </Button>
           </div>
         </div>
-        <div>
-          Pellentesque scelerisque orci dolor, vel posuere nisi imperdiet ut
-          Nunc condimentum erat risus, in dictum erat rhoncus sit amet.
-        </div>
         {
           this.state.map === true ?
             <Segment.Group>
@@ -335,24 +335,39 @@ class ExplorerSettings extends React.Component {
                       >
                         <Button
                           compact
-                          loading={this.state.wmtsFetch === true}
+                          loading={this.state.wmsFetch === true}
                           onClick={()=>{
                             this.setState({
-                              wmtsFetch: true,
+                              wmsFetch: true,
+                              wms: null,
                               wmts: null
                             }, () => {
-                              getWmts(i18n.language).then((response) => {
+                              getWms(
+                                i18n.language
+                              ).then((response) => {
+                                const wms =  (
+                                  new WMSCapabilities()
+                                ).read(response.data);
+                                console.log(wms);
                                 this.setState({
-                                  wmtsFetch: false,
-                                  wmts: (
-                                    new WMTSCapabilities()
-                                  ).read(response.data)
+                                  wmsFetch: false,
+                                  wms: wms
                                 }, () => {
-                                  console.log(this.state.wmts);
+                                  console.log(this.state.wms);
                                 });
-                              }).catch((error) => {
-                                console.log(error);
                               });
+                              // getWmts(i18n.language).then((response) => {
+                              //   this.setState({
+                              //     wmtsFetch: false,
+                              //     wmts: (
+                              //       new WMTSCapabilities()
+                              //     ).read(response.data)
+                              //   }, () => {
+                              //     console.log(this.state.wmts);
+                              //   });
+                              // }).catch((error) => {
+                              //   console.log(error);
+                              // });
                             });
                           }}
                           secondary
@@ -376,6 +391,20 @@ class ExplorerSettings extends React.Component {
                             />
                           </div>: null
                       }
+                      {
+                        this.state.wms !== null?
+                          <div>
+                            <Input
+                              icon='search'
+                              onChange={(e) => {
+                                this.setState({
+                                  'searchWms': e.target.value.toLowerCase()
+                                });
+                              }}
+                              placeholder='Search...'
+                            />
+                          </div>: null
+                      }
                     </div>
                     <div
                       style={{
@@ -385,6 +414,114 @@ class ExplorerSettings extends React.Component {
                           null: 'thin solid #cecece'
                       }}
                     >
+                      {
+                        this.state.wms === null?
+                          null:
+                          this.state.wms.Capability.Layer.Layer.map(
+                            (layer, idx) => (
+                              this.state.searchWms === ''
+                              || (
+                                layer.Title.toLowerCase().search(
+                                  this.state.searchWms
+                                ) >= 0
+                                || layer.Abstract.toLowerCase().search(
+                                  this.state.searchWms
+                                ) >= 0
+                                || layer.Name.toLowerCase().search(
+                                  this.state.searchWms
+                                ) >= 0
+                              )?
+                                <div
+                                  className='selectable unselectable'
+                                  key={'wmts-list-'+idx}
+                                  style={{
+                                    padding: '0.5em'
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      fontWeight: 'bold',
+                                      display: 'flex',
+                                      flexDirection: 'row',
+                                      alignItems: 'center'
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        flex: 1
+                                      }}
+                                    >
+                                      <Highlight
+                                        search={this.state.searchWms}
+                                      >
+                                        {layer.Title}
+                                      </Highlight>
+                                    </div>
+                                    <div>
+                                      <Button
+                                        color={
+                                          _.has(
+                                            setting.data.map.explorer,
+                                            layer.Name
+                                          )?
+                                            'grey':
+                                            'blue'
+                                        }
+                                        icon={
+                                          _.has(
+                                            setting.data.map.explorer,
+                                            layer.Name
+                                          )?
+                                            'trash alternate outline':
+                                            'add'
+                                        }
+                                        onClick={(e)=>{
+                                          e.stopPropagation();
+                                          if (
+                                            _.has(
+                                              setting.data.map.explorer,
+                                              layer.Name
+                                            )
+                                          ){
+                                            rmExplorerMap(layer);
+                                          } else {
+                                            addExplorerMap(
+                                              layer,
+                                              this.state.wms
+                                            );
+                                          }
+                                        }}
+                                        size='mini'
+                                      />
+                                    </div>
+                                  </div>
+                                  <div
+                                    style={{
+                                      color: '#787878',
+                                      fontSize: '0.8em'
+                                    }}
+                                  >
+                                    <Highlight
+                                      search={this.state.searchWms}
+                                    >
+                                      {layer.Name}
+                                    </Highlight>
+                                  </div>
+                                  <div
+                                    style={{
+                                      fontSize: '0.8em'
+                                    }}
+                                  >
+                                    <Highlight
+                                      search={this.state.searchWms}
+                                    >
+                                      {layer.Abstract}
+                                    </Highlight>
+                                  </div>
+                                </div>: null
+                            )
+                          )
+                      }
                       {
                         this.state.wmts === null?
                           null:
@@ -628,17 +765,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
             </Segment.Group>
             : <Divider />
@@ -685,10 +811,6 @@ class ExplorerSettings extends React.Component {
             </Button>
           </div>
         </div>
-        <div>
-          Pellentesque scelerisque orci dolor, vel posuere nisi imperdiet ut
-          Nunc condimentum erat risus, in dictum erat rhoncus sit amet.
-        </div>
         {
           this.state.search_filter === true ?
             <Segment.Group>
@@ -703,17 +825,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -726,17 +837,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -751,17 +851,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -776,17 +865,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -801,17 +879,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -826,17 +893,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -851,17 +907,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -876,17 +921,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -901,17 +935,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -926,17 +949,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -951,17 +963,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -976,17 +977,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -1001,17 +991,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />>
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -1026,17 +1005,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -1051,17 +1019,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -1076,17 +1033,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -1101,17 +1047,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
 
               <Segment>
@@ -1127,17 +1062,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
 
               <Segment>
@@ -1153,17 +1077,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
 
               <Segment>
@@ -1179,17 +1092,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
 
               <Segment>
@@ -1242,11 +1144,27 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(patchSettings('appearance.explorer', mode));
     },
     addExplorerMap: (layer, result) => {
+
+      dispatch(
+        patchSettings(
+          'map.explorer',
+          {
+            Identifier: layer.Name,
+            Abstract: layer.Abstract,
+            Title: layer.Title,
+            type: 'WMS'
+          },
+          layer.Name
+        )
+      );
+
+      /*
+      // WMTS
       const conf = optionsFromCapabilities(result, {
         layer: layer.Identifier,
         // projection: 'EPSG:2056'
       });
-      console.log(conf)
+      console.log(conf);
       dispatch(
         patchSettings(
           'map.explorer',
@@ -1254,6 +1172,7 @@ const mapDispatchToProps = (dispatch) => {
             Identifier: layer.Identifier,
             Abstract: layer.Abstract,
             Title: layer.Title,
+            type: 'WMTS',
             conf: {
               ...conf,
               projection: {
@@ -1281,6 +1200,7 @@ const mapDispatchToProps = (dispatch) => {
           layer.Identifier
         )
       );
+      */
     },
     rmExplorerMap: (config) => {
       dispatch(patchSettings('map.explorer', null, config.Identifier));

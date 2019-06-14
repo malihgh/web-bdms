@@ -116,6 +116,10 @@ class StratigraphyFormContainer extends React.Component {
   }
 
   updateChange(attribute, value, to = true){
+    if (this.props.borehole.data.role !== 'EDIT'){
+      alert("Borehole status not editable");
+      return;
+    }
     if (
       this.props.borehole.data.lock === null
       || this.props.borehole.data.lock.username !== this.props.user.data.username
@@ -533,6 +537,10 @@ class StratigraphyFormContainer extends React.Component {
                       consistency={this.state.consistency}
                       layers={this.state.layers}
                       onDelete={(layer, solution, value = null) => {
+                        if (this.props.borehole.data.role !== 'EDIT'){
+                          alert("Borehole status not editable");
+                          return;
+                        }
                         if (
                           this.props.borehole.data.lock === null
                           || this.props.borehole.data.lock.username !== this.props.user.data.username
@@ -565,6 +573,10 @@ class StratigraphyFormContainer extends React.Component {
                         });
                       }}
                       onResolve={(layer, solution) => {
+                        if (this.props.borehole.data.role !== 'EDIT'){
+                          alert("Borehole status not editable");
+                          return;
+                        }
                         if (
                           this.props.borehole.data.lock === null
                           || this.props.borehole.data.lock.username !== this.props.user.data.username

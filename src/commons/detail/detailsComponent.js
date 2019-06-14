@@ -5,6 +5,7 @@ import StratigraphiesComponent from './stratigrafy/stratigraphiesComponent';
 import MunicipalityText from '../form/municipality/municipalityText';
 import CantonText from '../form/cantons/cantonText';
 import DomainText from '../form/domain/domainText';
+import DateText from '../form/dateText';
 import ExportLink from '../exportlink';
 import {
   Icon
@@ -36,8 +37,7 @@ class DetailsComponent extends React.Component {
                   padding: '1em',
                   display: 'flex',
                   flexDirection: 'row'
-                }
-                }
+                }}
               >
                 <div>
                   <div
@@ -219,7 +219,7 @@ class DetailsComponent extends React.Component {
                         fontSize: '1.1em'
                       }}
                     >
-                      {detail.borehole.custom.drill_diameter}m
+                      {detail.borehole.elevation_z}m
                     </div>
                     <div
                       style={{
@@ -227,7 +227,7 @@ class DetailsComponent extends React.Component {
                         fontSize: '0.8em'
                       }}
                     >
-                      {t('drill_diameter')}
+                      {t('elevation_z')}
                     </div>
                   </div>
                   <div
@@ -242,7 +242,9 @@ class DetailsComponent extends React.Component {
                         fontSize: '1.1em'
                       }}
                     >
-                      {detail.borehole.bore_inc + "°"}
+                      <DateText
+                        date={detail.borehole.drilling_date}
+                      />
                     </div>
                     <div
                       style={{
@@ -250,7 +252,7 @@ class DetailsComponent extends React.Component {
                         fontSize: '0.8em'
                       }}
                     >
-                      {t('bore_inc')}
+                      {t('drilling_date')}
                     </div>
                   </div>
                 </div>

@@ -7,6 +7,8 @@ import {
   Redirect
 } from 'react-router-dom';
 
+import _ from 'lodash';
+
 import HomeComponent from './pages/home/homeComponent';
 import EditorComponent from './pages/editor/editorComponent';
 // import SidebarComponent from './pages/sidebar/sidebarComponent';
@@ -46,18 +48,11 @@ class App extends React.Component {
   componentDidMount() {
     const {
       cantons,
-      // domains
+      domains
     } = this.props;
-    // if (Object.keys(domains.data).length === 0) {
-    //   this.props.loadDomains();
-    // }
-    this.props.loadDomains();
-    if (cantons.data.length === 0) {
-      this.props.loadCantons();
-    };
-    this.props.loadSettings();
+
+
     this.props.loadUser();
-    // this.props.loadWmts();
 
     // Get the scrollbar width
     var scrollDiv = document.createElement("div");
@@ -69,18 +64,33 @@ class App extends React.Component {
     document.body.removeChild(scrollDiv);
 
   }
+
+  componentDidUpdate(prevProps) {
+    if (!_.isEqual(this.props.user.data, prevProps.user.data)) {
+      this.props.loadSettings();
+      this.props.loadDomains();
+      this.props.loadCantons();
+    }
+  }
+
   isFetching() {
     const {
       cantons,
-      // domains
+      domains,
+      user
     } = this.props;
-    // if (
-    //   Object.keys(domains.data).length === 0
-    //   || domains.isFetching === true
-    // ) {
-    //   console.debug('App.isFetching');
-    //   return true;
-    // }
+    if (
+      user.data === null
+      || user.isFetching === true
+    ) {
+      return true;
+    }
+    if (
+      Object.keys(domains.data).length === 0
+      || domains.isFetching === true
+    ) {
+      return true;
+    }
     if (
       cantons.data.length === 0
       || cantons.isFetching === true
@@ -90,14 +100,6 @@ class App extends React.Component {
     return false;
   }
   render() {
-    // const fpaths = cpaths.filter(rt => {
-    //   return (
-    //     rt.path === '/'
-    //     || (
-    //       this.props.user.data !== null
-    //       && this.props.user.data.roles.indexOf('EDIT') >= 0
-    //     ));
-    // });
     return (
       this.isFetching() ?
         <div
@@ -139,17 +141,28 @@ class App extends React.Component {
                       textAlign: 'left'
                     }}
                   >
-                    Loading <Icon
-                      loading
-                      name='spinner'
-                      size='small'
-                    />
+                    {
+                      this.props.user.data === null?
+                        <span>
+                          Please login <Icon
+                            name='lock'
+                            size='small'
+                          />
+                        </span>:
+                        <span>
+                          Initialization <Icon
+                            loading
+                            name='spinner'
+                            size='small'
+                          />
+                        </span>
+                    }
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div> :
+        </div>:
         <Router>
           <Switch>
             {
@@ -184,7 +197,7 @@ class App extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     cantons: state.core_canton_list,
-    // domains: state.core_domain_list,
+    domains: state.core_domain_list,
     user: state.core_user
   };
 };
@@ -209,22 +222,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     loadUser: () => {
       dispatch(loadUser());
-    },
-    // loadWmts: () => {
-    //   dispatch({
-    //     type: 'WMTS_GETCAPABILITIES'
-    //   });
-    //   getWmts().then((response) => {
-    //     dispatch({
-    //       type: 'WMTS_GETCAPABILITIES_OK',
-    //       data: (
-    //         new WMTSCapabilities()
-    //       ).read(response.data)
-    //     });
-    //   }).catch((error) => {
-    //     console.log(error);
-    //   });
-    // }
+    }
   };
 };
 
@@ -233,4 +231,3 @@ export default connect(
   mapDispatchToProps
 )(App);
 
-// export default App

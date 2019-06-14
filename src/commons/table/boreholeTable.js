@@ -294,7 +294,7 @@ class BoreholeTable extends TableComponent {
           }
           icon={
             _.findIndex(this.props.checkout.cart, ['id', item.id]) >= 0 ?
-              'trash alternate outline' : 'cart'
+              'minus' : 'plus'
           }
           onClick={(e) => {
             e.stopPropagation();

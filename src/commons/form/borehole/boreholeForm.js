@@ -168,6 +168,10 @@ class BoreholeForm extends React.Component {
 
   check(attribute, value) {
 
+    if (this.props.borehole.data.role !== 'EDIT'){
+      alert("Borehole status not editable");
+      return;
+    }
     if (
       this.props.borehole.data.lock === null
       || this.props.borehole.data.lock.username !== this.props.user.data.username
@@ -186,53 +190,51 @@ class BoreholeForm extends React.Component {
     _.set(borehole, attribute, value);
     state[attribute + "_fetch"] = true;
 
-    const self = this;
-
     // update state
     this.setState(state, () => {
-      if (self.checkattribute) {
-        clearTimeout(self.checkattribute);
-        self.checkattribute = false;
+      if (this.checkattribute) {
+        clearTimeout(this.checkattribute);
+        this.checkattribute = false;
       }
       // this.props.updateBorehole(borehole);
 
-      self.checkattribute = setTimeout(function () {
+      this.checkattribute = setTimeout(() => {
         checkBorehole(
           attribute, value
-        ).then(function (response) {
+        ).then((response) => {
           if (response.data.success) {
             let state = {};
             state[attribute + '_check'] = response.data.check;
             state[attribute + '_fetch'] = false;
-            self.setState(state);
+            this.setState(state);
             if (response.data.check) {
               // patch attribute
               patchBorehole(
                 borehole.id,
                 attribute,
                 value
-              ).then(function (response) {
+              ).then((response) => {
                 if (response.data.success) {
-                  self.setState({
+                  this.setState({
                     patchFetch: false
                   }, () => {
                     borehole.percentage = response.data.percentage;
                     borehole.lock = response.data.lock;
                     borehole.updater = response.data.updater;
-                    self.props.updateBorehole(borehole);
+                    this.props.updateBorehole(borehole);
                   });
                 } else if (response.status === 200){
                   alert(response.data.message);
                   if (response.data.error === 'E-900'){
-                    self.setState({
+                    this.setState({
                       patchFetch: false
                     }, () => {
                       borehole.lock = null;
-                      self.props.updateBorehole(borehole);
+                      this.props.updateBorehole(borehole);
                     });
                   }
                 }
-              }).catch(function (error) {
+              }).catch((error) => {
                 console.error(error);
               });
             }
@@ -245,6 +247,10 @@ class BoreholeForm extends React.Component {
   }
 
   updateChange(attribute, value, to = true) {
+    if (this.props.borehole.data.role !== 'EDIT'){
+      alert("Borehole status not editable");
+      return;
+    }
     if (
       this.props.borehole.data.lock === null
       || this.props.borehole.data.lock.username !== this.props.user.data.username
@@ -254,10 +260,7 @@ class BoreholeForm extends React.Component {
     }
     const state = {
       ...this.state,
-      patchFetch: true,
-      // borehole: {
-      //   ...this.state.borehole
-      // }
+      "patchFetch": true
     };
     const borehole = {
       ...this.props.borehole.data
@@ -276,33 +279,43 @@ class BoreholeForm extends React.Component {
     } else {
       _.set(borehole, attribute, value);
     }
-    const self = this;
+    console.log(borehole);
     this.setState(state, () => {
       this.props.updateBorehole(borehole);
       if (
-        self.updateAttributeDelay.hasOwnProperty(attribute) &&
-        self.updateAttributeDelay[attribute]
+        this.updateAttributeDelay.hasOwnProperty(attribute) &&
+        this.updateAttributeDelay[attribute]
       ) {
-        clearTimeout(self.updateAttributeDelay[attribute]);
-        self.updateAttributeDelay[attribute] = false;
+        clearTimeout(this.updateAttributeDelay[attribute]);
+        this.updateAttributeDelay[attribute] = false;
       }
-      self.updateAttributeDelay[attribute] = setTimeout(function () {
+      this.updateAttributeDelay[attribute] = setTimeout(() => {
         patchBorehole(
           borehole.id,
           attribute,
           value
-        ).then(function (response) {
+        ).then((response) => {
           if (response.data.success) {
-            self.setState({
+            this.setState({
               patchFetch: false
             }, () => {
               borehole.percentage = response.data.percentage;
               borehole.lock = response.data.lock;
               borehole.updater = response.data.updater;
-              self.props.updateBorehole(borehole);
+              this.props.updateBorehole(borehole);
             });
+          } else if (response.status === 200){
+            alert(response.data.message);
+            if (response.data.error === 'E-900'){
+              this.setState({
+                patchFetch: false
+              }, () => {
+                borehole.lock = null;
+                this.props.updateBorehole(borehole);
+              });
+            }
           }
-        }).catch(function (error) {
+        }).catch((error) => {
           console.error(error);
         });
       }, to ? 500 : 0);
@@ -1070,6 +1083,23 @@ class BoreholeForm extends React.Component {
                       </Form.Field>
                     </Form.Group>
                     <Form.Group widths='equal'>
+                      {/* strange bug in Edge fixed with placing
+                      a hidden input */}
+                      <Form.Field
+                        style={{
+                          display: 'none'
+                        }}
+                      >
+                        <label>{t('drill_diameter')}</label>
+                        <Input
+                          spellCheck="false"
+                          type='number'
+                          value={
+                            _.isNil(borehole.custom.drill_diameter) ?
+                              '' : borehole.custom.drill_diameter
+                          }
+                        />
+                      </Form.Field>
                       <Form.Field
                         error={
                           mentions.indexOf('drill_diameter') >= 0
@@ -1077,10 +1107,11 @@ class BoreholeForm extends React.Component {
                       >
                         <label>{t('drill_diameter')}</label>
                         <Input
-                          autoCapitalize="off"
-                          autoComplete="off"
-                          autoCorrect="off"
+                          // autoCapitalize="off"
+                          // autoComplete="off"
+                          // autoCorrect="off"
                           onChange={(e) => {
+                            console.log("updateChange: ", e.target.value)
                             this.updateChange(
                               'custom.drill_diameter',
                               e.target.value === '' ?
@@ -1090,8 +1121,15 @@ class BoreholeForm extends React.Component {
                           spellCheck="false"
                           type='number'
                           value={
-                            _.isNil(borehole.custom.drill_diameter) ?
-                              '' : borehole.custom.drill_diameter
+                            ((()=>{
+                              console.log(
+                                "borehole.custom.drill_diameter: ",
+                                borehole.custom.drill_diameter
+                              );
+                              const r = _.isNil(borehole.custom.drill_diameter) ?
+                                '' : borehole.custom.drill_diameter;
+                              return (r);
+                            })())
                           }
                         />
                       </Form.Field>

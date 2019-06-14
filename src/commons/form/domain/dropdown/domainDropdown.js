@@ -155,16 +155,11 @@ class DomainDropdown extends React.Component {
     options = _.concat(options, domains.data[schema].map((domain) => ({
       key: "dom-opt-" + domain.id,
       value: domain.id,
-      text: domain.code !== domain[this.state.language].text?
-        domain.code + ' (' + domain[this.state.language].text + ')': domain.code,
+      text: domain.code === ''?
+        domain[this.state.language].text:
+        domain.code !== domain[this.state.language].text?
+          domain.code + ' (' + domain[this.state.language].text + ')': domain.code,
       content: <Header
-        style={{
-          backgroundImage: domain.conf !== null?
-            domain.conf.hasOwnProperty('img')?
-              'url("' + process.env.PUBLIC_URL + '/img/lit/' +
-                domain.conf.img + '")': null
-              : null
-        }}
         content={
           <div
             style={{
@@ -181,15 +176,32 @@ class DomainDropdown extends React.Component {
                 : null
             }}
           >
-            {domain.code}
+            {
+              domain.code === ''?
+                domain[this.state.language].text:
+                domain.code
+            }
           </div>
         }
+        style={{
+          backgroundImage: domain.conf !== null?
+            domain.conf.hasOwnProperty('img')?
+              'url("' + process.env.PUBLIC_URL + '/img/lit/' +
+              domain.conf.img + '")': null
+            : null
+        }}
         subheader={
           domain[
             this.state.language
-          ].descr !== null && domain[this.state.language].descr !== ''?
-            domain[this.state.language].text + ', ' +  domain[this.state.language].descr: domain[this.state.language].text
-        }/>
+          ].descr !== null
+          && domain[
+            this.state.language
+          ].descr !== ''?
+            domain[this.state.language].text + ', ' +  domain[this.state.language].descr:
+            domain.code === ''?
+              null: domain[this.state.language].text
+        }
+      />
     })));
     return (
       <Form.Select
