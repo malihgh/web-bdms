@@ -16,14 +16,14 @@ import {
 
 import {
   patchSettings,
-  getWmts,
+  // getWmts,
   getWms
 } from '@ist-supsi/bmsjs';
 
 
 // import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
-import { optionsFromCapabilities } from 'ol/source/WMTS';
+// import { optionsFromCapabilities } from 'ol/source/WMTS';
 import { register } from 'ol/proj/proj4';
 import proj4 from 'proj4';
 const projections = {

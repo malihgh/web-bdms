@@ -46,11 +46,6 @@ const cpaths = [
 class App extends React.Component {
 
   componentDidMount() {
-    const {
-      cantons,
-      domains
-    } = this.props;
-
 
     this.props.loadUser();
 

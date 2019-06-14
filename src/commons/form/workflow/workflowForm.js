@@ -47,7 +47,7 @@ class WorkflowForm extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { refresh } = this.props;
+    // const { refresh } = this.props;
     if (
       this.props.id !== null
       && (

@@ -147,7 +147,6 @@ class MenuEditorSearch extends React.Component {
           <Menu.Item
             disabled={this.props.user.data.roles.indexOf('EDIT')===-1}
             onClick={() => {
-              const self = this;
               this.setState({
                 modal: true
               });

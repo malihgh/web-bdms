@@ -7,7 +7,8 @@ import TileWMS from 'ol/source/TileWMS';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 // import Projection from 'ol/proj/Projection';
 import LayerGroup from 'ol/layer/Group';
-import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
+import WMTS from 'ol/source/WMTS';
+// import { optionsFromCapabilities } from 'ol/source/WMTS';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -27,7 +28,7 @@ import { translate } from 'react-i18next';
 
 import {
   getGeojson,
-  getWmts
+  // getWmts
 } from '@ist-supsi/bmsjs';
 
 import {
