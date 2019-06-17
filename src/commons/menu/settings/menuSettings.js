@@ -96,7 +96,7 @@ const MenuSettings = (props) => {
               </List.Content>
             </List.Item>: null
         }
-        <List.Item
+        {/* <List.Item
           onClick={()=>{
             history.push(
               process.env.PUBLIC_URL + '/setting/account'
@@ -118,7 +118,33 @@ const MenuSettings = (props) => {
               Account info
             </List.Header>
           </List.Content>
-        </List.Item>
+        </List.Item> */}
+        {
+          props.user.data.admin === true?
+            <List.Item
+              onClick={()=>{
+                history.push(
+                  process.env.PUBLIC_URL + '/setting/admin'
+                );
+              }}
+              style={{
+                padding: '1em',
+                borderLeft: location.pathname.indexOf('/setting/admin') >= 0?
+                  '0.5em solid rgb(237, 29, 36)': null
+              }}
+            >
+              <List.Icon
+                name='user outline'
+                size='large'
+                verticalAlign='middle'
+              />
+              <List.Content>
+                <List.Header as='h3'>
+                  Admin
+                </List.Header>
+              </List.Content>
+            </List.Item>: null
+        }
       </List>
     </div>
   );

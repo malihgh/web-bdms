@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
 
 const ExportLink = props => {
 
@@ -22,7 +23,7 @@ const ExportLink = props => {
       process.env.NODE_ENV === 'development'?
         'http://localhost:8888': process.env.PUBLIC_URL
     )
-    + '/api/v1/borehole/download?format='
+    + '/api/v1/borehole/download?lang=' + props.i18n.language + '&format='
     + frmt.join(',') + "&id="
     + props.id.join(',')
   );
@@ -56,4 +57,4 @@ ExportLink.defaultProps = {
   csv: false
 };
 
-export default ExportLink;
+export default translate()(ExportLink);

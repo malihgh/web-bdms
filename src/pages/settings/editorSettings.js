@@ -229,17 +229,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -254,17 +243,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -279,17 +257,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -304,17 +271,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -329,17 +285,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -354,17 +299,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -379,17 +313,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -404,17 +327,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -429,17 +341,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -454,17 +355,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -479,17 +369,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -504,17 +383,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -529,17 +397,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -554,17 +411,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -579,17 +425,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
               <Segment>
                 <Checkbox
@@ -604,17 +439,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
 
               <Segment>
@@ -630,17 +454,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
 
               <Segment>
@@ -656,17 +469,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
 
               <Segment>
@@ -682,17 +484,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
 
               <Segment>
@@ -708,17 +499,6 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
 
             </Segment.Group>
@@ -765,10 +545,6 @@ class EditorSettings extends React.Component {
               }
             </Button>
           </div>
-        </div>
-        <div>
-          Pellentesque scelerisque orci dolor, vel posuere nisi imperdiet ut
-          Nunc condimentum erat risus, in dictum erat rhoncus sit amet.
         </div>
         {
           this.state.fields === true ?

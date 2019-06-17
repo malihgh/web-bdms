@@ -11,6 +11,7 @@ import MenuSettings from '../../commons/menu/settings/menuSettings';
 import MenuContainer from '../../commons/menu/menuContainer';
 import ExplorerSettings from './explorerSettings';
 import EditorSettings from './editorSettings';
+import AdminSettings from './adminSettings';
 
 // const SettingCmp = (props) => {
 class SettingCmp extends React.Component {
@@ -63,6 +64,10 @@ class SettingCmp extends React.Component {
               <Route
                 component={EditorSettings}
                 path={process.env.PUBLIC_URL + "/setting/editor"}
+              />
+              <Route
+                path={process.env.PUBLIC_URL + "/setting/admin"}
+                component={AdminSettings}
                 // render={() => (
                 //   <div
                 //     style={{
@@ -73,19 +78,6 @@ class SettingCmp extends React.Component {
                 //     coming soon
                 //   </div>
                 // )}
-              />
-              <Route
-                path={process.env.PUBLIC_URL + "/setting/account"}
-                render={() => (
-                  <div
-                    style={{
-                      padding: '2em',
-                      flex: 1
-                    }}
-                  >
-                    coming soon
-                  </div>
-                )}
               />
             </Switch>
           </div>
