@@ -279,7 +279,6 @@ class BoreholeForm extends React.Component {
     } else {
       _.set(borehole, attribute, value);
     }
-    console.log(borehole);
     this.setState(state, () => {
       this.props.updateBorehole(borehole);
       if (
@@ -898,7 +897,6 @@ class BoreholeForm extends React.Component {
                               canton={borehole.custom.canton}
                               disabled={borehole.custom.canton === null}
                               onSelected={(selected) => {
-                                console.log(selected);
                                 this.updateChange(
                                   'custom.city', selected.id, false
                                 );
@@ -1107,11 +1105,7 @@ class BoreholeForm extends React.Component {
                       >
                         <label>{t('drill_diameter')}</label>
                         <Input
-                          // autoCapitalize="off"
-                          // autoComplete="off"
-                          // autoCorrect="off"
                           onChange={(e) => {
-                            console.log("updateChange: ", e.target.value)
                             this.updateChange(
                               'custom.drill_diameter',
                               e.target.value === '' ?
@@ -1122,10 +1116,6 @@ class BoreholeForm extends React.Component {
                           type='number'
                           value={
                             ((()=>{
-                              console.log(
-                                "borehole.custom.drill_diameter: ",
-                                borehole.custom.drill_diameter
-                              );
                               const r = _.isNil(borehole.custom.drill_diameter) ?
                                 '' : borehole.custom.drill_diameter;
                               return (r);
@@ -1528,7 +1518,6 @@ class BoreholeForm extends React.Component {
                     id={this.state.stratigraphy_id}
                     kind={this.state.layer_kind}
                     onClone={(id) => {
-                      console.log("clone..");
                       this.loadOrCreate(borehole.id);
                     }}
                     onDeleted={(id) => {

@@ -16,7 +16,6 @@ class DomainText extends React.Component {
       schema
     } = this.props;
     if (!domains.data.hasOwnProperty(schema) && domains.isFetching === false) {
-      console.log('loading: ' + domains + " / " + this.props.schema);
       this.props.loadDomains();
     }
   }

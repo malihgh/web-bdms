@@ -16,10 +16,6 @@ import AdminSettings from './adminSettings';
 // const SettingCmp = (props) => {
 class SettingCmp extends React.Component {
 
-  componentDidMount(){
-    console.log("SettingCmp.componentDidMount");
-  }
-  
   render() {
     return (
       <div

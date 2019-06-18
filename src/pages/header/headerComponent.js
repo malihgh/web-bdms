@@ -48,18 +48,12 @@ const HeaderComponent = (props) => {
       </Menu.Item>
       <Menu.Item
         active={false}
-        onClick={(e) => {
-          console.log('click');
-        }}
       >
         <Icon name='tasks' />
         {t('check')}
       </Menu.Item>
       <Menu.Item
         active={false}
-        onClick={(e) => {
-          console.log('click');
-        }}
       >
         <Icon name='check circle outline' />
         {t('validation')}
@@ -82,10 +76,7 @@ const HeaderComponent = (props) => {
             <Dropdown.Header>
               {t('user_preferences')}
             </Dropdown.Header>
-            <Dropdown.Item
-              onClick={(e)=>{
-                console.log('click');
-              }}>
+            <Dropdown.Item>
               <Dropdown text={t('language') + ' '}>
                 <Dropdown.Menu>
                   <Dropdown.Item

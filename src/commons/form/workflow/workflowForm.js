@@ -64,7 +64,6 @@ class WorkflowForm extends React.Component {
   }
 
   load(id) {
-    console.log("loading..");
     if (_.isInteger(id)) {
       this.setState({
         "expanded": false
@@ -450,9 +449,6 @@ class WorkflowForm extends React.Component {
                                           this.setState({
                                             modal: 0
                                           });
-                                        }}
-                                        onOpen={()=>{
-                                          console.log("onOpen");
                                         }}
                                         open={this.state.modal>0}
                                         size='mini'

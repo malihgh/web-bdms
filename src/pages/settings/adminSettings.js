@@ -2,12 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
-// import _ from 'lodash';
 
 import {
-  Button,
   Checkbox,
-  Divider,
   Header,
   Table,
   Form
@@ -106,16 +103,6 @@ class AdminSettings extends React.Component {
   }
 
   render() {
-    const {
-      t,
-    } = this.props;
-    console.log(this.state.user);
-    if (this.state.user!==null){
-      for (let index = 0; index < this.state.user.workgroups.length; index++) {
-        const element = this.state.user.workgroups[index];
-        console.log(element);
-      }
-    }
     return (
       <div
         style={{
@@ -383,7 +370,6 @@ class AdminSettings extends React.Component {
                                 const uwg = this.state.user.workgroups.find(
                                   w => w.id === workgroup.id
                                 );
-                                console.log("Found: ", uwg, this.state.user);
                                 return (
                                   <Form>
                                     <Form.Group

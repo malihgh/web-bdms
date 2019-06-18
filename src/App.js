@@ -42,7 +42,6 @@ const cpaths = [
   },
 ];
 
-// console.log('process.env.PUBLIC_URL: ' + process.env.PUBLIC_URL)
 class App extends React.Component {
 
   componentDidMount() {

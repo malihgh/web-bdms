@@ -59,17 +59,6 @@ class DomainDropdown extends React.Component {
     }
     if (_.isEqual(state, prevState)) return null;
     return state;
-
-    // if (_.isNil(nextProps.selected)){
-    //   if(nextProps.multiple === true) return  {selected: []}
-    //   return {selected: ''}
-    // }else if (nextProps.selected !== prevState.select){
-    //   return {selected: nextProps.selected}
-    // }else if (nextProps.i18n.language !== prevState.language){
-    //   console.log('Derived!') 
-    //   return {language: nextProps.i18n.language}
-    // }
-    // return null
   }
 
   handleChange(event, data) {

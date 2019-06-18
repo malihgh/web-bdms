@@ -277,12 +277,9 @@ class ExplorerSettings extends React.Component {
                                 const wms =  (
                                   new WMSCapabilities()
                                 ).read(response.data);
-                                console.log(wms);
                                 this.setState({
                                   wmsFetch: false,
                                   wms: wms
-                                }, () => {
-                                  console.log(this.state.wms);
                                 });
                               });
                               // getWmts(i18n.language).then((response) => {

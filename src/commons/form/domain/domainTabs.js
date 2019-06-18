@@ -70,12 +70,11 @@ class DomainTabs extends React.Component {
       domains,
       schema
     } = this.props;
-    console.log('this.state.activeIndex', this.state.activeIndex);
-    if(_.isUndefined(schema)){
+    if (_.isUndefined(schema)){
       return 'Error: schema not given';
     }
-    if(!_.has(domains.data, schema)){
-      if(domains.isFetching === true){
+    if (!_.has(domains.data, schema)){
+      if (domains.isFetching === true){
         return 'loading...';
       }
       return '';

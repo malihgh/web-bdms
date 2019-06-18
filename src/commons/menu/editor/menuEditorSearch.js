@@ -168,9 +168,6 @@ class MenuEditorSearch extends React.Component {
               modal: false
             });
           }}
-          onOpen={()=>{
-            console.log("onOpen");
-          }}
           open={this.state.modal===true}
           size='mini'
         >
