@@ -132,17 +132,6 @@ class ExplorerSettings extends React.Component {
                     }}
                     radio
                   />
-                  <div
-                    style={{
-                      paddingTop: '0.5em',
-                      paddingLeft: '1.85714em',
-                      color: '#787878'
-                    }
-                    }>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                  </div>
                 </div>
                 <div>
                   <Checkbox
@@ -153,18 +142,6 @@ class ExplorerSettings extends React.Component {
                     }}
                     radio
                   />
-                  <div
-                    style={{
-                      paddingTop: '0.5em',
-                      paddingLeft: '1.85714em',
-                      color: '#787878'
-                    }
-                    }
-                  >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                  </div>
                 </div>
 
 
@@ -177,18 +154,6 @@ class ExplorerSettings extends React.Component {
                     }}
                     radio
                   />
-                  <div
-                    style={{
-                      paddingTop: '0.5em',
-                      paddingLeft: '1.85714em',
-                      color: '#787878'
-                    }
-                    }
-                  >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                  </div>
                 </div>
                 <div>
                   <Checkbox
@@ -199,18 +164,6 @@ class ExplorerSettings extends React.Component {
                     }}
                     radio
                   />
-                  <div
-                    style={{
-                      paddingTop: '0.5em',
-                      paddingLeft: '1.85714em',
-                      color: '#787878'
-                    }
-                    }
-                  >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                  </div>
                 </div>
 
 
@@ -223,18 +176,6 @@ class ExplorerSettings extends React.Component {
                     }}
                     radio
                   />
-                  <div
-                    style={{
-                      paddingTop: '0.5em',
-                      paddingLeft: '1.85714em',
-                      color: '#787878'
-                    }
-                    }
-                  >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                  </div>
                 </div>
                 <div>
                   <Checkbox
@@ -245,18 +186,6 @@ class ExplorerSettings extends React.Component {
                     }}
                     radio
                   />
-                  <div
-                    style={{
-                      paddingTop: '0.5em',
-                      paddingLeft: '1.85714em',
-                      color: '#787878'
-                    }
-                    }
-                  >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                    Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                  </div>
                 </div>
 
               </Segment>
@@ -1107,17 +1036,6 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
-                <div
-                  style={{
-                    paddingTop: '0.5em',
-                    paddingLeft: '1.85714em',
-                    color: '#787878'
-                  }}
-                >
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent cursus mauris a nisi tristique, quis euismod sapien porttitor.
-                  Class aptent taciti sociosqu ad litora torquent per conubia nostra
-                </div>
               </Segment>
 
             </Segment.Group>

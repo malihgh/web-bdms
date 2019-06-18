@@ -139,7 +139,14 @@ class App extends React.Component {
                     {
                       this.props.user.data === null?
                         <span>
-                          Please login <Icon
+                          <span
+                            className='linker link'
+                            onClick={()=>{
+                              this.props.loadUser();
+                            }}
+                          >
+                            Please login
+                          </span> <Icon
                             name='lock'
                             size='small'
                           />

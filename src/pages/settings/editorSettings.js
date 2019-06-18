@@ -504,70 +504,75 @@ class EditorSettings extends React.Component {
             </Segment.Group>
             : <Divider />
         }
-        <div
-          style={{
-            flexDirection: 'row',
-            display: 'flex'
-          }}
-        >
-          <Header
-            as='h3'
-            className='link'
-            onClick={() => {
-              this.setState({
-                "fields": !this.state.fields
-              });
-            }}
-            style={{
-              margin: '0px'
-            }}
-          >
-            Stratigraphy fields
-          </Header>
-          <div
-            style={{
-              flex: 1,
-              textAlign: 'right'
-            }}
-          >
-            <Button
-              color='red'
-              onClick={() => {
-                this.setState({
-                  "fields": !this.state.fields
-                });
-              }}
-              size='small'
-            >
+        {
+          this.props.user.data.admin === true?
+            <div>
+              <div
+                style={{
+                  flexDirection: 'row',
+                  display: 'flex'
+                }}
+              >
+                <Header
+                  as='h3'
+                  className='link'
+                  onClick={() => {
+                    this.setState({
+                      "fields": !this.state.fields
+                    });
+                  }}
+                  style={{
+                    margin: '0px'
+                  }}
+                >
+                  Stratigraphy fields
+                </Header>
+                <div
+                  style={{
+                    flex: 1,
+                    textAlign: 'right'
+                  }}
+                >
+                  <Button
+                    color='red'
+                    onClick={() => {
+                      this.setState({
+                        "fields": !this.state.fields
+                      });
+                    }}
+                    size='small'
+                  >
+                    {
+                      this.state.fields === true ?
+                        t('common:collapse') : t('common:expand')
+                    }
+                  </Button>
+                </div>
+              </div>
               {
                 this.state.fields === true ?
-                  t('common:collapse') : t('common:expand')
+                  <Segment.Group>
+                    {
+                      fields.map( (field, idx) => (
+                        <Segment
+                          key={'bms-es-fds-'+idx}
+                        >
+                          <Checkbox
+                            checked={
+                              this.isVisible(field.name)
+                            }
+                            label={t(`layer_form:${field.name}`)}
+                            onChange={(e, d) => {
+                              toggleField(field.name, d.checked);
+                            }}
+                          />
+                        </Segment>
+                      ))
+                    }
+                  </Segment.Group>
+                  : <Divider />
               }
-            </Button>
-          </div>
-        </div>
-        {
-          this.state.fields === true ?
-            <Segment.Group>
-              {
-                fields.map( (field, idx) => (
-                  <Segment
-                    key={'bms-es-fds-'+idx}
-                  >
-                    <Checkbox
-                      checked={
-                        this.isVisible(field.name)
-                      }
-                      label={t(`layer_form:${field.name}`)}
-                      onChange={(e, d) => {
-                        toggleField(field.name, d.checked);
-                      }}
-                    />
-                  </Segment>
-                ))
-              }
-            </Segment.Group>
-            : <Divider />
+            </div>: null
         }
       </div>
     );
@@ -590,7 +595,8 @@ EditorSettings.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     setting: state.setting,
-    codes: state.core_domain_list
+    codes: state.core_domain_list,
+    user: state.core_user
   };
 };
 

@@ -31,7 +31,8 @@ class MenuEditorSearch extends React.Component {
       delete: false,
       scroller: false,
       modal: false,
-      workgroup: this.props.user.data.workgroups.length === 1?
+      workgroup: this.props.user.data.workgroups !== null
+        && this.props.user.data.workgroups.length > 0?
         this.props.user.data.workgroups[0].id: null
     };
   }
@@ -201,7 +202,8 @@ class MenuEditorSearch extends React.Component {
                       ))
                     }
                     simple
-                    text='Dropdown'
+                    value={this.state.workgroup}
+                    // text={this.props.user.data.workgroups[0].workgroup}
                   />
               }
             </p>

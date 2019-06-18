@@ -15,6 +15,7 @@ import {
 
 import {
   createUser,
+  updateUser,
   createWorkgroup,
   setRole,
   listUsers,
@@ -73,7 +74,7 @@ class AdminSettings extends React.Component {
     }, () => {
       if (
         uwg !== undefined
-        && uwg.roles.indexOf('VIEW') >= 0
+        && uwg.roles.indexOf(role) >= 0
       ) {
         // Remove role
         setRole(
@@ -119,317 +120,351 @@ class AdminSettings extends React.Component {
       <div
         style={{
           padding: '2em',
-          flex: 1
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'row'
         }}
       >
-        <Header
-          as='h3'
-          // className='link'
-          onClick={() => {
-            this.setState({
-              "users": !this.state.users
-            });
+        <div
+          style={{
+            flex: '1 1 100%',
+            marginRight: '0.5em'
           }}
         >
-          Users
-        </Header>
-        <Form
-          autoComplete='off'
-        >
-          <Form.Group
-            autoComplete='off'
-            widths='equal'
-          >
-            <Form.Input
-              fluid
-              label='Username'
-              onChange={(e)=>{
-                this.setState({
-                  uUsername: e.target.value
-                });
-              }}
-              placeholder='Use the email'
-              value={this.state.uUsername}
-            />
-            <Form.Input
-              autoComplete='off'
-              fluid
-              label='Password'
-              onChange={(e)=>{
-                this.setState({
-                  uPassword: e.target.value
-                });
-              }}
-              placeholder='Password'
-              type='password'
-              value={this.state.uPassword}
-            />
-            <Form.Input
-              fluid
-              label='First name'
-              onChange={(e)=>{
-                this.setState({
-                  uFirstname: e.target.value
-                });
-              }}
-              placeholder='First name'
-              value={this.state.uFirstname}
-            />
-            <Form.Input
-              autoComplete='off'
-              fluid
-              label='Last name'
-              onChange={(e)=>{
-                this.setState({
-                  uLastname: e.target.value
-                });
-              }}
-              placeholder='Last name'
-              value={this.state.uLastname}
-            />
-          </Form.Group>
-          <Form.Button
-            onClick={()=>{
-              createUser(
-                this.state.uUsername,
-                this.state.uPassword,
-                this.state.uFirstname,
-                '',
-                this.state.uLastname
-              ).then((response)=>{
-                this.props.listUsers();
+          <Header
+            as='h3'
+            // className='link'
+            onClick={() => {
+              this.setState({
+                "users": !this.state.users
               });
             }}
           >
-            {
-              this.state.uId !== null?
-                "Update": "Add"
-            }
-          </Form.Button>
-        </Form>
+            Users
+          </Header>
+          <Form
+            autoComplete='off'
+          >
+            <Form.Group
+              autoComplete='off'
+              widths='equal'
+            >
+              <Form.Input
+                fluid
+                label='Username'
+                onChange={(e)=>{
+                  this.setState({
+                    uUsername: e.target.value
+                  });
+                }}
+                placeholder='Use the email'
+                value={this.state.uUsername}
+              />
+              <Form.Input
+                autoComplete='off'
+                fluid
+                label='Password'
+                onChange={(e)=>{
+                  this.setState({
+                    uPassword: e.target.value
+                  });
+                }}
+                placeholder='Password'
+                type='password'
+                value={this.state.uPassword}
+              />
+              <Form.Input
+                fluid
+                label='First name'
+                onChange={(e)=>{
+                  this.setState({
+                    uFirstname: e.target.value
+                  });
+                }}
+                placeholder='First name'
+                value={this.state.uFirstname}
+              />
+              <Form.Input
+                autoComplete='off'
+                fluid
+                label='Last name'
+                onChange={(e)=>{
+                  this.setState({
+                    uLastname: e.target.value
+                  });
+                }}
+                placeholder='Last name'
+                value={this.state.uLastname}
+              />
+            </Form.Group>
+            <Form.Button
+              onClick={()=>{
+                if (this.state.uPassword === ''){
+                  alert("Password empty");
+                } else {
+                  if (this.state.uId === null){
+                    createUser(
+                      this.state.uUsername,
+                      this.state.uPassword,
+                      this.state.uFirstname,
+                      '',
+                      this.state.uLastname
+                    ).then(()=>{
+                      this.props.listUsers();
+                    });
+                  } else {
+                    updateUser(
+                      this.state.uId,
+                      this.state.uUsername,
+                      this.state.uPassword,
+                      this.state.uFirstname,
+                      '',
+                      this.state.uLastname
+                    ).then(()=>{
+                      this.props.listUsers();
+                    });
+                  }
+                }
+              }}
+            >
+              {
+                this.state.uId !== null?
+                  "Update": "Add"
+              }
+            </Form.Button>
+          </Form>
+          <div
+            style={{
+              marginTop: '1em',
+              maxHeight: '400px',
+              overflowY: 'auto',
+            }}
+          >
+            <Table
+              celled
+              compact
+              selectable
+              size='small'
+            >
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Username</Table.HeaderCell>
+                  <Table.HeaderCell>Firstname</Table.HeaderCell>
+                  <Table.HeaderCell>Lastname</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {
+                  this.props.users.data.map((user, idx)=>(
+                    <Table.Row
+                      active={
+                        this.state.uId === user.id
+                      }
+                      key={"stng-users-"+user.id}
+                      onClick={()=>{
+                        if (this.state.uId === user.id){
+                          this.setState({
+                            "user": null,
+                            "uId": null,
+                            "uUsername": "", 
+                            "uPassword": "", 
+                            "uFirstname": "", 
+                            "uLastname":""
+                          });
+                        } else {
+                          this.setState({
+                            "user": user,
+                            "uId": user.id,
+                            "uUsername": user.username, 
+                            "uPassword": "", 
+                            "uFirstname": user.firstname, 
+                            "uLastname": user.lastname
+                          });
+                        }
+                      }}
+                    >
+                      <Table.Cell>{user.username}</Table.Cell>
+                      <Table.Cell>{user.firstname}</Table.Cell>
+                      <Table.Cell>{user.lastname}</Table.Cell>
+                    </Table.Row>
+                  ))
+                }
+              </Table.Body>
+            </Table>
+          </div>
+
+        </div>
         <div
           style={{
-            marginTop: '1em',
-            maxHeight: '400px',
-            overflowY: 'auto',
+            flex: '1 1 100%',
+            marginLeft: '0.5em'
           }}
         >
-          <Table
-            celled
-            selectable
-          >
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Username</Table.HeaderCell>
-                <Table.HeaderCell>Firstname</Table.HeaderCell>
-                <Table.HeaderCell>Lastname</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {
-                this.props.users.data.map((user, idx)=>(
-                  <Table.Row
-                    active={
-                      this.state.uId === user.id
-                    }
-                    key={"stng-users-"+user.id}
-                    onClick={()=>{
-                      if (this.state.uId === user.id){
-                        this.setState({
-                          "user": null,
-                          "uId": null,
-                          "uUsername": "", 
-                          "uPassword": "", 
-                          "uFirstname": "", 
-                          "uLastname":""
-                        });
-                      } else {
-                        this.setState({
-                          "user": user,
-                          "uId": user.id,
-                          "uUsername": user.username, 
-                          "uPassword": "", 
-                          "uFirstname": user.firstname, 
-                          "uLastname": user.lastname
-                        });
-                      }
-                    }}
-                  >
-                    <Table.Cell>{user.username}</Table.Cell>
-                    <Table.Cell>{user.firstname}</Table.Cell>
-                    <Table.Cell>{user.lastname}</Table.Cell>
-                  </Table.Row>
-                ))
-              }
-            </Table.Body>
-          </Table>
-        </div>
-
-        {
-          this.state.user !== null?
-            <div
-              style={{
-                marginTop: '1em'
-              }}
-            > 
-              <Header
-                as='h3'
-                className='link'
-                // onClick={() => {
-                //   this.setState({
-                //     "users": !this.state.users
-                //   });
-                // }}
-              >
-                Workgroups
-              </Header>
-              <Form
-                autoComplete='off'
-              >
-                <Form.Group
-                  autoComplete='off'
-                  widths='equal'
+          {
+            this.state.user !== null?
+              <div> 
+                <Header
+                  as='h3'
+                  className='link'
+                  // onClick={() => {
+                  //   this.setState({
+                  //     "users": !this.state.users
+                  //   });
+                  // }}
                 >
-                  <Form.Input
-                    fluid
-                    label='Name'
-                    onChange={(e)=>{
-                      this.setState({
-                        wName: e.target.value
+                  Workgroups
+                </Header>
+                <Form
+                  autoComplete='off'
+                >
+                  <Form.Group
+                    autoComplete='off'
+                    widths='equal'
+                  >
+                    <Form.Input
+                      fluid
+                      label='Name'
+                      onChange={(e)=>{
+                        this.setState({
+                          wName: e.target.value
+                        });
+                      }}
+                      placeholder='Use the email'
+                      value={this.state.wName}
+                    />
+                  </Form.Group>
+                  <Form.Button
+                    onClick={()=>{
+                      createWorkgroup(
+                        this.state.wName
+                      ).then((response)=>{
+                        this.props.listWorkgroups();
                       });
                     }}
-                    placeholder='Use the email'
-                    value={this.state.wName}
-                  />
-                </Form.Group>
-                <Form.Button
-                  onClick={()=>{
-                    createWorkgroup(
-                      this.state.wName
-                    ).then((response)=>{
-                      this.props.listWorkgroups();
-                    });
+                  >
+                    Add
+                  </Form.Button>
+                </Form>
+                <div
+                  style={{
+                    marginTop: '1em',
+                    maxHeight: '400px',
+                    overflowY: 'auto',
                   }}
                 >
-                  Add
-                </Form.Button>
-              </Form>
-              <div
-                style={{
-                  marginTop: '1em',
-                  maxHeight: '400px',
-                  overflowY: 'auto',
-                }}
-              >
-                <Table
-                  celled
-                >
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>Workgroup</Table.HeaderCell>
-                      <Table.HeaderCell>Roles</Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                    {
-                      this.props.workgroups.data.map((workgroup, idx)=>(
-                        <Table.Row
-                          key={"stng-users-"+workgroup.id}
-                          // onClick={()=>{
-                          //   this.setState({
-                          //     "wId": workgroup.id,
-                          //     "wName": workgroup.name
-                          //   });
-                          // }}
-                        >
-                          <Table.Cell>
-                            {workgroup.name}
-                          </Table.Cell>
-                          <Table.Cell>
-                            {(()=>{
-                              const uwg = this.state.user.workgroups.find(
-                                w => w.id === workgroup.id
-                              );
-                              console.log("Found: ", uwg, this.state.user);
-                              return (
-                                <Form>
-                                  <Form.Group
-                                    autoComplete='off'
-                                    widths='equal'
-                                  >
-                                    <Form.Field>
-                                      <Checkbox
-                                        checked={
-                                          uwg !== undefined
-                                          && uwg.roles.indexOf('VIEW') >= 0
-                                        }
-                                        label='VIEWER'
-                                        onChange={(e, d) => {
-                                          this.setRole(uwg, workgroup, 'VIEW');
-                                        }}
-                                      />
-                                    </Form.Field>
-                                    <Form.Field>
-                                      <Checkbox
-                                        checked={
-                                          uwg !== undefined
-                                          && uwg.roles.indexOf('EDIT') >= 0
-                                        }
-                                        label='EDITOR'
-                                        onChange={(e, d) => {
-                                          this.setRole(uwg, workgroup, 'EDIT');
-                                        }}
-                                      />
-                                    </Form.Field>
-                                    <Form.Field>
-                                      <Checkbox
-                                        checked={
-                                          uwg !== undefined
-                                          && uwg.roles.indexOf('CONTROL') >= 0
-                                        }
-                                        label='CONTROLLER'
-                                        onChange={(e, d) => {
-                                          this.setRole(uwg, workgroup, 'CONTROL');
-                                        }}
-                                      />
-                                    </Form.Field>
-                                    <Form.Field>
-                                      <Checkbox
-                                        checked={
-                                          uwg !== undefined
-                                          && uwg.roles.indexOf('VALID') >= 0
-                                        }
-                                        label='VALIDATOR'
-                                        onChange={(e, d) => {
-                                          this.setRole(uwg, workgroup, 'VALID');
-                                        }}
-                                      />
-                                    </Form.Field>
-                                    <Form.Field>
-                                      <Checkbox
-                                        checked={
-                                          uwg !== undefined
-                                          && uwg.roles.indexOf('PUBLIC') >= 0
-                                        }
-                                        label='PUBBLISHER'
-                                        onChange={(e, d) => {
-                                          this.setRole(uwg, workgroup, 'PUBLIC');
-                                        }}
-                                      />
-                                    </Form.Field>
-                                  </Form.Group>
-                                </Form>
-                              );
-                            })()}
-                          </Table.Cell>
-                        </Table.Row>
-                      ))
-                    }
-                  </Table.Body>
-                </Table>
-              </div>
-            </div>: null
-        }
+                  <Table
+                    celled
+                    compact
+                    size='small'
+                  >
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell>Workgroup</Table.HeaderCell>
+                        <Table.HeaderCell>Roles</Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                      {
+                        this.props.workgroups.data.map((workgroup, idx)=>(
+                          <Table.Row
+                            key={"stng-users-"+workgroup.id}
+                            // onClick={()=>{
+                            //   this.setState({
+                            //     "wId": workgroup.id,
+                            //     "wName": workgroup.name
+                            //   });
+                            // }}
+                          >
+                            <Table.Cell>
+                              {workgroup.name}
+                            </Table.Cell>
+                            <Table.Cell>
+                              {(()=>{
+                                const uwg = this.state.user.workgroups.find(
+                                  w => w.id === workgroup.id
+                                );
+                                console.log("Found: ", uwg, this.state.user);
+                                return (
+                                  <Form>
+                                    <Form.Group
+                                      autoComplete='off'
+                                      widths='equal'
+                                    >
+                                      <Form.Field>
+                                        <Checkbox
+                                          checked={
+                                            uwg !== undefined
+                                            && uwg.roles.indexOf('VIEW') >= 0
+                                          }
+                                          label='VIEWER'
+                                          onChange={(e, d) => {
+                                            this.setRole(uwg, workgroup, 'VIEW');
+                                          }}
+                                        />
+                                      </Form.Field>
+                                      <Form.Field>
+                                        <Checkbox
+                                          checked={
+                                            uwg !== undefined
+                                            && uwg.roles.indexOf('EDIT') >= 0
+                                          }
+                                          label='EDITOR'
+                                          onChange={(e, d) => {
+                                            this.setRole(uwg, workgroup, 'EDIT');
+                                          }}
+                                        />
+                                      </Form.Field>
+                                      <Form.Field>
+                                        <Checkbox
+                                          checked={
+                                            uwg !== undefined
+                                            && uwg.roles.indexOf('CONTROL') >= 0
+                                          }
+                                          label='CONTROLLER'
+                                          onChange={(e, d) => {
+                                            this.setRole(uwg, workgroup, 'CONTROL');
+                                          }}
+                                        />
+                                      </Form.Field>
+                                      <Form.Field>
+                                        <Checkbox
+                                          checked={
+                                            uwg !== undefined
+                                            && uwg.roles.indexOf('VALID') >= 0
+                                          }
+                                          label='VALIDATOR'
+                                          onChange={(e, d) => {
+                                            this.setRole(uwg, workgroup, 'VALID');
+                                          }}
+                                        />
+                                      </Form.Field>
+                                      <Form.Field>
+                                        <Checkbox
+                                          checked={
+                                            uwg !== undefined
+                                            && uwg.roles.indexOf('PUBLIC') >= 0
+                                          }
+                                          label='PUBBLISHER'
+                                          onChange={(e, d) => {
+                                            this.setRole(uwg, workgroup, 'PUBLIC');
+                                          }}
+                                        />
+                                      </Form.Field>
+                                    </Form.Group>
+                                  </Form>
+                                );
+                              })()}
+                            </Table.Cell>
+                          </Table.Row>
+                        ))
+                      }
+                    </Table.Body>
+                  </Table>
+                </div>
+              </div>: null
+          }
+        </div>
+        
       </div>
     );
   }
