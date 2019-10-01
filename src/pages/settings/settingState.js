@@ -7,6 +7,24 @@ const initialState = {
   fcnt: 0, // fetch counter
   scrollbar: '10px',
   page: 0,
+  selectedWMS: 'https://wms.geo.admin.ch?request=getCapabilities&service=WMS',
+  WMS: [
+    {
+      "key": "https://wms.geo.admin.ch?request=getCapabilities&service=WMS",
+      "text": "https://wms.geo.admin.ch?request=getCapabilities&service=WMS",
+      "value": "https://wms.geo.admin.ch?request=getCapabilities&service=WMS"
+    },
+    {
+      "key": "https://wms-inspire.geo.admin.ch/?SERVICE=WMS&request=getCapabilities",
+      "text": "https://wms-inspire.geo.admin.ch/?SERVICE=WMS&request=getCapabilities",
+      "value": "https://wms-inspire.geo.admin.ch/?SERVICE=WMS&request=getCapabilities"
+    },
+    // {
+    //   "key": "https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml",
+    //   "text": "https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml",
+    //   "value": "https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml"
+    // }
+  ],
   data: {
     boreholetable: {
       orderby: null,
@@ -170,6 +188,26 @@ const setting = (state = initialState, action) => {
       return {
         ...state,
         page: action.page
+      };
+    }
+    case 'WMS_ADDED': {
+      return {
+        ...state,
+        selectedWMS: action.url,
+        WMS: [
+          {
+            "key": action.url,
+            "text": action.url,
+            "value": action.url
+          },
+          ...state.WMS
+        ]
+      };
+    }
+    case 'WMS_SELECTED': {
+      return {
+        ...state,
+        selectedWMS: action.url
       };
     }
     default:
