@@ -8,6 +8,7 @@ import {
   Button,
   Checkbox,
   Divider,
+  Dropdown,
   Header,
   Input,
   // Icon,
@@ -21,9 +22,9 @@ import {
 } from '@ist-supsi/bmsjs';
 
 
-// import WMTSCapabilities from 'ol/format/WMTSCapabilities';
+import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
-// import { optionsFromCapabilities } from 'ol/source/WMTS';
+import { optionsFromCapabilities } from 'ol/source/WMTS';
 import { register } from 'ol/proj/proj4';
 import proj4 from 'proj4';
 const projections = {
@@ -238,6 +239,7 @@ class ExplorerSettings extends React.Component {
           this.state.map === true ?
             <Segment.Group>
               <Segment>
+
                 <div
                   style={{
                     display: 'flex',
@@ -262,82 +264,145 @@ class ExplorerSettings extends React.Component {
                           flex: 1
                         }}
                       >
-                        <Button
-                          compact
-                          loading={this.state.wmsFetch === true}
-                          onClick={()=>{
+                        <Dropdown
+                          additionLabel='Add WMS: '
+                          allowAdditions
+                          fluid
+                          onAddItem={(e, { value }) => {
                             this.setState({
-                              wmsFetch: true,
+                              wmsFetch: false,
                               wms: null,
                               wmts: null
                             }, () => {
-                              getWms(
-                                i18n.language
-                              ).then((response) => {
-                                const wms =  (
-                                  new WMSCapabilities()
-                                ).read(response.data);
-                                this.setState({
-                                  wmsFetch: false,
-                                  wms: wms
-                                });
-                              });
-                              // getWmts(i18n.language).then((response) => {
-                              //   this.setState({
-                              //     wmtsFetch: false,
-                              //     wmts: (
-                              //       new WMTSCapabilities()
-                              //     ).read(response.data)
-                              //   }, () => {
-                              //     console.log(this.state.wmts);
-                              //   });
-                              // }).catch((error) => {
-                              //   console.log(error);
-                              // });
+                              this.props.handleAddItem(value);
                             });
                           }}
-                          secondary
-                          size='mini'
-                        >
-                          Load
-                        </Button>
-                        &nbsp; Swisstopo WMTS Layers
+                          onChange={(e, { value }) => {
+                            this.setState({
+                              wmsFetch: false,
+                              wms: null,
+                              wmts: null
+                            }, () => {
+                              this.props.handleOnChange(value);
+                            });
+                          }}
+                          options={setting.WMS}
+                          placeholder='Select a WMS'
+                          search
+                          selection
+                          value={setting.selectedWMS}
+                        />
                       </div>
-                      {
-                        this.state.wmts !== null?
-                          <div>
-                            <Input
-                              icon='search'
-                              onChange={(e) => {
+                      <Button
+                        compact
+                        loading={this.state.wmsFetch === true}
+                        onClick={()=>{
+                          this.setState({
+                            wmsFetch: true,
+                            wms: null,
+                            wmts: null
+                          }, () => {
+                            getWms(
+                              i18n.language,
+                              setting.selectedWMS
+                            ).then((response) => {
+                              // Check if WMS or WMTS
+                              let data = response.data;
+                              if (
+                                /<(WMT_MS_Capabilities|WMS_Capabilities)/.test(data)
+                              ) {
+                                const wms =  (
+                                  new WMSCapabilities()
+                                ).read(data);
+                                console.log(wms);
                                 this.setState({
-                                  'searchWmts': e.target.value.toLowerCase()
+                                  wmsFetch: false,
+                                  wms: wms,
+                                  wmts: null
                                 });
-                              }}
-                              placeholder='Search...'
-                            />
-                          </div>: null
-                      }
-                      {
-                        this.state.wms !== null?
-                          <div>
-                            <Input
-                              icon='search'
-                              onChange={(e) => {
+                              // } else if (
+                              //   /<Capabilities/.test(data)
+                              // ) {
+                              //   console.log('WMTS');
+                              //   const wmts =  (
+                              //     new WMTSCapabilities()
+                              //   ).read(data);
+                              //   console.log(wmts);
+                              //   this.setState({
+                              //     wmsFetch: false,
+                              //     wms: null,
+                              //     wmts: wmts
+                              //   });
+                              } else {
                                 this.setState({
-                                  'searchWms': e.target.value.toLowerCase()
+                                  wmsFetch: false,
+                                  wms: null,
+                                  wmts: null
                                 });
-                              }}
-                              placeholder='Search...'
-                            />
-                          </div>: null
-                      }
+                                alert("Sorry, only Web Map Services (WMS) are supported");
+                              }
+                            });
+                            // getWmts(i18n.language).then((response) => {
+                            //   this.setState({
+                            //     wmtsFetch: false,
+                            //     wmts: (
+                            //       new WMTSCapabilities()
+                            //     ).read(response.data)
+                            //   }, () => {
+                            //     console.log(this.state.wmts);
+                            //   });
+                            // }).catch((error) => {
+                            //   console.log(error);
+                            // });
+                          });
+                        }}
+                        secondary
+                        style={{
+                          marginLeft: '1em'
+                        }}
+                        // size='mini'
+                      >
+                        Load
+                      </Button>
                     </div>
+                    {
+                      this.state.wmts !== null?
+                        <div>
+                          <Input
+                            icon='search'
+                            onChange={(e) => {
+                              this.setState({
+                                'searchWmts': e.target.value.toLowerCase()
+                              });
+                            }}
+                            placeholder='Search...'
+                          />
+                        </div>: null
+                    }
+                    {
+                      this.state.wms !== null?
+                        <div>
+                          <Input
+                            icon='search'
+                            onChange={(e) => {
+                              this.setState({
+                                'searchWms': e.target.value.toLowerCase()
+                              });
+                            }}
+                            placeholder='Search...'
+                          />
+                        </div>: null
+                    }
                     <div
                       style={{
                         maxHeight: '300px',
                         overflowY: 'auto',
-                        border: this.state.wmts === null?
-                          null: 'thin solid #cecece'
+                        border: this.state.wms === null
+                        && this.state.wmts === null?
+                          null: 'thin solid #cecece',
+                        marginTop: this.state.wms === null
+                        && this.state.wmts === null?
+                          null: '1em'
                       }}
                     >
                       {
@@ -413,6 +478,7 @@ class ExplorerSettings extends React.Component {
                                           } else {
                                             addExplorerMap(
                                               layer,
+                                              'WMS',
                                               this.state.wms
                                             );
                                           }
@@ -520,6 +586,7 @@ class ExplorerSettings extends React.Component {
                                         } else {
                                           addExplorerMap(
                                             layer,
+                                            'WMTS',
                                             this.state.wmts
                                           );
                                         }
@@ -651,7 +718,9 @@ class ExplorerSettings extends React.Component {
                                     ){
                                       rmExplorerMap(layer);
                                     } else {
-                                      addExplorerMap(layer, this.state.wmts);
+                                      addExplorerMap(
+                                        layer, 'WMTS', this.state.wmts
+                                      );
                                     }
                                   }}
                                   size='mini'
@@ -1049,7 +1118,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, state) => {
   return {
     dispatch: dispatch,
     toggleFilter: (filter, enabled) => {
@@ -1058,70 +1127,83 @@ const mapDispatchToProps = (dispatch) => {
     patchAppearance: (mode) => {
       dispatch(patchSettings('appearance.explorer', mode));
     },
-    addExplorerMap: (layer, result) => {
+    addExplorerMap: (layer, type, result) => {
 
-      dispatch(
-        patchSettings(
-          'map.explorer',
-          {
-            Identifier: layer.Name,
-            Abstract: layer.Abstract,
-            Title: layer.Title,
-            type: 'WMS'
-          },
-          layer.Name
-        )
-      );
-
-      /*
-      // WMTS
-      const conf = optionsFromCapabilities(result, {
-        layer: layer.Identifier,
-        // projection: 'EPSG:2056'
-      });
-      console.log(conf);
-      dispatch(
-        patchSettings(
-          'map.explorer',
-          {
-            Identifier: layer.Identifier,
-            Abstract: layer.Abstract,
-            Title: layer.Title,
-            type: 'WMTS',
-            conf: {
-              ...conf,
-              projection: {
-                code: conf.projection.code_,
-                units: conf.projection.units_,
-                extent: conf.projection.extent_,
-                axisOrientation: conf.projection.axisOrientation_,
-                global: conf.projection.global_,
-                metersPerUnit: conf.projection.metersPerUnit_,
-                worldExtent: conf.projection.worldExtent_
-              },
-              tileGrid: {
-                extent: conf.tileGrid.extent_,
-                origin: conf.tileGrid.origin_,
-                origins: conf.tileGrid.origins_,
-                resolutions: conf.tileGrid.resolutions_,
-                matrixIds: conf.tileGrid.matrixIds_,
-                // sizes: conf.tileGrid.sizes,
-                tileSize: conf.tileGrid.tileSize_,
-                tileSizes: conf.tileGrid.tileSizes_,
-                // widths: conf.tileGrid.widths
+      if (type === 'WMS') {
+        dispatch(
+          patchSettings(
+            'map.explorer',
+            {
+              Identifier: layer.Name,
+              Abstract: layer.Abstract,
+              Title: layer.Title,
+              type: 'WMS',
+              url: result.Service.OnlineResource
+            },
+            layer.Name
+          )
+        );
+      } else if (type === 'WMTS'){
+        const conf = optionsFromCapabilities(result, {
+          layer: layer.Identifier,
+          // projection: 'EPSG:2056'
+        });
+        console.log(conf);
+        dispatch(
+          patchSettings(
+            'map.explorer',
+            {
+              Identifier: layer.Identifier,
+              Abstract: layer.Abstract,
+              Title: layer.Title,
+              type: 'WMTS',
+              conf: {
+                ...conf,
+                projection: {
+                  code: conf.projection.code_,
+                  units: conf.projection.units_,
+                  extent: conf.projection.extent_,
+                  axisOrientation: conf.projection.axisOrientation_,
+                  global: conf.projection.global_,
+                  metersPerUnit: conf.projection.metersPerUnit_,
+                  worldExtent: conf.projection.worldExtent_
+                },
+                tileGrid: {
+                  extent: conf.tileGrid.extent_,
+                  origin: conf.tileGrid.origin_,
+                  origins: conf.tileGrid.origins_,
+                  resolutions: conf.tileGrid.resolutions_,
+                  matrixIds: conf.tileGrid.matrixIds_,
+                  // sizes: conf.tileGrid.sizes,
+                  tileSize: conf.tileGrid.tileSize_,
+                  tileSizes: conf.tileGrid.tileSizes_,
+                  // widths: conf.tileGrid.widths
+                }
               }
-            }
-          },
-          layer.Identifier
-        )
-      );
-      */
+            },
+            layer.Identifier
+          )
+        );
+      }
     },
     rmExplorerMap: (config) => {
+      console.log(config);
       dispatch(patchSettings('map.explorer', null, config.Identifier));
     },
     patchSettings: (filter, enabled) => {
       dispatch(patchSettings(`filter.${filter}`, enabled));
+    },
+    handleAddItem: (value) => {
+      dispatch({
+        type: 'WMS_ADDED',
+        url: value
+      });
+    },
+    handleOnChange: (value) => {
+      dispatch({
+        type: 'WMS_SELECTED',
+        url: value
+      });
     }
   };
 };

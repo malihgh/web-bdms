@@ -124,7 +124,6 @@ class StratigraphyForm extends React.Component {
                       this.state.layer_kind
                     ).then(
                       function(response) {
-                        // debugger;
                         if (response.data.success){
                           // let bh = response.data.data
                           this.setState({

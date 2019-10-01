@@ -1443,7 +1443,6 @@ class BoreholeForm extends React.Component {
                               borehole.id
                             ).then(
                               (response) => {
-                                debugger;
                                 if (response.data.success) {
                                   // this.loadOrCreate(borehole.id);
                                   this.setState({

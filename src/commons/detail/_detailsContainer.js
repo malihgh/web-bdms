@@ -27,7 +27,6 @@ class DetailsContainer extends React.Component {
     const {
       match
     } = this.props;
-    debugger;
     if (!_.isNil(match.params.id)){
       this.props.getBorehole(
         parseInt(match.params.id, 10)
@@ -42,7 +41,6 @@ class DetailsContainer extends React.Component {
       detail,
       match
     } = this.props;
-    debugger;
     if (
       (
         detail.borehole !== null
