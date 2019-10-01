@@ -30,6 +30,14 @@ const initialState = {
       orderby: null,
       direction: null
     },
+    eboreholetable: {
+      orderby: null,
+      direction: null
+    },
+    map: {
+      explorer: {},
+      editor: {}
+    },
     appearance: {
       explorer: 'mode-1'
     },
@@ -141,13 +149,19 @@ const setting = (state = initialState, action) => {
         return copy;
       }
       case 'PATCH': {
-        const copy = { ...state };
+        const copy = {
+          ...state,
+          isFetching: (
+            action.disableFetching === true? false: true
+          )
+        };
         let path = null;
         if (_.has(action, 'key')){
           path = _.union(
             ['data'],
             action.tree.split('.'),
-            [action.key]
+            Array.isArray(action.key) === true?
+              action.key: [action.key]
           );
         } else {
           path = _.union(
@@ -163,7 +177,28 @@ const setting = (state = initialState, action) => {
           _.set(
             copy, path, action.value
           );
+
+          // if (
+          //   Array.isArray(action.key) === true
+          //   && key[key.length - 1] == 'position'
+          // ) {
+
+          // }
+
+          // isinstance(key, list) and key[-1] == 'position'
         }
+        return copy;
+      }
+      case 'PATCH_OK': {
+        let copy = {
+          ...state,
+          fcnt: (state.fcnt + 1),
+          isFetching: false,
+          rtime: (
+            new Date()
+          ).getTime() - state.rtime,
+          data: _.merge(state.data, action.json.data)
+        };
         return copy;
       }
       default:

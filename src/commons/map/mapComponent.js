@@ -24,6 +24,8 @@ import { defaults as defaultControls } from 'ol/control/util';
 import { click, pointerMove } from 'ol/events/condition';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 
+import MapOverlay from './overlay/mapOverlay';
+
 import { translate } from 'react-i18next';
 
 import {
@@ -32,7 +34,9 @@ import {
 } from '@ist-supsi/bmsjs';
 
 import {
-  Dropdown
+  Button,
+  Dropdown,
+  Icon,
 } from 'semantic-ui-react';
 
 import {
@@ -76,6 +80,7 @@ class MapComponent extends React.Component {
       geologie500: false,
       hover: null,
       featureExtent: [],
+      sidebar: false,
       maps: [
         {
           key: 'nomap',
@@ -103,7 +108,7 @@ class MapComponent extends React.Component {
         //   text: 'Geology'
         // }
       ],
-      overlays: [
+      overlays: [ // todelete
         {
           key: 'nomap',
           value: 'nomap',
@@ -162,6 +167,7 @@ class MapComponent extends React.Component {
       new LayerGroup({
         visible: this.state.basemap === 'colormap',
         name: 'colormap',
+        zIndex: 0,
         layers: [
           new TileLayer({
             minResolution: 2.5,
@@ -202,6 +208,7 @@ class MapComponent extends React.Component {
       new TileLayer({
         visible: this.state.basemap === 'greymap',
         name: 'greymap',
+        zIndex: 1,
         source: new WMTS({
           crossOrigin: 'anonymous',
           attributions: attribution,
@@ -215,6 +222,7 @@ class MapComponent extends React.Component {
       new TileLayer({
         visible: this.state.basemap === 'satellite',
         name: 'satellite',
+        zIndex: 2,
         source: new WMTS({
           crossOrigin: 'anonymous',
           attributions: attribution,
@@ -272,12 +280,14 @@ class MapComponent extends React.Component {
         if (layer.type === 'WMS'){
           this.overlays.push(
             new TileLayer({
-              visible: this.state.basemap === identifier,
+              visible: layer.visibility,
+              opacity: 1 - (layer.transparency/100),
               name: identifier,
               extent: extent,
               source: new TileWMS({
                 // url: 'https://wms.swisstopo.admin.ch',
-                url: 'http://wms0.geo.admin.ch',
+                // url: 'http://wms0.geo.admin.ch',
+                url: layer.url,
                 params: {
                   'LAYERS': layer.Identifier,
                   'TILED': true,
@@ -285,7 +295,8 @@ class MapComponent extends React.Component {
                 },
                 // Countries have transparency, so do not fade tiles:
                 transition: 0
-              })
+              }),
+              zIndex: layer.position + this.layers.length + 1
             })
           );
         } else if (layer.type === 'WMTS'){
@@ -316,6 +327,7 @@ class MapComponent extends React.Component {
         this.points = new VectorSource();
         this.map.addLayer(new VectorLayer({
           name: 'points',
+          zIndex: this.overlays.length + this.layers.length + 1,
           source: this.points,
           style: this.styleFunction.bind(this)
         }));
@@ -363,13 +375,32 @@ class MapComponent extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const {
-      highlighted,
-      filter,
       centerto,
+      filter,
+      highlighted,
       hover,
+      layers,
       zoomto
     } = nextProps;
     let refresh = false;
+
+    // Check overlays apparence
+    const keys = Object.keys(layers);
+    for (const identifier of keys) {
+
+      for (let c = 0, l = this.overlays.length; c < l; c++){
+        const layer = this.overlays[c];
+        if (
+          layer.get('name') !== undefined
+          & layer.get('name') === identifier
+        ) {
+          layer.setVisible(layers[identifier].visibility);
+          layer.setOpacity(1 - (layers[identifier].transparency/100));
+          layer.setZIndex(layers[identifier].position + this.layers.length + 1);
+        }
+      }
+    }
+    
     if (
       this.points !== undefined
       && !_.isEqual(highlighted, this.props.highlighted)
@@ -481,117 +512,6 @@ class MapComponent extends React.Component {
     };
     return [new Style(conf)];
   }
-
-  // loadWmtsCapabilities() {
-  //   console.info("Parsing Swisstopo Capabilities");
-  //   getWmts().then((response) => {
-  //     var result = this.parser.read(response.data);
-
-  //     // console.log(result);
-  //     const layers = [];
-  //     const list = [];
-  //     for (let index = 0; index < result.Contents.Layer.length; index++) {
-  //       const layer = result.Contents.Layer[index];
-  //       if (this.props.layers.hasOwnProperty(layer.Identifier)){
-  //         console.log(
-  //           optionsFromCapabilities(result, {
-  //             layer: layer.Identifier
-  //           }),
-  //           this.props.layers[layer.Identifier].conf
-  //         );
-  //       }
-  //       layers.push(
-  //         new TileLayer({
-  //           visible: false,
-  //           name: layer.Identifier,
-  //           opacity: 1,
-  //           source: new WMTS(
-  //             optionsFromCapabilities(result, {
-  //               layer: layer.Identifier
-  //             })
-  //           )
-  //         })
-  //       );
-  //       list.push(
-  //         {
-  //           key: layer.Identifier,
-  //           value: layer.Identifier,
-  //           text: layer.Title
-  //         }
-  //       );
-  //     }
-  //     this.setState({
-  //       maps: _.union(list, this.state.maps)
-  //     }, () => {
-  //       this.map.getLayers().extend(layers);
-
-  //       this.points = new VectorSource();
-  //       this.map.addLayer(new VectorLayer({
-  //         name: 'points',
-  //         source: this.points,
-  //         style: this.styleFunction.bind(this)
-  //       }));
-
-  //       this.popup = new Overlay({
-  //         position: undefined,
-  //         positioning: 'bottom-center',
-  //         element: document.getElementById('popup-overlay'),
-  //         stopEvent: false
-  //       });
-  //       this.map.addOverlay(this.popup);
-
-  //       // Register map events
-  //       this.map.on('moveend', this.moveEnd);
-
-  //       // On point over interaction
-  //       const selectPointerMove = new Select({
-  //         condition: pointerMove,
-  //         // style: this.styleHover.bind(this)
-  //       });
-  //       selectPointerMove.on('select', this.hover);
-  //       this.map.addInteraction(selectPointerMove);
-
-  //       this.selectClick = new Select({
-  //         condition: click,
-  //         style: this.styleFunction.bind(this)
-  //       });
-  //       this.selectClick.on('select', this.selected);
-  //       this.map.addInteraction(this.selectClick);
-
-  //       getGeojson().then(function (response) {
-  //         if (response.data.success) {
-  //           this.points.addFeatures(
-  //             (
-  //               new GeoJSON()
-  //             ).readFeatures(response.data.data)
-  //           );
-  //           this.map.getView().fit(
-  //             this.points.getExtent()
-  //           );
-  //           this.moveEnd();
-  //         }
-  //       }.bind(this)).catch(function (error) {
-  //         console.log(error);
-  //       });
-  //     });
-      
-  //     /*
-  //     var options = optionsFromCapabilities(result, {
-  //       layer: 'ch.swisstopo.hiks-dufour'
-  //     });
-  //     console.log(options);
-  //     this.map.addLayer(
-  //       new TileLayer({
-  //         name: 'test',
-  //         opacity: 0.5,
-  //         source: new WMTS(options)
-  //       })
-  //     );
-  //     */
-  //   }).catch(function (error) {
-  //     console.log(error);
-  //   });
-  // }
 
   styleFunction(feature, resolution) {
     const {
@@ -785,9 +705,14 @@ class MapComponent extends React.Component {
   }
 
   render() {
+
+    const {
+      t
+    } = this.props;
+
     return (
       <div
-        ref={cnt => this.cnt = cnt}
+        // ref={cnt => this.cnt = cnt}
         // onResize={()=>{
         //   console.info('resize')
         // }}
@@ -797,7 +722,8 @@ class MapComponent extends React.Component {
           padding: '0px',
           flex: '1 1 100%',
           position: 'relative',
-          display: 'flex'
+          display: 'flex',
+          flexDirection: 'row'
           // border: 'thin solid #cccccc'
         }}
       >
@@ -809,56 +735,72 @@ class MapComponent extends React.Component {
             zIndex: '1'
           }}
         >
-          <Dropdown
-            onChange={(ev, data) => {
+          <Button
+            icon
+            onClick={()=>{
               this.setState({
-                basemap: data.value
-              }, (a) => {
-                this.layers.forEach(function (layer) {
-                  // console.log(layer.get('name'), data.value);
-                  if (data.value==='nomap'){
-                    layer.setVisible(false);
-                  } else {
-                    if (
-                      layer.get('name') !== undefined
-                      & layer.get('name') !== 'points'
-                    ) {
-                      if (
-                        layer.get('name') !== undefined
-                        & layer.get('name') === data.value
-                      ) {
-                        layer.setVisible(true);
-                      } else {
-                        layer.setVisible(false);
-                      }
-                    }
-                  }
-                });
+                sidebar: !this.state.sidebar
+              }, ()=>{
+                this.updateDimensions();
               });
             }}
-            options={
-              this.state.maps
-            }
-            search
-            selection
+            secondary
+            size='tiny'
+          >
+            <Icon name='bars' />
+          </Button>
+        </div>
+
+        <div
+          id='map'
+          style={{
+            // width: '100%',
+            // height: '100%',
+            padding: '0px',
+            flex: '1 1 100%',
+            cursor: this.state.hover === null ? null : 'pointer',
+            position: 'relative',
+            boxShadow: 'rgba(0, 0, 0, 0.17) 2px 6px 6px 0px'
+            // border: 'thin solid #cccccc'
+          }}
+        />
+        <div
+          style={{
+            backgroundColor: '#f3f3f3',
+            display: this.state.sidebar === true?
+              'block': 'none',
+            overflowY: 'auto',
+            width: '400px',
+          }}
+        >
+          <div
             style={{
-              minWidth: '10em'
+              padding: '2em 1em 1em 1em'
             }}
-            value={this.state.basemap}
-          />
-          &nbsp;
-          {
-            this.overlays.length === 0?
-              null:
-              <Dropdown
-                onChange={(ev, data) => {
-                  this.setState({
-                    overlay: data.value
-                  }, (a) => {
-                    this.overlays.forEach(function (layer) {
-                      if (data.value==='nomap'){
-                        layer.setVisible(false);
-                      } else {
+          >
+            <div
+              style={{
+                fontWeight: 'bold',
+                paddingBottom: '0.5em'
+              }}
+            >
+              {t('common:background')}
+            </div>
+            <Dropdown
+              fluid
+              onChange={(ev, data) => {
+                this.setState({
+                  basemap: data.value
+                }, (a) => {
+                  this.layers.forEach(function (layer) {
+                    // console.log(layer.get('name'), data.value);
+                    if (data.value==='nomap'){
+                      layer.setVisible(false);
+                    } else {
+                      if (
+                        layer.get('name') !== undefined
+                        & layer.get('name') !== 'points'
+                      ) {
                         if (
                           layer.get('name') !== undefined
                           & layer.get('name') === data.value
@@ -868,33 +810,32 @@ class MapComponent extends React.Component {
                           layer.setVisible(false);
                         }
                       }
-                    });
+                    }
                   });
-                }}
-                options={
-                  this.state.overlays
-                }
-                search
-                selection
-                style={{
-                  minWidth: '10em'
-                }}
-                value={this.state.overlay}
-              />
-          }
+                });
+              }}
+              options={
+                this.state.maps
+              }
+              search
+              selection
+              style={{
+                minWidth: '10em'
+              }}
+              value={this.state.basemap}
+            />
+            <div
+              style={{
+                fontWeight: 'bold',
+                padding: '1em 0px 0.5em 0px'
+              }}
+            >
+              {t('common:overlay')}
+            </div>
+            <MapOverlay />
+            
+          </div>
         </div>
-        <div
-          id='map'
-          style={{
-            // width: '100%',
-            // height: '100%',
-            padding: '0px',
-            flex: '1 1 100%',
-            cursor: this.state.hover === null ? null : 'pointer',
-            position: 'relative'
-            // border: 'thin solid #cccccc'
-          }}
-        />
         <div
           style={{
             display: 'none'
@@ -973,4 +914,4 @@ MapComponent.defaultProps = {
   centerto: null
 };
 
-export default (translate('borehole_form')(MapComponent));
+export default (translate(['borehole_form', 'common'])(MapComponent));

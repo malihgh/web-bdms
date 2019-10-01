@@ -22,7 +22,7 @@ import {
 } from '@ist-supsi/bmsjs';
 
 
-import WMTSCapabilities from 'ol/format/WMTSCapabilities';
+// import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
 import { optionsFromCapabilities } from 'ol/source/WMTS';
 import { register } from 'ol/proj/proj4';
@@ -314,7 +314,6 @@ class ExplorerSettings extends React.Component {
                                 const wms =  (
                                   new WMSCapabilities()
                                 ).read(data);
-                                console.log(wms);
                                 this.setState({
                                   wmsFetch: false,
                                   wms: wms,
@@ -479,7 +478,8 @@ class ExplorerSettings extends React.Component {
                                             addExplorerMap(
                                               layer,
                                               'WMS',
-                                              this.state.wms
+                                              this.state.wms,
+                                              _.values(setting.data.map.explorer).length
                                             );
                                           }
                                         }}
@@ -587,7 +587,8 @@ class ExplorerSettings extends React.Component {
                                           addExplorerMap(
                                             layer,
                                             'WMTS',
-                                            this.state.wmts
+                                            this.state.wmts,
+                                            _.values(setting.data.map.explorer).length
                                           );
                                         }
                                       }}
@@ -1127,7 +1128,7 @@ const mapDispatchToProps = (dispatch, state) => {
     patchAppearance: (mode) => {
       dispatch(patchSettings('appearance.explorer', mode));
     },
-    addExplorerMap: (layer, type, result) => {
+    addExplorerMap: (layer, type, result, position = 0) => {
 
       if (type === 'WMS') {
         dispatch(
@@ -1136,9 +1137,12 @@ const mapDispatchToProps = (dispatch, state) => {
             {
               Identifier: layer.Name,
               Abstract: layer.Abstract,
+              position: position,
               Title: layer.Title,
+              transparency: 0,
               type: 'WMS',
-              url: result.Service.OnlineResource
+              url: result.Service.OnlineResource,
+              visibility: true
             },
             layer.Name
           )
@@ -1148,7 +1152,6 @@ const mapDispatchToProps = (dispatch, state) => {
           layer: layer.Identifier,
           // projection: 'EPSG:2056'
         });
-        console.log(conf);
         dispatch(
           patchSettings(
             'map.explorer',
