@@ -56,6 +56,7 @@ class HomeComponent extends React.Component {
           // border: setting.data.appearance.explorer === 1?
           //   '1px solid #787878': '1px solid #cccccc',
           position: 'relative',
+          overflow: 'hidden',
           zIndex: 1
         }}
       >

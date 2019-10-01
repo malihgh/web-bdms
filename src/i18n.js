@@ -4,6 +4,8 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 let resources = {
   en: {
     common: {
+      "background": "Background",
+      "overlay": "Maps displayed",
       "newBorehole": "New borehole",
       "borehole": "borehole",
       "boreholes": "boreholes",
@@ -196,6 +198,8 @@ let resources = {
   },
   de: {
     common: {
+      "background": "Hintergrund",
+      "overlay": "Dargestellte Karten",
       "newBorehole": "Neue borehole",
       "borehole": "borehole",
       "boreholes": "bohrung",
@@ -387,6 +391,8 @@ let resources = {
   },
   it: {
     common: {
+      "background": "Sfondo",
+      "overlay": "Mappe visualizzate",
       "newBorehole": "Nuova perforazione",
       "borehole": "perforazione",
       "boreholes": "perforazioni",
