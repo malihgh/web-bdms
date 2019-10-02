@@ -42,7 +42,8 @@ class MapOverlayComponent extends React.Component {
             <div
               key={'ovls-' + idx}
               style={{
-                borderBottom: 'thin solid #dcdcdc',
+                borderBottom: idx<len?
+                  'thin solid #dcdcdc': null,
                 padding: '0.5em 0px'
               }}
             >
