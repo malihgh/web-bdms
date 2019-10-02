@@ -1,3 +1,4 @@
+import dataLoaderState from '../pages/settings/dataLoaderState';
 import home from '../pages/home/homeState';
 import checkout from '../pages/checkout/checkoutState';
 import editor from '../pages/editor/editorState';
@@ -9,6 +10,7 @@ import setting from '../pages/settings/settingState';
 import wmts from '../commons/map/mapState';
 
 export const appReducers = {
+  dataLoaderState,
   leftmenu,
   home,
   checkout,
