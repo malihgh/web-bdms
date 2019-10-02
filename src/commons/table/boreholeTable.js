@@ -105,13 +105,13 @@ class BoreholeTable extends TableComponent {
         </Table.HeaderCell>*/}
         <Table.HeaderCell
           verticalAlign='top'>
-          {this.getIcon('elevation_z')} ({t('hrs')})
-          {this.getIcon('length', true)}
+          {this.getIcon('length')}
+          {this.getIcon('top_bedrock', true)}
         </Table.HeaderCell>
         <Table.HeaderCell
           verticalAlign='top'>
-          {this.getIcon('status')}
-          {this.getIcon('drilling_date', true)}
+          {this.getIcon('drilling_date')}
+          {this.getIcon('purpose', true)}
         </Table.HeaderCell>
         <Table.HeaderCell
           style={{ width: '4em' }}
@@ -230,8 +230,8 @@ class BoreholeTable extends TableComponent {
       //   </span>
       // </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {
-          _.isNil(item.elevation_z) ?
+        {/* {
+          _.isNil(item.extended.top_bedrock) ?
             null :
             item.elevation_z + ' m'
         } {
@@ -241,28 +241,40 @@ class BoreholeTable extends TableComponent {
                 id={item.hrs}
                 schema='hrs'
               />)</span>
-        }
+        } */}
+        {_.isNil(item.length) ? 'n/p' : item.length + ' m'}
         <br />
         <span
           style={{
             color: '#787878',
             fontSize: '0.8em'
-          }}>
-          {_.isNil(item.length) ? 'n/p' : item.length + ' m'}
+          }}
+        >
+          {
+            item.extended.top_bedrock
+            // _.isNil(item.extended.top_bedrock)?
+            //   <span>&nbsp;</span>:
+            //   item.extended.top_bedrock
+          }
         </span>
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        <DomainText
-          id={item.extended.status}
-          schema='extended.status'
-        />
+        <DateText date={item.drilling_date} />
         <br />
         <span
           style={{
             color: '#787878',
             fontSize: '0.8em'
-          }}>
-          <DateText date={item.drilling_date} />
+          }}
+        >
+          {
+            _.isNil(item.extended.purpose) ?
+              null : <span>(
+                <DomainText
+                  id={item.extended.purpose}
+                  schema='extended.purpose'
+                />)</span>
+          }
         </span>
       </Table.Cell>,
       <Table.Cell
