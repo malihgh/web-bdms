@@ -731,7 +731,7 @@ class MapComponent extends React.Component {
           style={{
             position: 'absolute',
             top: '6px',
-            right: '6px',
+            right: '12px',
             zIndex: '1'
           }}
         >
@@ -747,7 +747,7 @@ class MapComponent extends React.Component {
             secondary
             size='tiny'
           >
-            <Icon name='bars' />
+            <Icon name='setting' />
           </Button>
         </div>
 
