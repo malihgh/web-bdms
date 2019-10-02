@@ -587,17 +587,17 @@ class BoreholeForm extends React.Component {
                       <Form.Field
                         error={
                           (
-                            borehole.restriction === 29 &&
+                            borehole.restriction === 2463 &&
                             !moment(borehole.restriction_until).isValid()
                           ) || (
-                            borehole.restriction !== 29 &&
+                            borehole.restriction !== 2463 &&
                             _.isString(borehole.restriction_until) &&
                             borehole.restriction_until !== '' &&
                             moment(borehole.restriction_until).isValid()
                           )
                           || mentions.indexOf('restriction_until') >= 0
                         }
-                        required={borehole.restriction === 29}
+                        required={borehole.restriction === 2463}
                       >
                         <label>
                           <DomainText
@@ -635,16 +635,30 @@ class BoreholeForm extends React.Component {
                             error={
                               mentions.indexOf('srs') >= 0
                             }
-                            required
+                            // required
                           >
                             <label>{t('srs')}</label>
-                            <DomainDropdown
+                            {/* <DomainDropdown
                               onSelected={(selected) => {
                                 this.updateChange('srs', selected.id, false);
                               }}
                               schema='srs'
                               selected={borehole.srs}
-                            />
+                            /> */}
+                            <div
+                              style={{
+                                height: "36px",
+                                display: "flex",
+                                alignItems: 'center'
+                              }}
+                            >
+                              <div>
+                                <DomainText
+                                  id={borehole.srs}
+                                  schema='srs'
+                                />
+                              </div>
+                            </div>
                           </Form.Field>
                           <Form.Field
                             error={
