@@ -667,7 +667,18 @@ class ExplorerSettings extends React.Component {
                     >
                       {
                         (
-                          _.values(setting.data.map.explorer)
+                          _.values(
+                            setting.data.map.explorer
+                          ).sort(
+                            (a, b) => {
+                              if (a.position < b.position) {
+                                return 1;
+                              } else if (a.position > b.position) {
+                                return -1;
+                              }
+                              return 0;
+                            }
+                          )
                         ).map((layer, idx)=>(
                           <div
                             className='selectable unselectable'
