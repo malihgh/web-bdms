@@ -129,11 +129,8 @@ class AdminSettings extends React.Component {
           >
             Users
           </Header>
-          <Form
-            autoComplete='off'
-          >
+          <Form>
             <Form.Group
-              autoComplete='off'
               widths='equal'
             >
               <Form.Input
@@ -148,7 +145,7 @@ class AdminSettings extends React.Component {
                 value={this.state.uUsername}
               />
               <Form.Input
-                autoComplete='off'
+                autoComplete='new-password'
                 fluid
                 label='Password'
                 onChange={(e)=>{
@@ -316,7 +313,7 @@ class AdminSettings extends React.Component {
                           wName: e.target.value
                         });
                       }}
-                      placeholder='Use the email'
+                      placeholder='Workgroup name'
                       value={this.state.wName}
                     />
                   </Form.Group>
