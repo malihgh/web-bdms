@@ -19,11 +19,6 @@ const initialState = {
       "text": "https://wms-inspire.geo.admin.ch/?SERVICE=WMS&request=getCapabilities",
       "value": "https://wms-inspire.geo.admin.ch/?SERVICE=WMS&request=getCapabilities"
     },
-    // {
-    //   "key": "https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml",
-    //   "text": "https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml",
-    //   "value": "https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml"
-    // }
   ],
   data: {
     boreholetable: {

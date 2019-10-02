@@ -1201,7 +1201,6 @@ const mapDispatchToProps = (dispatch, state) => {
       }
     },
     rmExplorerMap: (config) => {
-      console.log(config);
       dispatch(patchSettings('map.explorer', null, config.Identifier));
     },
     patchSettings: (filter, enabled) => {
