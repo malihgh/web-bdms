@@ -40,7 +40,7 @@ import {
   Dimmer,
   Loader,
   // Progress,
-  // TextArea,
+  TextArea,
   Icon
 } from 'semantic-ui-react';
 
@@ -1017,214 +1017,254 @@ class BoreholeForm extends React.Component {
                 }}
               >
                 <Segment>
-                  <Form
-                    autoComplete="off"
-                    error
-                    size={size}
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row'
+                    }}
                   >
-                    <Form.Group widths='equal'>
-                      <Form.Field
-                        error={
-                          mentions.indexOf('method') >= 0
-                        }
-                        required
+                    <div
+                      style={{
+                        flex: '1 1 100%',
+                        minWidth: '600px'
+                      }}
+                    >
+                      <Form
+                        autoComplete="off"
+                        error
+                        size={size}
                       >
-                        <label>{t('method')}</label>
-                        <DomainDropdown
-                          onSelected={(selected) => {
-                            this.updateChange(
-                              'extended.method', selected.id, false);
-                          }}
-                          schema='extended.method'
-                          selected={borehole.extended.method}
-                        />
-                      </Form.Field>
-                      <Form.Field
-                        error={
-                          (
-                            _.isString(borehole.drilling_date)
-                            && borehole.drilling_date !== ''
-                            && !moment(borehole.drilling_date).isValid()
-                          )
-                          || mentions.indexOf('method') >= 0
-                        }
-                        required
+                        <Form.Group widths='equal'>
+                          <Form.Field
+                            error={
+                              mentions.indexOf('method') >= 0
+                            }
+                            required
+                          >
+                            <label>{t('method')}</label>
+                            <DomainDropdown
+                              onSelected={(selected) => {
+                                this.updateChange(
+                                  'extended.method', selected.id, false);
+                              }}
+                              schema='extended.method'
+                              selected={borehole.extended.method}
+                            />
+                          </Form.Field>
+                          <Form.Field
+                            error={
+                              (
+                                _.isString(borehole.drilling_date)
+                                && borehole.drilling_date !== ''
+                                && !moment(borehole.drilling_date).isValid()
+                              )
+                              || mentions.indexOf('method') >= 0
+                            }
+                            required
+                          >
+                            <label>{t('drilling_date')} ({t('date_format')})</label>
+                            <DateField
+                              date={borehole.drilling_date}
+                              onChange={(selected) => {
+                                this.updateChange(
+                                  'drilling_date', selected, false
+                                );
+                              }} />
+                          </Form.Field>
+                        </Form.Group>
+                        <Form.Group widths='equal'>
+                          <Form.Field
+                            error={
+                              mentions.indexOf('cuttings') >= 0
+                            }
+                            required
+                          >
+                            <label>{t('cuttings')}</label>
+                            <DomainDropdown
+                              onSelected={(selected) => {
+                                this.updateChange(
+                                  'custom.cuttings', selected.id, false);
+                              }}
+                              schema='custom.cuttings'
+                              selected={borehole.custom.cuttings}
+                            />
+                          </Form.Field>
+                          <Form.Field
+                            error={
+                              mentions.indexOf('purpose') >= 0
+                            }
+                            required
+                          >
+                            <label>{t('purpose')}</label>
+                            <DomainDropdown
+                              onSelected={(selected) => {
+                                this.updateChange(
+                                  'extended.purpose', selected.id, false);
+                              }}
+                              schema='extended.purpose'
+                              selected={borehole.extended.purpose}
+                            />
+                          </Form.Field>
+                        </Form.Group>
+                        <Form.Group widths='equal'>
+                          {/* strange bug in Edge fixed with placing
+                          a hidden input */}
+                          <Form.Field
+                            style={{
+                              display: 'none'
+                            }}
+                          >
+                            <label>{t('drill_diameter')}</label>
+                            <Input
+                              spellCheck="false"
+                              type='number'
+                              value={
+                                _.isNil(borehole.custom.drill_diameter) ?
+                                  '' : borehole.custom.drill_diameter
+                              }
+                            />
+                          </Form.Field>
+                          <Form.Field
+                            error={
+                              mentions.indexOf('drill_diameter') >= 0
+                            }
+                          >
+                            <label>{t('drill_diameter')}</label>
+                            <Input
+                              onChange={(e) => {
+                                this.updateChange(
+                                  'custom.drill_diameter',
+                                  e.target.value === '' ?
+                                    null : _.toNumber(e.target.value)
+                                );
+                              }}
+                              spellCheck="false"
+                              type='number'
+                              value={
+                                ((()=>{
+                                  const r = _.isNil(borehole.custom.drill_diameter) ?
+                                    '' : borehole.custom.drill_diameter;
+                                  return (r);
+                                })())
+                              }
+                            />
+                          </Form.Field>
+                          <Form.Field
+                            error={
+                              mentions.indexOf('status') >= 0
+                            }
+                            required
+                          >
+                            <label>{t('status')}</label>
+                            <DomainDropdown
+                              onSelected={(selected) => {
+                                this.updateChange(
+                                  'extended.status', selected.id, false);
+                              }}
+                              schema='extended.status'
+                              selected={borehole.extended.status}
+                            />
+                          </Form.Field>
+                        </Form.Group>
+                        <Form.Group widths='equal'>
+                          <Form.Field
+                            error={
+                              mentions.indexOf('bore_inc') >= 0
+                            }
+                            required
+                          >
+                            <label>{t('bore_inc')}</label>
+                            <Input
+                              autoCapitalize="off"
+                              autoComplete="off"
+                              autoCorrect="off"
+                              onChange={(e) => {
+                                this.updateChange(
+                                  'bore_inc',
+                                  e.target.value === '' ?
+                                    null : _.toNumber(e.target.value)
+                                );
+                              }}
+                              spellCheck="false"
+                              type='number'
+                              value={
+                                _.isNil(borehole.bore_inc) ?
+                                  '' : borehole.bore_inc
+                              }
+                            />
+                          </Form.Field>
+                          <Form.Field
+                            error={
+                              mentions.indexOf('bore_inc_dir') >= 0
+                            }
+                            required
+                          >
+                            <label>{t('bore_inc_dir')}</label>
+                            <Input
+                              autoCapitalize="off"
+                              autoComplete="off"
+                              autoCorrect="off"
+                              onChange={(e) => {
+                                this.updateChange(
+                                  'bore_inc_dir',
+                                  e.target.value === '' ?
+                                    null : _.toNumber(e.target.value)
+                                );
+                              }}
+                              spellCheck="false"
+                              type='number'
+                              value={
+                                _.isNil(borehole.bore_inc_dir) ?
+                                  '' : borehole.bore_inc_dir
+                              }
+                            />
+                          </Form.Field>
+                          <Form.Field
+                            error={
+                              mentions.indexOf('qt_bore_inc_dir') >= 0
+                            }
+                            required
+                          >
+                            <label>{t('qt_bore_inc_dir')}</label>
+                            <DomainDropdown
+                              onSelected={(selected) => {
+                                this.updateChange(
+                                  'custom.qt_bore_inc_dir', selected.id, false);
+                              }}
+                              schema='custom.qt_bore_inc_dir'
+                              selected={borehole.custom.qt_bore_inc_dir}
+                            />
+                          </Form.Field>
+                        </Form.Group>
+                      </Form>
+                    </div>
+                    <div
+                      style={{
+                        flex: '1 1 100%',
+                        minWidth: '200px',
+                        paddingLeft: '1em'
+                      }}
+                    >
+                      <Form
+                        autoComplete="off"
+                        error
+                        size={size}
                       >
-                        <label>{t('drilling_date')} ({t('date_format')})</label>
-                        <DateField
-                          date={borehole.drilling_date}
-                          onChange={(selected) => {
-                            this.updateChange(
-                              'drilling_date', selected, false
-                            );
-                          }} />
-                      </Form.Field>
-                    </Form.Group>
-                    <Form.Group widths='equal'>
-                      <Form.Field
-                        error={
-                          mentions.indexOf('cuttings') >= 0
-                        }
-                        required
-                      >
-                        <label>{t('cuttings')}</label>
-                        <DomainDropdown
-                          onSelected={(selected) => {
-                            this.updateChange(
-                              'custom.cuttings', selected.id, false);
-                          }}
-                          schema='custom.cuttings'
-                          selected={borehole.custom.cuttings}
-                        />
-                      </Form.Field>
-                      <Form.Field
-                        error={
-                          mentions.indexOf('purpose') >= 0
-                        }
-                        required
-                      >
-                        <label>{t('purpose')}</label>
-                        <DomainDropdown
-                          onSelected={(selected) => {
-                            this.updateChange(
-                              'extended.purpose', selected.id, false);
-                          }}
-                          schema='extended.purpose'
-                          selected={borehole.extended.purpose}
-                        />
-                      </Form.Field>
-                    </Form.Group>
-                    <Form.Group widths='equal'>
-                      {/* strange bug in Edge fixed with placing
-                      a hidden input */}
-                      <Form.Field
-                        style={{
-                          display: 'none'
-                        }}
-                      >
-                        <label>{t('drill_diameter')}</label>
-                        <Input
-                          spellCheck="false"
-                          type='number'
-                          value={
-                            _.isNil(borehole.custom.drill_diameter) ?
-                              '' : borehole.custom.drill_diameter
-                          }
-                        />
-                      </Form.Field>
-                      <Form.Field
-                        error={
-                          mentions.indexOf('drill_diameter') >= 0
-                        }
-                      >
-                        <label>{t('drill_diameter')}</label>
-                        <Input
-                          onChange={(e) => {
-                            this.updateChange(
-                              'custom.drill_diameter',
-                              e.target.value === '' ?
-                                null : _.toNumber(e.target.value)
-                            );
-                          }}
-                          spellCheck="false"
-                          type='number'
-                          value={
-                            ((()=>{
-                              const r = _.isNil(borehole.custom.drill_diameter) ?
-                                '' : borehole.custom.drill_diameter;
-                              return (r);
-                            })())
-                          }
-                        />
-                      </Form.Field>
-                      <Form.Field
-                        error={
-                          mentions.indexOf('status') >= 0
-                        }
-                        required
-                      >
-                        <label>{t('status')}</label>
-                        <DomainDropdown
-                          onSelected={(selected) => {
-                            this.updateChange(
-                              'extended.status', selected.id, false);
-                          }}
-                          schema='extended.status'
-                          selected={borehole.extended.status}
-                        />
-                      </Form.Field>
-                    </Form.Group>
-                    <Form.Group widths='equal'>
-                      <Form.Field
-                        error={
-                          mentions.indexOf('bore_inc') >= 0
-                        }
-                        required
-                      >
-                        <label>{t('bore_inc')}</label>
-                        <Input
-                          autoCapitalize="off"
-                          autoComplete="off"
-                          autoCorrect="off"
-                          onChange={(e) => {
-                            this.updateChange(
-                              'bore_inc',
-                              e.target.value === '' ?
-                                null : _.toNumber(e.target.value)
-                            );
-                          }}
-                          spellCheck="false"
-                          type='number'
-                          value={
-                            _.isNil(borehole.bore_inc) ?
-                              '' : borehole.bore_inc
-                          }
-                        />
-                      </Form.Field>
-                      <Form.Field
-                        error={
-                          mentions.indexOf('bore_inc_dir') >= 0
-                        }
-                        required
-                      >
-                        <label>{t('bore_inc_dir')}</label>
-                        <Input
-                          autoCapitalize="off"
-                          autoComplete="off"
-                          autoCorrect="off"
-                          onChange={(e) => {
-                            this.updateChange(
-                              'bore_inc_dir',
-                              e.target.value === '' ?
-                                null : _.toNumber(e.target.value)
-                            );
-                          }}
-                          spellCheck="false"
-                          type='number'
-                          value={
-                            _.isNil(borehole.bore_inc_dir) ?
-                              '' : borehole.bore_inc_dir
-                          }
-                        />
-                      </Form.Field>
-                      <Form.Field
-                        error={
-                          mentions.indexOf('qt_bore_inc_dir') >= 0
-                        }
-                        required
-                      >
-                        <label>{t('qt_bore_inc_dir')}</label>
-                        <DomainDropdown
-                          onSelected={(selected) => {
-                            this.updateChange(
-                              'custom.qt_bore_inc_dir', selected.id, false);
-                          }}
-                          schema='custom.qt_bore_inc_dir'
-                          selected={borehole.custom.qt_bore_inc_dir}
-                        />
-                      </Form.Field>
-                    </Form.Group>
-                  </Form>
+                        <Form.Field>
+                          <label>{t('remarks')}</label>
+                          <TextArea
+                            onChange={(e, data) => {
+                              this.updateChange(
+                                'custom.remarks', e.target.value
+                              );
+                            }}
+                            rows={14}
+                            value={borehole.custom.remarks}
+                          />
+                        </Form.Field>
+                      </Form>
+                    </div>
+                  </div>
                 </Segment>
                 <Segment>
                   <Form
