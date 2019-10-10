@@ -155,11 +155,23 @@ class MapOverlayComponent extends React.Component {
                           compact
                           icon
                           onClick={()=>{
-                            this.setState({
-                              selectedLayer: layer
-                            }, ()=>{
-                              setSelectedLayer(layer);
-                            });
+                            if (
+                              this.state.selectedLayer !== null &&
+                              this.state.selectedLayer.Identifier === layer.Identifier
+                            ){
+                              this.setState({
+                                selectedLayer: null
+                              }, ()=>{
+                                setSelectedLayer(null);
+                              });
+                            } else {
+                              this.setState({
+                                selectedLayer: layer
+                              }, ()=>{
+  
+                                setSelectedLayer(layer);
+                              });
+                            }
                           }}
                           size='mini'
                         >
