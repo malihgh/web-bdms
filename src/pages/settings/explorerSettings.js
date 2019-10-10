@@ -11,7 +11,8 @@ import {
   Dropdown,
   Header,
   Input,
-  // Icon,
+  Label,
+  Popup,
   Segment,
 } from 'semantic-ui-react';
 
@@ -493,6 +494,24 @@ class ExplorerSettings extends React.Component {
                                       fontSize: '0.8em'
                                     }}
                                   >
+                                    {
+                                      layer.queryable === true?
+                                        <Popup
+                                          content='Queryable'
+                                          on='hover'
+                                          trigger={
+                                            <Label
+                                              circular
+                                              color='green'
+                                              empty
+                                              size='tiny'
+                                              style={{
+                                                marginRight: '0.5em'
+                                              }}
+                                            />
+                                          }
+                                        />: null
+                                    }
                                     <Highlight
                                       search={this.state.searchWms}
                                     >
@@ -1142,22 +1161,27 @@ const mapDispatchToProps = (dispatch, state) => {
     addExplorerMap: (layer, type, result, position = 0) => {
 
       if (type === 'WMS') {
-        dispatch(
-          patchSettings(
-            'map.explorer',
-            {
-              Identifier: layer.Name,
-              Abstract: layer.Abstract,
-              position: position,
-              Title: layer.Title,
-              transparency: 0,
-              type: 'WMS',
-              url: result.Service.OnlineResource,
-              visibility: true
-            },
-            layer.Name
-          )
-        );
+        if (!layer.CRS.includes('EPSG:2056')){
+          alert("EPSG:2056 not supported");
+        } else {
+          dispatch(
+            patchSettings(
+              'map.explorer',
+              {
+                Identifier: layer.Name,
+                Abstract: layer.Abstract,
+                position: position,
+                Title: layer.Title,
+                transparency: 0,
+                type: 'WMS',
+                url: result.Service.OnlineResource,
+                visibility: true,
+                queryable: layer.queryable
+              },
+              layer.Name
+            )
+          );
+        }
       } else if (type === 'WMTS'){
         const conf = optionsFromCapabilities(result, {
           layer: layer.Identifier,

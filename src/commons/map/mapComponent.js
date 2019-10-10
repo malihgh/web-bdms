@@ -81,6 +81,7 @@ class MapComponent extends React.Component {
       hover: null,
       featureExtent: [],
       sidebar: false,
+      selectedLayer: null,
       maps: [
         {
           key: 'nomap',
@@ -285,8 +286,6 @@ class MapComponent extends React.Component {
               name: identifier,
               extent: extent,
               source: new TileWMS({
-                // url: 'https://wms.swisstopo.admin.ch',
-                // url: 'http://wms0.geo.admin.ch',
                 url: layer.url,
                 params: {
                   'LAYERS': layer.Identifier,
@@ -319,7 +318,45 @@ class MapComponent extends React.Component {
         }
         this.map.addLayer(this.overlays[this.overlays.length-1]);
       }
+      
     }
+
+    let singleclick = function(evt){
+      if (this.state.selectedLayer !== null){
+        //document.getElementById('info').innerHTML = '';
+        var viewResolution =this.map.getView().getResolution();
+        for (let c = 0, l = this.overlays.length; c < l; c++){
+          const layer = this.overlays[c];
+          if (
+            layer.get('name') !== undefined
+            & layer.get('name') === this.state.selectedLayer.Identifier
+          ) {
+            var url = layer.getSource().getGetFeatureInfoUrl(
+              evt.coordinate, viewResolution, 'EPSG:2056', {}
+            );
+            if (url) {
+              window.open(
+                url,
+                'gfi',
+                "height=400,width=600,modal=yes,alwaysRaised=yes"
+              );
+              // fetch(url)
+              //   .then(function (response) { return response.text(); })
+              //   .then(function (html) {
+              //     console.log(
+              //       html
+              //     );
+              //   });
+            }
+            break;
+          }
+        }
+
+        
+      }
+    }.bind(this);
+
+    this.map.on('singleclick', singleclick);
 
     getGeojson().then(function (response) {
       if (response.data.success) {
@@ -832,8 +869,13 @@ class MapComponent extends React.Component {
             >
               {t('common:overlay')}
             </div>
-            <MapOverlay />
-            
+            <MapOverlay
+              setSelectedLayer={(layer)=>{
+                this.setState({
+                  selectedLayer: layer
+                });
+              }}
+            />
           </div>
         </div>
         <div

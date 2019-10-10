@@ -16,6 +16,7 @@ const MapOverlay = (props) => {
       moveDown={props.moveDown}
       moveUp={props.moveUp}
       saveTransparency={props.saveTransparency}
+      setSelectedLayer={props.setSelectedLayer}
       setTransparency={props.setTransparency}
       toggleVisibility={props.toggleVisibility}
     />
@@ -26,6 +27,7 @@ MapOverlay.propTypes = {
   moveDown: PropTypes.func,
   moveUp: PropTypes.func,
   saveTransparency: PropTypes.func,
+  setSelectedLayer: PropTypes.func,
   setTransparency: PropTypes.func,
   setting: PropTypes.object,
   toggleVisibility: PropTypes.func
