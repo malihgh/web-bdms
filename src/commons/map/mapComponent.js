@@ -324,7 +324,7 @@ class MapComponent extends React.Component {
     let singleclick = function(evt){
       if (this.state.selectedLayer !== null){
         //document.getElementById('info').innerHTML = '';
-        var viewResolution =this.map.getView().getResolution();
+        var viewResolution = this.map.getView().getResolution();
         for (let c = 0, l = this.overlays.length; c < l; c++){
           const layer = this.overlays[c];
           if (
@@ -351,8 +351,6 @@ class MapComponent extends React.Component {
             break;
           }
         }
-
-        
       }
     }.bind(this);
 
