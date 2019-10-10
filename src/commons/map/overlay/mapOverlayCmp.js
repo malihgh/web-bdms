@@ -4,13 +4,17 @@ import PropTypes from 'prop-types';
 import {
   Button,
   Checkbox,
-  Icon
+  Icon,
+  Popup
 } from 'semantic-ui-react';
 
 class MapOverlayComponent extends React.Component {
   constructor(props) {
     super(props);
     this.transparency = false;
+    this.state= {
+      selectedLayer: null
+    };
   }
 
   render() {
@@ -20,6 +24,7 @@ class MapOverlayComponent extends React.Component {
       moveDown,
       moveUp,
       saveTransparency,
+      setSelectedLayer,
       setTransparency,
       toggleVisibility
     } = this.props;
@@ -47,22 +52,36 @@ class MapOverlayComponent extends React.Component {
                 padding: '0.5em 0px'
               }}
             >
-              <Checkbox
-                checked={layer.visibility}
-                disabled={isFetching === true}
-                label={layer.Title}
-                onChange={()=>{
-                  toggleVisibility(layer);
-                }}
-              /> <br />
-              <span
+              <div>
+                <Checkbox
+                  checked={layer.visibility}
+                  disabled={isFetching === true}
+                  label={layer.Title}
+                  onChange={()=>{
+                    toggleVisibility(layer);
+                  }}
+                />
+              </div>  
+              {
+                // layer.queryable === false?
+                //   <div
+                //     style={{
+                //       color: '#787878',
+                //       fontSize: '0.8em',
+                //       textAlign: 'right'
+                //     }}
+                //   >
+                //     (not queriable)
+                //   </div>: null
+              }
+              <div
                 style={{
                   color: '#787878',
                   fontSize: '0.8em'
                 }}
               >
                 Trasparenza ({layer.transparency}%)
-              </span> <br />
+              </div>
               <div
                 style={{
                   alignItems: 'center',
@@ -102,6 +121,51 @@ class MapOverlayComponent extends React.Component {
                   />
                 </div>
                 <div>
+                  {
+                    setSelectedLayer === undefined?
+                      null:
+                      layer.queryable === false?
+                        <Popup
+                          content='Not queryable'
+                          on='hover'
+                          trigger={
+                            <Icon.Group size='large'>
+                              <Icon
+                                color='red'
+                                name='dont'
+                              />
+                              <Icon
+                                name='info'
+                                size='tiny' 
+                              />
+                            </Icon.Group>
+                          }
+                        />:
+                        <Button
+                          active={
+                            this.state.selectedLayer !== null &&
+                            this.state.selectedLayer.Identifier === layer.Identifier
+                          }
+                          circular
+                          color={
+                            this.state.selectedLayer !== null &&
+                            this.state.selectedLayer.Identifier === layer.Identifier?
+                              'blue': null
+                          }
+                          compact
+                          icon
+                          onClick={()=>{
+                            this.setState({
+                              selectedLayer: layer
+                            }, ()=>{
+                              setSelectedLayer(layer);
+                            });
+                          }}
+                          size='mini'
+                        >
+                          <Icon name='info' />
+                        </Button>
+                  }
                   <Button
                     circular
                     compact
@@ -112,7 +176,9 @@ class MapOverlayComponent extends React.Component {
                     }}
                     size='mini'
                   >
-                    <Icon name='arrow up' />
+                    <Icon
+                      name='arrow up'
+                    />
                   </Button>
                   <Button
                     circular
@@ -134,7 +200,7 @@ class MapOverlayComponent extends React.Component {
       </div>
     );
   }
-}
+};
 
 MapOverlayComponent.propTypes = {
   isFetching: PropTypes.bool,
@@ -142,12 +208,11 @@ MapOverlayComponent.propTypes = {
   moveDown: PropTypes.func,
   moveUp: PropTypes.func,
   saveTransparency: PropTypes.func,
+  setSelectedLayer: PropTypes.func,
   setTransparency: PropTypes.func,
   toggleVisibility: PropTypes.func
 };
 
-MapOverlayComponent.defaultProps = {
-
-};
+MapOverlayComponent.defaultProps = {};
 
 export default MapOverlayComponent;
