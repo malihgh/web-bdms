@@ -11,6 +11,7 @@ import {
 
 // import DomainText from '../domain/domainText'
 import DomainDropdown from '../domain/dropdown/domainDropdown';
+import DomainTree from '../domain/tree/domainTree';
 
 import {
   // Segment,
@@ -403,7 +404,7 @@ class LayerForm extends React.Component {
                 required
               >
                 <label>{t('lithostratigraphy')}</label>
-                <DomainDropdown
+                {/* <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
                       'lithostratigraphy', selected.id, false
@@ -411,6 +412,26 @@ class LayerForm extends React.Component {
                   }}
                   schema='custom.lit_str_top_bedrock'
                   selected={this.state.layer.lithostratigraphy}
+                /> */}
+                <DomainTree
+                  levels={{
+                    1: 'super',
+                    2: 'group',
+                    3: 'subgroup',
+                    4: 'superformation',
+                    5: 'formation',
+                  }}
+                  onSelected={(selected) => {
+                    console.log('onSelected!');
+                    this.updateChange(
+                      'lithostratigraphy',
+                      selected.id,
+                      false
+                    );
+                  }}
+                  schema='custom.lit_str_top_bedrock'
+                  selected={this.state.layer.lithostratigraphy}
+                  title={t('lit_str_top_bedrock')}
                 />
               </Form.Field>
             )
