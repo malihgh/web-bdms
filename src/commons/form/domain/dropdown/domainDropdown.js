@@ -57,7 +57,7 @@ class DomainDropdown extends React.Component {
   shouldComponentUpdate(nextProps, nextState){
     if (this.props.selected !== nextProps.selected) {
       return true;
-    }else if (this.state.language !== nextProps.i18n.language) {
+    } else if (this.state.language !== nextProps.i18n.language) {
       return true;
     }
     return false;

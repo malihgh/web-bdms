@@ -61,7 +61,6 @@ class BoreholeTable extends TableComponent {
     );
   }
   getHeader() {
-    const { t } = this.props;
     return (
       <Table.Row>
         {/* <Table.HeaderCell
