@@ -1454,7 +1454,7 @@ class BoreholeForm extends React.Component {
                         }}
                         schema='custom.lit_str_top_bedrock'
                         selected={borehole.custom.lit_str_top_bedrock}
-                        title={t('chro_str_top_bedrock')}
+                        title={t('lit_str_top_bedrock')}
                       />
                     </Form.Field>
                     <Form.Field
