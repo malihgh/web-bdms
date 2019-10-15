@@ -22,6 +22,7 @@ import {
 
 import PointComponent from '../../map/pointComponent';
 import DomainDropdown from '../domain/dropdown/domainDropdown';
+import DomainTree from '../domain/tree/domainTree';
 import MunicipalityDropdown from '../municipality/dropdown/municipalityDropdown';
 // import DomainTabs from '../domain/domainTabs';
 import CantonDropdown from '../cantons/dropdown/cantonDropdown';
@@ -1424,7 +1425,7 @@ class BoreholeForm extends React.Component {
                       required
                     >
                       <label>{t('lit_str_top_bedrock')}</label>
-                      <DomainDropdown
+                      {/* <DomainDropdown
                         onSelected={(selected) => {
                           this.updateChange(
                             'custom.lit_str_top_bedrock',
@@ -1434,6 +1435,26 @@ class BoreholeForm extends React.Component {
                         }}
                         schema='custom.lit_str_top_bedrock'
                         selected={borehole.custom.lit_str_top_bedrock}
+                      /> */}
+                      <DomainTree
+                        levels={{
+                          1: 'super',
+                          2: 'group',
+                          3: 'subgroup',
+                          4: 'superformation',
+                          5: 'formation',
+                        }}
+                        onSelected={(selected) => {
+                          console.log('onSelected!');
+                          this.updateChange(
+                            'custom.lit_str_top_bedrock',
+                            selected.id,
+                            false
+                          );
+                        }}
+                        schema='custom.lit_str_top_bedrock'
+                        selected={borehole.custom.lit_str_top_bedrock}
+                        title={t('chro_str_top_bedrock')}
                       />
                     </Form.Field>
                     <Form.Field
