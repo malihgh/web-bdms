@@ -182,27 +182,26 @@ class StratigraphyFormContainer extends React.Component {
     const isDepthDefined = borehole.length !== null;
     let wrongDepth = false;
     
-    //   Bedrock defined if this attributes are not null:
-    //   - custom.qt_top_bedrock
-    //   - custom.lit_pet_top_bedrock
-    //   - custom.lit_str_top_bedrock
-    //   - custom.chro_str_top_bedrock
+    //   Bedrock defined the top bedrock is set
     const isBedrockDefined = (
       borehole.custom.lit_pet_top_bedrock !== null
-      && borehole.custom.lit_str_top_bedrock !== null
-      && borehole.custom.chro_str_top_bedrock !== null
     );
     let missingBedrock = true;
+    let bedrockLitPetWrong = false;
+    let bedrockLitStratiWrong = false;
+    let bedrockChronoWrong = false;
 
     for (let idx = 0, len = layers.length; idx < len; idx++) {
       const item = layers[idx];
 
       // Check if this item is the bedrock
       const isBedrock = (
-        item.lithostratigraphy === borehole.custom.lit_str_top_bedrock
-        && item.lithology === borehole.custom.lit_pet_top_bedrock
-        && item.chronostratigraphy === borehole.custom.chro_str_top_bedrock
-        && item.depth_from === borehole.extended.top_bedrock
+        item.depth_from === borehole.extended.top_bedrock
+        // Only top_bedrock: meeting 20191017
+        // item.lithostratigraphy === borehole.custom.lit_str_top_bedrock
+        // && item.lithology === borehole.custom.lit_pet_top_bedrock
+        // && item.chronostratigraphy === borehole.custom.chro_str_top_bedrock
+        // && item.depth_from === borehole.extended.top_bedrock
       );
 
       // Space between surface and bedrock not filled
@@ -219,6 +218,21 @@ class StratigraphyFormContainer extends React.Component {
             && item.depth_from > layers[(idx-1)].depth_to
           )
         )
+      );
+
+      bedrockLitPetWrong = (
+        isBedrock === true
+        && item.lithology !== borehole.custom.lit_pet_top_bedrock
+      );
+
+      bedrockLitStratiWrong = (
+        isBedrock === true
+        && item.lithostratigraphy !== borehole.custom.lit_str_top_bedrock
+      );
+
+      bedrockChronoWrong = (
+        isBedrock === true
+        && item.chronostratigraphy !== borehole.custom.chro_str_top_bedrock
       );
 
       // First layer not starting from 0 meters
@@ -296,6 +310,16 @@ class StratigraphyFormContainer extends React.Component {
     }
     if (wrongDepth === true) {
       consistency.wrongDepth = wrongDepth;
+    }
+    
+    if (bedrockLitPetWrong === true) {
+      consistency.bedrockLitPetWrong = bedrockLitPetWrong;
+    }
+    if (bedrockLitStratiWrong === true) {
+      consistency.bedrockLitStratiWrong = bedrockLitStratiWrong;
+    }
+    if (bedrockChronoWrong === true) {
+      consistency.bedrockChronoWrong = bedrockChronoWrong;
     }
 
     this.setState({
