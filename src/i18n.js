@@ -48,6 +48,11 @@ let resources = {
         'Last layer depth (={{lDepth}}) not equals to ' +
         'total borehole depth {{bDepth}}'
       ),
+      'missingBedrock': 'Missing bedrock',
+      'missingBedrockSolution': (
+        'Add the Bedrock automatically from data filled into the ' +
+        'Borehole page.'
+      ),
       'missingLayer': 'Missing layers',
       'missingLayerSolution': (
         'Please fill the space between the surface and the bedrock ' + 
@@ -259,6 +264,11 @@ let resources = {
       'wrongDepthSolution1': (
         'Last layer depth ({{lDepth}}m) not equals to ' +
         'total borehole depth ({{bDepth}}m)'
+      ),
+      'missingBedrock': 'Missing bedrock',
+      'missingBedrockSolution': (
+        'Add the Bedrock automatically from data filled into the ' +
+        'Borehole page.'
       ),
       'missingLayer': 'Missing layers',
       'missingLayerSolution': (
@@ -475,6 +485,11 @@ let resources = {
       'wrongDepthSolution1': (
         'La profondità dell\'ultimo layer ({{lDepth}}m) non coincide con ' +
         'quanto dichiarato nei metadati sul sondaggio ({{bDepth}}m)'
+      ),
+      'missingBedrock': 'Bedrock mancante',
+      'missingBedrockSolution': (
+        'Crea automaticamente il bedrock attingendo dai dati inseriti ' +
+        'nella pagina del sondaggio.'
       ),
       'missingLayer': 'Layers mancanti',
       'missingLayerSolution': (
