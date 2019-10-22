@@ -114,6 +114,8 @@ class LayersList extends React.Component {
           {
             layers.map((item, idx) => {
 
+              const isBedrock = item.depth_to === this.props.borehole.data.length;
+
               const ret = [];
 
               const resolving = this.state.resolving !== null
@@ -496,7 +498,9 @@ class LayersList extends React.Component {
                         }
                       }}
                       style={{
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        borderTop: isBedrock && idx > 0?
+                          '2px dashed #787878': null
                       }}
                     >
                       <Table.Cell
@@ -534,7 +538,14 @@ class LayersList extends React.Component {
                         </div>
                         <div
                           style={{
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            color: (
+                              isBedrock
+                              && consistency.hasOwnProperty(
+                                'bedrockLitStratiWrong'
+                              )?
+                                'red': null
+                            )
                           }}
                         >
                           {
@@ -547,7 +558,13 @@ class LayersList extends React.Component {
                         </div>
                         <div
                           style={{
-                            color: '#787878',
+                            color: (
+                              isBedrock
+                              && consistency.hasOwnProperty(
+                                'bedrockLitPetWrong'
+                              )?
+                                'red': '#787878'
+                            ),
                             fontSize: '0.8em'
                           }}
                         >
