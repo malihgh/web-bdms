@@ -647,7 +647,7 @@ class LayersList extends React.Component {
                             fontWeight: 'bold'
                           }}
                         >
-                          <Icon name='warning sign' /> missingBedrock
+                          <Icon name='warning sign' /> {t('missingBedrock')}
                         </div>
                         {
                           resolving === true?
@@ -665,8 +665,7 @@ class LayersList extends React.Component {
                                   whiteSpace: 'normal'
                                 }}
                               >
-                                Add the Bedrock automatically from data
-                                filled into the Borehole page.
+                                {t('missingBedrockSolution')}
                               </div>
                               <div
                                 style={{
