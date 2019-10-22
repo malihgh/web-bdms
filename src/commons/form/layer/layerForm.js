@@ -404,15 +404,6 @@ class LayerForm extends React.Component {
                 required
               >
                 <label>{t('lithostratigraphy')}</label>
-                {/* <DomainDropdown
-                  onSelected={(selected)=>{
-                    this.updateChange(
-                      'lithostratigraphy', selected.id, false
-                    );
-                  }}
-                  schema='custom.lit_str_top_bedrock'
-                  selected={this.state.layer.lithostratigraphy}
-                /> */}
                 <DomainTree
                   levels={{
                     1: 'super',
@@ -431,7 +422,7 @@ class LayerForm extends React.Component {
                   }}
                   schema='custom.lit_str_top_bedrock'
                   selected={this.state.layer.lithostratigraphy}
-                  title={t('lit_str_top_bedrock')}
+                  title={t('lithostratigraphy')}
                 />
               </Form.Field>
             )

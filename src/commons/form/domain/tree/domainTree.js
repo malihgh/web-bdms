@@ -18,8 +18,6 @@ import {
   // Popup
 } from 'semantic-ui-react';
 
-import DomainText from '../domainText';
-
 class DomainTree extends React.Component {
 
   constructor(props) {
@@ -153,7 +151,6 @@ class DomainTree extends React.Component {
   getDomainText(id){
     const {
       domains,
-      selected,
       i18n,
       schema,
     } = this.props;
@@ -435,8 +432,6 @@ class DomainTree extends React.Component {
                           color='grey'
                           fluid
                           onChange={(ev, data) => {
-
-                            debugger;
 
                             if (data.value === null) {
                               const selectedFilters = {

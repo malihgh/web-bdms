@@ -21,6 +21,7 @@ import {
   getStratigraphy,
   getLayers,
   deleteLayer,
+  addBedrock,
   gapLayer,
   createLayer,
   patchStratigraphy,
@@ -174,14 +175,57 @@ class StratigraphyFormContainer extends React.Component {
       layers
     } = this.state;
 
+    const borehole = this.props.borehole.data;
+
     const consistency = {};
 
-    for (let idx = 0; idx < layers.length; idx++) {
+    const isDepthDefined = borehole.length !== null;
+    let wrongDepth = false;
+    
+    //   Bedrock defined if this attributes are not null:
+    //   - custom.qt_top_bedrock
+    //   - custom.lit_pet_top_bedrock
+    //   - custom.lit_str_top_bedrock
+    //   - custom.chro_str_top_bedrock
+    const isBedrockDefined = (
+      borehole.custom.lit_pet_top_bedrock !== null
+      && borehole.custom.lit_str_top_bedrock !== null
+      && borehole.custom.chro_str_top_bedrock !== null
+    );
+    let missingBedrock = true;
+
+    for (let idx = 0, len = layers.length; idx < len; idx++) {
       const item = layers[idx];
+
+      // Check if this item is the bedrock
+      const isBedrock = (
+        item.lithostratigraphy === borehole.custom.lit_str_top_bedrock
+        && item.lithology === borehole.custom.lit_pet_top_bedrock
+        && item.chronostratigraphy === borehole.custom.chro_str_top_bedrock
+        && item.depth_from === borehole.extended.top_bedrock
+      );
+
+      // Space between surface and bedrock not filled
+      const missingLayers = (
+        isBedrock === true
+        && (
+          (
+            // Is the first layer inserted (maybe using the auto fill feature)
+            idx === 0
+            && item.depth_from > 0
+          ) || (
+            // Is not the first and there is some space
+            idx > 0
+            && item.depth_from > layers[(idx-1)].depth_to
+          )
+        )
+      );
 
       // First layer not starting from 0 meters
       const errorStartWrong = (
-        idx === 0 && item.depth_from !== 0
+        isBedrock === false
+        && idx === 0
+        && item.depth_from !== 0
       );
 
       // Bottom higher then top
@@ -191,7 +235,9 @@ class StratigraphyFormContainer extends React.Component {
 
       // There is a gap between two layers
       const errorGap = (
-        idx > 0
+        len > 0
+        && isBedrock === false
+        && idx > 0
         && layers[(idx-1)].depth_to < item.depth_from
       );
 
@@ -202,34 +248,58 @@ class StratigraphyFormContainer extends React.Component {
         && item.depth_from < layers[(idx-1)].depth_to
       );
 
+      // Check if bedrock is missing
+      if (
+        isBedrockDefined === true
+        && missingBedrock === true
+      ) {
+        missingBedrock = !isBedrock;
+      }
+
+      if (
+        idx === (layers.length - 1)
+        && isDepthDefined
+      ) {
+        wrongDepth = item.depth_to !== borehole.length;
+      }
+
       const error = (
         errorStartWrong
+        || missingLayers
         || errorGap
         || errorOverlap
       );
 
-      const message = (
-        errorStartWrong === true?
-          'First layer not starting from the surface':
-          errorOverlap === true?
-            'Overlapping layers':
-            'Non continuos data found'
-      );
+      // const message = (
+      //   errorStartWrong === true?
+      //     'First layer not starting from the surface':
+      //     errorOverlap === true?
+      //       'Overlapping layers':
+      //       'Non continuos data found'
+      // );
 
       if (error === true){
         consistency[item.id] = {
           errorStartWrong: errorStartWrong,
+          missingLayers: missingLayers,
           errorInverted: errorInverted,
           errorGap: errorGap,
           errorOverlap: errorOverlap,
-          message: message
+          // message: message
         };
       }
 
     }
+    
+    if (missingBedrock === true) {
+      consistency.missingBedrock = missingBedrock;
+    }
+    if (wrongDepth === true) {
+      consistency.wrongDepth = wrongDepth;
+    }
 
     this.setState({
-      consistency: consistency,
+      consistency: consistency
     });
 
   }
@@ -467,7 +537,45 @@ class StratigraphyFormContainer extends React.Component {
                         }}
                       >
                         <Button
-                          disabled={!_.isEmpty(this.state.consistency)}
+                          // disabled={!_.isEmpty(this.state.consistency)}
+                          disabled={(()=>{
+                            const keys = _.remove(
+                              _.keys(this.state.consistency),
+                              (k) => {
+                                if (
+                                  [
+                                    'missingBedrock',
+                                    'wrongDepth'
+                                  ].indexOf(k)>=0
+                                ) {
+                                  return false;
+                                } else {
+                                  const layer = this.state.consistency[k];
+                                  return (
+                                    layer.missingLayers === false
+                                  );
+                                }
+                              }
+                            );
+                            return keys.length > 0;
+
+                            // for (let idxc = 0; idxc < keys.length; idxc++) {
+                            //   const lc = this.state.consistency[keys[idxc]];
+
+                            //   if (lc.missingLayers)
+
+                            //   const key = keys[idxc];
+
+                            //   // There are not bedrock related issues
+                            //   if (){
+                            //     if () {
+
+                            //     }
+                            //     return true;
+                            //   }
+                            // }
+                            // return false;
+                          })()}
                           fluid
                           onClick={()=>{
                             createLayer(
@@ -532,26 +640,14 @@ class StratigraphyFormContainer extends React.Component {
                       overflowY: 'auto'
                     }}
                   >
-                    
                     <LayersList
                       consistency={this.state.consistency}
                       layers={this.state.layers}
-                      onDelete={(layer, solution, value = null) => {
-                        if (this.props.borehole.data.role !== 'EDIT'){
-                          alert("Borehole status not editable");
-                          return;
-                        }
-                        if (
-                          this.props.borehole.data.lock === null
-                          || this.props.borehole.data.lock.username !== this.props.user.data.username
-                        ){
-                          alert("Borehole not locked");
-                          return;
-                        }
-                        deleteLayer(
-                          layer.id, solution, value
+                      onAddBedrock={()=>{
+                        addBedrock(
+                          this.state.stratigraphy.id
                         ).then(
-                          function(response) {
+                          (response) => {
                             if (response.data.success){
                               getLayers(
                                 this.state.stratigraphy.id
@@ -568,7 +664,42 @@ class StratigraphyFormContainer extends React.Component {
                                 console.log(error);
                               });
                             }
-                          }.bind(this)).catch(function (error) {
+                          }
+                        );
+                      }}
+                      onDelete={(layer, solution, value = null) => {
+                        if (this.props.borehole.data.role !== 'EDIT'){
+                          alert("Borehole status not editable");
+                          return;
+                        }
+                        if (
+                          this.props.borehole.data.lock === null
+                          || this.props.borehole.data.lock.username !== this.props.user.data.username
+                        ){
+                          alert("Borehole not locked");
+                          return;
+                        }
+                        deleteLayer(
+                          layer.id, solution, value
+                        ).then(
+                          (response) => {
+                            if (response.data.success){
+                              getLayers(
+                                this.state.stratigraphy.id
+                              ).then((response) => {
+                                if (response.data.success){
+                                  this.setState({
+                                    layers: response.data.data,
+                                    layer: null
+                                  }, () => {
+                                    this.checkConsistency();
+                                  });
+                                }
+                              }).catch(function (error) {
+                                console.log(error);
+                              });
+                            }
+                          }).catch(function (error) {
                           console.log(error);
                         });
                       }}

@@ -1425,17 +1425,6 @@ class BoreholeForm extends React.Component {
                       required
                     >
                       <label>{t('lit_str_top_bedrock')}</label>
-                      {/* <DomainDropdown
-                        onSelected={(selected) => {
-                          this.updateChange(
-                            'custom.lit_str_top_bedrock',
-                            selected.id,
-                            false
-                          );
-                        }}
-                        schema='custom.lit_str_top_bedrock'
-                        selected={borehole.custom.lit_str_top_bedrock}
-                      /> */}
                       <DomainTree
                         levels={{
                           1: 'super',
