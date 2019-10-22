@@ -2,6 +2,7 @@ import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 
 // import {
 //   getLayers
@@ -99,7 +100,8 @@ class LayersList extends React.Component {
   render(){
     const {
       consistency,
-      layers
+      layers,
+      t
     } = this.props;
     const length = layers.length;
     return (
@@ -122,167 +124,209 @@ class LayersList extends React.Component {
                 if (
                   consistency.hasOwnProperty(item.id)
                 ){
-                  ret.push(
-                    <Table.Row
-                      active={false}
-                      key={'ll-info-'+idx}
-                      negative
-                      style={{
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <Table.Cell
-                        colSpan={
-                          resolving === true?
-                            '3': _.isFunction(this.props.onDelete)?
-                              '2': '1'
-                        }
-                        collapsing
+                  if (
+                    consistency[item.id].missingLayers === true
+                  ) {
+                    ret.push(
+                      <Table.Row
+                        active={false}
+                        disabled
+                        key={'ll-info-'+idx}
+                        negative
                         style={{
-                          width: '100%'
+                          cursor: 'default'
                         }}
                       >
-                        <div
+                        <Table.Cell
+                          colSpan='3'
+                          collapsing
                           style={{
-                            fontWeight: 'bold'
+                            width: '100%'
                           }}
                         >
-                          <Icon name='warning sign' /> {
-                            consistency[item.id].message
-                          }
-                        </div>
-                        {
-                          resolving === true?
-                            <div>
-                              <div
-                                style={{
-                                  fontSize: '0.8em'
-                                }}
-                              >
-                                How to resolve this issue?
-                              </div>
-                              <div
-                                style={{
-                                  marginTop: '0.5em'
-                                }}
-                              >
-                                <Form>
-                                  {
-                                    consistency[item.id].errorGap === true
-                                    || consistency[item.id].errorStartWrong === true?
-                                      <Form.Field>
-                                        <Radio
-                                          checked={this.state.resolvingAction === 0}
-                                          label='Fill gap with "undefined" layer'
-                                          name='radioGroup'
-                                          onChange={this.handleResolvingAction}
-                                          value={0}
-                                        />
-                                      </Form.Field>: null
-                                  }
-                                  {
-                                    idx > 0?
-                                      <Form.Field>
-                                        <Radio
-                                          checked={
-                                            this.state.resolvingAction === 1
-                                          }
-                                          label='Replace upper layer base with top from lower layer'
-                                          name='radioGroup'
-                                          onChange={this.handleResolvingAction}
-                                          value={1}
-                                        />
-                                      </Form.Field>: null
-                                  }
-                                  {
-                                    (idx + 1) <= length?
-                                      <Form.Field>
-                                        <Radio
-                                          checked={this.state.resolvingAction === 2}
-                                          label={
-                                            consistency[item.id].errorStartWrong === true?
-                                              'Replace lower layer top with 0 meters':
-                                              'Replace lower layer top with base from upper layer'
-                                          }
-                                          name='radioGroup'
-                                          onChange={this.handleResolvingAction}
-                                          value={2}
-                                        />
-                                      </Form.Field>: null
-                                  }
-                                </Form>
-                              </div>
-                              <div
-                                style={{
-                                  marginTop: '0.5em',
-                                  textAlign: 'right'
-                                }}
-                              >
-                                <Button
-                                  basic
-                                  icon
-                                  onClick={(e)=>{
-                                    e.stopPropagation();
-                                    this.setState({
-                                      resolving: null,
-                                      resolvingAction: null
-                                    });
-                                  }}
-                                  size='mini'
-                                >
-                                  <Icon name='cancel' /> Cancel
-                                </Button>
-                                <Button
-                                  disabled={this.state.resolvingAction === null}
-                                  icon
-                                  onClick={(e)=>{
-                                    e.stopPropagation();
-                                    const resolvingAction = this.state.resolvingAction;
-                                    this.setState({
-                                      resolving: null,
-                                      resolvingAction: null
-                                    }, () => {
-                                      this.props.onResolve(
-                                        item, resolvingAction
-                                      );
-                                    });
-                                  }}
-                                  secondary
-                                  size='mini'
-                                >
-                                  <Icon name='check' /> Confirm
-                                </Button>
-                              </div>
-                            </div>: null
-                        }
-                      </Table.Cell>
-                      {
-                        this.state.resolving === null
-                        || this.state.resolving.id !== item.id?
-                          <Table.Cell
-                            collapsing
+                          <div
+                            style={{
+                              fontWeight: 'bold',
+                              whiteSpace: 'normal'
+                            }}
                           >
-                            <Button
-                              basic
-                              icon
-                              onClick={(e)=>{
-                                e.stopPropagation();
-                                this.setState({
-                                  resolving: item,
-                                  resolvingAction: null,
-                                  deleting: null,
-                                  deleteAction: 0,
-                                  value: null
-                                });
-                              }}
-                              size='mini'
+                            <Icon name='warning sign' /> {
+                              t('missingLayerSolution')
+                            }
+                          </div>
+                        </Table.Cell>
+                      </Table.Row>
+                    );
+                  } else {
+                    ret.push(
+                      <Table.Row
+                        active={false}
+                        key={'ll-info-'+idx}
+                        negative
+                        style={{
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <Table.Cell
+                          colSpan={
+                            resolving === true?
+                              '3': _.isFunction(this.props.onDelete)?
+                                '2': '1'
+                          }
+                          collapsing
+                          style={{
+                            width: '100%'
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontWeight: 'bold',
+                              whiteSpace: 'normal'
+                            }}
+                          >
+                            <Icon name='warning sign' /> {
+                              consistency[item.id].errorGap === true?
+                                t('errorGap'):
+                                consistency[item.id].errorStartWrong === true?
+                                  t('errorStartWrong'):
+                                  t('errorOverlap')
+                            }
+                          </div>
+                          {
+                            resolving === true?
+                              <div>
+                                <div
+                                  style={{
+                                    fontSize: '0.8em'
+                                  }}
+                                >
+                                  {t('howToResolve')}
+                                </div>
+                                <div
+                                  style={{
+                                    marginTop: '0.5em'
+                                  }}
+                                >
+                                  <Form>
+                                    {
+                                      consistency[item.id].errorGap === true
+                                      || consistency[item.id].errorStartWrong === true?
+                                        <Form.Field>
+                                          <Radio
+                                            checked={
+                                              this.state.resolvingAction === 0
+                                            }
+                                            label={t('errorGapSolution1')}
+                                            name='radioGroup'
+                                            onChange={this.handleResolvingAction}
+                                            value={0}
+                                          />
+                                        </Form.Field>: null
+                                    }
+                                    {
+                                      idx > 0?
+                                        <Form.Field>
+                                          <Radio
+                                            checked={
+                                              this.state.resolvingAction === 1
+                                            }
+                                            label={t('errorGapSolution2')}
+                                            name='radioGroup'
+                                            onChange={this.handleResolvingAction}
+                                            value={1}
+                                          />
+                                        </Form.Field>: null
+                                    }
+                                    {
+                                      (idx + 1) <= length?
+                                        <Form.Field>
+                                          <Radio
+                                            checked={this.state.resolvingAction === 2}
+                                            label={
+                                              consistency[item.id].errorStartWrong === true?
+                                                t('errorGapSolution3'):
+                                                t('errorGapSolution4')
+                                            }
+                                            name='radioGroup'
+                                            onChange={this.handleResolvingAction}
+                                            value={2}
+                                          />
+                                        </Form.Field>: null
+                                    }
+                                  </Form>
+                                </div>
+                                <div
+                                  style={{
+                                    marginTop: '0.5em',
+                                    textAlign: 'right'
+                                  }}
+                                >
+                                  <Button
+                                    basic
+                                    icon
+                                    onClick={(e)=>{
+                                      e.stopPropagation();
+                                      this.setState({
+                                        resolving: null,
+                                        resolvingAction: null
+                                      });
+                                    }}
+                                    size='mini'
+                                  >
+                                    <Icon name='cancel' /> Cancel
+                                  </Button>
+                                  <Button
+                                    disabled={this.state.resolvingAction === null}
+                                    icon
+                                    onClick={(e)=>{
+                                      e.stopPropagation();
+                                      const resolvingAction = this.state.resolvingAction;
+                                      this.setState({
+                                        resolving: null,
+                                        resolvingAction: null
+                                      }, () => {
+                                        this.props.onResolve(
+                                          item, resolvingAction
+                                        );
+                                      });
+                                    }}
+                                    secondary
+                                    size='mini'
+                                  >
+                                    <Icon name='check' /> Confirm
+                                  </Button>
+                                </div>
+                              </div>: null
+                          }
+                        </Table.Cell>
+                        {
+                          this.state.resolving === null
+                          || this.state.resolving.id !== item.id?
+                            <Table.Cell
+                              collapsing
                             >
-                              <Icon name='question' />
-                            </Button>
-                          </Table.Cell>: null
-                      }
-                    </Table.Row>
-                  );
+                              <Button
+                                basic
+                                icon
+                                onClick={(e)=>{
+                                  e.stopPropagation();
+                                  this.setState({
+                                    resolving: item,
+                                    resolvingAction: null,
+                                    deleting: null,
+                                    deleteAction: 0,
+                                    value: null
+                                  });
+                                }}
+                                size='mini'
+                              >
+                                <Icon name='question' />
+                              </Button>
+                            </Table.Cell>: null
+                        }
+                      </Table.Row>
+                    );
+                  }
                 }
               }
 
@@ -568,6 +612,235 @@ class LayersList extends React.Component {
               return ret;
             })
           }
+          {
+            (
+              () => {
+
+                const ret = [];
+  
+                if (consistency.missingBedrock === true) {
+                  const resolving = this.state.resolving !== null
+                    && this.state.resolving.id === 'missingBedrock';
+
+                  ret.push(
+                    <Table.Row
+                      active={false}
+                      key={'ll-info-mb'}
+                      negative
+                      style={{
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <Table.Cell
+                        colSpan={
+                          resolving === true?
+                            '3': _.isFunction(this.props.onDelete)?
+                              '2': '1'
+                        }
+                        collapsing
+                        style={{
+                          width: '100%'
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          <Icon name='warning sign' /> missingBedrock
+                        </div>
+                        {
+                          resolving === true?
+                            <div>
+                              <div
+                                style={{
+                                  fontSize: '0.8em'
+                                }}
+                              >
+                                {t('howToResolve')}
+                              </div>
+                              <div
+                                style={{
+                                  marginTop: '0.5em',
+                                  whiteSpace: 'normal'
+                                }}
+                              >
+                                Add the Bedrock automatically from data
+                                filled into the Borehole page.
+                              </div>
+                              <div
+                                style={{
+                                  marginTop: '0.5em',
+                                  textAlign: 'right'
+                                }}
+                              >
+                                <Button
+                                  basic
+                                  icon
+                                  onClick={(e)=>{
+                                    e.stopPropagation();
+                                    this.setState({
+                                      resolving: null,
+                                      resolvingAction: null
+                                    });
+                                  }}
+                                  size='mini'
+                                >
+                                  <Icon name='cancel' /> Cancel
+                                </Button>
+                                <Button
+                                  icon
+                                  onClick={(e)=>{
+                                    e.stopPropagation();
+                                    this.setState({
+                                      resolving: null,
+                                      resolvingAction: null
+                                    }, ()=>{
+                                      this.props.onAddBedrock();
+                                    });
+                                  }}
+                                  secondary
+                                  size='mini'
+                                >
+                                  <Icon name='plus' /> Add
+                                </Button>
+                              </div>
+                            </div>: null
+                        }
+                      </Table.Cell>
+                      {
+                        resolving === false?
+                          <Table.Cell
+                            collapsing
+                          >
+                            <Button
+                              basic
+                              icon
+                              onClick={(e)=>{
+                                e.stopPropagation();
+                                this.setState({
+                                  resolving: {
+                                    id: 'missingBedrock'
+                                  },
+                                  resolvingAction: null,
+                                  deleting: null,
+                                  deleteAction: 0,
+                                  value: null
+                                });
+                              }}
+                              size='mini'
+                            >
+                              <Icon name='question' />
+                            </Button>
+                          </Table.Cell>: null
+                      }
+                    </Table.Row>
+                  );
+                }
+
+                if (consistency.wrongDepth === true) {
+                  const resolving = this.state.resolving !== null
+                    && this.state.resolving.id === 'wrongDepth';
+
+                  ret.push(
+                    <Table.Row
+                      active={false}
+                      key={'ll-info-wd'}
+                      negative
+                      style={{
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <Table.Cell
+                        colSpan={
+                          resolving === true?
+                            '3': '2'
+                        }
+                        collapsing
+                        style={{
+                          width: '100%'
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          <Icon name='warning sign' /> {t('wrongDepth')}
+                        </div>
+                        {
+                          resolving === true?
+                            <div>
+                              <div
+                                style={{
+                                  marginTop: '0.5em',
+                                  whiteSpace: 'normal'
+                                }}
+                              >
+                                {t(
+                                  'wrongDepthSolution1',
+                                  {
+                                    lDepth: layers[layers.length-1].depth_to,
+                                    bDepth: this.props.borehole.data.length
+                                  }
+                                )}
+                              </div>
+                              <div
+                                style={{
+                                  marginTop: '0.5em',
+                                  textAlign: 'right'
+                                }}
+                              >
+                                <Button
+                                  basic
+                                  onClick={(e)=>{
+                                    e.stopPropagation();
+                                    this.setState({
+                                      resolving: null,
+                                      resolvingAction: null
+                                    });
+                                  }}
+                                  size='mini'
+                                >
+                                  Close
+                                </Button>
+                              </div>
+                            </div>: null
+                        }
+                      </Table.Cell>
+                      {
+                        resolving === false?
+                          <Table.Cell
+                            collapsing
+                          >
+                            <Button
+                              basic
+                              icon
+                              onClick={(e)=>{
+                                e.stopPropagation();
+                                this.setState({
+                                  resolving: {
+                                    id: 'wrongDepth'
+                                  },
+                                  resolvingAction: null,
+                                  deleting: null,
+                                  deleteAction: 0,
+                                  value: null
+                                });
+                              }}
+                              size='mini'
+                            >
+                              <Icon name='question' />
+                            </Button>
+                          </Table.Cell>: null
+                      }
+                    </Table.Row>
+                  );
+                }
+                return ret;
+              }
+            )()
+          }
         </Table.Body>
       </Table>
     );
@@ -575,9 +848,10 @@ class LayersList extends React.Component {
 }
 
 LayersList.propTypes = {
-  consistency: PropTypes.object,
   borehole: PropTypes.object,
+  consistency: PropTypes.object,
   layers: PropTypes.array,
+  onAddBedrock: PropTypes.func,
   onDelete: PropTypes.func,
   onResolve: PropTypes.func,
   onSelected: PropTypes.func,
@@ -601,4 +875,6 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps,
   null
-)(LayersList); 
+)((
+  translate('error')(LayersList)
+));

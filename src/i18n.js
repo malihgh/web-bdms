@@ -1,5 +1,5 @@
-import i18n from 'i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
+import i18n from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
 let resources = {
   en: {
@@ -37,7 +37,24 @@ let resources = {
       'clickLayer': 'Click on a layer for details'
     },
     error: {
-      'E-900': 'Borehole locked by {{user}}'
+      'E-900': 'Borehole locked by {{user}}',
+      'errorGap': 'Non continuos data found',
+      'errorGapSolution1': 'Fill gap with "undefined" layer',
+      'errorGapSolution2': 'Replace upper layer base with top from lower layer',
+      'errorGapSolution3': 'Replace lower layer top with 0 meters',
+      'errorGapSolution4': 'Replace lower layer top with base from upper layer',
+      'wrongDepth': 'Wrong depth',
+      'wrongDepthSolution1': (
+        'Last layer depth (={{lDepth}}) not equals to ' +
+        'total borehole depth {{bDepth}}'
+      ),
+      'missingLayer': 'Missing layers',
+      'missingLayerSolution': (
+        'Please fill the space between the surface and the bedrock ' + 
+        '(below) adding new layers'
+      ),
+      'errorOverlap': 'Overlapping layers',
+      'errorStartWrong': 'First layer not starting from the surface',
     },
     header: {
       'explore': 'Explore',
@@ -111,7 +128,7 @@ let resources = {
       'bore_inc': 'Inclination (°)',
       'bore_inc_dir': 'Inclination direction (°)',
       'qt_bore_inc_dir': 'QC Inclin. / Direction',
-      'length': 'Depth (MD) (m)',
+      'length': 'Total depth (m)',
       'qt_length': 'QC depth',
       'top_bedrock': 'Top bedrock',
       'qt_top_bedrock': 'QC top bedrock',
@@ -231,7 +248,24 @@ let resources = {
       'clickLayer': 'Klicken Sie für Informationen'
     },
     error: {
-      'E-900': `Borehole locked by {{user}}`
+      'E-900': `Borehole locked by {{user}}`,
+      'howToResolve': 'How to resolve this issue?',
+      'errorGap': 'Non continuos data found',
+      'errorGapSolution1': 'Fill gap with "undefined" layer',
+      'errorGapSolution2': 'Replace upper layer base with top from lower layer',
+      'errorGapSolution3': 'Replace lower layer top with 0 meters',
+      'errorGapSolution4': 'Replace lower layer top with base from upper layer',
+      'wrongDepth': 'Wrong depth',
+      'wrongDepthSolution1': (
+        'Last layer depth ({{lDepth}}m) not equals to ' +
+        'total borehole depth ({{bDepth}}m)'
+      ),
+      'missingLayer': 'Missing layers',
+      'missingLayerSolution': (
+        'Please fill the space between the surface and the bedrock (below)'
+      ),
+      'errorOverlap': 'Overlapping layers',
+      'errorStartWrong': 'First layer not starting from the surface',
     },
     header: {
       'explore': 'Durchsuchen',
@@ -305,7 +339,7 @@ let resources = {
       'bore_inc': 'Inklination (°)',
       'bore_inc_dir': 'Einfallsrichtung (°)',
       'qt_bore_inc_dir': 'QC Inc. / Richtung',
-      'length': 'Tiefe (MD) (m)',
+      'length': 'Gesamttiefe (m)',
       'qt_length': 'QC Tiefe',
       'top_bedrock': 'Top Fels',
       'qt_top_bedrock': 'QC Top Fels',
@@ -424,7 +458,31 @@ let resources = {
       'clickLayer': 'Clic su un layer per le informazioni'
     },
     error: {
-      'E-900': 'Modifica in corso da parte di "{{user}}"'
+      'E-900': 'Modifica in corso da parte di "{{user}}"',
+      'howToResolve': 'Come risolvere questo problema?',
+      'errorGap': 'Sequenza layers non continua',
+      'errorGapSolution1': 'Riempi il vuoto con un layer di tipo indefinito',
+      'errorGapSolution2': (
+        'Sostituisci la base del layer superiore con la ' + 
+        'cima del layer inferiore'
+      ),
+      'errorGapSolution3': 'Sostituisci la cima del layer inferiore con 0m',
+      'errorGapSolution4': (
+        'Sostituisci la cima del layer inferiore con la base ' + 
+        'del layer superiore'
+      ),
+      'wrongDepth': 'Profondità errata',
+      'wrongDepthSolution1': (
+        'La profondità dell\'ultimo layer ({{lDepth}}m) non coincide con ' +
+        'quanto dichiarato nei metadati sul sondaggio ({{bDepth}}m)'
+      ),
+      'missingLayer': 'Layers mancanti',
+      'missingLayerSolution': (
+        'Per favore riempire lo spazio tra la superficie e il bedrock ' + 
+        'aggiungendo nuovi layers'
+      ),
+      'errorOverlap': 'Sovrapposizione layers',
+      'errorStartWrong': 'Il primo layer no inizia dalla superficie',
     },
     header: {
       'explore': 'Esplora',
@@ -498,7 +556,7 @@ let resources = {
       'bore_inc': 'Inclinazione (°)',
       'bore_inc_dir': 'Direzione inclinazione (°)',
       'qt_bore_inc_dir': 'Qualità Inclin. / Direz.',
-      'length': 'Profondità (MD) (m)',
+      'length': 'Profondità totale (m)',
       'qt_length': 'Qualità profondità',
       'top_bedrock': 'Top substrato',
       'qt_top_bedrock': 'QC top substrato',
