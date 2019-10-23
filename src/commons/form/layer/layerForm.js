@@ -413,7 +413,6 @@ class LayerForm extends React.Component {
                     5: 'formation',
                   }}
                   onSelected={(selected) => {
-                    console.log('onSelected!');
                     this.updateChange(
                       'lithostratigraphy',
                       selected.id,

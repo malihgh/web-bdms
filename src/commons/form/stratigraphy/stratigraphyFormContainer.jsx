@@ -220,20 +220,19 @@ class StratigraphyFormContainer extends React.Component {
         )
       );
 
-      bedrockLitPetWrong = (
-        isBedrock === true
-        && item.lithology !== borehole.custom.lit_pet_top_bedrock
-      );
-
-      bedrockLitStratiWrong = (
-        isBedrock === true
-        && item.lithostratigraphy !== borehole.custom.lit_str_top_bedrock
-      );
-
-      bedrockChronoWrong = (
-        isBedrock === true
-        && item.chronostratigraphy !== borehole.custom.chro_str_top_bedrock
-      );
+      if (isBedrock === true){
+        bedrockLitPetWrong = (
+          item.lithology !== borehole.custom.lit_pet_top_bedrock
+        );
+  
+        bedrockLitStratiWrong = (
+          item.lithostratigraphy !== borehole.custom.lit_str_top_bedrock
+        );
+  
+        bedrockChronoWrong = (
+          item.chronostratigraphy !== borehole.custom.chro_str_top_bedrock
+        );
+      }
 
       // First layer not starting from 0 meters
       const errorStartWrong = (
@@ -321,6 +320,8 @@ class StratigraphyFormContainer extends React.Component {
     if (bedrockChronoWrong === true) {
       consistency.bedrockChronoWrong = bedrockChronoWrong;
     }
+
+    console.log(consistency);
 
     this.setState({
       consistency: consistency
@@ -809,6 +810,9 @@ class StratigraphyFormContainer extends React.Component {
                       if (
                         attribute === 'depth_to'
                         || attribute === 'depth_from'
+                        || attribute === 'lithostratigraphy'
+                        || attribute === 'lithology'
+                        || attribute === 'chronostratigraphy'
                       ){
                         this.checkConsistency();
                       }

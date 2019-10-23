@@ -99,6 +99,7 @@ class LayersList extends React.Component {
 
   render(){
     const {
+      borehole,
       consistency,
       layers,
       t
@@ -114,7 +115,9 @@ class LayersList extends React.Component {
           {
             layers.map((item, idx) => {
 
-              const isBedrock = item.depth_to === this.props.borehole.data.length;
+              const isBedrock = (
+                item.depth_from === borehole.data.extended.top_bedrock
+              );
 
               const ret = [];
 
@@ -598,8 +601,8 @@ class LayersList extends React.Component {
                             collapsing
                           >
                             {
-                              this.props.borehole.data.lock === null
-                              || this.props.borehole.data.lock.username
+                              borehole.data.lock === null
+                              || borehole.data.lock.username
                                  !== this.props.user.data.username?
                                 null:
                                 <Button
@@ -797,7 +800,7 @@ class LayersList extends React.Component {
                                   'wrongDepthSolution1',
                                   {
                                     lDepth: layers[layers.length-1].depth_to,
-                                    bDepth: this.props.borehole.data.length
+                                    bDepth: borehole.data.length
                                   }
                                 )}
                               </div>
