@@ -497,7 +497,7 @@ let resources = {
         'aggiungendo nuovi layers'
       ),
       'errorOverlap': 'Sovrapposizione layers',
-      'errorStartWrong': 'Il primo layer no inizia dalla superficie'
+      'errorStartWrong': 'Il primo layer non inizia dalla superficie'
     },
     header: {
       'explore': 'Esplora',

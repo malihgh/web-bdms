@@ -321,8 +321,6 @@ class StratigraphyFormContainer extends React.Component {
       consistency.bedrockChronoWrong = bedrockChronoWrong;
     }
 
-    console.log(consistency);
-
     this.setState({
       consistency: consistency
     });
