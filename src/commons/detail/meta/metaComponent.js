@@ -21,23 +21,11 @@ class MetaComponent extends React.Component {
         null :
         <div>
           <DomainText
-            schema={schema}
             id={id}
+            schema={schema}
           />
         </div>
     );
-    // return (
-    //   <Table.Row>
-    //     <Table.Cell collapsing singleLine>{
-    //       _.isUndefined(i18n)? t(schema): t(i18n)
-    //     }</Table.Cell>
-    //     <Table.Cell>
-    //       <DomainText
-    //         schema={schema}
-    //         id={id}/>
-    //     </Table.Cell>
-    //   </Table.Row>
-    // )
   }
   getDateRow(schema, isodate) {
     // const { t } = this.props;
@@ -47,11 +35,8 @@ class MetaComponent extends React.Component {
       _.isNil(isodate) || isodate === '' ?
         null :
         <DateText
-          date={isodate} />
-      // <div>
-      //   <DateText
-      //     date={isodate}/> (<FromNowText date={isodate}/>)
-      // </div>
+          date={isodate}
+        />
     );
   }
 
@@ -62,9 +47,8 @@ class MetaComponent extends React.Component {
         <div
           style={{
             fontSize: '0.8em',
-            color: '#787878', // 'rgb(33, 133, 208)',
+            color: '#787878',
             lineHeight: '1em',
-            // marginTop: '0.5em 0px 0.4em'
           }}
         >
           {t(schema)}
@@ -371,7 +355,6 @@ class MetaComponent extends React.Component {
                 data.extended.groundwater === false ?
                   t("no") : null
             )}
-            
           </div>
           <div
             style={{
@@ -387,6 +370,28 @@ class MetaComponent extends React.Component {
               'custom.qt_top_bedrock',
               data.custom.qt_top_bedrock,
               'qt_top_bedrock'
+            )}
+          </div>
+        </div>
+
+        <div
+          style={{
+            // borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
+            display: 'flex',
+            flexDirection: 'row',
+            margin: margin,
+            padding: padding
+          }}
+        >
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {this.getTextRow(
+              'remarks',
+              data.custom.remarks !== null ?
+                data.extended.remarks : '-'
             )}
           </div>
         </div>
