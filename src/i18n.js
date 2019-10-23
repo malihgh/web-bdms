@@ -34,7 +34,9 @@ let resources = {
       'refresh': 'refresh',
       'expand': 'expand',
       'collapse': 'collapse',
-      'clickLayer': 'Click on a layer for details'
+      'clickLayer': 'Click on a layer for details',
+      'filterByName': 'Filter by name',
+      'filterByHierarchicalUnits': 'Filter by hierarchical units'
     },
     error: {
       'E-900': 'Borehole locked by {{user}}',
@@ -250,7 +252,9 @@ let resources = {
       'refresh': 'aufladen',
       'expand': 'erweitern',
       'collapse': 'zusammenbruch',
-      'clickLayer': 'Klicken Sie für Informationen'
+      'clickLayer': 'Klicken Sie für Informationen',
+      'filterByName': 'Filter by name',
+      'filterByHierarchicalUnits': 'Filter by hierarchical units'
     },
     error: {
       'E-900': `Borehole locked by {{user}}`,
@@ -465,7 +469,9 @@ let resources = {
       'refresh': 'ricarica',
       'expand': 'espandere',
       'collapse': 'collassare',
-      'clickLayer': 'Clic su un layer per le informazioni'
+      'clickLayer': 'Clic su un layer per le informazioni',
+      'filterByName': 'Filtra per nome',
+      'filterByHierarchicalUnits': 'Filtra per unità (gerarchicamente)'
     },
     error: {
       'E-900': 'Modifica in corso da parte di "{{user}}"',

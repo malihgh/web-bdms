@@ -15,6 +15,7 @@ import {
   Header,
   List,
   Modal,
+  Form,
   // Popup
 } from 'semantic-ui-react';
 
@@ -238,7 +239,7 @@ class DomainTree extends React.Component {
             )
             // And is not null
             && this.state.selectedFilters[
-            this.state.parent[domain.level]
+              this.state.parent[domain.level]
             ] !== null
             // This element is child of selected parent 
             && _.startsWith(
@@ -283,11 +284,15 @@ class DomainTree extends React.Component {
             text: domain.code === '' ?
               domain[this.state.language].text :
               domain.code !== domain[this.state.language].text ?
-                domain.code + ' (' + domain[this.state.language].text + ')' : domain.code,
+                domain.code +
+                ' (' + domain[this.state.language].text + ')':
+                domain.code,
             content: domain.code === '' ?
               domain[this.state.language].text :
               domain.code !== domain[this.state.language].text ?
-                domain.code + ' (' + domain[this.state.language].text + ')' : domain.code
+                domain.code + ' (' + domain[this.state.language].text +
+                ')':
+                domain.code
           });
         }
       }
@@ -305,6 +310,7 @@ class DomainTree extends React.Component {
           ].text.toUpperCase().includes(this.state.search.toUpperCase())
         )
       ) {
+
         options.push({
           active: this.state.selected === domain.id,
           key: "dom-opt-" + domain.id,
@@ -386,14 +392,6 @@ class DomainTree extends React.Component {
         <Modal.Content>
           <div
             style={{
-              // padding: '0.78571429rem 0.5rem',
-              // backgroundColor: 'white',
-              // border: '1px solid rgb(133, 183, 217)',
-              // bottom: '0px',
-              // left: '0px',
-              // position: 'absolute',
-              // width: '100%',
-              // zIndex: '100',
               minHeight: '200px',
               maxHeight: '400px',
               display: 'flex',
@@ -405,6 +403,17 @@ class DomainTree extends React.Component {
                 minWidth: '300px'
               }}
             >
+              <Form
+                style={{
+                  flex: '1 1 100%'
+                }}
+              >
+                <Form.Field>
+                  <label>
+                    {t('filterByHierarchicalUnits')}
+                  </label>
+                </Form.Field>
+              </Form>
               {
                 this.state.levels.map((lev, idx) => {
                   return (
@@ -487,7 +496,7 @@ class DomainTree extends React.Component {
 
                           }}
                           options={filters[this.props.levels[lev]]}
-                          placeholder='Filter by class'
+                          placeholder='Filter by units'
                           selection
                           value={
                             this.state.selectedFilters.hasOwnProperty(lev)
@@ -510,17 +519,28 @@ class DomainTree extends React.Component {
               }}
             >
               <div>
-                <Input
-                  fluid
-                  icon='search'
-                  onChange={(e) => {
-                    this.setState({
-                      search: e.target.value
-                    });
+                <Form
+                  style={{
+                    flex: '1 1 100%'
                   }}
-                  placeholder="Search..." 
-                  value={this.state.search}
-                />
+                >
+                  <Form.Field>
+                    <label>
+                      {t('filterByName')}
+                    </label>
+                    <Input
+                      fluid
+                      icon='search'
+                      onChange={(e) => {
+                        this.setState({
+                          search: e.target.value
+                        });
+                      }}
+                      placeholder="Search..." 
+                      value={this.state.search}
+                    />
+                  </Form.Field>
+                </Form>
               </div>
               <div
                 style={{
