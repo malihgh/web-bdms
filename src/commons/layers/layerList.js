@@ -502,7 +502,13 @@ class LayersList extends React.Component {
                       }}
                       style={{
                         cursor: 'pointer',
-                        borderTop: isBedrock && idx > 0?
+                        borderTop: (
+                          isBedrock &&
+                          (
+                            idx > 0
+                            || item.depth_from === 0
+                          )
+                        )?
                           '2px dashed #787878': null
                       }}
                     >
@@ -541,6 +547,7 @@ class LayersList extends React.Component {
                         </div>
                         <div
                           style={{
+                            fontSize: '1.1em',
                             fontWeight: 'bold',
                             color: (
                               isBedrock
@@ -564,6 +571,26 @@ class LayersList extends React.Component {
                             color: (
                               isBedrock
                               && consistency.hasOwnProperty(
+                                'bedrockChronoWrong'
+                              )?
+                                'red': 'rgb(78, 78, 78)'
+                            ),
+                            fontSize: '0.9em'
+                          }}
+                        >
+                          {
+                            item.chronostratigraphy !== null?
+                              <DomainText
+                                id={item.chronostratigraphy}
+                                schema='custom.chro_str_top_bedrock'
+                              />: '-'
+                          }
+                        </div>
+                        <div
+                          style={{
+                            color: (
+                              isBedrock
+                              && consistency.hasOwnProperty(
                                 'bedrockLitPetWrong'
                               )?
                                 'red': '#787878'
@@ -571,10 +598,13 @@ class LayersList extends React.Component {
                             fontSize: '0.8em'
                           }}
                         >
-                          <DomainText
-                            id={item.lithology}
-                            schema='custom.lit_pet_top_bedrock'
-                          />
+                          {
+                            item.lithology !== null?
+                              <DomainText
+                                id={item.lithology}
+                                schema='custom.lit_pet_top_bedrock'
+                              />: '-'
+                          }
                         </div>
                         <div
                           style={{
