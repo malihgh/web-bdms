@@ -253,14 +253,15 @@ class LayerForm extends React.Component {
               autoComplete="off"
               autoCorrect="off"
               onChange={(e)=>{
-                this.updateChange(
-                  'depth_from',
-                  e.target.value === ''?
-                    null: _.toNumber(e.target.value)
-                );
+                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                  this.updateChange(
+                    'depth_from',
+                    e.target.value === ''?
+                      null: _.toNumber(e.target.value)
+                  );
+                }
               }}
               spellCheck="false"
-              type='number'
               value={
                 _.isNil(this.state.layer.depth_from)?
                   '': this.state.layer.depth_from
@@ -283,15 +284,16 @@ class LayerForm extends React.Component {
               autoComplete="off"
               autoCorrect="off"
               onChange={(e)=>{
-                this.updateChange(
-                  'depth_to',
-                  e.target.value === ''?
-                    null: _.toNumber(e.target.value)
-                );
+                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                  this.updateChange(
+                    'depth_to',
+                    e.target.value === ''?
+                      null: _.toNumber(e.target.value)
+                  );
+                }
               }}
               ref={this.depthToRef}
               spellCheck="false"
-              type='number'
               value={
                 _.isNil(this.state.layer.depth_to)?
                   '': this.state.layer.depth_to
