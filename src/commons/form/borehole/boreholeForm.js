@@ -333,7 +333,7 @@ class BoreholeForm extends React.Component {
         <div>
           {
             t(
-              `error:${this.props.borehole.error}`,
+              'error:'+this.props.borehole.error,
               this.props.borehole.data
             )}
         </div>
@@ -683,6 +683,10 @@ class BoreholeForm extends React.Component {
                           <Form.Field
                             error={
                               mentions.indexOf('location_x') >= 0
+                              || (
+                                borehole.location_x < 2485869.5728
+                                || borehole.location_x > 2837076.5648
+                              )
                             }
                             required
                           >
@@ -693,14 +697,15 @@ class BoreholeForm extends React.Component {
                               autoCorrect="off"
                               disabled={borehole.srs === null}
                               onChange={(e) => {
-                                this.updateChange(
-                                  'location_x',
-                                  e.target.value === '' ?
-                                    null : _.toNumber(e.target.value)
-                                );
+                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                                  this.updateChange(
+                                    'location_x',
+                                    e.target.value === '' ?
+                                      null : _.toNumber(e.target.value)
+                                  );
+                                }
                               }}
                               spellCheck="false"
-                              type='number'
                               value={
                                 _.isNil(borehole.location_x) ?
                                   '' : borehole.location_x
@@ -710,6 +715,10 @@ class BoreholeForm extends React.Component {
                           <Form.Field
                             error={
                               mentions.indexOf('location_y') >= 0
+                              || (
+                                borehole.location_y <    1076443.1884
+                                || borehole.location_y > 1299941.7864
+                              )
                             }
                             required
                           >
@@ -720,14 +729,15 @@ class BoreholeForm extends React.Component {
                               autoCorrect="off"
                               disabled={borehole.srs === null}
                               onChange={(e) => {
-                                this.updateChange(
-                                  'location_y',
-                                  e.target.value === '' ?
-                                    null : _.toNumber(e.target.value)
-                                );
+                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                                  this.updateChange(
+                                    'location_y',
+                                    e.target.value === '' ?
+                                      null : _.toNumber(e.target.value)
+                                  );
+                                }
                               }}
                               spellCheck="false"
-                              type='number'
                               value={
                                 _.isNil(borehole.location_y) ?
                                   '' : borehole.location_y
@@ -748,14 +758,15 @@ class BoreholeForm extends React.Component {
                               autoComplete="off"
                               autoCorrect="off"
                               onChange={(e) => {
-                                this.updateChange(
-                                  'elevation_z',
-                                  e.target.value === '' ?
-                                    null : _.toNumber(e.target.value)
-                                );
+                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                                  this.updateChange(
+                                    'elevation_z',
+                                    e.target.value === '' ?
+                                      null : _.toNumber(e.target.value)
+                                  );
+                                }
                               }}
                               spellCheck="false"
-                              type='number'
                               value={
                                 _.isNil(borehole.elevation_z)?
                                   '' : borehole.elevation_z
@@ -1133,14 +1144,15 @@ class BoreholeForm extends React.Component {
                             <label>{t('drill_diameter')}</label>
                             <Input
                               onChange={(e) => {
-                                this.updateChange(
-                                  'custom.drill_diameter',
-                                  e.target.value === '' ?
-                                    null : _.toNumber(e.target.value)
-                                );
+                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                                  this.updateChange(
+                                    'custom.drill_diameter',
+                                    e.target.value === '' ?
+                                      null : _.toNumber(e.target.value)
+                                  );
+                                }
                               }}
                               spellCheck="false"
-                              type='number'
                               value={
                                 ((()=>{
                                   const r = _.isNil(borehole.custom.drill_diameter) ?
@@ -1180,14 +1192,15 @@ class BoreholeForm extends React.Component {
                               autoComplete="off"
                               autoCorrect="off"
                               onChange={(e) => {
-                                this.updateChange(
-                                  'bore_inc',
-                                  e.target.value === '' ?
-                                    null : _.toNumber(e.target.value)
-                                );
+                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                                  this.updateChange(
+                                    'bore_inc',
+                                    e.target.value === '' ?
+                                      null : _.toNumber(e.target.value)
+                                  );
+                                }
                               }}
                               spellCheck="false"
-                              type='number'
                               value={
                                 _.isNil(borehole.bore_inc) ?
                                   '' : borehole.bore_inc
@@ -1206,14 +1219,15 @@ class BoreholeForm extends React.Component {
                               autoComplete="off"
                               autoCorrect="off"
                               onChange={(e) => {
-                                this.updateChange(
-                                  'bore_inc_dir',
-                                  e.target.value === '' ?
-                                    null : _.toNumber(e.target.value)
-                                );
+                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                                  this.updateChange(
+                                    'bore_inc_dir',
+                                    e.target.value === '' ?
+                                      null : _.toNumber(e.target.value)
+                                  );
+                                }
                               }}
                               spellCheck="false"
-                              type='number'
                               value={
                                 _.isNil(borehole.bore_inc_dir) ?
                                   '' : borehole.bore_inc_dir
@@ -1286,14 +1300,15 @@ class BoreholeForm extends React.Component {
                           autoComplete="off"
                           autoCorrect="off"
                           onChange={(e) => {
-                            this.updateChange(
-                              'length',
-                              e.target.value === '' ?
-                                null : _.toNumber(e.target.value)
-                            );
+                            if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                              this.updateChange(
+                                'length',
+                                e.target.value === '' ?
+                                  null : _.toNumber(e.target.value)
+                              );
+                            }
                           }}
                           spellCheck="false"
-                          type='number'
                           value={
                             _.isNil(borehole.length) ?
                               '' : borehole.length
@@ -1331,14 +1346,15 @@ class BoreholeForm extends React.Component {
                           autoComplete="off"
                           autoCorrect="off"
                           onChange={(e) => {
-                            this.updateChange(
-                              'extended.top_bedrock',
-                              e.target.value === '' ?
-                                null : _.toNumber(e.target.value)
-                            );
+                            if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                              this.updateChange(
+                                'extended.top_bedrock',
+                                e.target.value === '' ?
+                                  null : _.toNumber(e.target.value)
+                              );
+                            }
                           }}
                           spellCheck="false"
-                          type='number'
                           value={
                             _.isNil(borehole.extended.top_bedrock) ?
                               '' : borehole.extended.top_bedrock
