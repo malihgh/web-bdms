@@ -85,33 +85,18 @@ class App extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     loader: state.dataLoaderState
-    // cantons: state.core_canton_list,
-    // domains: state.core_domain_list,
-    // user: state.core_user
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
-    // loadDomains: () => {
-    //   dispatch(loadDomains());
-    // },
-    // loadCantons: () => {
-    //   dispatch(loadCantons());
-    // },
-    // loadSettings: () => {
-    //   dispatch(loadSettings());
-    // },
     setScrollbarWidth: (w) => {
       dispatch({
         type: "SETTING_SCROLLBAR_WIDTH",
         width: w
       });
-    },
-    // loadUser: () => {
-    //   dispatch(loadUser());
-    // }
+    }
   };
 };
 

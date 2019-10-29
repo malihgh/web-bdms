@@ -134,37 +134,6 @@ class BoreholeForm extends React.Component {
         });
       });
     }
-    // else if (id === null) {
-    //   this.setState({
-    //     "loadingFetch": false,
-    //     "layer_kind": null,
-    //     "stratigraphy_id": null,
-    //     "layers": [],
-    //     "layer": null,
-    //     "borehole": this.empty
-    //   });
-    // } else {
-    //   // request the creation of a new borehole if id is not given
-    //   this.setState({
-    //     "creationFetch": true
-    //   }, () => {
-    //     setTimeout(function () {
-    //       createBorehole().then(function (response) {
-    //         if (response.data.success) {
-    //           self.setState({
-    //             "creationFetch": false,
-    //             "borehole": {
-    //               ...self.state.borehole,
-    //               "id": response.data.id
-    //             }
-    //           });
-    //         }
-    //       }).catch(function (error) {
-    //         console.log(error);
-    //       });
-    //     }, 100);
-    //   });
-    // }
   }
 
   check(attribute, value) {
@@ -233,6 +202,8 @@ class BoreholeForm extends React.Component {
                       borehole.lock = null;
                       this.props.updateBorehole(borehole);
                     });
+                  } else {
+                    window.location.reload();
                   }
                 }
               }).catch((error) => {
@@ -247,16 +218,47 @@ class BoreholeForm extends React.Component {
     });
   }
 
-  updateChange(attribute, value, to = true) {
+  checkLock(){
     if (this.props.borehole.data.role !== 'EDIT'){
       alert("Borehole status not editable");
-      return;
+      return false;
     }
     if (
       this.props.borehole.data.lock === null
       || this.props.borehole.data.lock.username !== this.props.user.data.username
     ){
       alert("Borehole not locked");
+      return false;
+    }
+    return true;
+  }
+
+  isNumber(value){
+    return (/^-?\d*[.,]?\d*$/.test(value));
+  }
+
+  updateNumber(attribute, value, to = true){
+    if (this.checkLock() === false) {
+      return;
+    }
+    const state = {
+      ...this.state,
+      "patchFetch": true
+    };
+    const borehole = {
+      ...this.props.borehole.data
+    };
+    _.set(borehole, attribute, value);
+
+    if (/^-?\d*[.,]?\d*$/.test(value)){
+      this.setState(state, () => {
+        this.patch(borehole, attribute, _.toNumber(value), to);
+      });
+    }
+  }
+
+  updateChange(attribute, value, to = true) {
+    if (this.checkLock() === false) {
       return;
     }
     const state = {
@@ -267,11 +269,20 @@ class BoreholeForm extends React.Component {
       ...this.props.borehole.data
     };
     if (attribute === 'location') {
+      if (!this.isNumber(value[0])){
+        return;
+      }
+      if (!this.isNumber(value[1])){
+        return;
+      }
       _.set(borehole, 'location_x', value[0]);
       _.set(borehole, 'location_y', value[1]);
       _.set(borehole, 'custom.canton', value[2]);
       _.set(borehole, 'custom.city', value[3]);
       if (value[4] !== null) {
+        if (!this.isNumber(value[4])){
+          return;
+        }
         _.set(borehole, 'elevation_z', value[4]);
       }
     } else if (attribute === 'geocoding') {
@@ -281,45 +292,51 @@ class BoreholeForm extends React.Component {
       _.set(borehole, attribute, value);
     }
     this.setState(state, () => {
-      this.props.updateBorehole(borehole);
-      if (
-        this.updateAttributeDelay.hasOwnProperty(attribute) &&
-        this.updateAttributeDelay[attribute]
-      ) {
-        clearTimeout(this.updateAttributeDelay[attribute]);
-        this.updateAttributeDelay[attribute] = false;
-      }
-      this.updateAttributeDelay[attribute] = setTimeout(() => {
-        patchBorehole(
-          borehole.id,
-          attribute,
-          value
-        ).then((response) => {
-          if (response.data.success) {
+      this.patch(borehole, attribute, value, to);
+    });
+  }
+
+  patch(borehole, attribute, value, to = true){
+    this.props.updateBorehole(borehole);
+    if (
+      this.updateAttributeDelay.hasOwnProperty(attribute) &&
+      this.updateAttributeDelay[attribute]
+    ) {
+      clearTimeout(this.updateAttributeDelay[attribute]);
+      this.updateAttributeDelay[attribute] = false;
+    }
+    this.updateAttributeDelay[attribute] = setTimeout(() => {
+      patchBorehole(
+        borehole.id,
+        attribute,
+        value
+      ).then((response) => {
+        if (response.data.success) {
+          this.setState({
+            patchFetch: false
+          }, () => {
+            borehole.percentage = response.data.percentage;
+            borehole.lock = response.data.lock;
+            borehole.updater = response.data.updater;
+            this.props.updateBorehole(borehole);
+          });
+        } else if (response.status === 200){
+          alert(response.data.message);
+          if (response.data.error === 'E-900'){
             this.setState({
               patchFetch: false
             }, () => {
-              borehole.percentage = response.data.percentage;
-              borehole.lock = response.data.lock;
-              borehole.updater = response.data.updater;
+              borehole.lock = null;
               this.props.updateBorehole(borehole);
             });
-          } else if (response.status === 200){
-            alert(response.data.message);
-            if (response.data.error === 'E-900'){
-              this.setState({
-                patchFetch: false
-              }, () => {
-                borehole.lock = null;
-                this.props.updateBorehole(borehole);
-              });
-            }
+          } else {
+            window.location.reload();
           }
-        }).catch((error) => {
-          console.error(error);
-        });
-      }, to ? 500 : 0);
-    });
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    }, to ? 500 : 0);
   }
 
   render() {
@@ -697,13 +714,16 @@ class BoreholeForm extends React.Component {
                               autoCorrect="off"
                               disabled={borehole.srs === null}
                               onChange={(e) => {
-                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                                  this.updateChange(
-                                    'location_x',
-                                    e.target.value === '' ?
-                                      null : _.toNumber(e.target.value)
-                                  );
-                                }
+                                this.updateNumber(
+                                  'location_x', e.target.value === ''? null: e.target.value
+                                );
+                                // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                                //   this.updateChange(
+                                //     'location_x',
+                                //     e.target.value === '' ?
+                                //       null : _.toNumber(e.target.value)
+                                //   );
+                                // }
                               }}
                               spellCheck="false"
                               value={
@@ -729,13 +749,16 @@ class BoreholeForm extends React.Component {
                               autoCorrect="off"
                               disabled={borehole.srs === null}
                               onChange={(e) => {
-                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                                  this.updateChange(
-                                    'location_y',
-                                    e.target.value === '' ?
-                                      null : _.toNumber(e.target.value)
-                                  );
-                                }
+                                this.updateNumber(
+                                  'location_y', e.target.value === ''? null: e.target.value
+                                );
+                                // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                                //   this.updateChange(
+                                //     'location_y',
+                                //     e.target.value === '' ?
+                                //       null : _.toNumber(e.target.value)
+                                //   );
+                                // }
                               }}
                               spellCheck="false"
                               value={
@@ -758,13 +781,16 @@ class BoreholeForm extends React.Component {
                               autoComplete="off"
                               autoCorrect="off"
                               onChange={(e) => {
-                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                                  this.updateChange(
-                                    'elevation_z',
-                                    e.target.value === '' ?
-                                      null : _.toNumber(e.target.value)
-                                  );
-                                }
+                                this.updateNumber(
+                                  'elevation_z', e.target.value === ''? null: e.target.value
+                                );
+                                // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                                //   this.updateChange(
+                                //     'elevation_z',
+                                //     e.target.value === '' ?
+                                //       null : _.toNumber(e.target.value)
+                                //   );
+                                // }
                               }}
                               spellCheck="false"
                               value={
@@ -1144,13 +1170,16 @@ class BoreholeForm extends React.Component {
                             <label>{t('drill_diameter')}</label>
                             <Input
                               onChange={(e) => {
-                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                                  this.updateChange(
-                                    'custom.drill_diameter',
-                                    e.target.value === '' ?
-                                      null : _.toNumber(e.target.value)
-                                  );
-                                }
+                                this.updateNumber(
+                                  'custom.drill_diameter', e.target.value === ''? null: e.target.value
+                                );
+                                // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                                //   this.updateChange(
+                                //     'custom.drill_diameter',
+                                //     e.target.value === '' ?
+                                //       null : _.toNumber(e.target.value)
+                                //   );
+                                // }
                               }}
                               spellCheck="false"
                               value={
@@ -1192,13 +1221,16 @@ class BoreholeForm extends React.Component {
                               autoComplete="off"
                               autoCorrect="off"
                               onChange={(e) => {
-                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                                  this.updateChange(
-                                    'bore_inc',
-                                    e.target.value === '' ?
-                                      null : _.toNumber(e.target.value)
-                                  );
-                                }
+                                this.updateNumber(
+                                  'bore_inc', e.target.value === ''? null: e.target.value
+                                );
+                                // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                                //   this.updateChange(
+                                //     'bore_inc',
+                                //     e.target.value === '' ?
+                                //       null : _.toNumber(e.target.value)
+                                //   );
+                                // }
                               }}
                               spellCheck="false"
                               value={
@@ -1219,13 +1251,16 @@ class BoreholeForm extends React.Component {
                               autoComplete="off"
                               autoCorrect="off"
                               onChange={(e) => {
-                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                                  this.updateChange(
-                                    'bore_inc_dir',
-                                    e.target.value === '' ?
-                                      null : _.toNumber(e.target.value)
-                                  );
-                                }
+                                this.updateNumber(
+                                  'bore_inc_dir', e.target.value === ''? null: e.target.value
+                                );
+                                // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                                //   this.updateChange(
+                                //     'bore_inc_dir',
+                                //     e.target.value === '' ?
+                                //       null : _.toNumber(e.target.value)
+                                //   );
+                                // }
                               }}
                               spellCheck="false"
                               value={
@@ -1300,13 +1335,16 @@ class BoreholeForm extends React.Component {
                           autoComplete="off"
                           autoCorrect="off"
                           onChange={(e) => {
-                            if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                              this.updateChange(
-                                'length',
-                                e.target.value === '' ?
-                                  null : _.toNumber(e.target.value)
-                              );
-                            }
+                            this.updateNumber(
+                              'length', e.target.value === ''? null: e.target.value
+                            );
+                            // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                            //   this.updateChange(
+                            //     'length',
+                            //     e.target.value === '' ?
+                            //       null : _.toNumber(e.target.value)
+                            //   );
+                            // }
                           }}
                           spellCheck="false"
                           value={
@@ -1346,13 +1384,16 @@ class BoreholeForm extends React.Component {
                           autoComplete="off"
                           autoCorrect="off"
                           onChange={(e) => {
-                            if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                              this.updateChange(
-                                'extended.top_bedrock',
-                                e.target.value === '' ?
-                                  null : _.toNumber(e.target.value)
-                              );
-                            }
+                            this.updateNumber(
+                              'extended.top_bedrock', e.target.value === ''? null: e.target.value
+                            );
+                            // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                            //   this.updateChange(
+                            //     'extended.top_bedrock',
+                            //     e.target.value === '' ?
+                            //       null : _.toNumber(e.target.value)
+                            //   );
+                            // }
                           }}
                           spellCheck="false"
                           value={

@@ -28,6 +28,10 @@ class LayerForm extends React.Component {
   constructor(props) {
     super(props);
     this.isVisible = this.isVisible.bind(this);
+    this.checkLock = this.checkLock.bind(this);
+    this.updateNumber = this.updateNumber.bind(this);
+    this.updateChange = this.updateChange.bind(this);
+    this.patch = this.patch.bind(this);
     this.depthToRef = createRef();
     this.empty = {
       id: props.hasOwnProperty('id')? props.id: null,
@@ -120,22 +124,44 @@ class LayerForm extends React.Component {
     }
   }
 
-  updateChange(attribute, value, to = true){
+  checkLock(){
     if (this.props.borehole.data.role !== 'EDIT'){
       alert("Borehole status not editable");
-      return;
+      return false;
     }
     if (
       this.props.borehole.data.lock === null
       || this.props.borehole.data.lock.username !== this.props.user.data.username
     ){
       alert("Borehole not locked");
+      return false;
+    }
+    return true;
+  }
+
+  updateNumber(attribute, value, to = true){
+    if (this.checkLock() === false) {
       return;
     }
+    const state = {
+      ...this.state,
+      isPatching: true,
+      layer: {
+        ...this.state.layer
+      }
+    };
+    _.set(state.layer, attribute, value);
+    if (/^-?\d*[.,]?\d*$/.test(value)){
+      this.setState(state, () => {
+        this.patch(attribute, _.toNumber(value), to);
+      });
+    }
+  }
 
-    const {
-      onUpdated
-    } = this.props;
+  updateChange(attribute, value, to = true){
+    if (this.checkLock() === false) {
+      return;
+    }
     const state = {
       ...this.state,
       isPatching: true,
@@ -145,33 +171,43 @@ class LayerForm extends React.Component {
     };
     _.set(state.layer, attribute, value);
     this.setState(state, () => {
-      if (
-        this.updateAttributeDelay.hasOwnProperty(attribute) &&
-        this.updateAttributeDelay[attribute]
-      ){
-        clearTimeout(this.updateAttributeDelay[attribute]);
-        this.updateAttributeDelay[attribute] = false;
-      }
-      this.updateAttributeDelay[attribute] = setTimeout(function(){
-        patchLayer(
-          this.state.layer.id,
-          attribute,
-          value
-        ).then(function(response) {
-          if (response.data.success){
-            this.setState({
-              isPatching: false
-            }, () => {
-              if (_.isFunction(onUpdated)){
-                onUpdated(this.state.layer.id, attribute, value);
-              }
-            });
-          }
-        }.bind(this)).catch(function (error) {
-          console.error(error);
-        });
-      }.bind(this), to? 500: 0);
+      this.patch(attribute, value, to);
     });
+  }
+
+  patch(attribute, value, to = true){
+    const {
+      onUpdated
+    } = this.props;
+    if (
+      this.updateAttributeDelay.hasOwnProperty(attribute) &&
+      this.updateAttributeDelay[attribute]
+    ){
+      clearTimeout(this.updateAttributeDelay[attribute]);
+      this.updateAttributeDelay[attribute] = false;
+    }
+    this.updateAttributeDelay[attribute] = setTimeout(function(){
+      patchLayer(
+        this.state.layer.id,
+        attribute,
+        value
+      ).then(function(response) {
+        if (response.data.success){
+          this.setState({
+            isPatching: false
+          }, () => {
+            if (_.isFunction(onUpdated)){
+              onUpdated(this.state.layer.id, attribute, value);
+            }
+          });
+        } else {
+          alert(response.data.message);
+          window.location.reload();
+        }
+      }.bind(this)).catch(function (error) {
+        console.error(error);
+      });
+    }.bind(this), to? 500: 0);
   }
 
   isVisible(name, field){
@@ -244,7 +280,9 @@ class LayerForm extends React.Component {
           size={size}
         >
           <Form.Field
-            error={this.state.layer.depth_from===null}
+            error={
+              this.state.layer.depth_from===null
+            }
             required
           >
             <label>{t('depth_from')}</label>
@@ -253,13 +291,9 @@ class LayerForm extends React.Component {
               autoComplete="off"
               autoCorrect="off"
               onChange={(e)=>{
-                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                  this.updateChange(
-                    'depth_from',
-                    e.target.value === ''?
-                      null: _.toNumber(e.target.value)
-                  );
-                }
+                this.updateNumber(
+                  'depth_from', e.target.value === ''? null: e.target.value
+                );
               }}
               spellCheck="false"
               value={
@@ -284,13 +318,9 @@ class LayerForm extends React.Component {
               autoComplete="off"
               autoCorrect="off"
               onChange={(e)=>{
-                if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                  this.updateChange(
-                    'depth_to',
-                    e.target.value === ''?
-                      null: _.toNumber(e.target.value)
-                  );
-                }
+                this.updateNumber(
+                  'depth_to', e.target.value === ''? null: e.target.value
+                );
               }}
               ref={this.depthToRef}
               spellCheck="false"

@@ -72,7 +72,13 @@ class SearchEditorComponent extends React.Component {
                   >
                     <Radio
                       checked={search.filter.workgroup === workgroup.id}
-                      label={workgroup.workgroup}
+                      label={
+                        workgroup.workgroup + 
+                        (
+                          workgroup.disabled !== null?
+                            ' ( ' + t('common:disabled') + ')': ''
+                        )
+                      }
                       name='radioGroup'
                       onChange={()=>{
                         this.props.setFilter(
@@ -959,4 +965,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate(['search', 'borehole_form'])(SearchEditorComponent));
+)(translate(['search', 'borehole_form', 'common'])(SearchEditorComponent));

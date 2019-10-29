@@ -390,8 +390,8 @@ class MetaComponent extends React.Component {
           >
             {this.getTextRow(
               'remarks',
-              data.custom.remarks !== null ?
-                data.extended.remarks : '-'
+              data.custom.remarks !== ''?
+                data.custom.remarks : '-'
             )}
           </div>
         </div>

@@ -29,8 +29,11 @@ class MenuEditorSearch extends React.Component {
     this.state = {
       creating: false,
       delete: false,
-      scroller: false,
+      enabledWorkgroups: this.props.user.data.workgroups.filter(
+        w => w.disabled === null
+      ),
       modal: false,
+      scroller: false,
       workgroup: this.props.user.data.workgroups !== null
         && this.props.user.data.workgroups.length > 0?
         this.props.user.data.workgroups[0].id: null
@@ -105,7 +108,8 @@ class MenuEditorSearch extends React.Component {
             overflowY: 'hidden',
             marginRight: this.state.scroller === true ?
               this.props.setting.scrollbar : '0px'
-          }}>
+          }}
+        >
           <SearchEditorComponent
             onChange={(filter) => {
               //console.log(filter)
@@ -178,39 +182,48 @@ class MenuEditorSearch extends React.Component {
           <Modal.Content>
             <p>
               Workgroup: {
-                this.props.user.data.workgroups.length === 1?
-                  this.props.user.data.workgroups[0].workgroup:
-                  <Dropdown
-                    item
-                    onChange={(ev, data) => {
-                      this.setState({
-                        workgroup: data.value
-                      });
-                    }}
-                    options={
-                      this.props.user.data.workgroups.filter(
-                        w => w.roles.indexOf('EDIT') >= 0
-                      ).map(wg => (
-                        {
-                          key: wg['id'],
-                          text: wg['workgroup'],
-                          value: wg['id']
-                        }
-                      ))
-                    }
-                    simple
-                    value={this.state.workgroup}
-                    // text={this.props.user.data.workgroups[0].workgroup}
-                  />
+                (()=>{
+                  const wg = this.state.enabledWorkgroups;
+                  if (wg.length === 0){
+                    return  t("common:disabled");
+
+                  } else if (wg.length === 1){
+                    return wg[0].workgroup;
+
+                  }
+                  return (
+                    <Dropdown
+                      item
+                      onChange={(ev, data) => {
+                        this.setState({
+                          workgroup: data.value
+                        });
+                      }}
+                      options={
+                        wg.filter(
+                          w => w.roles.indexOf('EDIT') >= 0
+                        ).map(wg => (
+                          {
+                            key: wg['id'],
+                            text: wg['workgroup'],
+                            value: wg['id']
+                          }
+                        ))
+                      }
+                      simple
+                      value={this.state.workgroup}
+                      // text={this.props.user.data.workgroups[0].workgroup}
+                    />
+                  );
+                })()
               }
             </p>
           </Modal.Content>
           <Modal.Actions>
             <Button
-              // disabled={
-              //   readOnly
-              //   || workflows.isRejecting
-              // }
+              disabled={
+                this.state.enabledWorkgroups.length === 0
+              }
               loading={
                 this.state.creating === true
               }
@@ -232,6 +245,14 @@ class MenuEditorSearch extends React.Component {
                             + "/editor/"
                             + response.data.id
                           );
+                        });
+                      } else {
+                        this.setState({
+                          creating: false,
+                          modal: false
+                        }, () => {
+                          alert(response.data.message);
+                          window.location.reload();
                         });
                       }
                     }
