@@ -9,17 +9,22 @@ let resources = {
       background: "Background",
       borehole: "borehole",
       boreholes: "boreholes",
+      cancel: "cancel",
       clickLayer: "Click on a layer for details",
       collapse: "collapse",
       creation_date: "Creation date",
       creator: "Created by",
       degree: "degree",
       delete: "delete",
+      deleteForever: "Delete forever",
+      deleting: "Deleting {{what}}",
       disable: "disable",
       disabled: "disabled",
+      disabling: "Disabling {{what}}",
       done: "Done",
       enable: "enable",
       enabled: "enabled",
+      enabling: "Enabling {{what}}",
       expand: "expand",
       filterByHierarchicalUnits: "Filter by hierarchical units",
       filterByName: "Filter by name",
@@ -52,6 +57,53 @@ let resources = {
       workgroup: "workgroup",
       yes: "Yes",
       you: "you"
+    },
+    messages: {
+      'enablingUser': (
+        'You are going to re-enable the user ' +
+        '"{{user}}". This user will ' +
+        'be able to login and apply modifications based on ' +
+        'its roles. '
+      ),
+      'enablingWorkgroup': (
+        'You are going to reenable the "{{workgroup}}" ' +
+        'workgroup. Users ' +
+        'belonging to this workgroup will be able ' +
+        'to apply again modifications based on ' +
+        'theirs roles.'
+      ),
+      'deleteUser': (
+        'The selected user can be deleted forever ' +
+        'because currently there is not any trace ' +
+        'of activity in the database.'
+      ),
+      'deleteWorkgroup': (
+        'The selected workgroup can be deleted forever ' +
+        'because currently there are not any traces of ' +
+        'activities in the database.'
+      ),
+      'disablingUser': (
+        'The selected user can not be deleted ' +
+        'because currently there are some traces ' +
+        'of activities in the database.'
+      ),
+      'disablingWorkgroup': (
+        'The selected workgroup can not be deleted because ' +
+        'currently there are some traces of activities ' +
+        'in the database.'
+      ),
+      'reenablingTip': (
+        'you will be able to re-enable ' + 
+        'it later.'
+      ),
+      'deletingUserTip': (
+        'the user will be deleted ' +
+        'from the database, but later you will be ' +
+        'able to recreate the same user again.'
+      ),
+      'deletingWorkgroupTip': (
+        'The workgroup will be permanently deleted from the database'
+      )
     },
     error: {
       'E-900': 'Borehole locked by {{user}}',
@@ -243,16 +295,21 @@ let resources = {
       borehole: "borehole",
       boreholes: "bohrung",
       clickLayer: "Klicken Sie für Informationen",
+      cancel: "abbrechen",
       collapse: "zusammenbruch",
       creation_date: "Erstellungsdatum",
       creator: "Erstellt von",
       degree: "grad",
       delete: "Eliminieren",
+      deleteForever: "Dauerhaft löschen",
+      deleting: "{{what}} löschen",
       disable: "deaktivieren",
       disabled: "deaktiviert",
+      disabling: "{{what}} deaktivieren",
       done: "Ok",
       enable: "aktivieren",
       enabled: "aktiviert",
+      enabling: "{{what}} aktivieren",
       expand: "erweitern",
       filterByHierarchicalUnits: "Filter by hierarchical units",
       filterByName: "Filter by name",
@@ -285,6 +342,46 @@ let resources = {
       workgroup: "Arbeitsgruppe",
       yes: "Ja",
       you: "dir"
+    },
+    messages: {
+      'enablingUser': (
+        'Sie werden den Benutzer "{{user}}" wieder ' +
+        'aktivieren. Dieser Benutzer kann sich anmelden ' +
+        'und Änderungen basierend auf seinen Rollen vornehmen.'
+      ),
+      'enablingWorkgroup': (
+        'Sie werden die Arbeitsgruppe "{{workgroup}}" wieder aktivieren. ' +
+        'Benutzer, die zu dieser Arbeitsgruppe gehören, können ' +
+        'Änderungen basierend auf ihren Rollen vornehmen.'
+      ),
+      'deleteUser': (
+        'Der ausgewählte Benutzer kann für immer gelöscht ' +
+        'werden, da derzeit keine Aktivitäten in der Datenbank ' +
+        'vorhanden sind.'
+      ),
+      'deleteWorkgroup': (
+        'Die ausgewählte Arbeitsgruppe kann für immer gelöscht ' +
+        'werden, da derzeit keine Aktivitäten in der Datenbank ' +
+        'vorhanden sind.'
+      ),
+      'disablingUser': (
+        'Der ausgewählte Benutzer kann nicht gelöscht werden, ' +
+        'da sich derzeit einige Aktivitäten in der Datenbank befinden.'
+      ),
+      'disablingWorkgroup': (
+        'Die ausgewählte Arbeitsgruppe kann nicht gelöscht werden, ' +
+        'da sich derzeit einige Aktivitäten in der Datenbank befinden.'
+      ),
+      'reenablingTip': (
+        'Sie können es später wieder aktivieren.'
+      ),
+      'deletingUserTip': (
+        'Der Benutzer wird aus der Datenbank gelöscht, aber später ' +
+        'können Sie denselben Benutzer erneut erstellen.'
+      ),
+      'deletingWorkgroupTip': (
+        'Die Arbeitsgruppe wird dauerhaft aus der Datenbank gelöscht'
+      )
     },
     error: {
       'E-900': `Borehole locked by {{user}}`,
@@ -473,17 +570,22 @@ let resources = {
       background: "Sfondo",
       borehole: "perforazione",
       boreholes: "perforazioni",
+      cancel: "annulla",
       clickLayer: "Clic su un layer per le informazioni",
       collapse: "collassare",
       creation_date: "Data di creazione",
       creator: "Creato da",
       degree: "gradi",
       delete: "Elimina",
+      deleteForever: "Elimina definitivamente",
+      deleting: "Eliminazione {{what}}",
       disable: "disabilitare",
       disabled: "disabilitato",
+      disabling: "Disabilitazione {{what}}",
       done: "Fatto",
       enable: "abilitare",
       enabled: "abilitati",
+      enabling: "Abilitazione {{what}}",
       expand: "espandere",
       filterByHierarchicalUnits: "Filtra per unità (gerarchicamente)",
       filterByName: "Filtra per nome",
@@ -514,9 +616,50 @@ let resources = {
       updateDate: "Data di aggiornamento",
       user: "utente",
       username: "Nome utente",
-      workgroup: "Gruppo di lavoro",
+      workgroup: "Gruppo di Lavoro",
       yes: "Sì",
       you: "te"
+    },
+    messages: {
+      'enablingUser': (
+        'Stai per riattivare l\'utente "{{user}}". ' +
+        'Questo utente sarà in grado di accedere e ' +
+        'applicare le modifiche in base ai suoi ruoli.'
+      ),
+      'enablingWorkgroup': (
+        'Riattiverai il gruppo di lavoro "{{workgroup}}". ' +
+        'Gli utenti appartenenti a questo gruppo di lavoro ' +
+        'potranno applicare le modifiche in base ai loro ruoli.'
+      ),
+      'deleteUser': (
+        'L\'utente selezionato può essere eliminato per ' +
+        'sempre perché al momento non esiste alcuna traccia ' +
+        'di attività nel database.'
+      ),
+      'deleteWorkgroup': (
+        'Visto che al momento non ci sono tracce di attività ' +
+        'nel database, il gruppo di lavoro selezionato, può ' +
+        'essere eliminato per sempre.'
+      ),
+      'disablingUser': (
+        'L\'utente selezionato non può essere eliminato ' +
+        'perché al momento ci sono sue tracce di attività nel database.'
+      ),
+      'disablingWorkgroup': (
+        'Il gruppo di lavoro selezionato non può essere eliminato ' +
+        'perché al momento ci sono alcune sue tracce di attività ' +
+        'nel database.'
+      ),
+      'reenablingTip': (
+        'sarai in grado di riattivarlo in seguito'
+      ),
+      'deletingUserTip': (
+        'l\'utente verrà eliminato dal database, ma in ' + 
+        'seguito sarà possibile ricreare nuovamente lo stesso utente.'
+      ),
+      'deletingWorkgroupTip': (
+        'il gruppo di lavoro verrà eliminato definitivamente dal database'
+      )
     },
     error: {
       'E-900': 'Modifica in corso da parte di "{{user}}"',

@@ -186,6 +186,9 @@ class AdminSettings extends React.Component {
                   onClick={()=>{
                     this.reset();
                   }}
+                  style={{
+                    textTransform: 'lowercase'
+                  }}
                 >
                   {
                     t(
@@ -419,6 +422,7 @@ class AdminSettings extends React.Component {
             }}
           >
             <Modal
+              inverted
               onClose={()=>{
                 this.setState({
                   deleteUser: null
@@ -431,7 +435,8 @@ class AdminSettings extends React.Component {
                 {
                   this.state.deleteUser !== null
                   && this.state.deleteUser.disabled !== null?
-                    'Enabling user': 'Deleting user'
+                    t('enabling', { what: t('user') }):
+                    t('disabling', { what: t('user') })
                 }
               </Modal.Header>
               <Modal.Content>
@@ -441,104 +446,151 @@ class AdminSettings extends React.Component {
                     this.state.deleteUser.disabled !== null?
                       <Modal.Description>
                         <p>
-                          You are going to re-enable the user
-                          "{this.state.deleteUser.username}". This user will
-                          be able to login and apply modifications based on
-                          its roles.
+                          {t(
+                            'messages:enablingUser',
+                            {
+                              user: this.state.deleteUser.username
+                            }
+                          )}
                         </p>
                       </Modal.Description>:
                       this.state.deleteUser !== null
                       && this.state.deleteUser.contributions === 0?
                         <Modal.Description>
                           <p>
-                            The selected user can be deleted forever
-                            because currently there is not any trace
-                            of activity in the database.
+                            {t('messages:deleteUser')}
                           </p>
                           <ul>
                             <li>
                               <span
                                 style={{
-                                  fontWeight: 'bold'
+                                  fontWeight: 'bold',
+                                  textTransform: 'capitalize'
                                 }}
                               >
-                                Disable:
+                                {t('disable')}:
                               </span>
                               <br />
-                              you will be able to re-enable
-                              it later.
+                              {t('messages:reenablingTip')}
                               <br />
                               &nbsp;
                             </li>
                             <li>
                               <span
                                 style={{
-                                  fontWeight: 'bold'
+                                  fontWeight: 'bold',
+                                  textTransform: 'capitalize'
                                 }}
                               >
-                                Delete forever:
+                                {t('deleteForever')}:
                               </span>
                               <br />
-                              the user will be deleted
-                              from the database, but later you will be
-                              able to re-create the same user again.
+                              {t('messages:deletingUserTip')}
                             </li>
                           </ul>
                         </Modal.Description>:
                         <Modal.Description>
                           <p>
-                            The selected user can not be deleted
-                            because currently there are some traces
-                            of activities in the database.
+                            {t('messages:disablingUser')}
                           </p>
                           <ul>
                             <li>
                               <span
                                 style={{
-                                  fontWeight: 'bold'
+                                  fontWeight: 'bold',
+                                  textTransform: 'capitalize'
                                 }}
                               >
-                                Disable:
+                                {t('disable')}:
                               </span>
                               <br />
-                              you will be able to re-enable
-                              it later.
+                              {t('messages:reenablingTip')}
                             </li>
                           </ul>
                         </Modal.Description>
                 }
               </Modal.Content>
               <Modal.Actions>
-                <Button
-                  onClick={()=>{
-                    this.setState({
-                      deleteUser: null
-                    });
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row'
                   }}
                 >
-                  Cancel
-                </Button>
-                {
-                  this.state.deleteUser === null?
-                    null:
-                    this.state.deleteUser.disabled !== null?
+                  <Button
+                    basic
+                    color='black'
+                    onClick={()=>{
+                      this.setState({
+                        deleteUser: null
+                      });
+                    }}
+                  >
+                    <span
+                      style={{
+                        textTransform: 'capitalize',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
+                      {t('cancel')}
+                    </span>
+                  </Button>
+                  <div style={{ flex: '1 1 100%' }} />
+                  {
+                    this.state.deleteUser === null?
+                      null:
+                      this.state.deleteUser.disabled !== null?
+                        <Button
+                          onClick={(e)=>{
+                            enableUser(
+                              this.state.deleteUser.id
+                            ).then(()=>{
+                              this.setState({
+                                deleteUser: null
+                              }, this.props.listUsers);
+                            });
+                          }}
+                          secondary
+                        >
+                          <span
+                            style={{
+                              textTransform: 'capitalize',
+                              whiteSpace: 'nowrap'
+                            }}
+                          >
+                            {t('enable')}
+                          </span>
+                        </Button>:
+                        <Button
+                          onClick={(e)=>{
+                            disableUser(
+                              this.state.deleteUser.id
+                            ).then(()=>{
+                              this.reset({
+                                "deleteUser": null
+                              }, this.props.listUsers);
+                            });
+                          }}
+                          secondary
+                        >
+                          <span
+                            style={{
+                              textTransform: 'capitalize',
+                              whiteSpace: 'nowrap'
+                            }}
+                          >
+                            {t('disable')}
+                          </span>
+                        </Button>
+                  }
+                  {
+                    this.state.deleteUser !== null
+                    && this.state.deleteUser.disabled === null
+                    && this.state.deleteUser.contributions === 0?
                       <Button
+                        color='red'
                         onClick={(e)=>{
-                          enableUser(
-                            this.state.deleteUser.id
-                          ).then(()=>{
-                            this.setState({
-                              deleteUser: null
-                            }, this.props.listUsers);
-                          });
-                        }}
-                        primary
-                      >
-                        Enable
-                      </Button>:
-                      <Button
-                        onClick={(e)=>{
-                          disableUser(
+                          deleteUser(
                             this.state.deleteUser.id
                           ).then(()=>{
                             this.reset({
@@ -546,30 +598,18 @@ class AdminSettings extends React.Component {
                             }, this.props.listUsers);
                           });
                         }}
-                        secondary
                       >
-                        Disable
-                      </Button>
-                }
-                {
-                  this.state.deleteUser !== null
-                  && this.state.deleteUser.disabled === null
-                  && this.state.deleteUser.contributions === 0?
-                    <Button
-                      color='red'
-                      onClick={(e)=>{
-                        deleteUser(
-                          this.state.deleteUser.id
-                        ).then(()=>{
-                          this.reset({
-                            "deleteUser": null
-                          }, this.props.listUsers);
-                        });
-                      }}
-                    >
-                      Delete forever
-                    </Button>: null
-                }
+                        <span
+                          style={{
+                            textTransform: 'capitalize',
+                            whiteSpace: 'nowrap'
+                          }}
+                        >
+                          {t('deleteForever')}
+                        </span>
+                      </Button>: null
+                  }
+                </div>
               </Modal.Actions>
             </Modal>
             <Table
@@ -743,6 +783,9 @@ class AdminSettings extends React.Component {
                         onClick={()=>{
                           this.resetWorkgroup();
                         }}
+                        style={{
+                          textTransform: 'lowercase'
+                        }}
                       >
                         {
                           t(
@@ -914,7 +957,8 @@ class AdminSettings extends React.Component {
                       {
                         this.state.deleteWorkgroup !== null
                         && this.state.deleteWorkgroup.disabled !== null?
-                          'Enabling workspace': 'Deleting workspace'
+                          t('enabling', { what: t('workgroup') }):
+                          t('disabling', { what: t('workgroup') })
                       }
                     </Modal.Header>
                     <Modal.Content>
@@ -924,104 +968,151 @@ class AdminSettings extends React.Component {
                           this.state.deleteWorkgroup.disabled !== null?
                             <Modal.Description>
                               <p>
-                                You are going to re-enable the user
-                                "{this.state.deleteWorkgroup.name}". This user will
-                                be able to login and apply modifications based on
-                                its roles.
+                                {
+                                  t(
+                                    'messages:enablingWorkgroup',
+                                    {
+                                      workgroup: this.state.deleteWorkgroup.name
+                                    }
+                                  )
+                                }
                               </p>
                             </Modal.Description>:
                             this.state.deleteWorkgroup !== null
                             && this.state.deleteWorkgroup.boreholes === 0?
                               <Modal.Description>
                                 <p>
-                                  The selected user can be deleted forever
-                                  because currently there is not any trace
-                                  of activity in the database.
+                                  {t('messages:deleteWorkgroup')}
                                 </p>
                                 <ul>
                                   <li>
                                     <span
                                       style={{
-                                        fontWeight: 'bold'
+                                        fontWeight: 'bold',
+                                        textTransform: 'capitalize'
                                       }}
                                     >
-                                      Disable:
+                                      {t('disable')}:
                                     </span>
                                     <br />
-                                    you will be able to re-enable
-                                    it later.
+                                    {t('messages:reenablingTip')}
                                     <br />
                                     &nbsp;
                                   </li>
                                   <li>
                                     <span
                                       style={{
-                                        fontWeight: 'bold'
+                                        fontWeight: 'bold',
+                                        textTransform: 'capitalize'
                                       }}
                                     >
-                                      Delete forever:
+                                      {t('deleteForever')}:
                                     </span>
                                     <br />
-                                    the user will be deleted
-                                    from the database, but later you will be
-                                    able to re-create the same user again.
+                                    {t('messages:deletingWorkgroupTip')}
                                   </li>
                                 </ul>
                               </Modal.Description>:
                               <Modal.Description>
                                 <p>
-                                  The selected user can not be deleted
-                                  because currently there are some traces
-                                  of activities in the database.
+                                  {t('messages:disablingWorkgroup')}
                                 </p>
                                 <ul>
                                   <li>
                                     <span
                                       style={{
-                                        fontWeight: 'bold'
+                                        fontWeight: 'bold',
+                                        textTransform: 'capitalize'
                                       }}
                                     >
-                                      Disable:
+                                      {t('disable')}:
                                     </span>
                                     <br />
-                                    you will be able to re-enable
-                                    it later.
+                                    {t('messages:reenablingTip')}
                                   </li>
                                 </ul>
                               </Modal.Description>
                       }
                     </Modal.Content>
                     <Modal.Actions>
-                      <Button
-                        onClick={()=>{
-                          this.setState({
-                            deleteWorkgroup: null
-                          });
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row'
                         }}
                       >
-                        Cancel
-                      </Button>
-                      {
-                        this.state.deleteWorkgroup === null?
-                          null:
-                          this.state.deleteWorkgroup.disabled !== null?
+                        <Button
+                          onClick={()=>{
+                            this.setState({
+                              deleteWorkgroup: null
+                            });
+                          }}
+                        >
+                          <span
+                            style={{
+                              textTransform: 'capitalize',
+                              whiteSpace: 'nowrap'
+                            }}
+                          >
+                            {t('cancel')}
+                          </span>
+                        </Button>
+                        <div style={{ flex: '1 1 100%' }} />
+                        {
+                          this.state.deleteWorkgroup === null?
+                            null:
+                            this.state.deleteWorkgroup.disabled !== null?
+                              <Button
+                                onClick={(e)=>{
+                                  enableWorkgroup(
+                                    this.state.deleteWorkgroup.id
+                                  ).then(()=>{
+                                    this.setState({
+                                      "deleteWorkgroup": null
+                                    }, this.props.listWorkgroups);
+                                  });
+                                }}
+                                secondary
+                              >
+                                <span
+                                  style={{
+                                    textTransform: 'capitalize',
+                                    whiteSpace: 'nowrap'
+                                  }}
+                                >
+                                  {t('enable')}
+                                </span>
+                              </Button>:
+                              <Button
+                                onClick={(e)=>{
+                                  disableWorkgroup(
+                                    this.state.deleteWorkgroup.id
+                                  ).then(()=>{
+                                    this.resetWorkgroup({
+                                      "deleteWorkgroup": null
+                                    }, this.props.listWorkgroups);
+                                  });
+                                }}
+                                secondary
+                              >
+                                <span
+                                  style={{
+                                    textTransform: 'capitalize',
+                                    whiteSpace: 'nowrap'
+                                  }}
+                                >
+                                  {t('disable')}
+                                </span>
+                              </Button>
+                        }
+                        {
+                          this.state.deleteWorkgroup !== null
+                          && this.state.deleteWorkgroup.disabled === null
+                          && this.state.deleteWorkgroup.boreholes === 0?
                             <Button
+                              color='red'
                               onClick={(e)=>{
-                                enableWorkgroup(
-                                  this.state.deleteWorkgroup.id
-                                ).then(()=>{
-                                  this.setState({
-                                    "deleteWorkgroup": null
-                                  }, this.props.listWorkgroups);
-                                });
-                              }}
-                              primary
-                            >
-                              Enable
-                            </Button>:
-                            <Button
-                              onClick={(e)=>{
-                                disableWorkgroup(
+                                deleteWorkgroup(
                                   this.state.deleteWorkgroup.id
                                 ).then(()=>{
                                   this.resetWorkgroup({
@@ -1029,30 +1120,18 @@ class AdminSettings extends React.Component {
                                   }, this.props.listWorkgroups);
                                 });
                               }}
-                              secondary
                             >
-                              Disable
-                            </Button>
-                      }
-                      {
-                        this.state.deleteWorkgroup !== null
-                        && this.state.deleteWorkgroup.disabled === null
-                        && this.state.deleteWorkgroup.boreholes === 0?
-                          <Button
-                            color='red'
-                            onClick={(e)=>{
-                              deleteWorkgroup(
-                                this.state.deleteWorkgroup.id
-                              ).then(()=>{
-                                this.resetWorkgroup({
-                                  "deleteWorkgroup": null
-                                }, this.props.listWorkgroups);
-                              });
-                            }}
-                          >
-                            Delete forever
-                          </Button>: null
-                      }
+                              <span
+                                style={{
+                                  textTransform: 'capitalize',
+                                  whiteSpace: 'nowrap'
+                                }}
+                              >
+                                {t('deleteForever')}
+                              </span>
+                            </Button>: null
+                        }
+                      </div>
                     </Modal.Actions>
                   </Modal>
                   <Table
@@ -1065,7 +1144,6 @@ class AdminSettings extends React.Component {
                       <Table.Row>
                         <Table.HeaderCell
                           style={{
-                            textTransform: 'capitalize',
                             whiteSpace: 'nowrap'
                           }}
                         >
@@ -1314,4 +1392,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate(['common'])(AdminSettings));
+)(translate(['common', 'messages'])(AdminSettings));
