@@ -23,7 +23,7 @@ import {
 } from '@ist-supsi/bmsjs';
 
 
-// import WMTSCapabilities from 'ol/format/WMTSCapabilities';
+import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
 import { optionsFromCapabilities } from 'ol/source/WMTS';
 import { register } from 'ol/proj/proj4';
@@ -167,7 +167,6 @@ class ExplorerSettings extends React.Component {
                     radio
                   />
                 </div>
-
 
                 <div>
                   <Checkbox
@@ -320,26 +319,27 @@ class ExplorerSettings extends React.Component {
                                   wms: wms,
                                   wmts: null
                                 });
-                              // } else if (
-                              //   /<Capabilities/.test(data)
-                              // ) {
-                              //   console.log('WMTS');
-                              //   const wmts =  (
-                              //     new WMTSCapabilities()
-                              //   ).read(data);
-                              //   console.log(wmts);
-                              //   this.setState({
-                              //     wmsFetch: false,
-                              //     wms: null,
-                              //     wmts: wmts
-                              //   });
+                              } else if (
+                                /<Capabilities/.test(data)
+                              ) {
+                                const wmts =  (
+                                  new WMTSCapabilities()
+                                ).read(data);
+                                this.setState({
+                                  wmsFetch: false,
+                                  wms: null,
+                                  wmts: wmts
+                                });
                               } else {
                                 this.setState({
                                   wmsFetch: false,
                                   wms: null,
                                   wmts: null
                                 });
-                                alert("Sorry, only Web Map Services (WMS) are supported");
+                                alert(
+                                  "Sorry, only Web Map Services (WMS) and " +
+                                  "Web Map Tile Service (WMTS) are supported"
+                                );
                               }
                             });
                             // getWmts(i18n.language).then((response) => {
@@ -412,15 +412,22 @@ class ExplorerSettings extends React.Component {
                             (layer, idx) => (
                               this.state.searchWms === ''
                               || (
-                                layer.Title.toLowerCase().search(
-                                  this.state.searchWms
-                                ) >= 0
-                                || layer.Abstract.toLowerCase().search(
-                                  this.state.searchWms
-                                ) >= 0
-                                || layer.Name.toLowerCase().search(
-                                  this.state.searchWms
-                                ) >= 0
+                                (
+                                  layer.hasOwnProperty('Title')
+                                  && layer.Title.toLowerCase().search(
+                                    this.state.searchWms
+                                  ) >= 0
+                                ) || (
+                                  layer.hasOwnProperty('Abstract')
+                                  && layer.Abstract.toLowerCase().search(
+                                    this.state.searchWms
+                                  ) >= 0
+                                ) || (
+                                  layer.hasOwnProperty('Name')
+                                  && layer.Name.toLowerCase().search(
+                                    this.state.searchWms
+                                  ) >= 0
+                                )
                               )?
                                 <div
                                   className='selectable unselectable'
@@ -536,110 +543,119 @@ class ExplorerSettings extends React.Component {
                       {
                         this.state.wmts === null?
                           null:
-                          this.state.wmts.Contents.Layer.map((layer, idx)=>(
-                            this.state.searchWmts === ''
-                            || (
-                              layer.Title.toLowerCase().search(
-                                this.state.searchWmts
-                              ) >= 0
-                              || layer.Abstract.toLowerCase().search(
-                                this.state.searchWmts
-                              ) >= 0
-                              || layer.Identifier.toLowerCase().search(
-                                this.state.searchWmts
-                              ) >= 0
-                            )?
-                              <div
-                                className='selectable unselectable'
-                                key={'wmts-list-'+idx}
-                                style={{
-                                  padding: '0.5em'
-                                }}
-                              >
+                          this.state.wmts.Contents.Layer.map((layer, idx)=>{
+                            return (
+                              this.state.searchWmts === ''
+                              || (
+                                (
+                                  layer.hasOwnProperty('Title')
+                                  && layer.Title.toLowerCase().search(
+                                    this.state.searchWmts
+                                  ) >= 0
+                                ) || (
+                                  layer.hasOwnProperty('Abstract')
+                                  && layer.Abstract.toLowerCase().search(
+                                    this.state.searchWmts
+                                  ) >= 0
+                                ) || (
+                                  layer.hasOwnProperty('Identifier')
+                                  && layer.Identifier.toLowerCase().search(
+                                    this.state.searchWmts
+                                  ) >= 0
+                                )
+                              )?
                                 <div
+                                  className='selectable unselectable'
+                                  key={'wmts-list-'+idx}
                                   style={{
-                                    fontWeight: 'bold',
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center'
+                                    padding: '0.5em'
                                   }}
                                 >
                                   <div
                                     style={{
-                                      flex: 1
+                                      fontWeight: 'bold',
+                                      display: 'flex',
+                                      flexDirection: 'row',
+                                      alignItems: 'center'
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        flex: 1
+                                      }}
+                                    >
+                                      <Highlight
+                                        search={this.state.searchWmts}
+                                      >
+                                        {layer.Title}
+                                      </Highlight>
+                                    </div>
+                                    <div>
+                                      <Button
+                                        color={
+                                          _.has(
+                                            setting.data.map.explorer,
+                                            layer.Identifier
+                                          )?
+                                            'grey':
+                                            'blue'
+                                        }
+                                        icon={
+                                          _.has(
+                                            setting.data.map.explorer,
+                                            layer.Identifier
+                                          )?
+                                            'trash alternate outline':
+                                            'add'
+                                        }
+                                        onClick={(e)=>{
+                                          e.stopPropagation();
+                                          if (
+                                            _.has(
+                                              setting.data.map.explorer,
+                                              layer.Identifier
+                                            )
+                                          ){
+                                            rmExplorerMap(layer);
+                                          } else {
+                                            addExplorerMap(
+                                              layer,
+                                              'WMTS',
+                                              this.state.wmts,
+                                              _.values(setting.data.map.explorer).length
+                                            );
+                                          }
+                                        }}
+                                        size='mini'
+                                      />
+                                    </div>
+                                  </div>
+                                  <div
+                                    style={{
+                                      color: '#787878',
+                                      fontSize: '0.8em'
                                     }}
                                   >
                                     <Highlight
                                       search={this.state.searchWmts}
                                     >
-                                      {layer.Title}
+                                      {layer.Identifier}
                                     </Highlight>
                                   </div>
-                                  <div>
-                                    <Button
-                                      color={
-                                        _.has(
-                                          setting.data.map.explorer,
-                                          layer.Identifier
-                                        )?
-                                          'grey':
-                                          'blue'
-                                      }
-                                      icon={
-                                        _.has(
-                                          setting.data.map.explorer,
-                                          layer.Identifier
-                                        )?
-                                          'trash alternate outline':
-                                          'add'
-                                      }
-                                      onClick={(e)=>{
-                                        e.stopPropagation();
-                                        if (
-                                          _.has(
-                                            setting.data.map.explorer,
-                                            layer.Identifier
-                                          )
-                                        ){
-                                          rmExplorerMap(layer);
-                                        } else {
-                                          addExplorerMap(
-                                            layer,
-                                            'WMTS',
-                                            this.state.wmts,
-                                            _.values(setting.data.map.explorer).length
-                                          );
-                                        }
-                                      }}
-                                      size='mini'
-                                    />
+                                  <div
+                                    style={{
+                                      fontSize: '0.8em'
+                                    }}
+                                  >
+                                    <Highlight
+                                      search={this.state.searchWmts}
+                                    >
+                                      {layer.Abstract}
+                                    </Highlight>
                                   </div>
-                                </div>
-                                <div
-                                  style={{
-                                    color: '#787878',
-                                    fontSize: '0.8em'
-                                  }}
-                                >
-                                  <Highlight
-                                    search={this.state.searchWmts}
-                                  >
-                                    {layer.Identifier}
-                                  </Highlight>
-                                </div>
-                                <div
-                                  style={{
-                                    fontSize: '0.8em'
-                                  }}
-                                >
-                                  <Highlight
-                                    search={this.state.searchWmts}
-                                  >
-                                    {layer.Abstract}
-                                  </Highlight>
-                                </div>
-                              </div>: null
-                          ))
+                                </div>: null
+                            );
+                          })
                       }
                     </div>
                   </div>
@@ -699,81 +715,94 @@ class ExplorerSettings extends React.Component {
                             }
                           )
                         ).map((layer, idx)=>(
-                          <div
-                            className='selectable unselectable'
-                            key={'wmts-list-'+idx}
-                            style={{
-                              padding: '0.5em'
-                            }}
-                          >
+                          this.state.searchWmtsUser === ''
+                          || (
+                            (
+                              layer.hasOwnProperty('Title')
+                              && layer.Title.toLowerCase().search(
+                                this.state.searchWmtsUser
+                              ) >= 0
+                            ) || (
+                              layer.hasOwnProperty('Abstract')
+                              && layer.Abstract.toLowerCase().search(
+                                this.state.searchWmtsUser
+                              ) >= 0
+                            ) || (
+                              layer.hasOwnProperty('Identifier')
+                              && layer.Identifier.toLowerCase().search(
+                                this.state.searchWmtsUser
+                              ) >= 0
+                            )
+                          )?
                             <div
+                              className='selectable unselectable'
+                              key={'wmts-list-'+idx}
                               style={{
-                                fontWeight: 'bold',
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'center'
+                                padding: '0.5em'
                               }}
                             >
                               <div
                                 style={{
-                                  flex: 1
+                                  fontWeight: 'bold',
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                  alignItems: 'center'
                                 }}
                               >
-                                {layer.Title}
-                              </div>
-                              <div>
-                                <Button
-                                  color={
-                                    _.has(
-                                      setting.data.map.explorer,
-                                      layer.Identifier
-                                    )?
-                                      'grey':
-                                      'blue'
-                                  }
-                                  icon={
-                                    _.has(
-                                      setting.data.map.explorer,
-                                      layer.Identifier
-                                    )?
-                                      'trash alternate outline':
-                                      'add'
-                                  }
-                                  onClick={(e)=>{
-                                    e.stopPropagation();
-                                    if (
-                                      _.has(
-                                        setting.data.map.explorer,
-                                        layer.Identifier
-                                      )
-                                    ){
-                                      rmExplorerMap(layer);
-                                    } else {
-                                      addExplorerMap(
-                                        layer, 'WMTS', this.state.wmts
-                                      );
-                                    }
+                                <div
+                                  style={{
+                                    flex: 1
                                   }}
-                                  size='mini'
-                                />
+                                >
+                                  <Highlight
+                                    search={this.state.searchWmtsUser}
+                                  >
+                                    {layer.Title}
+                                  </Highlight>
+                                </div>
+                                <div>
+                                  <Button
+                                    color='grey'
+                                    icon='trash alternate outline'
+                                    onClick={(e)=>{
+                                      e.stopPropagation();
+                                      if (
+                                        _.has(
+                                          setting.data.map.explorer,
+                                          layer.Identifier
+                                        )
+                                      ){
+                                        rmExplorerMap(layer);
+                                      }
+                                    }}
+                                    size='mini'
+                                  />
+                                </div>
                               </div>
-                            </div>
-                            <div
-                              style={{
-                                color: '#787878',
-                                fontSize: '0.8em'
-                              }}
-                            >
-                              {layer.Identifier}
-                            </div>
-                            <div
-                              style={{
-                                fontSize: '0.8em'
-                              }}
-                            >
-                              {layer.Abstract}
-                            </div>
-                          </div>
+                              <div
+                                style={{
+                                  color: '#787878',
+                                  fontSize: '0.8em'
+                                }}
+                              >
+                                <Highlight
+                                  search={this.state.searchWmtsUser}
+                                >
+                                  {layer.Identifier}
+                                </Highlight>
+                              </div>
+                              <div
+                                style={{
+                                  fontSize: '0.8em'
+                                }}
+                              >
+                                <Highlight
+                                  search={this.state.searchWmtsUser}
+                                >
+                                  {layer.Abstract}
+                                </Highlight>
+                              </div>
+                            </div>: null
                         ))
                       }
                     </div>
@@ -1162,7 +1191,7 @@ const mapDispatchToProps = (dispatch, state) => {
 
       if (type === 'WMS') {
         if (!layer.CRS.includes('EPSG:2056')){
-          alert("EPSG:2056 not supported");
+          alert("Only EPSG:2056 is supported");
         } else {
           dispatch(
             patchSettings(
@@ -1187,41 +1216,53 @@ const mapDispatchToProps = (dispatch, state) => {
           layer: layer.Identifier,
           // projection: 'EPSG:2056'
         });
-        dispatch(
-          patchSettings(
-            'map.explorer',
-            {
-              Identifier: layer.Identifier,
-              Abstract: layer.Abstract,
-              Title: layer.Title,
-              type: 'WMTS',
-              conf: {
-                ...conf,
-                projection: {
-                  code: conf.projection.code_,
-                  units: conf.projection.units_,
-                  extent: conf.projection.extent_,
-                  axisOrientation: conf.projection.axisOrientation_,
-                  global: conf.projection.global_,
-                  metersPerUnit: conf.projection.metersPerUnit_,
-                  worldExtent: conf.projection.worldExtent_
-                },
-                tileGrid: {
-                  extent: conf.tileGrid.extent_,
-                  origin: conf.tileGrid.origin_,
-                  origins: conf.tileGrid.origins_,
-                  resolutions: conf.tileGrid.resolutions_,
-                  matrixIds: conf.tileGrid.matrixIds_,
-                  // sizes: conf.tileGrid.sizes,
-                  tileSize: conf.tileGrid.tileSize_,
-                  tileSizes: conf.tileGrid.tileSizes_,
-                  // widths: conf.tileGrid.widths
+        if (
+          conf.hasOwnProperty('matrixSet')
+          && !conf.matrixSet.includes('2056')
+        ) {
+          alert("Only EPSG:2056 is supported");
+        } else {
+          dispatch(
+            patchSettings(
+              'map.explorer',
+              {
+                Identifier: layer.Identifier,
+                Abstract: layer.Abstract,
+                position: position,
+                Title: layer.Title,
+                transparency: 0,
+                type: 'WMTS',
+                url: conf.urls,
+                visibility: true,
+                queryable: false,
+                conf: {
+                  ...conf,
+                  projection: {
+                    code: conf.projection.code_,
+                    units: conf.projection.units_,
+                    extent: conf.projection.extent_,
+                    axisOrientation: conf.projection.axisOrientation_,
+                    global: conf.projection.global_,
+                    metersPerUnit: conf.projection.metersPerUnit_,
+                    worldExtent: conf.projection.worldExtent_
+                  },
+                  tileGrid: {
+                    extent: conf.tileGrid.extent_,
+                    origin: conf.tileGrid.origin_,
+                    origins: conf.tileGrid.origins_,
+                    resolutions: conf.tileGrid.resolutions_,
+                    matrixIds: conf.tileGrid.matrixIds_,
+                    // sizes: conf.tileGrid.sizes,
+                    tileSize: conf.tileGrid.tileSize_,
+                    tileSizes: conf.tileGrid.tileSizes_,
+                    // widths: conf.tileGrid.widths
+                  }
                 }
-              }
-            },
-            layer.Identifier
-          )
-        );
+              },
+              layer.Identifier
+            )
+          );
+        }
       }
     },
     rmExplorerMap: (config) => {
