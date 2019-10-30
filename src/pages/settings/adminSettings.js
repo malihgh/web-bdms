@@ -1245,7 +1245,7 @@ class AdminSettings extends React.Component {
                                               uwg !== undefined
                                               && uwg.roles.indexOf('VIEW') >= 0
                                             }
-                                            label='VIEWER'
+                                            label='VIEW'
                                             onChange={(e, d) => {
                                               e.stopPropagation();
                                               this.setRole(uwg, workgroup, 'VIEW');

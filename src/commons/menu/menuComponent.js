@@ -182,7 +182,7 @@ const MenuComponent = function (props) {
             {
               props.user.data !== null
               && (
-                props.user.data.roles.indexOf('VIEWER') >= 0
+                props.user.data.roles.indexOf('VIEW') >= 0
                 || props.user.data.roles.indexOf('EDIT') >= 0
                 || props.user.data.roles.indexOf('CONTROL') >= 0
                 || props.user.data.roles.indexOf('VALID') >= 0

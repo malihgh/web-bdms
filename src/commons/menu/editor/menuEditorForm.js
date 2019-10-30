@@ -52,11 +52,18 @@ class MenuEditorForm extends React.Component {
       return null;
     }
 
-    const editableByCurrentUser = borehole.data.id !== null && user.data.workgroups.find(
+    let editableByCurrentUser = true;
+    const wg = borehole.data.id !== null
+    && user.data.workgroups.find(
       workgroup => (
         workgroup.id === borehole.data.workgroup.id
       )
-    ).roles.indexOf(borehole.data.role) === -1;
+    );
+    if (wg !== undefined && wg.hasOwnProperty('roles')) {
+      editableByCurrentUser = (
+        wg.roles.indexOf(borehole.data.role) === -1
+      );
+    }
 
     return (
       [
