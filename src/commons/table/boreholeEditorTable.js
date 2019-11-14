@@ -72,7 +72,7 @@ class BoreholeEditorTable extends TableComponent {
                   'sort down' : 'sort up'
               }
             /> : null
-        } {t(key)}
+        } {t(key === 'workgroup'? 'common:workgroup': key)}
         <br />
         <span
           style={{
@@ -80,7 +80,7 @@ class BoreholeEditorTable extends TableComponent {
             color: '#787878'
           }}
         >
-          {key}
+          {key === 'workgroup'? 'status': key}
         </span>
       </Table.HeaderCell>
     );
@@ -103,7 +103,7 @@ class BoreholeEditorTable extends TableComponent {
             }}
           />
         </Table.HeaderCell>
-        {this.getHeaderLabel('completness')}
+        {this.getHeaderLabel('workgroup')}
         {this.getHeaderLabel('creation')}
         {this.getHeaderLabel('author')}
         {this.getHeaderLabel('original_name')}
@@ -167,20 +167,20 @@ class BoreholeEditorTable extends TableComponent {
         {
           this.props.t(`version:${item.role}`)
         } {
-          item.role === 'EDIT'?
-            <span>
-              ({
-                item.percentage < 100 ?
-                  null :
-                  <Icon
-                    color='green'
-                    name='check circle'
-                    style={{
-                      marginRight: '0.2em'
-                    }}
-                  />
-              }{item.percentage}%)
-            </span>: null
+          // item.role === 'EDIT'?
+          //   <span>
+          //     ({
+          //       item.percentage < 100 ?
+          //         null :
+          //         <Icon
+          //           color='green'
+          //           name='check circle'
+          //           style={{
+          //             marginRight: '0.2em'
+          //           }}
+          //         />
+          //     }{item.percentage}%)
+          //   </span>: null
         }
       </Table.Cell>,
       <Table.Cell
@@ -274,4 +274,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate(['borehole_form', 'version'])(BoreholeEditorTable));
+)(translate(['borehole_form', 'version', 'common'])(BoreholeEditorTable));

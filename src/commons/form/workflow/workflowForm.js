@@ -150,7 +150,8 @@ class WorkflowForm extends React.Component {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            flex: '1 1 100%'
+            flex: '1 1 100%',
+            overflowY: 'auto',
           }}
         >
           <div
@@ -158,7 +159,6 @@ class WorkflowForm extends React.Component {
               borderBottom: this.state.expanded === true?
                 'thin solid rgba(0, 0, 0, 0.15)': null,
               overflowX: 'hidden',
-              overflowY: 'auto',
               flex: '1 1 100%'
             }}
           >
@@ -168,12 +168,16 @@ class WorkflowForm extends React.Component {
                   key={'wff-cmt-' + idx}
                   style={{
                     borderBottom: (idx + 1) < filtered.length?
-                      'thin solid rgba(0, 0, 0, 0.15)': null,
+                      'thin solid rgba(0, 0, 0, 0.30)': null,
                     display: (idx + 1) < filtered.length
                       && this.state.expanded === false?
                       'none': null,
                     marginBottom: '1em',
                     padding: '0px 0.5em 0.5em 0.5em'
+                    // padding: '0.5em',
+                    // margin: '0.5em 0.5em 1.5em 0.5em',
+                    // boxShadow: this.state.expanded?
+                    //   'rgba(0, 0, 0, 0.75) 0px 4px 8px -4px': null
                   }}
                 >
                   <div
@@ -195,7 +199,7 @@ class WorkflowForm extends React.Component {
                   </div>
                   <div
                     style={{
-                      color: '#787878',
+                      // color: '#787878',
                       fontSize: '0.8em'
                     }}
                   >
@@ -220,13 +224,14 @@ class WorkflowForm extends React.Component {
                           readOnly
                           value={flow.notes}
                         />:
-                        <span
+                        <div
                           style={{
+                            color: '#830000',
                             fontStyle: 'italic'
                           }}
                         >
                           No comments
-                        </span>
+                        </div>
                     }
                   </div>
                 </div>

@@ -112,9 +112,10 @@ class DomainTree extends React.Component {
       domains,
       schema
     } = this.props;
-    if (data.id === null) {
+    if (data.value === null) {
       this.setState({
         selected: null,
+        search: '',
         modalOpen: false
       }, ()=>{
         if (onSelected !== undefined) {
@@ -316,35 +317,58 @@ class DomainTree extends React.Component {
           key: "dom-opt-" + domain.id,
           id: domain.id,
           conf: domain.conf,
-          // text: domain.code === ''?
-          //   domain[this.state.language].text:
-          //   domain.code !== domain[this.state.language].text?
-          //     domain.code + ' (' + domain[this.state.language].text + ')': domain.code,
           content: (
             <Header
               content={
                 <div
                   style={{
-                    borderLeft: domain.conf !== null ?
-                      domain.conf.hasOwnProperty('color') ?
-                        '1em solid rgb(' +
-                        domain.conf.color[0] + ", " +
-                        domain.conf.color[1] + ", " +
-                        domain.conf.color[2] + ")" : null
-                      : null,
-                    paddingLeft: domain.conf !== null ?
-                      domain.conf.hasOwnProperty('color') ?
-                        '0.5em' : null
-                      : null,
+                    display: 'flex',
+                    flexDirection: 'row',
                     marginLeft: (
                       0.5 * (domain.level - this.state.filter.length)
                     ) + 'em'
                   }}
                 >
                   {
-                    domain.code === '' ?
-                      domain[this.state.language].text :
-                      domain.code
+                    domain.conf !== null && domain.conf.hasOwnProperty('color')?
+                      <div
+                        style={{
+                          width: '1em',
+                          backgroundColor: (
+                            '1em solid rgb(' +
+                              domain.conf.color[0] + ", " +
+                              domain.conf.color[1] + ", " +
+                              domain.conf.color[2] + ")"
+                          )
+                        }}
+                      />: null
+                  }
+                  <div
+                    style={{
+                      flex: (
+                        domain.conf !== null && domain.conf.hasOwnProperty('image')?
+                          null: '1 1 100%'
+                      )
+                    }}
+                  >
+                    {
+                      domain.code === ''?
+                        domain[this.state.language].text:
+                        domain.code
+                    }
+                  </div>
+                  {
+                    domain.conf !== null && domain.conf.hasOwnProperty('image')?
+                      <div
+                        style={{
+                          flex: '1 1 100%',
+                          marginLeft: '1em',
+                          backgroundImage: (
+                            'url("' + process.env.PUBLIC_URL + '/img/lit/' +
+                              domain.conf.image + '")'
+                          )
+                        }}
+                      />: null
                   }
                 </div>
               }
@@ -356,21 +380,36 @@ class DomainTree extends React.Component {
                   : null
               }}
               subheader={
-                domain[
-                  this.state.language
-                ].descr !== null
-                  && domain[
-                    this.state.language
-                  ].descr !== '' ?
-                  domain[this.state.language].text + ', ' + domain[this.state.language].descr :
-                  domain.code === '' ?
-                    null : domain[this.state.language].text
+                <div
+                  style={{
+                    color: '#787878',
+                    marginLeft: (
+                      0.5 * (domain.level - this.state.filter.length)
+                    ) + 'em'
+                  }}
+                >
+                  <span
+                    style={{ fontSize: '0.8em' }}
+                  >
+                    {
+                      domain[
+                        this.state.language
+                      ].descr !== null
+                        && domain[
+                          this.state.language
+                        ].descr !== '' ?
+                        domain[this.state.language].text + ', ' +
+                          domain[this.state.language].descr :
+                        domain.code === '' ?
+                          null : domain[this.state.language].text
+                    }
+                  </span>
+                </div>
               }
             />
           )
         });
       }
-
     }
 
     return (
@@ -442,13 +481,17 @@ class DomainTree extends React.Component {
                           fluid
                           onChange={(ev, data) => {
 
+                            debugger;
                             if (data.value === null) {
                               const selectedFilters = {
                                 ...this.state.selectedFilters
                               };
                               const filter = [];
                               for (
-                                let index2 = 0, l = this.state.levels.length; index2 < l; index2++
+                                let index2 = 0,
+                                  l = this.state.levels.length;
+                                index2 < l;
+                                index2++
                               ) {
                                 const lev2 = this.state.levels[index2];
                                 if (

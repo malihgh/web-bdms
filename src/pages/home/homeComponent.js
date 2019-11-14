@@ -20,6 +20,7 @@ class HomeComponent extends React.Component {
 
   constructor(props) {
     super(props);
+    this.rowHover = false;
     this.getMap = this.getMap.bind(this);
     this.getTable = this.getTable.bind(this);
     this.state = {
@@ -198,13 +199,14 @@ class HomeComponent extends React.Component {
                   if (this.state.csv === true) {
                     frmt.push("csv");
                   }
+
                   return (
                     (
                       process.env.NODE_ENV === 'development'?
                         'http://localhost:8888': process.env.PUBLIC_URL
                     )
                     + '/api/v1/borehole/download?format='
-                    + frmt.join(',') + "&id="
+                    + frmt.join(',') + "&language=" + this.props.i18n.language + "&id="
                     + checkout.cart.map((k) => {
                       return k.id;
                     }).join(',')
@@ -227,7 +229,13 @@ class HomeComponent extends React.Component {
           }}
           highlight={home.maphover}
           onHover={(item) => {
-            this.props.boreholeHover(item);
+            if (this.rowHover) {
+              clearTimeout(this.rowHover);
+              this.rowHover = false;
+            }
+            this.rowHover = setTimeout(() => {
+              this.props.boreholeHover(item);
+            }, 250);
           }}
           onSelected={(borehole) => {
             // this.props.boreholeSeleced(borehole.id);

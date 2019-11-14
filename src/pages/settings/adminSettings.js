@@ -186,9 +186,6 @@ class AdminSettings extends React.Component {
                   onClick={()=>{
                     this.reset();
                   }}
-                  style={{
-                    textTransform: 'lowercase'
-                  }}
                 >
                   {
                     t(
@@ -253,7 +250,9 @@ class AdminSettings extends React.Component {
                 value={this.state.uLastname}
               />
               <Form.Field>
-                <label>Administrator</label>
+                <label>
+                  {t('admin')}
+                </label>
                 <div
                   className='ui fluid input'
                   style={{
@@ -267,9 +266,18 @@ class AdminSettings extends React.Component {
                     style={{
                       flex: '1 1 100%'
                     }}
+                    title={
+                      this.state.uId !== null
+                      && this.props.user.data.username === this.state.uUsername?
+                        t('disabled'): null
+                    }
                   >
                     <Checkbox
                       checked={this.state.uAdmin}
+                      disabled={
+                        this.state.uId !== null
+                        && this.props.user.data.username === this.state.uUsername
+                      }
                       onChange={()=>{
                         this.setState({
                           uAdmin: !this.state.uAdmin
@@ -635,7 +643,7 @@ class AdminSettings extends React.Component {
                       width: '4em'
                     }}
                   >
-                    Administrator
+                    {t('admin')}
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
@@ -782,9 +790,6 @@ class AdminSettings extends React.Component {
                         className='linker link'
                         onClick={()=>{
                           this.resetWorkgroup();
-                        }}
-                        style={{
-                          textTransform: 'lowercase'
                         }}
                       >
                         {
@@ -1341,7 +1346,7 @@ class AdminSettings extends React.Component {
                                 >
                                   {
                                     workgroup.disabled !== null? // isDisabled
-                                      t('enable'): t('disable')
+                                      t('enableWorkgroup'): t('disableWorkgroup')
                                   }
                                 </span>
                               </Table.Cell>
@@ -1364,6 +1369,7 @@ AdminSettings.propTypes = {
   listUsers: PropTypes.func,
   listWorkgroups: PropTypes.func,
   t: PropTypes.func,
+  user: PropTypes.object,
   users: PropTypes.object
 };
 
@@ -1372,6 +1378,7 @@ AdminSettings.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
+    user: state.core_user,
     users: state.core_users,
     workgroups: state.core_workgroups
   };

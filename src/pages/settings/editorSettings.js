@@ -208,10 +208,6 @@ class EditorSettings extends React.Component {
             </Button>
           </div>
         </div>
-        <div>
-          Pellentesque scelerisque orci dolor, vel posuere nisi imperdiet ut
-          Nunc condimentum erat risus, in dictum erat rhoncus sit amet.
-        </div>
         {
           this.state.search === true ?
             <Segment.Group>

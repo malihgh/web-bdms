@@ -111,8 +111,12 @@ class ProfileView extends React.Component {
     let domain = domains.data['custom.lit_pet_top_bedrock'].find(function(element) {
       return element.id === id;
     });
-    if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('img')){
-      return 'url("' + process.env.PUBLIC_URL + '/img/lit/' + domain.conf.img + '")'
+    if (
+      domain !== undefined && domain.conf !== null
+      && domain.conf.hasOwnProperty('image')
+    ){
+      return 'url("' + process.env.PUBLIC_URL + '/img/lit/' +
+        domain.conf.image + '")';
     }
     else {
       return null;
@@ -321,7 +325,7 @@ class ProfileView extends React.Component {
                   'chronostratigraphy'
                 )}
                 {this.getDomainRow(
-                  'vtec404',
+                  'vtec400',
                   layer.tectonic_unit,
                   'tectonic_unit'
                 )}
@@ -430,11 +434,11 @@ class ProfileView extends React.Component {
                   layer.uscs_determination,
                   'uscs_determination'
                 )}
-                {this.getDomainRow(
+                {/* {this.getDomainRow(
                   'mcla102',
                   layer.unconrocks,
                   'unconrocks'
-                )}
+                )} */}
                 {this.getDomainRowMultiple(
                   'mcla107',
                   layer.debris,
@@ -445,16 +449,16 @@ class ProfileView extends React.Component {
                   layer.lit_pet_deb,
                   'lit_pet_deb'
                 )}
-                {this.getDomainRow(
+                {/* {this.getDomainRow(
                   'mcla105',
                   layer.lithok,
                   'lithok'
-                )}
-                {this.getDomainRow(
+                )} */}
+                {/* {this.getDomainRow(
                   'mcla106',
                   layer.kirost,
                   'kirost'
-                )}
+                )} */}
                 {this.getTextRow(
                   'notes', layer.notes
                 )}

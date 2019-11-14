@@ -45,8 +45,8 @@ class LayersList extends React.Component {
     let domain = domains.data['custom.lit_pet_top_bedrock'].find(function(element) {
       return element.id === id;
     });
-    if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('img')){
-      return 'url("' + process.env.PUBLIC_URL + '/img/lit/' + domain.conf.img + '")';
+    if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('image')){
+      return 'url("' + process.env.PUBLIC_URL + '/img/lit/' + domain.conf.image + '")';
     }
     else {
       return null;

@@ -357,9 +357,10 @@ class LayerForm extends React.Component {
                   onChange={(e)=>{
                     this.updateChange(
                       'geology', e.target.value
-                    )
+                    );
                   }}
-                  value={this.state.layer.geology}/>
+                  value={this.state.layer.geology}
+                />
               </Form.Field>
             )
           }
@@ -417,7 +418,7 @@ class LayerForm extends React.Component {
                 required
               >
                 <label>{t('lithology')}</label>
-                <DomainDropdown
+                {/* <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
                       'lithology', selected.id, false
@@ -425,6 +426,22 @@ class LayerForm extends React.Component {
                   }}
                   schema='custom.lit_pet_top_bedrock'
                   selected={this.state.layer.lithology}
+                /> */}
+
+                <DomainTree
+                  levels={{
+                    1: 'rock',
+                    2: 'process',
+                    3: 'type',
+                  }}
+                  onSelected={(selected) => {
+                    this.updateChange(
+                      'lithology', selected.id, false
+                    );
+                  }}
+                  schema='custom.lit_pet_top_bedrock'
+                  selected={this.state.layer.lithology}
+                  title={t('lithology')}
                 />
               </Form.Field>
             )
@@ -463,7 +480,7 @@ class LayerForm extends React.Component {
               'chronostratigraphy',
               <Form.Field>
                 <label>{t('chronostratigraphy')}</label>
-                <DomainDropdown
+                {/* <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
                       'chronostratigraphy', selected.id, false
@@ -471,6 +488,24 @@ class LayerForm extends React.Component {
                   }}
                   schema='custom.chro_str_top_bedrock'
                   selected={this.state.layer.chronostratigraphy}
+                /> */}
+                <DomainTree
+                  levels={{
+                    1: '1st_order_eon',
+                    2: '2nd_order_era',
+                    3: '3rd_order_period',
+                    4: '4th_order_epoch',
+                    5: '5th_order_sub_epoch',
+                    6: '6th_order_sub_stage',
+                  }}
+                  onSelected={(selected) => {
+                    this.updateChange(
+                      'chronostratigraphy', selected.id, false
+                    );
+                  }}
+                  schema='custom.chro_str_top_bedrock'
+                  selected={this.state.layer.chronostratigraphy}
+                  title={t('chronostratigraphy')}
                 />
               </Form.Field>
             )
@@ -486,7 +521,7 @@ class LayerForm extends React.Component {
                       'tectonic_unit', selected.id, false
                     );
                   }}
-                  schema='vtec404'
+                  schema='vtec400'
                   selected={this.state.layer.tectonic_unit}
                 />
               </Form.Field>
@@ -981,7 +1016,7 @@ class LayerForm extends React.Component {
             this.isVisible(
               'notes',
               <Form.Field>
-                <label>{t('notes')}</label>
+                <label>{t('remarks')}</label>
                 <TextArea
                   autoHeight
                   onChange={(e)=>{

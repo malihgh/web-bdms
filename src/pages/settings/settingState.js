@@ -80,7 +80,7 @@ const initialState = {
         mistakes: true,
         "processing_status": true,
         "national_relevance": true,
-        "attributes_to_edit": true
+        // "attributes_to_edit": true
       }
     },
     efilter: {
@@ -117,7 +117,7 @@ const initialState = {
         mistakes: true,
         "processing_status": true,
         "national_relevance": true,
-        "attributes_to_edit": true
+        // "attributes_to_edit": true
       }
     }
   }

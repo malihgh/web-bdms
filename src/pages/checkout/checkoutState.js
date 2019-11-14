@@ -9,9 +9,9 @@ const checkout = (state = initialState, action) => {
     case 'CHECKOUT_TOGGLE_CART': {
       const tmp = [...state.cart];
       const index = _.findIndex(tmp, ['id', action.item.id]);
-      if(index>=0){
+      if (index>=0){
         tmp.splice(index,1);
-      }else{
+      } else {
         tmp.push(action.item);
       }
       return {

@@ -12,6 +12,7 @@ import MenuContainer from '../../commons/menu/menuContainer';
 import ExplorerSettings from './explorerSettings';
 import EditorSettings from './editorSettings';
 import AdminSettings from './adminSettings';
+import DatabaseSettings from './databaseSettings';
 
 const SettingCmp = (props) => {
   
@@ -62,6 +63,10 @@ const SettingCmp = (props) => {
             <Route
               component={AdminSettings}
               path={process.env.PUBLIC_URL + "/setting/admin"}
+            />
+            <Route
+              component={DatabaseSettings}
+              path={process.env.PUBLIC_URL + "/setting/database"}
             />
           </Switch>
         </div>

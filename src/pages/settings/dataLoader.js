@@ -29,33 +29,6 @@ class DataLoader extends React.Component {
     }
   }
 
-  // isFetching() {
-  //   const {
-  //     cantons,
-  //     domains,
-  //     user
-  //   } = this.props;
-  //   if (
-  //     user.data === null
-  //     || user.isFetching === true
-  //   ) {
-  //     return true;
-  //   }
-  //   if (
-  //     Object.keys(domains.data).length === 0
-  //     || domains.isFetching === true
-  //   ) {
-  //     return true;
-  //   }
-  //   if (
-  //     cantons.data.length === 0
-  //     || cantons.isFetching === true
-  //   ) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   render() {
     return (
       <div

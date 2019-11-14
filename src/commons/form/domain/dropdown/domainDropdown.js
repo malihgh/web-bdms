@@ -157,33 +157,60 @@ class DomainDropdown extends React.Component {
           content={
             <div
               style={{
-                borderLeft: domain.conf !== null?
-                  domain.conf.hasOwnProperty('color')?
-                    '1em solid rgb(' +
-                    domain.conf.color[0] + ", " +
-                    domain.conf.color[1] + ", " +
-                    domain.conf.color[2] + ")": null
-                  : null,
-                paddingLeft: domain.conf !== null?
-                  domain.conf.hasOwnProperty('color')?
-                    '0.5em': null
-                  : null
+                display: 'flex',
+                flexDirection: 'row'
               }}
             >
               {
-                domain.code === ''?
-                  domain[this.state.language].text:
-                  domain.code
+                domain.conf !== null && domain.conf.hasOwnProperty('color')?
+                  <div
+                    style={{
+                      width: '1em',
+                      backgroundColor: (
+                        '1em solid rgb(' +
+                          domain.conf.color[0] + ", " +
+                          domain.conf.color[1] + ", " +
+                          domain.conf.color[2] + ")"
+                      )
+                    }}
+                  />: null
+              }
+              <div
+                style={{
+                  flex: (
+                    domain.conf !== null && domain.conf.hasOwnProperty('image')?
+                      null: '1 1 100%'
+                  )
+                }}
+              >
+                {
+                  domain.code === ''?
+                    domain[this.state.language].text:
+                    domain.code
+                }
+              </div>
+              {
+                domain.conf !== null && domain.conf.hasOwnProperty('image')?
+                  <div
+                    style={{
+                      flex: '1 1 100%',
+                      marginLeft: '1em',
+                      backgroundImage: (
+                        'url("' + process.env.PUBLIC_URL + '/img/lit/' +
+                          domain.conf.image + '")'
+                      )
+                    }}
+                  />: null
               }
             </div>
           }
-          style={{
-            backgroundImage: domain.conf !== null?
-              domain.conf.hasOwnProperty('img')?
-                'url("' + process.env.PUBLIC_URL + '/img/lit/' +
-                domain.conf.img + '")': null
-              : null
-          }}
+          // style={{
+          //   backgroundImage: domain.conf !== null?
+          //     domain.conf.hasOwnProperty('image')?
+          //       'url("' + process.env.PUBLIC_URL + '/img/lit/' +
+          //       domain.conf.image + '")': null
+          //     : null
+          // }}
           subheader={
             domain[
               this.state.language

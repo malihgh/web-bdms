@@ -11,12 +11,14 @@ import {
   Dropdown,
   Header,
   Icon,
+  Input,
   Menu,
   Modal
 } from 'semantic-ui-react';
 
 import {
-  createBorehole
+  createBorehole,
+  uploadBoreholeList
 } from '@ist-supsi/bmsjs';
 
 import SearchEditorComponent from '../../search/editor/searchEditorComponent'
@@ -33,6 +35,8 @@ class MenuEditorSearch extends React.Component {
         w => w.disabled === null
       ),
       modal: false,
+      upload: false,
+      selectedFile: null,
       scroller: false,
       workgroup: this.props.user.data.workgroups !== null
         && this.props.user.data.workgroups.length > 0?
@@ -75,6 +79,7 @@ class MenuEditorSearch extends React.Component {
             color: boreholes.isFetching === false && boreholes.dlen === 0?
               'red': '#767676',
             // fontWeight: 'bold',
+            borderBottom: 'thin solid rgb(187, 187, 187)',
             padding: '1em 1em 0px 1em'
           }}
         >
@@ -121,6 +126,7 @@ class MenuEditorSearch extends React.Component {
           key='sb-em-3'
           size='mini'
           style={{
+            borderTop: 'thin solid rgb(187, 187, 187)',
             margin: '0px'
           }}
         >
@@ -129,12 +135,14 @@ class MenuEditorSearch extends React.Component {
               this.props.refresh();
             }}
             style={{
-              flex: 1
+              flex: 1,
+              padding: '1.5em'
             }}
           >
             <Icon
               loading={boreholes.isFetching}
               name='refresh'
+              size='tiny'
             />
             Refresh
           </Menu.Item>
@@ -143,30 +151,67 @@ class MenuEditorSearch extends React.Component {
               this.props.reset();
             }}
             style={{
-              flex: 1
+              flex: 1,
+              padding: '1.5em'
             }}
           >
-            <Icon name='undo' />
+            <Icon
+              name='undo'
+              size='tiny'
+            />
             Reset
+          </Menu.Item>
+        </Menu>,
+        <Menu
+          icon='labeled'
+          key='sb-em-4'
+          size='mini'
+          style={{
+            margin: '0px'
+          }}
+        >
+          <Menu.Item
+            disabled={this.props.user.data.roles.indexOf('EDIT')===-1}
+            onClick={() => {
+              this.setState({
+                modal: true,
+                upload: true
+              });
+            }}
+            style={{
+              flex: 1,
+              padding: '1.5em'
+            }}
+          >
+            <Icon
+              name='upload'
+              size='tiny'
+            />
+            Upload
           </Menu.Item>
           <Menu.Item
             disabled={this.props.user.data.roles.indexOf('EDIT')===-1}
             onClick={() => {
               this.setState({
-                modal: true
+                modal: true,
+                upload: false
               });
             }}
             style={{
-              flex: 1
+              flex: 1,
+              padding: '1.5em'
             }}
           >
-            <Icon name='add' />
+            <Icon
+              name='add'
+              size='tiny'
+            />
             New
           </Menu.Item>
         </Menu>,
         <Modal
           closeIcon
-          key='sb-em-4'
+          key='sb-em-5'
           onClose={()=>{
             this.setState({
               modal: false
@@ -177,52 +222,100 @@ class MenuEditorSearch extends React.Component {
         >
           <Header
             content={t(`common:newBorehole`)}
-            // icon='archive'
+            icon={
+              this.state.upload === true?
+                'upload': 'plus'
+            }
           />
           <Modal.Content>
-            <p>
-              Workgroup: {
-                (()=>{
-                  const wg = this.state.enabledWorkgroups;
-                  if (wg.length === 0){
-                    return  t("common:disabled");
-
-                  } else if (wg.length === 1){
-                    return wg[0].workgroup;
-
-                  }
-                  return (
-                    <Dropdown
-                      item
-                      onChange={(ev, data) => {
+            {
+              this.state.upload === true?
+                <div>
+                  <span
+                    style={{
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    {t(`common:uploadFile`)}:
+                  </span>
+                  <div
+                    style={{
+                      padding: '1em'
+                    }}
+                  >
+                    <Input
+                      onChange={(e)=>{
+                        console.log(e.target.files[0]);
                         this.setState({
-                          workgroup: data.value
+                          selectedFile: e.target.files[0]
                         });
                       }}
-                      options={
-                        wg.filter(
-                          w => w.roles.indexOf('EDIT') >= 0
-                        ).map(wg => (
-                          {
-                            key: wg['id'],
-                            text: wg['workgroup'],
-                            value: wg['id']
-                          }
-                        ))
-                      }
-                      simple
-                      value={this.state.workgroup}
-                      // text={this.props.user.data.workgroups[0].workgroup}
+                      type='file'
                     />
-                  );
-                })()
-              }
-            </p>
+                  </div>
+                </div>: null
+            }
+            <div>
+              <span
+                style={{
+                  fontWeight: 'bold'
+                }}
+              >
+                {t('common:workgroup')}:
+              </span>
+              <div
+                style={{
+                  padding: '1em'
+                }}
+              >
+                {
+                  (()=>{
+                    const wg = this.state.enabledWorkgroups;
+                    if (wg.length === 0){
+                      return  t("common:disabled");
+
+                    } else if (wg.length === 1){
+                      return wg[0].workgroup;
+
+                    }
+                    return (
+                      <Dropdown
+                        item
+                        onChange={(ev, data) => {
+                          this.setState({
+                            workgroup: data.value
+                          });
+                        }}
+                        options={
+                          wg.filter(
+                            w => w.roles.indexOf('EDIT') >= 0
+                          ).map(wg => (
+                            {
+                              key: wg['id'],
+                              text: wg['workgroup'],
+                              value: wg['id']
+                            }
+                          ))
+                        }
+                        simple
+                        value={this.state.workgroup}
+                        // text={this.props.user.data.workgroups[0].workgroup}
+                      />
+                    );
+                  })()
+                }
+              </div>
+            </div>
+
           </Modal.Content>
           <Modal.Actions>
             <Button
               disabled={
                 this.state.enabledWorkgroups.length === 0
+                || (
+                  this.state.upload === true
+                  && this.state.selectedFile === null
+                )
               }
               loading={
                 this.state.creating === true
@@ -231,41 +324,69 @@ class MenuEditorSearch extends React.Component {
                 this.setState({
                   creating: true,
                 }, ()=>{
-                  createBorehole(
-                    this.state.workgroup
-                  ).then(
-                    (response) => {
-                      if (response.data.success) {
+                  if (this.state.upload === true){
+                    uploadBoreholeList(
+                      this.state.workgroup,
+                      this.state.selectedFile
+                    ).then(
+                      response => {
                         this.setState({
                           creating: false,
+                          upload: false,
                           modal: false
                         }, () => {
-                          history.push(
-                            process.env.PUBLIC_URL
-                            + "/editor/"
-                            + response.data.id
-                          );
-                        });
-                      } else {
-                        this.setState({
-                          creating: false,
-                          modal: false
-                        }, () => {
-                          alert(response.data.message);
-                          window.location.reload();
+                          if (response.data.success) {
+                            this.props.refresh();
+                          } else {
+                            alert(response.data.message);
+                          }
                         });
                       }
-                    }
-                  ).catch(function (error) {
-                    console.log(error);
-                  });
+                    );
+                  } else {
+                    createBorehole(
+                      this.state.workgroup
+                    ).then(
+                      response => {
+                        if (response.data.success) {
+                          this.setState({
+                            creating: false,
+                            modal: false
+                          }, () => {
+                            history.push(
+                              process.env.PUBLIC_URL
+                              + "/editor/"
+                              + response.data.id
+                            );
+                          });
+                        } else {
+                          this.setState({
+                            creating: false,
+                            modal: false
+                          }, () => {
+                            alert(response.data.message);
+                            window.location.reload();
+                          });
+                        }
+                      }
+                    ).catch(function (error) {
+                      console.log(error);
+                    });
+                  }
                 });
               }}
               secondary
             >
               <Icon
-                name='add'
-              /> {t('editor:create')}
+                name={
+                  this.state.upload === true?
+                    'upload': 'plus'
+                }
+              /> {
+                this.state.upload === true?
+                  t('editor:upload'):
+                  t('editor:create')
+              }
             </Button>
           </Modal.Actions>
         </Modal>
