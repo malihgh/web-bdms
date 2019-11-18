@@ -311,7 +311,16 @@ class DomainTree extends React.Component {
           ].text.toUpperCase().includes(this.state.search.toUpperCase())
         )
       ) {
-
+        if (
+          domain.conf !== null && domain.conf.hasOwnProperty('color')
+        ) {
+          console.log(
+            '1em solid rgb(' +
+            domain.conf.color[0] + ", " +
+            domain.conf.color[1] + ", " +
+            domain.conf.color[2] + ")"
+          );
+        }
         options.push({
           active: this.state.selected === domain.id,
           key: "dom-opt-" + domain.id,
@@ -333,13 +342,15 @@ class DomainTree extends React.Component {
                     domain.conf !== null && domain.conf.hasOwnProperty('color')?
                       <div
                         style={{
-                          width: '1em',
                           backgroundColor: (
-                            '1em solid rgb(' +
+                            'rgb(' +
                               domain.conf.color[0] + ", " +
                               domain.conf.color[1] + ", " +
                               domain.conf.color[2] + ")"
-                          )
+                          ),
+                          border: 'thin solid #b9b9b9',
+                          marginRight: '0.5em',
+                          width: '1em',
                         }}
                       />: null
                   }

@@ -10,7 +10,7 @@
 /.vscode
 
 # misc
-/public/img/lit/*
+# /public/img/lit/*
 
 npm-debug.log*
 yarn-debug.log*

@@ -151,7 +151,13 @@ class LayerForm extends React.Component {
       }
     };
     _.set(state.layer, attribute, value);
-    if (/^-?\d*[.,]?\d*$/.test(value)){
+
+
+    if (value === null){
+      this.setState(state, () => {
+        this.patch(attribute, value, to);
+      });
+    } else if (/^-?\d*[.,]?\d*$/.test(value)){
       this.setState(state, () => {
         this.patch(attribute, _.toNumber(value), to);
       });

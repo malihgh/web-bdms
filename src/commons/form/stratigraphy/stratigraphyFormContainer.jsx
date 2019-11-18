@@ -183,9 +183,9 @@ class StratigraphyFormContainer extends React.Component {
     let wrongDepth = false;
     
     //   Bedrock defined the top bedrock is set
-    const isBedrockDefined = (
-      borehole.custom.lit_pet_top_bedrock !== null
-    );
+    // const isBedrockDefined = (
+    //   borehole.custom.lit_pet_top_bedrock !== null
+    // );
     let missingBedrock = true;
     let bedrockLitPetWrong = false;
     let bedrockLitStratiWrong = false;
@@ -263,7 +263,8 @@ class StratigraphyFormContainer extends React.Component {
 
       // Check if bedrock is missing
       if (
-        isBedrockDefined === true
+        // isBedrockDefined === true &&
+        isBedrock === true
         && missingBedrock === true
       ) {
         missingBedrock = !isBedrock;

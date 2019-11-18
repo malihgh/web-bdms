@@ -662,13 +662,6 @@ class BoreholeForm extends React.Component {
                             // required
                           >
                             <label>{t('srs')}</label>
-                            {/* <DomainDropdown
-                              onSelected={(selected) => {
-                                this.updateChange('srs', selected.id, false);
-                              }}
-                              schema='srs'
-                              selected={borehole.srs}
-                            /> */}
                             <div
                               style={{
                                 height: "36px",
@@ -811,13 +804,27 @@ class BoreholeForm extends React.Component {
                             required
                           >
                             <label>{t('hrs')}</label>
-                            <DomainDropdown
+                            {/* <DomainDropdown
                               onSelected={(selected) => {
                                 this.updateChange('hrs', selected.id, false);
                               }}
                               schema='hrs'
                               selected={borehole.hrs}
-                            />
+                            /> */}
+                            <div
+                              style={{
+                                height: "36px",
+                                display: "flex",
+                                alignItems: 'center'
+                              }}
+                            >
+                              <div>
+                                <DomainText
+                                  id={borehole.hrs}
+                                  schema='hrs'
+                                />
+                              </div>
+                            </div>
                           </Form.Field>
                           <Form.Field
                             error={
@@ -1380,6 +1387,7 @@ class BoreholeForm extends React.Component {
                       <Form.Field
                         error={
                           mentions.indexOf('top_bedrock') >= 0
+                          // || _.isNil(borehole.extended.top_bedrock)
                         }
                         required
                       >
