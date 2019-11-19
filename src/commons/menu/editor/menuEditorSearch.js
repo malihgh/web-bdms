@@ -236,6 +236,23 @@ class MenuEditorSearch extends React.Component {
                       fontWeight: 'bold'
                     }}
                   >
+                    {t(`common:csvFormat`)}:
+                  </span>
+                  <div
+                    style={{
+                      border: 'thin solid #787878',
+                      margin: '1em 0px',
+                      padding: '1em'
+                    }}
+                  >
+                    "location_east";"location_north";"original_name"
+                    2719603;1081038.5;"test001"
+                  </div>
+                  <span
+                    style={{
+                      fontWeight: 'bold'
+                    }}
+                  >
                     {t(`common:uploadFile`)}:
                   </span>
                   <div
