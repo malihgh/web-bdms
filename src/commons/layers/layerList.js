@@ -534,14 +534,20 @@ class LayersList extends React.Component {
                         <div
                           style={{
                             color: (
-                              idx > 0 && layers[(idx-1)].depth_to !== item.depth_from?
+                              _.isNil(item.depth_from) || (
+                                idx > 0 &&
+                                layers[(idx-1)].depth_to !== item.depth_from
+                              )?
                                 'red': null // '#787878'
                             ),
                             // fontSize: '0.8em'
                           }}
                         >
                           {
-                            idx > 0 && layers[(idx-1)].depth_to !== item.depth_from?
+                            _.isNil(item.depth_from) || (
+                              idx > 0 &&
+                              layers[(idx-1)].depth_to !== item.depth_from
+                            )?
                               <Icon name='warning sign' />: null
                           } {item.depth_from} m
                         </div>
@@ -609,18 +615,26 @@ class LayersList extends React.Component {
                         <div
                           style={{
                             color: (
-                              consistency.hasOwnProperty(item.id)
-                              && consistency[item.id].errorInverted?
+                              _.isNil(item.depth_to) || (
+                                consistency.hasOwnProperty(item.id)
+                                && consistency[item.id].errorInverted
+                              )?
                                 'red': null // '#787878'
                             )
                           }}
                         >
                           {
-                            consistency.hasOwnProperty(item.id)
-                            && consistency[item.id].errorInverted?
+                            _.isNil(item.depth_to) || (
+                              consistency.hasOwnProperty(item.id)
+                              && consistency[item.id].errorInverted
+                            )?
                               <Icon
                                 name='warning sign'
-                                title='Inverted depths'
+                                title={
+                                  consistency.hasOwnProperty(item.id)
+                                  && consistency[item.id].errorInverted?
+                                    'Inverted depths': null
+                                }
                               />: null
                           } {item.depth_to} m
                         </div>
