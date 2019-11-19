@@ -179,7 +179,7 @@ class StratigraphyFormContainer extends React.Component {
 
     const consistency = {};
 
-    const isDepthDefined = borehole.length !== null;
+    const isDepthDefined = !_.isNil(borehole.length);
     let wrongDepth = false;
     
     //   Bedrock defined the top bedrock is set
@@ -274,7 +274,7 @@ class StratigraphyFormContainer extends React.Component {
         idx === (layers.length - 1)
         && isDepthDefined
       ) {
-        wrongDepth = item.depth_to !== borehole.length;
+        wrongDepth = `${item.depth_to}` !== `${borehole.length}`;
       }
 
       const error = (
@@ -787,12 +787,13 @@ class StratigraphyFormContainer extends React.Component {
                 <LayerForm
                   borehole={this.props.borehole}
                   conf={
-                    (()=>{
-                      const element = domains.data.layer_kind.find(function(element) {
-                        return element.id === stratigraphy.kind;
-                      });
-                      return element.conf;
-                    })()
+                    domains.data.hasOwnProperty('layer_kind')?
+                      (()=>{
+                        const element = domains.data.layer_kind.find(function(element) {
+                          return element.id === stratigraphy.kind;
+                        });
+                        return element.conf;
+                      })(): null
                   }
                   id={this.state.layer}
                   onUpdated={(id, attribute, value) => {
