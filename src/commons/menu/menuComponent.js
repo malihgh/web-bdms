@@ -263,14 +263,14 @@ const MenuComponent = function (props) {
             </span>
             <span
               className='link'
-              // onClick={() => {
-              //   i18n.changeLanguage('fr');
-              // }}
+              onClick={() => {
+                i18n.changeLanguage('fr');
+              }}
               style={{
                 paddingRight: '0.5em',
-                color: '#787878',
-                // color: i18n.language === 'fr' ?
-                //   '#ed1d24' : null,
+                // color: '#787878',
+                color: i18n.language === 'fr' ?
+                  '#ed1d24' : null,
                 textDecoration: i18n.language === 'fr' ?
                   'underline' : null
               }}
