@@ -305,8 +305,12 @@ class AdminSettings extends React.Component {
                         '',
                         this.state.uLastname,
                         this.state.uAdmin
-                      ).then(()=>{
-                        this.props.listUsers();
+                      ).then((response)=>{
+                        if (response.data.success === false) {
+                          alert(response.data.message);
+                        } else {
+                          this.props.listUsers();
+                        }
                       });
                     } else {
                       updateUser(
@@ -317,8 +321,12 @@ class AdminSettings extends React.Component {
                         '',
                         this.state.uLastname,
                         this.state.uAdmin
-                      ).then(()=>{
-                        this.props.listUsers();
+                      ).then((response)=>{
+                        if (response.data.success === false) {
+                          alert(response.data.message);
+                        } else {
+                          this.props.listUsers();
+                        }
                       });
                     }
                   }}
