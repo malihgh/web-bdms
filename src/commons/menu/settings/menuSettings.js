@@ -171,6 +171,29 @@ const MenuSettings = (props) => {
           //     </List.Content>
           //   </List.Item>: null
         }
+        <List.Item
+          onClick={()=>{
+            history.push(
+              process.env.PUBLIC_URL + '/setting/resources'
+            );
+          }}
+          style={{
+            padding: '1em',
+            borderLeft: location.pathname.indexOf('/setting/resources') >= 0?
+              '0.5em solid rgb(237, 29, 36)': null
+          }}
+        >
+          <List.Icon
+            name='linkify' // barcode
+            size='large'
+            verticalAlign='middle'
+          />
+          <List.Content>
+            <List.Header as='h3'>
+              {t('common:resources')}
+            </List.Header>
+          </List.Content>
+        </List.Item>
       </List>
     </div>
   );

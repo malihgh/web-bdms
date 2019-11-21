@@ -140,7 +140,10 @@ class SearchEditorComponent extends React.Component {
             ))
           }
         </Form>
+
         <Form size='tiny'>
+
+          {/* Show when completness functionality ready           
           <Form.Field >
             <label>{t('completness')}</label>
             <Radio
@@ -181,7 +184,8 @@ class SearchEditorComponent extends React.Component {
                 this.props.setCompletness('empty');
               }}
             />
-          </Form.Field>
+          </Form.Field> */}
+
           <Form.Field>
             <label>Creation date</label>
             <DateField

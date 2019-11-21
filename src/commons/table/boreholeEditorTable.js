@@ -16,6 +16,13 @@ import {
 } from '@ist-supsi/bmsjs';
 
 class BoreholeEditorTable extends TableComponent {
+  componentDidMount(){
+    const {
+      filter
+    } = this.props;
+    this.props.clear();
+    this.props.loadData(1, filter); //, setting.orderby, setting.direction);
+  }
   reorder(orderby) {
     const { filter, loadData, store } = this.props;
     let dir = store.direction === 'DESC' ? 'ASC' : 'DESC';
@@ -261,6 +268,12 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
+    clear: () => {
+      dispatch({
+        type: 'CLEAR',
+        path: '/borehole'
+      });
+    },
     loadData: (page, filter = {}, orderby = null, direction = null) => {
       dispatch(
         loadEditingBoreholes(

@@ -18,6 +18,9 @@ const ExportLink = props => {
   if (props.csv === true) {
     frmt.push("csv");
   }
+  if (props.fullcsv === true) {
+    frmt.push("fullcsv");
+  }
   const href = (
     (
       process.env.NODE_ENV === 'development'?
@@ -44,6 +47,7 @@ const ExportLink = props => {
 
 ExportLink.propTypes = {
   csv: PropTypes.bool,
+  fullcsv: PropTypes.bool,
   id: PropTypes.array,
   pdf: PropTypes.bool,
   shp: PropTypes.bool,
@@ -54,7 +58,8 @@ ExportLink.defaultProps = {
   id: [],
   pdf: true,
   shape: false,
-  csv: false
+  csv: false,
+  fullcsv: false
 };
 
 export default translate()(ExportLink);

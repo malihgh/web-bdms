@@ -13,6 +13,7 @@ import ExplorerSettings from './explorerSettings';
 import EditorSettings from './editorSettings';
 import AdminSettings from './adminSettings';
 import DatabaseSettings from './databaseSettings';
+import ResourcesSettings from './resourcesSettings';
 
 const SettingCmp = (props) => {
   
@@ -67,6 +68,10 @@ const SettingCmp = (props) => {
             <Route
               component={DatabaseSettings}
               path={process.env.PUBLIC_URL + "/setting/database"}
+            />
+            <Route
+              component={ResourcesSettings}
+              path={process.env.PUBLIC_URL + "/setting/resources"}
             />
           </Switch>
         </div>

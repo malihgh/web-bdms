@@ -219,10 +219,12 @@ class ProfileView extends React.Component {
           selectedLayerStyle={{
             backgroundColor: 'rgb(245, 245, 245)',
             borderTop: '2px solid #787878',
-            borderBottom: '2px solid #787878'
+            borderBottom: '2px solid #787878',
+            overflow: 'hidden'
           }}
           unselectedLayerStyle={{
-            borderRight: '2px solid #787878'
+            borderRight: '2px solid #787878',
+            overflow: 'hidden'
           }}
         />
         <div
@@ -324,11 +326,11 @@ class ProfileView extends React.Component {
                   layer.chronostratigraphy,
                   'chronostratigraphy'
                 )}
-                {this.getDomainRow(
+                {/* {this.getDomainRow(
                   'vtec400',
                   layer.tectonic_unit,
                   'tectonic_unit'
-                )}
+                )} */}
                 {this.getDomainRowMultiple(
                   'mlpr112',
                   layer.color,

@@ -325,7 +325,7 @@ class LayersList extends React.Component {
                                 }}
                                 size='mini'
                               >
-                                <Icon name='question' />
+                                <Icon name='wrench' />
                               </Button>
                             </Table.Cell>: null
                         }
@@ -793,7 +793,7 @@ class LayersList extends React.Component {
                               }}
                               size='mini'
                             >
-                              <Icon name='question' />
+                              <Icon name='wrench' />
                             </Button>
                           </Table.Cell>: null
                       }
@@ -843,8 +843,14 @@ class LayersList extends React.Component {
                                 {t(
                                   'wrongDepthSolution1',
                                   {
-                                    lDepth: layers[layers.length-1].depth_to,
-                                    bDepth: borehole.data.length
+                                    lDepth: (
+                                      _.isNil(layers[layers.length-1].depth_to)?
+                                        'n/a': layers[layers.length-1].depth_to
+                                    ),
+                                    bDepth: (
+                                      _.isNil(borehole.data.length)?
+                                        'n/a': borehole.data.length + 'm'
+                                    )
                                   }
                                 )}
                               </div>
@@ -893,7 +899,7 @@ class LayersList extends React.Component {
                               }}
                               size='mini'
                             >
-                              <Icon name='question' />
+                              <Icon name='wrench' />
                             </Button>
                           </Table.Cell>: null
                       }

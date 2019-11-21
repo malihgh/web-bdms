@@ -26,6 +26,7 @@ class HomeComponent extends React.Component {
     this.state = {
       pdf: true,
       csv: false,
+      fullcsv: false,
       shp: false,
       refresh: 0
     };
@@ -179,6 +180,15 @@ class HomeComponent extends React.Component {
                 }}
               /> &nbsp;&nbsp;
               <Checkbox
+                checked={this.state.fullcsv}
+                label='Full-CSV'
+                onChange={() => {
+                  this.setState({
+                    fullcsv: !this.state.fullcsv
+                  });
+                }}
+              /> &nbsp;&nbsp;
+              <Checkbox
                 checked={this.state.shp}
                 label='Shape File'
                 onChange={() => {
@@ -198,6 +208,9 @@ class HomeComponent extends React.Component {
                   }
                   if (this.state.csv === true) {
                     frmt.push("csv");
+                  }
+                  if (this.state.fullcsv === true) {
+                    frmt.push("fullcsv");
                   }
 
                   return (

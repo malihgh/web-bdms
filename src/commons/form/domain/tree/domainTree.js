@@ -282,18 +282,20 @@ class DomainTree extends React.Component {
             // },
             path: domain.path,
             value: domain.id,
-            text: domain.code === '' ?
-              domain[this.state.language].text :
-              domain.code !== domain[this.state.language].text ?
-                domain.code +
-                ' (' + domain[this.state.language].text + ')':
-                domain.code,
-            content: domain.code === '' ?
-              domain[this.state.language].text :
-              domain.code !== domain[this.state.language].text ?
-                domain.code + ' (' + domain[this.state.language].text +
-                ')':
-                domain.code
+            text: domain[this.state.language].text,
+            // text: domain.code === '' ?
+            //   domain[this.state.language].text :
+            //   domain.code !== domain[this.state.language].text ?
+            //     domain.code +
+            //     ' (' + domain[this.state.language].text + ')':
+            //     domain.code,
+            content: domain[this.state.language].text
+            // content: domain.code === '' ?
+            //   domain[this.state.language].text :
+            //   domain.code !== domain[this.state.language].text ?
+            //     domain.code + ' (' + domain[this.state.language].text +
+            //     ')':
+            //     domain.code
           });
         }
       }
@@ -311,16 +313,6 @@ class DomainTree extends React.Component {
           ].text.toUpperCase().includes(this.state.search.toUpperCase())
         )
       ) {
-        if (
-          domain.conf !== null && domain.conf.hasOwnProperty('color')
-        ) {
-          console.log(
-            '1em solid rgb(' +
-            domain.conf.color[0] + ", " +
-            domain.conf.color[1] + ", " +
-            domain.conf.color[2] + ")"
-          );
-        }
         options.push({
           active: this.state.selected === domain.id,
           key: "dom-opt-" + domain.id,
@@ -362,11 +354,12 @@ class DomainTree extends React.Component {
                       )
                     }}
                   >
-                    {
+                    {domain[this.state.language].text}
+                    {/* {
                       domain.code === ''?
                         domain[this.state.language].text:
                         domain.code
-                    }
+                    } */}
                   </div>
                   {
                     domain.conf !== null && domain.conf.hasOwnProperty('image')?
@@ -403,16 +396,20 @@ class DomainTree extends React.Component {
                     style={{ fontSize: '0.8em' }}
                   >
                     {
-                      domain[
-                        this.state.language
-                      ].descr !== null
-                        && domain[
-                          this.state.language
-                        ].descr !== '' ?
-                        domain[this.state.language].text + ', ' +
-                          domain[this.state.language].descr :
-                        domain.code === '' ?
-                          null : domain[this.state.language].text
+                      !_.isNil(domain[this.state.language].descr)?
+                        domain[this.state.language].descr: null
+                    }
+                    {
+                      // domain[
+                      //   this.state.language
+                      // ].descr !== null
+                      // && domain[
+                      //   this.state.language
+                      // ].descr !== '' ?
+                      //   domain[this.state.language].text + ', ' +
+                      //     domain[this.state.language].descr :
+                      //   domain.code === '' ?
+                      //     null : domain[this.state.language].text
                     }
                   </span>
                 </div>

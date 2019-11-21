@@ -197,6 +197,10 @@ const mapDispatchToProps = (dispatch, ownprops) => {
       });
     },
     lock: (id) => {
+      dispatch({
+        type: 'CLEAR',
+        path: '/borehole'
+      });
       ownprops.history.push(
         process.env.PUBLIC_URL + "/editor/" + id
       );

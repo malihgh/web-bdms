@@ -1023,7 +1023,7 @@ class BoreholeForm extends React.Component {
                         this.updateChange(
                           'location', [x, y, cid, mid, height], false);
                       }}
-                      id={this.props.id}
+                      id={borehole.id}
                       ref={pmap => this.map = pmap}
                       srs={
                         borehole.srs !== null
@@ -1040,14 +1040,12 @@ class BoreholeForm extends React.Component {
                           null
                       }
                       x={
-                        borehole.location_x === '' ?
-                          null :
-                          _.toNumber(borehole.location_x)
+                        _.isNil(borehole.location_x)?
+                          null: _.toNumber(borehole.location_x)
                       }
                       y={
-                        borehole.location_y === '' ?
-                          null :
-                          _.toNumber(borehole.location_y)
+                        _.isNil(borehole.location_y)?
+                          null: _.toNumber(borehole.location_y)
                       }
                     />
                   </div>

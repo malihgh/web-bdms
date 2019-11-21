@@ -67,38 +67,49 @@ class PointComponent extends React.Component {
     });
     register(proj4);
 
-    if (
-      _.isNumber(props.x)
-      && _.isNumber(props.y)
-      && !_.isNil(props.srs)
-    ){
-      this.state = {
-        point: this.transform([props.x, props.y], props.srs),
-        toPoint: [props.x, props.y],
-        height: null,
-        satellite: false,
-        cid: null,
-        canton: null,
-        mid: null,
-        municipality: null,
-        address: false
-      };
-    } else {
-      this.state = {
-        point: null,
-        toPoint: null,
-        height: null,
-        satellite: false,
-        cid: null,
-        canton: null,
-        mid: null,
-        municipality: null,
-        address: false
-      };
-    }
+    this.state = {
+      point: null,
+      toPoint: null,
+      height: null,
+      satellite: false,
+      cid: null,
+      canton: null,
+      mid: null,
+      municipality: null,
+      address: false
+    };
+    // if (
+    //   !_.isNil(props.id) &&
+    //   _.isNumber(props.x) &&
+    //   _.isNumber(props.y) &&
+    //   !_.isNil(props.srs)
+    // ){
+    //   this.state = {
+    //     point: this.transform([props.x, props.y], props.srs),
+    //     toPoint: [props.x, props.y],
+    //     height: null,
+    //     satellite: false,
+    //     cid: null,
+    //     canton: null,
+    //     mid: null,
+    //     municipality: null,
+    //     address: false
+    //   };
+    // } else {
+    //   this.state = {
+    //     point: null,
+    //     toPoint: null,
+    //     height: null,
+    //     satellite: false,
+    //     cid: null,
+    //     canton: null,
+    //     mid: null,
+    //     municipality: null,
+    //     address: false
+    //   };
+    // }
   }
 
-  
   componentDidMount(){
     const resolutions = [
       4000, 3750, 3500, 3250, 3000, 2750, 2500, 2250, 2000, 1750, 1500, 1250,
@@ -211,16 +222,16 @@ class PointComponent extends React.Component {
     });
     this.map.addInteraction(this.modify);
 
-    if(this.state.point !== null){
+    if (this.state.point !== null){
       this.centerFeature = new Feature({
-          name: "Center",
-          geometry: new Point(this.state.point)
+        name: "Center",
+        geometry: new Point(this.state.point)
       });
       this.position.addFeature(
-          this.centerFeature
+        this.centerFeature
       );
       this.draw.setActive(false);
-    }else{
+    } else {
       this.draw.setActive(true);
     }
 
@@ -230,16 +241,16 @@ class PointComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if(
-      _.isNumber(nextProps.x)
-      && _.isNumber(nextProps.y)
-      && nextProps.x + nextProps.y !== 0
-      && !_.isNil(nextProps.srs)
+    if (
+      _.isNumber(nextProps.x) &&
+      _.isNumber(nextProps.y) &&
+      nextProps.x + nextProps.y !== 0 &&
+      !_.isNil(nextProps.srs)
     ){
       const point = this.transform(
         [nextProps.x, nextProps.y], nextProps.srs
       );
-      if(
+      if (
         !_.isEqual(point, this.state.point)
       ){
         this.setState({
@@ -252,9 +263,9 @@ class PointComponent extends React.Component {
         this.draw.setActive(false);
         this.position.un('changefeature', this.changefeature, this);
         this.position.un('addfeature', this.changefeature, this);
-        if(this.centerFeature){
+        if (this.centerFeature){
           this.centerFeature.getGeometry().setCoordinates(point);
-        }else{
+        } else {
           this.centerFeature = new Feature({
             name: "Center",
             geometry: new Point(point)
@@ -351,7 +362,7 @@ class PointComponent extends React.Component {
   }
 
   getAddress(coordinates){
-    if(this.lh !== false){
+    if (this.lh !== false){
       clearTimeout(this.lh);
       this.lh = false;
     }
@@ -412,29 +423,31 @@ class PointComponent extends React.Component {
           padding: '0px',
           flex: '1 1 100%',
           // border: 'thin solid #cccccc'
-      }}>
+        }}
+      >
         <div
           style={{
-          position: 'absolute',
-          top: '6px',
-          right: '6px',
-          zIndex: '1'
-        }}>
+            position: 'absolute',
+            top: '6px',
+            right: '6px',
+            zIndex: '1'
+          }}
+        >
           <Button
-            color='black'
-            size='mini'
-            toggle
             active={satellite}
+            color='black'
             onClick={(e)=>{
               this.setState({
                 satellite: !satellite
               }, (a) => {
-                // console.log(a);
                 const layers = this.map.getLayers().getArray();
                 layers[0].setVisible(!this.state.satellite);
                 layers[1].setVisible(this.state.satellite);
-              })
-            }}>
+              });
+            }}
+            size='mini'
+            toggle
+          >
             Satellite
           </Button>
         </div>
@@ -473,8 +486,6 @@ class PointComponent extends React.Component {
                 _.isArray(this.state.toPoint)?
                   'E' + _.round(this.state.toPoint[0], 2).toLocaleString()
                   + " N" + _.round(this.state.toPoint[1], 2).toLocaleString()
-                  // + " (" + (_.isNil(this.props.srs)?
-                  //     this.srs: this.props.srs) + ")":
                   :'n/p'
               }
               <Label.Detail>
@@ -525,9 +536,8 @@ class PointComponent extends React.Component {
                   || this.state.address
                 }
                 loading={this.state.address}
-                size='mini'
                 onClick={(e)=>{
-                  if(_.isFunction(this.props.applyChange)){
+                  if (_.isFunction(this.props.applyChange)){
                     this.props.applyChange(
                       _.round(this.state.toPoint[0], 2),
                       _.round(this.state.toPoint[1], 2),
@@ -537,7 +547,9 @@ class PointComponent extends React.Component {
                       this.state.mid
                     );
                   }
-                }}>
+                }}
+                size='mini'
+              >
                 Apply
               </Button>
               <Button
@@ -545,9 +557,8 @@ class PointComponent extends React.Component {
                   !_.isArray(this.state.toPoint)
                 }
                 icon
-                size='mini'
                 onClick={(e)=>{
-                  if(_.isFunction(this.props.applyChange)){
+                  if (_.isFunction(this.props.applyChange)){
                     getHeight(
                       this.state.point[0],
                       this.state.point[1]
@@ -555,26 +566,28 @@ class PointComponent extends React.Component {
                       this.setState({
                         height: response.status === 200?
                           response.data.height: null
-                      })
+                      });
                     });
                   }
-                }}>
-                <Icon name='resize vertical'/>
+                }}
+                size='mini'
+              >
+                <Icon name='resize vertical' />
               </Button>
               <Button
                 disabled={
                   false //!_.isArray(this.state.toPoint)
                 }
                 icon
-                size='mini'
                 onClick={(e)=>{
                   this.map.getView().fit(
                     this.centerFeature.getGeometry(),
-                    {minResolution: 1}
+                    { minResolution: 1 }
                   );
                 }}
+                size='mini'
               >
-                <Icon name='compress'/>
+                <Icon name='compress' />
               </Button>
             </Button.Group>
           </div>
@@ -587,6 +600,7 @@ class PointComponent extends React.Component {
 PointComponent.propTypes = {
   applyChange: PropTypes.func,
   changefeature: PropTypes.func,
+  // id: PropTypes.number,
   srs: PropTypes.string,
   x: PropTypes.number,
   y: PropTypes.number

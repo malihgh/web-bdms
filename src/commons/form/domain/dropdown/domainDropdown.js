@@ -148,10 +148,11 @@ class DomainDropdown extends React.Component {
     options = _.concat(options, domains.data[schema].map((domain) => ({
       key: "dom-opt-" + domain.id,
       value: domain.id,
-      text: domain.code === ''?
-        domain[this.state.language].text:
-        domain.code !== domain[this.state.language].text?
-          domain.code + ' (' + domain[this.state.language].text + ')': domain.code,
+      text: domain[this.state.language].text,
+      // text: domain.code === ''?
+      //   domain[this.state.language].text:
+      //   domain.code !== domain[this.state.language].text?
+      //     domain.code + ' (' + domain[this.state.language].text + ')': domain.code,
       content: (
         <Header
           content={
@@ -183,11 +184,12 @@ class DomainDropdown extends React.Component {
                   )
                 }}
               >
-                {
+                {domain[this.state.language].text}
+                {/* {
                   domain.code === ''?
                     domain[this.state.language].text:
                     domain.code
-                }
+                } */}
               </div>
               {
                 domain.conf !== null && domain.conf.hasOwnProperty('image')?
@@ -212,15 +214,10 @@ class DomainDropdown extends React.Component {
           //     : null
           // }}
           subheader={
-            domain[
-              this.state.language
-            ].descr !== null
-            && domain[
-              this.state.language
-            ].descr !== ''?
-              domain[this.state.language].text + ', ' +  domain[this.state.language].descr:
-              domain.code === ''?
-                null: domain[this.state.language].text
+            !_.isNil(domain[this.state.language].descr)?
+              domain[this.state.language].descr: null
+              // domain.code === ''?
+              //   null: domain[this.state.language].text
           }
         />
       )

@@ -43,6 +43,7 @@ let resources = {
       password: "Password",
       refresh: "refresh",
       reset: "reset",
+      resources: "Resources",
       result: "result",
       results: "results",
       role: "role",
@@ -121,8 +122,9 @@ let resources = {
       'errorGapSolution4': 'Replace lower layer top with base from upper layer',
       'wrongDepth': 'Wrong depth',
       'wrongDepthSolution1': (
-        'Last layer depth (={{lDepth}}) not equals to ' +
-        'total borehole depth {{bDepth}}'
+        'Last layer depth ({{lDepth}}) not equals to ' +
+        'total borehole depth {{bDepth}}. ' +
+        'Manually change the Base MD field.'
       ),
       'missingBedrock': 'Missing bedrock',
       'missingBedrockSolution': (
@@ -291,7 +293,7 @@ let resources = {
       'EDIT': 'Change in progress',
       'CONTROL': 'Technical check',
       'VALID':'Validation',
-      'PUBLIC': 'Pubblic'
+      'PUBLIC': 'Public'
     }
   },
   de: {
@@ -337,6 +339,7 @@ let resources = {
       reset: "Zurücksetzen",
       result: "ergebnis",
       results: "ergebnisse",
+      resources: "Ressourcen",
       role: "Rolle",
       roles: "Rollen",
       saving: "sparen",
@@ -406,8 +409,9 @@ let resources = {
       'errorGapSolution4': 'Replace lower layer top with base from upper layer',
       'wrongDepth': 'Wrong depth',
       'wrongDepthSolution1': (
-        'Last layer depth ({{lDepth}}m) not equals to ' +
-        'total borehole depth ({{bDepth}}m)'
+        'Last layer depth ({{lDepth}}) not equals to ' +
+        'total borehole depth ({{bDepth}}). ' +
+        'Ändern Sie das Feld Basis-MD manuell.'
       ),
       'missingBedrock': 'Missing bedrock',
       'missingBedrockSolution': (
@@ -620,6 +624,7 @@ let resources = {
       reset: "azzerare",
       result: "risultato",
       results: "risultati",
+      resources: "Risorse",
       role: "ruolo",
       roles: "ruoli",
       saving: "salvataggio",
@@ -696,8 +701,9 @@ let resources = {
       ),
       'wrongDepth': 'Profondità errata',
       'wrongDepthSolution1': (
-        'La profondità dell\'ultimo layer ({{lDepth}}m) non coincide con ' +
-        'quanto dichiarato nei metadati sul sondaggio ({{bDepth}}m)'
+        'La profondità dell\'ultimo layer ({{lDepth}}) non coincide con ' +
+        'quanto dichiarato nei metadati sul sondaggio ({{bDepth}}). ' +
+        'Modifica manualmente il campo Base MD.'
       ),
       'missingBedrock': 'Bedrock mancante',
       'missingBedrockSolution': (

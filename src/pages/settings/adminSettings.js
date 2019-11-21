@@ -1310,7 +1310,7 @@ class AdminSettings extends React.Component {
                                               uwg !== undefined
                                               && uwg.roles.indexOf('PUBLIC') >= 0
                                             }
-                                            label='PUBBLISHER'
+                                            label='PUBLISHER'
                                             onChange={(e, d) => {
                                               e.stopPropagation();
                                               this.setRole(uwg, workgroup, 'PUBLIC');

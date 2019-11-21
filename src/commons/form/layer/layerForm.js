@@ -517,21 +517,21 @@ class LayerForm extends React.Component {
             )
           }
           {
-            this.isVisible(
-              'tectonic_unit',
-              <Form.Field>
-                <label>{t('tectonic_unit')}</label>
-                <DomainDropdown
-                  onSelected={(selected)=>{
-                    this.updateChange(
-                      'tectonic_unit', selected.id, false
-                    );
-                  }}
-                  schema='vtec400'
-                  selected={this.state.layer.tectonic_unit}
-                />
-              </Form.Field>
-            )
+            // this.isVisible(
+            //   'tectonic_unit',
+            //   <Form.Field>
+            //     <label>{t('tectonic_unit')}</label>
+            //     <DomainDropdown
+            //       onSelected={(selected)=>{
+            //         this.updateChange(
+            //           'tectonic_unit', selected.id, false
+            //         );
+            //       }}
+            //       schema='vtec400'
+            //       selected={this.state.layer.tectonic_unit}
+            //     />
+            //   </Form.Field>
+            // )
           }
           {
             this.isVisible(
