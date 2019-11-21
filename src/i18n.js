@@ -874,6 +874,299 @@ let resources = {
       'VALID': 'Validazione',
       'PUBLIC': 'Pubblico'
     }
+  },
+  fr: {
+    common: {
+      admin: 'Administrateur',
+      all: 'tout',
+      background: 'Arrière-plan',
+      borehole: "Perforation",
+      boreholes: "Perforations",
+      cancel: 'Annuler',
+      clickLayer: "Cliquez sur un calque pour plus d'informations",
+      collapse: 'Réduire',
+      creation_date: "Date de création",
+      creator: "Créé par",
+      csvFormat: "Format CSV",
+      degree: 'Degrés',
+      delete: 'Supprimer',
+      deleteForever: "Supprimer définitivement",
+      deleting: "Suppression {{what}}",
+      disable: 'Désactiver',
+      disableWorkgroup: "désactiver le groupe de travail",
+      disabled: 'Désactivé',
+      disabling: "Désactiver {{quoi}}",
+      done: "Fini",
+      enable: 'Activer',
+      enableWorkgroup: "activer le groupe de travail",
+      enabled: 'Activé',
+      enabling: "Activer {{what}}",
+      expand: "Expand",
+      filterByHierarchicalUnits: "Filtrer par unité (hiérarchique)",
+      filterByName: "Filtrer par nom",
+      firstname: 'Prenom',
+      from: 'De',
+      lastname: 'Nom de famille',
+      meter: 'Mètres',
+      new: 'Neuf {{what}}',
+      newBorehole: "Nouveau forage",
+      no: 'Non',
+      np: 'Inconnu',
+      overlay: "Cartes affichées",
+      password: 'Mot de passe',
+      refresh: 'Charge',
+      reset: "Reset",
+      result: 'Résultat',
+      results: 'Résultats',
+      role: 'Rôle',
+      roles: 'Rôles',
+      saving: 'Enregistrement',
+      search: 'Recherche',
+      show: "Afficher {{what}}",
+      start: "Cette page est en italien",
+      submit: 'Appliquer',
+      sure: "Êtes-vous sûr?",
+      title: "BMS",
+      to: "a",
+      upload: 'Télécharger',
+      updateDate: "Date de mise à jour",
+      uploadFile: "Sélectionnez le fichier CSV à télécharger",
+      user: 'Utilisateur',
+      username: "Nom d'utilisateur",
+      workgroup: "Groupe de travail",
+      yes: "oui",
+      you: "tu"
+    },
+    messages: {
+      'enablingUser': (
+        'Vous êtes sur le point de réactiver "{{user}}". ' +
+        'Cet utilisateur pourra se connecter et ' +
+        'appliquez les modifications en fonction de vos rôles.'
+      ),
+      'enablingWorkgroup': (
+        'Vous réactiverez le groupe de travail "{{workgroup}}".' +
+        'Utilisateurs appartenant à ce groupe de travail' +
+        'peut appliquer les modifications en fonction de leurs rôles.'
+      ),
+      'deleteUser': (
+        'L\'utilisateur sélectionné peut être supprimé par ' +
+        'toujours parce qu\'il n\'y a aucune trace pour le moment' +
+        'd\'activité dans la base de données.'
+      ),
+      'deleteWorkgroup': (
+        'Depuis, il n\'y a aucune trace d\'activité ' +
+        'dans la base de données, le groupe de travail sélectionné peut' +
+        'être éliminé pour toujours.'
+      ),
+      'disablingUser': (
+        'L\'utilisateur sélectionné ne peut pas être supprimé ' +
+        'parce que pour le moment il y a des traces d\'activité dans la base de données.'
+      ),
+      'disablingWorkgroup': (
+        'Le groupe de travail sélectionné ne peut pas être supprimé ' +
+        'parce qu\'il y a pour le moment certaines de ses traces d\'activité ' +
+        'dans la base de données.'
+      ),
+      'reenablingTip': (
+        'tu pourras le réactiver plus tard'
+      ),
+      'deletingUserTip': (
+        'l\'utilisateur sera supprimé de la base de données, mais dans ' +
+        'Le même utilisateur peut être recréé à nouveau.'
+      ),
+      'deletingWorkgroupTip': (
+        'le groupe de travail sera définitivement supprimé de la base de données'
+      )
+    },
+    error: {
+      'E-900': 'Modification en cours de l\'utilisateur "{{user}}"',
+      'howToResolve': 'Comment résoudre ce problème?',
+      'errorGap': 'Les Niveaux de séquence ne continuent pas',
+      'errorGapSolution1': 'Remplir le vide avec un calque non défini',
+      'errorGapSolution2': (
+        'Remplacez la couche supérieure par le ' +
+        'haut de la couche inférieure'
+      ),
+      'errorGapSolution3': 'Remplacer le haut de la couche inférieure par 0m',
+      'errorGapSolution4': (
+        'Remplacer le haut de la couche inférieure par la base' +
+        'de niveau supérieure'
+      ),
+      'wrongDepth': 'Mauvaise profondeur',
+      'wrongDepthSolution1': (
+        'La profondeur de la dernière couche ({{lDepth}}m) ne coïncide pas avec' +
+        'comme indiqué dans les métadonnées de forage ({{bDepth}}m). ' +
+        'Modifiez manuellement le champ Base MD.'
+      ),
+      'missingBedrock': 'Roche manquante',
+      'missingBedrockSolution': (
+        'Crée automatiquement le substrat rocheux à partir des données saisies' +
+        'sur la page de forage.'
+      ),
+      'missingLayer': 'Niveaux manquantes',
+      'missingLayerSolution': (
+        'S\'il vous plaît remplir l\'espace entre la surface et le substrat rocheux' +
+        'ajout de nouveaux calques'
+      ),
+      'errorOverlap': "Calques superposés",
+      'errorStartWrong': 'La première couche ne part pas de la surface'
+    },
+    header: {
+      'explore': 'Explorer',
+      'borehole': 'Éditeur de forage',
+      'check': 'Pente',
+      'validation': 'Publication',
+      'settings': 'Paramètres',
+      'language': 'Langue',
+      'view_preferences': 'Afficher',
+      'user_preferences': "Préférences de l'utilisateur",
+      'hide_map': 'Cacher la carte'
+    },
+    home: {
+      'legend': 'Légende de la carte',
+      'attribute_filter': 'Filtre',
+      'spatial_filter': 'Filtres spatiaux',
+      'back_to_list': 'Retour à la liste'
+    },
+    editor: {
+      'title': 'Projets',
+      'title2': 'forages',
+      'project_name': 'Nom du projet',
+      'search': 'Recherche de projet',
+      'create_new': 'Créer nouveau',
+      'create': 'Créer',
+      'editingEnabled': 'Le changement a commencé',
+      'locked_by': 'Changements en cours de',
+      'locked_at': 'Verrouillé',
+      'locked_status': 'État '
+    },
+    borehole_form: {
+      'editingStart': 'Commencer l\'édition',
+      'editingStop': 'Arrêtez l\'édition',
+      'completness': 'Exhaustivité',
+      'creation': 'Date de création',
+      'author': 'Auteur',
+      'mainStratigraphy': 'Ceci est la stratigraphie principale',
+      'meta_location': 'Position',
+      'meta_borehole': 'Forage',
+      'form_admin': 'Administration',
+      'meta_stratigraphy': 'Startigrafia',
+      'loading_fetch': 'Chargement d\'une enquête existante ..',
+      'creation_fetch': 'Préparation d\'une nouvelle enquête ..',
+      'duplicate': 'Dupliquer la valeur, attribuer une autre valeur.',
+      'date_format': 'JJ.MM.AAAA',
+      'original_name': "Nom original",
+      'public_name': 'Nom public',
+      'kind': 'Type de forage',
+      'project_name': 'Nom du projet',
+      'restriction': 'Restreint',
+      'restriction_until': 'Date de restriction',
+      'coordinates': 'Détails',
+      'location_x': 'East Coordinate',
+      'location_y': 'North Coordinate',
+      'srs': 'SRS',
+      'qt_location': 'Qualité coordonnée',
+      'elevation_z': 'Altitude (msl)',
+      'hrs': 'HRS',
+      'qt_elevation': 'Qualité d\'élévation',
+      'country': 'Pays',
+      'canton': 'Canton',
+      'city': 'Ville',
+      'address': 'Adresse',
+      'landuse': 'Utilisation du sol',
+      'method': 'Méthodologie de forage',
+      'drilling_date': 'Date de fin de forage',
+      'cuttings': 'Cut',
+      'purpose': 'Objet',
+      'drill_diameter': 'Diamètre de perforation (m)',
+      'status': "Etat de forage",
+      'bore_inc': 'Inclinaison (°)',
+      'bore_inc_dir': 'Direction d\'inclinaison(°)',
+      'qt_bore_inc_dir': 'Qualité Inclin./Direction ',
+      'length': 'Profondeur totale (m)',
+      'qt_length': 'Qualité de profondeur',
+      'top_bedrock': 'Substrat supérieur (m)',
+      'qt_top_bedrock': 'Substrat supérieur QC',
+      'groundwater': 'Eau souterraine',
+      'yes': 'oui',
+      'no': 'no',
+      'lit_pet_top_bedrock': 'Substrat Top Lit / Pet ',
+      'lit_str_top_bedrock': 'Litstrati top substrato',
+      'chro_str_top_bedrock': 'Chronostrates du substrat supérieur',
+      'processing_status': 'État de transformation',
+      'national_relevance': 'Pertinence nationale',
+      //'attributes_to_edit':  'Attributs à modifier',
+      'mistakes': 'Erreur',
+      'remarks': 'Observations',
+      'stratigraphy_name': 'Nom / Version'
+    },
+    layer_form: {
+      'Niveaux': 'Niveaux',
+      'loading_fetch': 'Niveaux de chargement en cours ..',
+      'creation_fetch': 'Créer un nouveau niveau ..',
+      'depth': 'Profondeur',
+      'depth_from': 'Top MD (m)',
+      'depth_to': 'Base MD (m)',
+      'description': 'Niveau de description',
+      'geology': 'Description géologique',
+      'last': 'Fin de forage',
+      'qt_description': "Qualité de description",
+      'lithology': "Lithologie / Pétrologie",
+      'lithostratigraphy': 'Litho-stratigraphie',
+      'chronostratigraphy': 'Chrono-stratigraphie',
+      'tectonic_unit': 'Unités tectoniques',
+      'symbol': 'Symbole',
+      'color': 'Couleur',
+      'plasticity': 'Plasticité',
+      'humidity': 'Humidité',
+      'consistance': 'Cohérence',
+      'alteration': 'Modification',
+      'compactness': 'Compact',
+      'jointing': 'Connexion',
+      'soil_state': 'État du sol',
+      'organic_component': 'Composants organiques',
+      'striae': 'Striae',
+      'grain_size_1': 'Taille de grain 1',
+      'grain_size_2': 'Taille de grain 2',
+      'grain_shape': 'Forme du blé',
+      'grain_granularity': 'Corniness du blé',
+      'cohesion': 'Cohésion',
+      'further_properties': "Autres paramètres",
+      'uscs_1': "USCS 1",
+      'uscs_2': "USCS 2",
+      'uscs_3': "USCS 3",
+      'uscs_original': 'Original USCS',
+      'uscs_determination': 'Détermination USCS',
+      'unconrocks': 'Classe du sol (KT GE)',
+      'debris': 'Débris',
+      'lit_pet_deb': 'Débris de Litho / Petro',
+      'lithok': 'Litho',
+      'kirost': 'Kiros',
+      'remarks': 'Observations'
+    },
+    search: {
+      'reset': 'réinitialiser',
+      'identifier': 'Code d\'identification',
+      'last_update': 'Dernière modification',
+      'creation': 'Date de création',
+      'completness': 'Filtrer par complétude',
+      'all': 'Tous',
+      'complete': 'Terminé',
+      'incomplete': 'Incomplet',
+      'empty': 'Vide'
+    },
+    grid: {
+      'legend': "Légende de la carte",
+      'attribute_filter': 'Filtre',
+      'spatial_filter': 'Filtre spatial'
+    },
+    version: {
+      '0': 'Terminé',
+      'EDIT': 'Changement',
+      'CONTROL': 'Contrôle technique',
+      'VALID': 'Validation',
+      'PUBLIC': 'Public'
+    }
   }
 };
 
