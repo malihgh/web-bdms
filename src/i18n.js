@@ -293,7 +293,7 @@ let resources = {
       'EDIT': 'Change in progress',
       'CONTROL': 'Technical check',
       'VALID':'Validation',
-      'PUBLIC': 'Public'
+      'PUBLIC': 'Publish'
     }
   },
   de: {
@@ -578,7 +578,7 @@ let resources = {
       'EDIT': 'Änderung in Bearbeitung',
       'CONTROL':'Technische Prüfung',
       'VALID': 'Bestätigung',
-      'PUBLIC': 'Öffentlichkeit'
+      'PUBLIC': 'Veröffentlichen'
     }
   },
   it: {
@@ -872,7 +872,7 @@ let resources = {
       'EDIT': 'Modifica',
       'CONTROL': 'Controllo tecnico',
       'VALID': 'Validazione',
-      'PUBLIC': 'Pubblico'
+      'PUBLIC': 'Pubblica'
     }
   },
   fr: {
@@ -1165,7 +1165,7 @@ let resources = {
       'EDIT': 'Changement',
       'CONTROL': 'Contrôle technique',
       'VALID': 'Validation',
-      'PUBLIC': 'Public'
+      'PUBLIC': 'Publiquer'
     }
   }
 };
