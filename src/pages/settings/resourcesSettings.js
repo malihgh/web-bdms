@@ -38,6 +38,7 @@ class ResourcesSettings extends React.Component {
           Documentation:<br />
           <a
             href='https://geoservice.ist.supsi.ch/docs/bdms'
+            rel="noopener noreferrer"
             target='_BLANK'
           >
             https://geoservice.ist.supsi.ch/docs/bdms
@@ -51,6 +52,7 @@ class ResourcesSettings extends React.Component {
           Python web Service (source code):<br />
           <a
             href='https://github.com/geoadmin/service-bdms'
+            rel="noopener noreferrer"
             target='_BLANK'
           >
             https://github.com/geoadmin/service-bdms
@@ -63,7 +65,8 @@ class ResourcesSettings extends React.Component {
         >
           Web Application (source code):<br />
           <a
-            href='https://github.com/geoadmin/service-bdms'
+            href='https://github.com/geoadmin/web-bdms'
+            rel="noopener noreferrer"
             target='_BLANK'
           >
             https://github.com/geoadmin/web-bdms
