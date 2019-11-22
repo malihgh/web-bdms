@@ -291,7 +291,7 @@ let resources = {
     version: {
       '0': 'Completed',
       'EDIT': 'Change in progress',
-      'CONTROL': 'Technical check',
+      'CONTROL': 'Scientific check',
       'VALID':'Validation',
       'PUBLIC': 'Publish'
     }
@@ -576,7 +576,7 @@ let resources = {
     version: {
       '0': 'Fertiggestellt',
       'EDIT': 'Änderung in Bearbeitung',
-      'CONTROL':'Technische Prüfung',
+      'CONTROL':'Wissenschaftlich Prüfung',
       'VALID': 'Bestätigung',
       'PUBLIC': 'Veröffentlichen'
     }
@@ -870,7 +870,7 @@ let resources = {
     version: {
       '0': 'Completato',
       'EDIT': 'Modifica',
-      'CONTROL': 'Controllo tecnico',
+      'CONTROL': 'Controllo scientifico',
       'VALID': 'Validazione',
       'PUBLIC': 'Pubblica'
     }
@@ -1163,7 +1163,7 @@ let resources = {
     version: {
       '0': 'Terminé',
       'EDIT': 'Changement',
-      'CONTROL': 'Contrôle technique',
+      'CONTROL': 'Contrôle scientifique',
       'VALID': 'Validation',
       'PUBLIC': 'Publiquer'
     }
