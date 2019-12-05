@@ -269,7 +269,7 @@ class MetaComponent extends React.Component {
               {this.getTextRow(
                 'drill_diameter',
                 data.custom.drill_diameter !== null ?
-                  data.custom.drill_diameter + " m" : null
+                  data.custom.drill_diameter + " mm" : null
               )}
               {this.getTextRow(
                 'bore_inc',
