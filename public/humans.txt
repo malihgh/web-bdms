@@ -1,28 +1,6 @@
+/* TEAM */
 
-  _____     _   _ _         _                   _                     
- |_   _|   | | (_) |       | |                 (_)                    
-   | |  ___| |_ _| |_ _   _| |_ ___    ___  ___ _  ___ _ __  _______  
-   | | / __| __| | __| | | | __/ _ \  / __|/ __| |/ _ \ '_ \|_  / _ \ 
-  _| |_\__ \ |_| | |_| |_| | || (_) | \__ \ (__| |  __/ | | |/ /  __/ 
- |_____|___/\__|_|\__|\__,_|\__\___/  |___/\___|_|\___|_| |_/___\___| 
-      _      _ _         _______                                      
-     | |    | | |       |__   __|                                     
-   __| | ___| | | __ _     | | ___ _ __ _ __ __ _                     
-  / _` |/ _ \ | |/ _` |    | |/ _ \ '__| '__/ _` |                    
- | (_| |  __/ | | (_| |    | |  __/ |  | | | (_| |                    
-  \__,_|\___|_|_|\__,_|    |_|\___|_|  |_|  \__,_|        
-
-   _____ _    _ _____   _____ _____ 
-  / ____| |  | |  __ \ / ____|_   _|
- | (___ | |  | | |__) | (___   | |  
-  \___ \| |  | |  ___/ \___ \  | |  
-  ____) | |__| | |     ____) |_| |_ 
- |_____/ \____/|_|    |_____/|_____|
-
-
-/* THE TEAM */
-
-    Company: Istituto scienze della Terra - SUPSI
+    Istituto scienze della Terra - SUPSI
     Website: http://www.supsi.ch/ist
     Contact: geoservice@supsi.ch
 
@@ -37,8 +15,8 @@
 
 /* MANDATOR */
 
-    Federal Office of Topography swisstopo
-    Website: https://swisstopo.admin.ch
+    Swiss Geological Survey at Swisstopo
+    Website: https://www.swisstopo.admin.ch/en/swisstopo/organisation/geologie.html
 
     Contacts:
     Brodhag Sabine, sabine.brodhag@swisstopo.ch
