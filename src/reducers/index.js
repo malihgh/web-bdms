@@ -9,7 +9,11 @@ import searchEditor from '../commons/search/editor/searchEditorState';
 import setting from '../pages/settings/settingState';
 import wmts from '../commons/map/mapState';
 
-export const appReducers = {
+import {
+  injectReducer, store
+} from '@ist-supsi/bmsjs';
+
+const reducers = {
   dataLoaderState,
   leftmenu,
   home,
@@ -21,3 +25,10 @@ export const appReducers = {
   setting,
   wmts
 };
+
+injectReducer(
+  store,
+  reducers
+);
+
+export default store;
