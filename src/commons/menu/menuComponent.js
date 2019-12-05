@@ -10,6 +10,10 @@ import {
   Popup,
 } from 'semantic-ui-react';
 
+import {
+  unsetAuthentication
+} from '@ist-supsi/bmsjs';
+
 const MenuComponent = function (props) {
   const {
     i18n, handleModeChange, mode
@@ -112,38 +116,43 @@ const MenuComponent = function (props) {
             props.user.data !== null ?
               <div
                 style={{
-                  padding: '0.5em',
-                  display: 'flex',
-                  flexDirection: 'row'
+                  padding: '0.5em'
                 }}
               >
                 <div>
-                  <div>
-                    {props.user.data.name}
-                  </div>
+                  {props.user.data.name}
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    fontSize: '0.8em'
+                  }}
+                >
                   <div
                     style={{
                       color: '#787878',
-                      fontSize: '0.8em'
+                      flex: '1 1 100%'
                     }}
                   >
                     {props.user.data.username}
                   </div>
-                </div>
-                <div
-                  style={{
-                    flex: 1,
-                    textAlign: 'right'
-                  }}
-                >
-                  {/* <Button
-                      size='tiny'
-                      primary
+                  <div>
+                    <span
+                      className='link linker'
+                      onClick={()=>{
+                        props.unsetAuthentication();
+                        if (_.isFunction(handleModeChange)) {
+                          handleModeChange('viewer');
+                        }
+                        // Clear cache
+                        // window.location.reload(true);
+                      }}
                     >
                       Logout
-                    </Button> */}
+                    </span>
+                  </div>
                 </div>
-
               </div> : ''
           }
           <List
@@ -161,9 +170,7 @@ const MenuComponent = function (props) {
                 }
               }}
               style={{
-                padding: '0.5em',
-                // borderLeft: mode !== 'viewer'?
-                //   '0.5em solid rgb(237, 29, 36)': null
+                padding: '0.5em'
               }}
             >
               <List.Icon
@@ -195,9 +202,7 @@ const MenuComponent = function (props) {
                     }
                   }}
                   style={{
-                    padding: '0.5em',
-                    // borderLeft: mode !== 'editor'?
-                    //   '0.5em solid rgb(237, 29, 36)': null
+                    padding: '0.5em'
                   }}
                 >
                   <List.Icon
@@ -221,9 +226,7 @@ const MenuComponent = function (props) {
                 }
               }}
               style={{
-                padding: '0.5em',
-                // borderLeft: mode !== 'editor'?
-                //   '0.5em solid rgb(237, 29, 36)': null
+                padding: '0.5em'
               }}
             >
               <List.Icon
@@ -268,7 +271,6 @@ const MenuComponent = function (props) {
               }}
               style={{
                 paddingRight: '0.5em',
-                // color: '#787878',
                 color: i18n.language === 'fr' ?
                   '#ed1d24' : null,
                 textDecoration: i18n.language === 'fr' ?
@@ -322,7 +324,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatch: dispatch
+    dispatch: dispatch,
+    unsetAuthentication: (username, password) => {
+      dispatch(unsetAuthentication(username, password));
+    }
   };
 };
 
@@ -333,6 +338,7 @@ MenuComponent.propTypes = {
     language: PropTypes.string
   }),
   mode: PropTypes.string,
+  unsetAuthentication: PropTypes.func,
   user: PropTypes.object
 };
 

@@ -42,6 +42,11 @@ const dataLoaderState = (state = initialState, action) => {
         copy.coreUser = true;
         break;
 
+      case 'UNSET_AUTHENTICATION':
+        copy.coreUser = false;
+        copy.isReady = false;
+        break;
+
       default:
         return state;
     }
