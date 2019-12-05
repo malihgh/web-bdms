@@ -1,6 +1,6 @@
 {
   "name": "bdms",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Bohrehole Data Management System",
   "private": true,
   "proxy": "http://localhost:8888",
@@ -31,8 +31,8 @@
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.3.2",
     "semantic-ui-react": "^0.81.2",
-    "@ist-supsi/stratigraphy": "~1.0.4",
-    "@ist-supsi/bmsjs": "1.0.4"
+    "@ist-supsi/stratigraphy": "~1.0.5",
+    "@ist-supsi/bmsjs": "1.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
