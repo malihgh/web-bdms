@@ -197,7 +197,7 @@ class HomeComponent extends React.Component {
                     shp: !this.state.shp
                   });
                 }}
-              /> &nbsp;
+              /> &nbsp;&nbsp;
               <ExportLink
                 csv={this.state.csv}
                 fullcsv={this.state.fullcsv}

@@ -44,7 +44,8 @@ class ExportLink extends React.Component {
     return (
       <span
         style={{
-          color: 'rgb(33, 133, 208)'
+          color: 'rgb(33, 133, 208)',
+          ...props.style
         }}
       >
         <span
@@ -78,11 +79,9 @@ class ExportLink extends React.Component {
             <Icon
               loading
               name='spinner'
-              size='small'
             />:
             <Icon
               name='arrow circle down'
-              size='small'
             />
         } 
       </span>
