@@ -9,6 +9,7 @@ import {
   withRouter
 } from "react-router-dom";
 
+import ExportLink from '../../commons/exportlink';
 import BoreholeTable from '../../commons/table/boreholeTable';
 import DetailsContainer from '../../commons/detail/detailsContainer';
 import MapComponent from '../../commons/map/mapComponent';
@@ -197,43 +198,20 @@ class HomeComponent extends React.Component {
                   });
                 }}
               /> &nbsp;
-              <a
-                href={(() => {
-                  let frmt = [];
-                  if (this.state.pdf === true) {
-                    frmt.push("pdf");
-                  }
-                  if (this.state.shp === true) {
-                    frmt.push("shape");
-                  }
-                  if (this.state.csv === true) {
-                    frmt.push("csv");
-                  }
-                  if (this.state.fullcsv === true) {
-                    frmt.push("fullcsv");
-                  }
-
-                  return (
-                    (
-                      process.env.NODE_ENV === 'development'?
-                        'http://localhost:8888': process.env.PUBLIC_URL
-                    )
-                    + '/api/v1/borehole/download?format='
-                    + frmt.join(',') + "&language=" + this.props.i18n.language + "&id="
-                    + checkout.cart.map((k) => {
-                      return k.id;
-                    }).join(',')
-                  );
-                })()}
+              <ExportLink
+                csv={this.state.csv}
+                fullcsv={this.state.fullcsv}
+                id={
+                  checkout.cart.map((k) => {
+                    return k.id;
+                  })
+                }
+                pdf={this.state.pdf}
+                shp={this.state.shp}
                 style={{
-                  color: '#2196f3',
-                  textDecoration: 'underline',
-                  cursor: 'pointer'
+                  fontSize: '0.8em'
                 }}
-                target='export'
-              >
-                Download
-              </a>
+              />
             </div> : null
         }
         <BoreholeTable

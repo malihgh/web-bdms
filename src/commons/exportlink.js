@@ -2,47 +2,92 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-const ExportLink = props => {
+import {
+  Icon
+} from 'semantic-ui-react';
 
-  if (props.id.lenght === 0) {
-    return null;
+import {
+  downloadBorehole,
+} from '@ist-supsi/bmsjs';
+
+class ExportLink extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      downloading: false
+    };
   }
 
-  let frmt = [];
-  if (props.pdf === true) {
-    frmt.push("pdf");
-  }
-  if (props.shp === true) {
-    frmt.push("shape");
-  }
-  if (props.csv === true) {
-    frmt.push("csv");
-  }
-  if (props.fullcsv === true) {
-    frmt.push("fullcsv");
-  }
-  const href = (
-    (
-      process.env.NODE_ENV === 'development'?
-        'http://localhost:8888': process.env.PUBLIC_URL
-    )
-    + '/api/v1/borehole/download?lang=' + props.i18n.language + '&format='
-    + frmt.join(',') + "&id="
-    + props.id.join(',')
-  );
+  render() {
 
-  return (
-    <a
-      className='link'
-      href={href}
-      style={{
-        ...props.style
-      }}
-      target='export'
-    >
-      Download
-    </a>
-  );
+    const props = this.props;
+      
+    if (props.id.lenght === 0) {
+      return null;
+    }
+
+    let frmt = [];
+    if (props.pdf === true) {
+      frmt.push("pdf");
+    }
+    if (props.shp === true) {
+      frmt.push("shape");
+    }
+    if (props.csv === true) {
+      frmt.push("csv");
+    }
+    if (props.fullcsv === true) {
+      frmt.push("fullcsv");
+    }
+
+    return (
+      <span
+        style={{
+          color: 'rgb(33, 133, 208)'
+        }}
+      >
+        <span
+          className={
+            this.state.downloading === false?
+              'link linker': null
+          }
+          onClick={()=>{
+            if (this.state.downloading === false){
+              this.setState({
+                downloading: true
+              }, ()=>{
+                downloadBorehole({
+                  lang: props.i18n.language,
+                  format: frmt.join(','),
+                  id: props.id.join(',')
+                }).then(()=>{
+                  this.setState({
+                    downloading: false
+                  });
+                });
+              });
+            }
+          }}
+        >
+          Download
+        </span>
+        &nbsp;
+        {
+          this.state.downloading === true?
+            <Icon
+              loading
+              name='spinner'
+              size='small'
+            />:
+            <Icon
+              name='arrow circle down'
+              size='small'
+            />
+        } 
+      </span>
+    );
+  }
 };
 
 ExportLink.propTypes = {
