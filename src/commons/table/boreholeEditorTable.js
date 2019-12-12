@@ -274,7 +274,7 @@ const mapDispatchToProps = (dispatch) => {
         path: '/borehole'
       });
     },
-    loadData: (page, filter = {}, orderby = null, direction = null) => {
+    loadData: (page, filter = {}, orderby = 'creation', direction = null) => {
       dispatch(
         loadEditingBoreholes(
           page, 100, filter, orderby, direction

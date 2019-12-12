@@ -67,9 +67,9 @@ class MultipleForm extends React.Component {
   toggle(field){
     let idx = _.indexOf(this.state.fields, field);
     const fields = [...this.state.fields];
-    if(idx>=0){
+    if (idx>=0){
       fields.splice(idx, 1);
-    }else{
+    } else {
       fields.push(field);
     }
     this.setState({
@@ -105,7 +105,7 @@ class MultipleForm extends React.Component {
       voca.hasOwnProperty(field)? voca[field]: field,
       this.state.data[field]
     ]));
-    if(this.isActive('restriction')){
+    if (this.isActive('restriction')){
       fields.push([
         'restriction_until',
         this.state.data['restriction_until']
@@ -142,15 +142,13 @@ class MultipleForm extends React.Component {
     const {
       t
     } = this.props;
-    if(!this.isActive(field)){
+    if (!this.isActive(field)){
       return null;
     }
-    return(
+    return (
       <Form.Field>
         <label>{t(field)}</label>
         <DomainDropdown
-          schema={ schema===null? field: schema }
-          selected={this.state.data[field]}
           onSelected={(selected)=>{
             let tmp = {};
             tmp[field] = selected.id;
@@ -161,30 +159,35 @@ class MultipleForm extends React.Component {
                 ...tmp
               }
             });
-          }}/>
+          }}
+          schema={schema===null? field: schema}
+          selected={this.state.data[field]}
+        />
       </Form.Field>
-    )
+    );
   }
 
   getInput(field, type='text'){
     const {
       t
     } = this.props;
-    if(!this.isActive(field)){
+    if (!this.isActive(field)){
       return null;
     }
-    return(
+    return (
       <Form.Field>
         <label>{t(field)}</label>
         <Input
-          type={type}
+          autoCapitalize="off"
+          autoComplete="off"
+          autoCorrect="off"
           onChange={(e)=>{
             let tmp = {};
-            if(type==='number'){
+            if (type==='number'){
               tmp[field] =  e.target.value === ''?
                 null: _.toNumber(e.target.value);
 
-            }else{
+            } else {
               tmp[field] =  e.target.value;
             }
             this.setState({
@@ -195,13 +198,12 @@ class MultipleForm extends React.Component {
               }
             });
           }}
+          spellCheck="false"
+          type={type}
           value={this.state.data[field]}
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="off"
-          spellCheck="false"/>
+        />
       </Form.Field>
-    )
+    );
   }
 
   render() {
@@ -253,6 +255,8 @@ class MultipleForm extends React.Component {
         <div
           style={{
             flex: 1,
+            maxHeight: '450px',
+            minHeight: '250px',
             overflowY: 'auto',
             padding: '0.5em'
           }}
@@ -262,8 +266,9 @@ class MultipleForm extends React.Component {
               'Please Select the Fields to Edit': null
           }
           <Form
+            autoComplete="off"
             error
-            autoComplete="off">
+          >
             {this.getDomain('kind')}
             {this.getInput('project_name')}
             {
@@ -291,10 +296,10 @@ class MultipleForm extends React.Component {
               this.isActive('canton')?
                 <Form.Group widths='equal'>
                   <Form.Field
-                    required>
+                    required
+                  >
                     <label>{t('canton')}</label>
                     <CantonDropdown
-                      selected={this.state.data.canton}
                       onSelected={(selected)=>{
                         this.setState({
                           ...this.state,
@@ -304,7 +309,9 @@ class MultipleForm extends React.Component {
                             'city': null
                           }
                         });
-                      }}/>
+                      }}
+                      selected={this.state.data.canton}
+                    />
                   </Form.Field>
                 </Form.Group>: null
             }
@@ -312,12 +319,12 @@ class MultipleForm extends React.Component {
               this.isActive('city')?
                 <Form.Group widths='equal'>
                   <Form.Field
-                    required>
+                    required
+                  >
                     <label>{t('city')}</label>
                     <MunicipalityDropdown
-                      disabled={this.state.data.canton===null}
                       canton={this.state.data.canton}
-                      selected={this.state.data.city}
+                      disabled={this.state.data.canton===null}
                       onSelected={(selected)=>{
                         this.setState({
                           ...this.state,
@@ -326,7 +333,9 @@ class MultipleForm extends React.Component {
                             'city': selected.id
                           }
                         });
-                      }}/>
+                      }}
+                      selected={this.state.data.city}
+                    />
                   </Form.Field>
                 </Form.Group>: null
             }
@@ -381,8 +390,8 @@ class MultipleForm extends React.Component {
                   <label>{t('groundwater')}</label>
                   <Form.Group inline>
                     <Form.Radio
-                      label={t('common:yes')}
                       checked={this.state.data.groundwater === true}
+                      label={t('common:yes')}
                       onChange={(e, d)=>{
                         this.setState({
                           ...this.state,
@@ -394,8 +403,8 @@ class MultipleForm extends React.Component {
                       }}
                     />
                     <Form.Radio
-                      label={t('common:no')}
                       checked={this.state.data.groundwater === false}
+                      label={t('common:no')}
                       onChange={(e, d)=>{
                         this.setState({
                           ...this.state,
@@ -407,8 +416,8 @@ class MultipleForm extends React.Component {
                       }}
                     />
                     <Form.Radio
-                      label={t('common:np')}
                       checked={this.state.data.groundwater === null}
+                      label={t('common:np')}
                       onChange={(e, d)=>{
                         this.setState({
                           ...this.state,
@@ -435,32 +444,37 @@ class MultipleForm extends React.Component {
           <Button
             negative  
             onClick={()=>{
-              this.props.undo()
+              this.props.undo();
             }}
-          >Cancel</Button>
+          >
+            Cancel
+          </Button>
           <Button
-            positive
             onClick={()=>{
-              this.save()
+              this.save();
             }}  
-          >Save</Button>
+            positive
+          >
+            Save
+          </Button>
         </div>
       </div>
-    )
+    );
   }
 }
 
 MultipleForm.propTypes = {
-  selected: PropTypes.array
-}
+  selected: PropTypes.array,
+  undo: PropTypes.func
+};
 
 MultipleForm.defaultProps = {
   selected: []
-}
+};
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
-}
+  return {};
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
@@ -474,12 +488,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     // patchBoreholes: (ids, fields) => {
     //   dispatch(patchBoreholes(ids, fields));
     // }
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )((
    translate(['borehole_form', 'common'])(MultipleForm)
-))
+));

@@ -287,19 +287,30 @@ class TableComponent extends React.Component {
                 </Button>
               </div> : null
           }
-          <Table fixed compact='very' basic='very'>
+          <Table
+            basic='very'
+            compact='very'
+            fixed
+          >
             <Table.Header>
               {this.getHeader()}
             </Table.Header>
           </Table>
         </div>
-        <div style={{
-          flex: "1 1 0%",
-          overflowY: 'auto',
-          // border: 'thin solid #d2d2d2',
-          // padding: '0px 1em'
-        }}>
-          <Table fixed compact='very' basic='very' selectable>
+        <div
+          style={{
+            flex: "1 1 0%",
+            overflowY: 'auto',
+            // border: 'thin solid #d2d2d2',
+            // padding: '0px 1em'
+          }}
+        >
+          <Table
+            basic='very'
+            compact='very'
+            fixed
+            selectable
+          >
             <Table.Body>
               {
                 store.data.map((item, idx) => (
@@ -349,7 +360,8 @@ class TableComponent extends React.Component {
                     filter
                   );
                 }}
-                totalPages={store.pages} />
+                totalPages={store.pages}
+              />
             </div> : null
         }
       </Segment>
@@ -365,7 +377,7 @@ TableComponent.propTypes = {
   onMultiple: PropTypes.func,
   onHover: PropTypes.func,
   setting: PropTypes.object
-}
+};
 
 TableComponent.defaultProps = {
   name: 'Stranger',
@@ -373,6 +385,6 @@ TableComponent.defaultProps = {
     orderby: null,
     direction: null
   }
-}
+};
 
 export default TableComponent;
