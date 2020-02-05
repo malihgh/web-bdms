@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import {
@@ -210,4 +210,4 @@ StratigraphyForm.defaultProps = {
   id: undefined
 };
 
-export default translate('borehole_form')(StratigraphyForm);
+export default withTranslation('borehole_form')(StratigraphyForm);

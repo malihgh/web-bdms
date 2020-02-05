@@ -1,6 +1,6 @@
 {
   "name": "bdms",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Bohrehole Data Management System",
   "private": true,
   "proxy": "http://localhost:8888",
@@ -9,30 +9,31 @@
     "Milan P. Antonovic <milan.antonovic@supsi.ch> (https://github.com/mantonovic)"
   ],
   "dependencies": {
-    "eslint": "^5.7.0",
-    "i18next": "^11.3.3",
-    "i18next-browser-languagedetector": "^2.2.0",
-    "lodash": "^4.17.10",
-    "moment": "^2.22.2",
-    "ol": "^5.1.3",
-    "proj4": "^2.5.0",
-    "prop-types": "^15.6.2",
-    "react": "^16.4.1",
-    "react-datepicker": "^1.5.0",
-    "react-dom": "^16.4.1",
-    "react-draggable": "^3.3.0",
-    "react-highlighter": "^0.4.3",
-    "react-i18next": "^7.7.0",
-    "react-mentions": "^3.0.1",
-    "react-redux": "^5.0.7",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4",
-    "redux": "^4.0.0",
-    "redux-thunk": "^2.3.0",
-    "semantic-ui-css": "^2.3.2",
-    "semantic-ui-react": "^0.81.2",
+    "@ist-supsi/bmsjs": "1.0.5",
     "@ist-supsi/stratigraphy": "~1.0.5",
-    "@ist-supsi/bmsjs": "1.0.5"
+    "date-fns": "^2.9.0",
+    "eslint": "^6.8.0",
+    "i18next": "^19.1.0",
+    "i18next-browser-languagedetector": "^4.0.1",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "ol": "^5.3.0",
+    "proj4": "^2.6.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-datepicker": "^2.11.0",
+    "react-dom": "^16.12.0",
+    "react-draggable": "^4.2.0",
+    "react-highlighter": "^0.4.3",
+    "react-i18next": "^11.3.1",
+    "react-mentions": "^3.3.1",
+    "react-redux": "^7.1.3",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.3.1",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.88.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -41,7 +42,19 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-react": "^7.12.4"
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-react": "^7.18.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

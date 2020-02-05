@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import DomainText from '../../../../form/domain/domainText';
 // import Scroller from '../../../../scroller';
@@ -99,7 +99,6 @@ class ProfileView extends React.Component {
           return element.id === layer.kind;
         }).conf: null
     );
-
   }
   getPattern(id){
     const {
@@ -122,7 +121,7 @@ class ProfileView extends React.Component {
       return null;
     }
   }
-  getColor(id){
+  getColor(id){ 
     const {
       domains
     } = this.props;
@@ -140,8 +139,6 @@ class ProfileView extends React.Component {
       return null;
     }
   }
-
-
   isVisible(name, field, conf){
     if (
       this.state.allfields === false
@@ -497,5 +494,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
-  translate(['layer_form','common'])(ProfileView)
+  withTranslation(['layer_form','common'])(ProfileView)
 );

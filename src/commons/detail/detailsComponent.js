@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import StratigraphiesComponent from './stratigrafy/stratigraphiesComponent';
 import MunicipalityText from '../form/municipality/municipalityText';
 import CantonText from '../form/cantons/cantonText';
@@ -304,4 +304,4 @@ DetailsComponent.propTypes = {
   domains: PropTypes.object
 };
 
-export default translate('borehole_form')(DetailsComponent);
+export default withTranslation('borehole_form')(DetailsComponent);

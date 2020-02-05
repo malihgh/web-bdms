@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import {
   Route,
   Switch
@@ -81,4 +81,4 @@ const SettingCmp = (props) => {
   // }
 };
 
-export default withRouter(translate('common')(SettingCmp));
+export default withRouter(withTranslation('common')(SettingCmp));

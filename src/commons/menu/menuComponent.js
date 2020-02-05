@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import {
@@ -346,4 +346,4 @@ MenuComponent.propTypes = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate(['common', 'header', 'borehole_form'])(MenuComponent));
+)(withTranslation(['common', 'header', 'borehole_form'])(MenuComponent));

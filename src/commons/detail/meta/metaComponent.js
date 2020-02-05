@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 // import {
 //   Table
@@ -405,4 +405,4 @@ MetaComponent.propTypes = {
   data: PropTypes.object
 };
 
-export default translate('borehole_form')(MetaComponent);
+export default withTranslation('borehole_form')(MetaComponent);

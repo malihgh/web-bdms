@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import {
@@ -49,7 +49,10 @@ class DomainDropdown extends React.Component {
       domains,
       schema
     } = this.props;
-    if (!domains.data.hasOwnProperty(schema) && domains.isFetching === false){
+    if (
+      !domains.data.hasOwnProperty(schema) &&
+      domains.isFetching === false
+    ){
       this.props.loadDomains();
     }
   }
@@ -236,6 +239,7 @@ class DomainDropdown extends React.Component {
 };
 
 DomainDropdown.propTypes = {
+  loadDomains: PropTypes.func,
   multiple: PropTypes.bool,
   onSelected: PropTypes.func,
   reset: PropTypes.bool,
@@ -272,5 +276,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )((
-  translate('common')(DomainDropdown)
+  withTranslation('common')(DomainDropdown)
 ));

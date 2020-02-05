@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -632,6 +632,7 @@ class BoreholeForm extends React.Component {
                         <DateField
                           date={borehole.restriction_until}
                           onChange={(selected) => {
+                            debugger;
                             this.updateChange(
                               'restriction_until', selected, false
                             );
@@ -1772,6 +1773,6 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps
   )(
-    translate(['borehole_form', 'common', 'error'])(BoreholeForm)
+    withTranslation(['borehole_form', 'common', 'error'])(BoreholeForm)
   )
 );

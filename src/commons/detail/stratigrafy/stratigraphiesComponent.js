@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { Dropdown, Icon, Tab, Menu } from 'semantic-ui-react';
 // import DomainText from '../../form/domain/domainText';
 import DateText from '../../form/dateText';
@@ -213,4 +213,4 @@ StratigraphiesComponent.propTypes = {
   data: PropTypes.object
 };
 
-export default translate(['borehole_form', 'common'])(StratigraphiesComponent);
+export default withTranslation(['borehole_form', 'common'])(StratigraphiesComponent);

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import {
   Form,
@@ -866,4 +866,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate(['search', 'borehole_form', 'common'])(SearchComponent));
+)(withTranslation(['search', 'borehole_form', 'common'])(SearchComponent));

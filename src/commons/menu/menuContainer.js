@@ -16,7 +16,7 @@ class MenuContainer extends React.Component {
         handleModeChange={(mode) => {
           if (mode === 'editor') {
             history.push(
-              process.env.PUBLIC_URL + '/editor'
+              `${process.env.PUBLIC_URL}/editor`
             );
           } else if (mode === 'viewer') {
             history.push(
@@ -27,7 +27,6 @@ class MenuContainer extends React.Component {
               `${process.env.PUBLIC_URL}/${mode}`
             );
           }
-          // this.props.reset();
         }}
         mode={(() => {
           if (location.pathname.indexOf('setting/') >= 0) {

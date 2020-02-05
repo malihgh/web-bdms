@@ -1173,27 +1173,18 @@ let resources = {
 i18n
   .use(LanguageDetector)
   .init({
-    // we init with resources
     resources: resources,
-    // lng: 'en',
-    // fallbackLng: 'en',
     fallbackLng: {
       'en': ['en-US'],
       'default': ['en']
     },
     whitelist: ['en', 'it', 'de', 'fr'],
-
-    // have a common namespace used around the full app
-    // ns: ['common', 'header', 'menu'],
     defaultNS: 'common',
-
-    keySeparator: false, // we use content as keys
-
+    keySeparator: false,
     interpolation: {
-      escapeValue: false, // not needed for react!!
+      escapeValue: false, 
       formatSeparator: ','
     },
-
     react: {
       wait: true
     }

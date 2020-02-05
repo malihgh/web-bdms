@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 
 import TableComponent from './tableComponent'
 
@@ -61,4 +61,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(translate('stratigraphy_table')(StartigraphyTable))
+)(withTranslation('stratigraphy_table')(StartigraphyTable))

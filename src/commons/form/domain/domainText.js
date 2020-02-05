@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import {
   loadDomains
@@ -89,5 +89,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
-  translate('search')(DomainText)
+  withTranslation('search')(DomainText)
 );

@@ -57,9 +57,7 @@ class App extends React.Component {
               cpaths.map((route, index) => {
                 return (
                   <Route
-                    component={(r) => (
-                      <route.body />
-                    )}
+                    component={route.body}
                     exact={route.exact}
                     key={index}
                     path={route.path}

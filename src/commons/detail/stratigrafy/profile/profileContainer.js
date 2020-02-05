@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import {
   loadLayers,
   getLayer
@@ -90,4 +90,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate('borehole_form')(ProfileContainer));
+)(withTranslation('borehole_form')(ProfileContainer));

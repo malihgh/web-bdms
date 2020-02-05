@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import {
   Header,
@@ -77,4 +77,4 @@ class ResourcesSettings extends React.Component {
   }
 }
 
-export default (translate(['borehole_form', 'common'])(ResourcesSettings));
+export default (withTranslation(['borehole_form', 'common'])(ResourcesSettings));

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import LayerForm from '../layer/layerForm';
@@ -433,7 +433,8 @@ class StratigraphyFormContainer extends React.Component {
                       this.updateChange(
                         'date', selected, false
                       );
-                    }} />
+                    }}
+                  />
                 </Form.Field>
               </Form.Group>
             </Form>
@@ -789,9 +790,11 @@ class StratigraphyFormContainer extends React.Component {
                   conf={
                     domains.data.hasOwnProperty('layer_kind')?
                       (()=>{
-                        const element = domains.data.layer_kind.find(function(element) {
-                          return element.id === stratigraphy.kind;
-                        });
+                        const element = domains.data.layer_kind.find(
+                          (element) => {
+                            return element.id === stratigraphy.kind;
+                          }
+                        );
                         return element.conf;
                       })(): null
                   }
@@ -863,5 +866,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )((
-  translate(['borehole_form', 'common'])(StratigraphyFormContainer)
+  withTranslation(['borehole_form', 'common'])(StratigraphyFormContainer)
 ));

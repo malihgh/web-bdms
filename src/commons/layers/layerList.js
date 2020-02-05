@@ -2,7 +2,7 @@ import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 // import {
 //   getLayers
@@ -42,10 +42,18 @@ class LayersList extends React.Component {
     const {
       domains
     } = this.props;
-    let domain = domains.data['custom.lit_pet_top_bedrock'].find(function(element) {
-      return element.id === id;
-    });
-    if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('image')){
+    let domain = domains.data[
+      'custom.lit_pet_top_bedrock'
+    ].find(
+      (element) => {
+        return element.id === id;
+      }
+    );
+    if (
+      domain !== undefined &&
+      domain.conf !== null &&
+      domain.conf.hasOwnProperty('image')
+    ){
       return 'url("' + process.env.PUBLIC_URL + '/img/lit/' + domain.conf.image + '")';
     }
     else {
@@ -59,10 +67,16 @@ class LayersList extends React.Component {
     } = this.props;
     let domain = domains.data[
       'custom.lit_str_top_bedrock'
-    ].find(function(element) {
-      return element.id === id;
-    });
-    if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('color')){
+    ].find(
+      (element) => {
+        return element.id === id;
+      }
+    );
+    if (
+      domain !== undefined &&
+      domain.conf !== null &&
+      domain.conf.hasOwnProperty('color')
+    ){
       const color = domain.conf.color;
       return 'rgb(' + color.join(',') + ')';
     }
@@ -86,11 +100,7 @@ class LayersList extends React.Component {
     this.setState({
       resolvingAction: value,
       value: null
-    }/*, () => {
-      if (value === 3) {
-        this.inputRef.current.focus();
-      }
-    }*/);
+    });
   }
 
   handleValue (e, { value }) {
@@ -945,5 +955,5 @@ export default connect(
   mapStateToProps,
   null
 )((
-  translate('error')(LayersList)
+  withTranslation('error')(LayersList)
 ));

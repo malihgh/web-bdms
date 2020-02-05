@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import {
   withRouter
 } from 'react-router-dom';
@@ -456,6 +456,6 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps
   )(
-    translate(['home', 'common', 'borehole_form', 'editor'])(MenuEditorSearch)
+    withTranslation(['home', 'common', 'borehole_form', 'editor'])(MenuEditorSearch)
   )
 );

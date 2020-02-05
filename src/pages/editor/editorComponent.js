@@ -15,7 +15,7 @@ import {
   loadEditingBoreholes
 } from '@ist-supsi/bmsjs';
 
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import BoreholeForm from '../../commons/form/borehole/boreholeForm';
@@ -267,5 +267,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(translate('editor')(EditorComponent))
+  )(withTranslation('editor')(EditorComponent))
 );

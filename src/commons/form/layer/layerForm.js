@@ -1,6 +1,6 @@
 import React, { createRef }  from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import {
@@ -1054,4 +1054,4 @@ LayerForm.defaultProps = {
   conf: {}
 };
 
-export default translate(['layer_form', 'common'])(LayerForm);
+export default withTranslation(['layer_form', 'common'])(LayerForm);

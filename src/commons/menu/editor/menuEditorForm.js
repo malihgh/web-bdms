@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import {
   withRouter
 } from "react-router-dom";
@@ -563,5 +563,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(translate(['common', 'borehole_form', 'editor', 'version'])(MenuEditorForm))
+  )(withTranslation(['common', 'borehole_form', 'editor', 'version'])(MenuEditorForm))
 );

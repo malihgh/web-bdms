@@ -5,7 +5,7 @@ import 'moment/locale/en-gb';
 import 'moment/locale/it';
 import 'moment/locale/fr';
 import 'moment/locale/de-ch';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 class FromNowText extends React.Component {
   render() {
@@ -33,4 +33,4 @@ FromNowText.defaultProps = {
   date: null
 };
 
-export default translate()(FromNowText);
+export default withTranslation()(FromNowText);
