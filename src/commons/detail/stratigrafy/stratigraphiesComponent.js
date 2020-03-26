@@ -6,6 +6,7 @@ import { Dropdown, Icon, Tab, Menu } from 'semantic-ui-react';
 import DateText from '../../form/dateText';
 import ProfileContainer from './profile/profileContainer';
 import MetaComponent from './../meta/metaComponent';
+
 // import Scroller from '../../scroller';
 
 class StratigraphiesComponent extends React.Component {
@@ -86,12 +87,6 @@ class StratigraphiesComponent extends React.Component {
                         title='Primary'
                       />: null
                   }
-                  {/*
-                  <DomainText
-                    id={item.kind}
-                    schema='layer_kind'
-                  />
-                  */}
                   {
                     item.name === null || item.name === ''?
                       t('common:np'): item.name
@@ -177,6 +172,7 @@ class StratigraphiesComponent extends React.Component {
               >
                 <ProfileContainer
                   id={item.id}
+                  stratigraphy={item}
                 />
               </div>
             )

@@ -61,6 +61,7 @@ let resources = {
       uploadFile: "Select the CSV file to upload",
       user: "user",
       username: "Username",
+      viewas: "View as",
       workgroup: "workgroup",
       yes: "Yes",
       you: "you"
@@ -355,6 +356,7 @@ let resources = {
       upload: "Hochladen",
       user: "Benutzer",
       username: "Benutzername",
+      viewas: "Ansicht als",
       workgroup: "Arbeitsgruppe",
       yes: "Ja",
       you: "dir"
@@ -640,6 +642,7 @@ let resources = {
       uploadFile: "Seleziona il file CSV da caricare",
       user: "utente",
       username: "Nome utente",
+      viewas: "Visualizza come",
       workgroup: "Gruppo di Lavoro",
       yes: "Sì",
       you: "te"
@@ -933,6 +936,7 @@ let resources = {
       uploadFile: "Sélectionnez le fichier CSV à télécharger",
       user: 'Utilisateur',
       username: "Nom d'utilisateur",
+      viewas: "Voir comme",
       workgroup: "Groupe de travail",
       yes: "oui",
       you: "tu"

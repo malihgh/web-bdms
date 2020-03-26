@@ -40,11 +40,13 @@ class LayersList extends React.Component {
 
   getPattern(id){
     const {
-      domains
+      domains,
+      style
     } = this.props;
-    let domain = domains.data[
-      'custom.lit_pet_top_bedrock'
-    ].find(
+    let domain = (domains.data[
+      // @todo Think something better!!
+      style.patternNS
+    ]).find(
       (element) => {
         return element.id === id;
       }
@@ -63,11 +65,10 @@ class LayersList extends React.Component {
 
   getColor(id){
     const {
-      domains
+      domains,
+      style
     } = this.props;
-    let domain = domains.data[
-      'custom.lit_str_top_bedrock'
-    ].find(
+    let domain = (domains.data[style.colorNS]).find(
       (element) => {
         return element.id === id;
       }
@@ -112,9 +113,11 @@ class LayersList extends React.Component {
       borehole,
       consistency,
       layers,
+      style,
       t
     } = this.props;
     const length = layers.length;
+    console.log("style: ", style);
     return (
       <Table
         basic
@@ -359,10 +362,10 @@ class LayersList extends React.Component {
                     }}
                   >
                     <Table.Cell
+                      collapsing
                       colSpan={
                         _.isFunction(this.props.onDelete)? '3': '2'
                       }
-                      collapsing
                     >
                       <div
                         style={{
@@ -492,6 +495,7 @@ class LayersList extends React.Component {
                   </Table.Row>
                 );
               } else {
+                console.log(item);
                 ret.push(
                   (
                     <Table.Row
@@ -528,10 +532,16 @@ class LayersList extends React.Component {
                           maxWidth: '40px',
                           width: '40px',
                           minWidth: '40px',
-                          backgroundColor: item.unknown === true?
-                            null: this.getColor(item.lithostratigraphy),
-                          backgroundImage: item.unknown === true?
-                            null: this.getPattern(item.lithology),
+                          backgroundColor: (
+                            item.unknown === true ||
+                            style.color === null
+                          )?
+                            null: this.getColor(item[style.color]),
+                          backgroundImage: (
+                            item.unknown === true ||
+                            style.pattern === null
+                          )?
+                            null: this.getPattern(item[style.pattern]),
                           backgroundSize: 'cover'
                         }}
                       />
@@ -575,10 +585,10 @@ class LayersList extends React.Component {
                           }}
                         >
                           {
-                            item.lithostratigraphy !== null?
+                            item[style.pattern] !== null?
                               <DomainText
-                                id={item.lithostratigraphy}
-                                schema='custom.lit_str_top_bedrock'
+                                id={item[style.pattern]}
+                                schema={style.patternNS}
                               />: '-'
                           }
                         </div>
@@ -928,13 +938,23 @@ class LayersList extends React.Component {
 
 LayersList.propTypes = {
   borehole: PropTypes.object,
+  color: PropTypes.string,
   consistency: PropTypes.object,
+  domains: PropTypes.shape({
+    data: PropTypes.object
+  }),
   layers: PropTypes.array,
   onAddBedrock: PropTypes.func,
   onDelete: PropTypes.func,
   onResolve: PropTypes.func,
   onSelected: PropTypes.func,
   selected: PropTypes.number,
+  style: PropTypes.shape({
+    color: PropTypes.string,
+    colorNS: PropTypes.string,
+    pattern: PropTypes.string,
+    patternNS: PropTypes.string
+  }),
   user: PropTypes.object
 };
 

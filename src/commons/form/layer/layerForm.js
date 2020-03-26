@@ -342,7 +342,7 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('description')}</label>
                 <TextArea
-                  autoHeight
+                  // autoHeight
                   onChange={(e)=>{
                     this.updateChange(
                       'description', e.target.value
@@ -359,7 +359,7 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('geology')}</label>
                 <TextArea
-                  autoHeight
+                  // autoHeight
                   onChange={(e)=>{
                     this.updateChange(
                       'geology', e.target.value
@@ -1024,7 +1024,7 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('remarks')}</label>
                 <TextArea
-                  autoHeight
+                  // autoHeight
                   onChange={(e)=>{
                     this.updateChange(
                       'notes', e.target.value

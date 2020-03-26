@@ -32,6 +32,8 @@ import DateText from '../dateText';
 import StratigraphyFormContainer from '../stratigraphy/stratigraphyFormContainer';
 import DomainText from '../domain/domainText';
 
+import NewStratigraphy from '../stratigraphy/newStratigraphy';
+
 import {
   Button,
   Form,
@@ -62,7 +64,7 @@ class BoreholeForm extends React.Component {
       "custom.public_name_fetch": false,
 
       // Stratigraphy
-      "layer_kind": null,
+      "newStartModal": false,
       "stratigraphy_id": null,
       "layer": null,
       "layers": [],
@@ -112,24 +114,25 @@ class BoreholeForm extends React.Component {
       // request to edit a borehole
       this.setState({
         "loadingFetch": true,
-        "layer_kind": null,
         "stratigraphy_id": null,
         "layers": [],
         "layer": null,
         "borehole": this.empty
       }, () => {
-        this.props.getBorehole(id).then(function (response) {
-          if (response.success) {
-            self.setState({
-              "loadingFetch": false,
-              "stratigraphy_id": (
-                _.isArray(response.data.stratigraphy)
-                  && response.data.stratigraphy.length > 0 ?
-                  response.data.stratigraphy[0].id : null
-              )
-            });
+        this.props.getBorehole(id).then(
+          (response) => {
+            if (response.success) {
+              self.setState({
+                "loadingFetch": false,
+                "stratigraphy_id": (
+                  _.isArray(response.data.stratigraphy)
+                    && response.data.stratigraphy.length > 0 ?
+                    response.data.stratigraphy[0].id : null
+                )
+              });
+            }
           }
-        }).catch(function (error) {
+        ).catch(function (error) {
           console.log(error);
         });
       });
@@ -1598,27 +1601,45 @@ class BoreholeForm extends React.Component {
                           content={t('meta_stratigraphy')}
                           icon='add'
                           onClick={() => {
-                            createStratigraphy(
-                              borehole.id
-                            ).then(
-                              (response) => {
-                                if (response.data.success) {
-                                  // this.loadOrCreate(borehole.id);
-                                  this.setState({
-                                    "stratigraphy_id": response.data.id
-                                  }, () => {
-                                    this.loadOrCreate(borehole.id);
-                                  });
-                                }
-                              }
-                            ).catch(function (error) {
-                              console.log(error);
+                            this.setState({
+                              newStartModal: true
                             });
+                            return;
                           }}
                           secondary
                           size='small'
                         />
                     }
+                    <NewStratigraphy
+                      close={()=>{
+                        this.setState({
+                          newStartModal: false
+                        });
+                      }}
+                      onSelected={(kinds)=>{
+                        this.setState({
+                          newStartModal: false
+                        }, ()=>{
+                          createStratigraphy(
+                            borehole.id,
+                            kinds
+                          ).then(
+                            (response) => {
+                              if (response.data.success) {
+                                this.setState({
+                                  "stratigraphy_id": response.data.id
+                                }, () => {
+                                  this.loadOrCreate(borehole.id);
+                                });
+                              }
+                            }
+                          ).catch(function (error) {
+                            console.log(error);
+                          });
+                        });
+                      }}
+                      open={this.state.newStartModal}
+                    />
                     {
                       _.isArray(borehole.stratigraphy) ?
                         borehole.stratigraphy.map((stratigraphy, sx) => (
@@ -1652,10 +1673,6 @@ class BoreholeForm extends React.Component {
                                 || stratigraphy.name === ''?
                                   t('common:np'): stratigraphy.name
                               }
-                              {/* <DomainText
-                                id={stratigraphy.kind}
-                                schema={'layer_kind'}
-                              /> */}
                             </span>
                             <br />
                             <span
@@ -1674,7 +1691,6 @@ class BoreholeForm extends React.Component {
                   </div>
                   <StratigraphyFormContainer
                     id={this.state.stratigraphy_id}
-                    kind={this.state.layer_kind}
                     onClone={(id) => {
                       this.loadOrCreate(borehole.id);
                     }}

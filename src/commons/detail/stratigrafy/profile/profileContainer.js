@@ -35,7 +35,8 @@ class ProfileContainer extends React.Component {
   }
   render() {
     const {
-      layers
+      layers,
+      stratigraphy
     } = this.props;
     if (layers.data.length === 0){
       return null;
@@ -61,6 +62,7 @@ class ProfileContainer extends React.Component {
           });
         }}
         isFetchingLayer={this.state.isFetchingLayer}
+        kinds={stratigraphy.kinds}
         layer={this.state.layer}
       />
     );
@@ -68,7 +70,8 @@ class ProfileContainer extends React.Component {
 }
 
 ProfileContainer.propTypes = {
-  id: PropTypes.number
+  id: PropTypes.number,
+  stratigraphy: PropTypes.object
 };
 
 const mapStateToProps = (state, ownProps) => {

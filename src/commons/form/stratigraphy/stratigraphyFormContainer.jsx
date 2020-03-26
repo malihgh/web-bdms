@@ -10,6 +10,7 @@ import DateField from '../dateField';
 import {
   Button,
   Checkbox,
+  Dropdown,
   Input,
   Segment,
   Form,
@@ -43,7 +44,8 @@ class StratigraphyFormContainer extends React.Component {
       stratigraphyEmpty: false,
       fetchingStratigraphy: false,
       layers: null,
-      layer: null
+      layer: null,
+      viewas: null
     };
   }
  
@@ -83,8 +85,14 @@ class StratigraphyFormContainer extends React.Component {
           if (
             response.data.success
           ) {
+            const stratigraphy = response.data.data;
             this.setState({
-              stratigraphy: response.data.data
+              stratigraphy: stratigraphy,
+              viewas: stratigraphy.kinds.includes(
+                this.props.setting.data.defaults.stratigraphy
+              )?
+                this.props.setting.data.defaults.stratigraphy:
+                stratigraphy.kinds[0]
             }, () => {
               // Load Stratigraphy Layers
               getLayers(
@@ -583,23 +591,6 @@ class StratigraphyFormContainer extends React.Component {
                               }
                             );
                             return keys.length > 0;
-
-                            // for (let idxc = 0; idxc < keys.length; idxc++) {
-                            //   const lc = this.state.consistency[keys[idxc]];
-
-                            //   if (lc.missingLayers)
-
-                            //   const key = keys[idxc];
-
-                            //   // There are not bedrock related issues
-                            //   if (){
-                            //     if () {
-
-                            //     }
-                            //     return true;
-                            //   }
-                            // }
-                            // return false;
                           })()}
                           fluid
                           onClick={()=>{
@@ -637,28 +628,79 @@ class StratigraphyFormContainer extends React.Component {
                         </Button>
                       </div>
                   }
-                  {
-                    _.isEmpty(this.state.consistency)?
-                      null:
+                  <div
+                    className='flex_row'
+                    style={{
+                      paddingBottom: '0.5em',
+                    }}
+                  >
+                    <div
+                      className='flex_row flex_fill'
+                    >
                       <div
                         style={{
-                          color: 'red',
-                          fontSize: '0.9em',
-                          paddingBottom: '0.5em',
-                          textAlign: 'right',
+                          whiteSpace: 'nowrap',
+                          marginRight: '0.3em'
                         }}
                       >
-                        <Icon
-                          name='warning sign'
-                        /> {(()=>{
-                          const l = Object.keys(this.state.consistency).length;
-                          if (l === 1) {
-                            return 'One error found.';
-                          }
-                          return `${l} errors found.`;
-                        })()}
+                        {t('common:viewas')}:
                       </div>
-                  }
+                      <div
+                        className='flex_fill'
+                      >
+                        {
+                          this.state.stratigraphy.kinds.length>0?
+                            <Dropdown
+                              defaultValue={
+                                this.state.stratigraphy.kinds.includes(
+                                  this.props.setting.data.defaults.stratigraphy
+                                )?
+                                  this.props.setting.data.defaults.stratigraphy:
+                                  this.state.stratigraphy.kinds[0]
+                              }
+                              inline
+                              onChange={(e, data)=>{
+                                this.setState({
+                                  viewas: data.value
+                                });
+                              }}
+                              options={
+                                domains.data['layer_kind'].filter(
+                                  kind => this.state.stratigraphy.kinds.includes(
+                                    kind.id
+                                  )
+                                ).map((domain) => ({
+                                  value: domain.id,
+                                  text: domain[this.props.i18n.language].text
+                                }))
+                              }
+                            />: null
+                        }
+                      </div>
+                    </div>
+                    {
+                      _.isEmpty(this.state.consistency)?
+                        null:
+                        <div
+                          style={{
+                            color: 'red',
+                            fontSize: '0.9em',
+                            textAlign: 'right',
+                            whiteSpace: 'nowrap'
+                          }}
+                        >
+                          <Icon
+                            name='warning sign'
+                          /> {(()=>{
+                            const l = Object.keys(this.state.consistency).length;
+                            if (l === 1) {
+                              return 'One error found.';
+                            }
+                            return `${l} errors found.`;
+                          })()}
+                        </div>
+                    }
+                  </div>
                   <div
                     style={{
                       flex: 1,
@@ -771,6 +813,28 @@ class StratigraphyFormContainer extends React.Component {
                         });
                       }}
                       selected={this.state.layer}
+                      style={{
+                        color:(
+                          domains.data.layer_kind.find(
+                            element => element.id === this.state.viewas
+                          ).conf.color
+                        ),
+                        colorNS: (
+                          domains.data.layer_kind.find(
+                            element => element.id === this.state.viewas
+                          ).conf.colorNS
+                        ),
+                        pattern: (
+                          domains.data.layer_kind.find(
+                            element => element.id === this.state.viewas
+                          ).conf.pattern
+                        ),
+                        patternNS: (
+                          domains.data.layer_kind.find(
+                            element => element.id === this.state.viewas
+                          ).conf.patternNS
+                        ),
+                      }}
                     />
                   </div>
                 </div>
@@ -790,12 +854,25 @@ class StratigraphyFormContainer extends React.Component {
                   conf={
                     domains.data.hasOwnProperty('layer_kind')?
                       (()=>{
-                        const element = domains.data.layer_kind.find(
-                          (element) => {
-                            return element.id === stratigraphy.kind;
-                          }
+                        const filtered = domains.data.layer_kind.filter(
+                          kind => stratigraphy.kinds.includes(kind.id)
                         );
-                        return element.conf;
+                        let fields = { ...filtered[0].conf.fields };
+                        if (filtered.length > 1) {
+                          for (let index = 1; index < filtered.length; index++) {
+                            const element = filtered[index];
+                            fields = _.mergeWith(
+                              fields,
+                              element.conf.fields,
+                              (objValue, srcValue) => {
+                                return objValue || srcValue;
+                              }
+                            );
+                          }
+                        }
+                        return {
+                          "fields": fields
+                        };
                       })(): null
                   }
                   id={this.state.layer}
@@ -833,11 +910,21 @@ class StratigraphyFormContainer extends React.Component {
 
 StratigraphyFormContainer.propTypes = {
   borehole: PropTypes.object,
+  domains: PropTypes.shape({
+    data: PropTypes.object
+  }),
+  i18n: PropTypes.shape({
+    language: PropTypes.string
+  }),
   id: PropTypes.number,
   onClone: PropTypes.func,
   onDeleted: PropTypes.func,
   onUpdated: PropTypes.func,
   refresh: PropTypes.number,
+  setting: PropTypes.shape({
+    data: PropTypes.object
+  }),
+  t: PropTypes.func,
   user: PropTypes.object,
 };
 
@@ -853,6 +940,7 @@ const mapStateToProps = (state) => {
     borehole: state.core_borehole,
     domains: state.core_domain_list,
     user: state.core_user,
+    setting: state.setting,
   };
 };
 

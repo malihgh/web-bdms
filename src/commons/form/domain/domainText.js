@@ -66,7 +66,11 @@ class DomainText extends React.Component {
 DomainText.propTypes = {
   domains: PropTypes.object,
   geocode: PropTypes.string,
+  i18n: PropTypes.shape({
+    language: PropTypes.string
+  }),
   id: PropTypes.number,
+  loadDomains: PropTypes.func,
   schema: PropTypes.string
 };
 

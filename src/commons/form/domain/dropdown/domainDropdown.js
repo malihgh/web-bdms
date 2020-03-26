@@ -152,10 +152,6 @@ class DomainDropdown extends React.Component {
       key: "dom-opt-" + domain.id,
       value: domain.id,
       text: domain[this.state.language].text,
-      // text: domain.code === ''?
-      //   domain[this.state.language].text:
-      //   domain.code !== domain[this.state.language].text?
-      //     domain.code + ' (' + domain[this.state.language].text + ')': domain.code,
       content: (
         <Header
           content={
@@ -188,11 +184,6 @@ class DomainDropdown extends React.Component {
                 }}
               >
                 {domain[this.state.language].text}
-                {/* {
-                  domain.code === ''?
-                    domain[this.state.language].text:
-                    domain.code
-                } */}
               </div>
               {
                 domain.conf !== null && domain.conf.hasOwnProperty('image')?
@@ -209,18 +200,9 @@ class DomainDropdown extends React.Component {
               }
             </div>
           }
-          // style={{
-          //   backgroundImage: domain.conf !== null?
-          //     domain.conf.hasOwnProperty('image')?
-          //       'url("' + process.env.PUBLIC_URL + '/img/lit/' +
-          //       domain.conf.image + '")': null
-          //     : null
-          // }}
           subheader={
             !_.isNil(domain[this.state.language].descr)?
               domain[this.state.language].descr: null
-              // domain.code === ''?
-              //   null: domain[this.state.language].text
           }
         />
       )
@@ -239,6 +221,9 @@ class DomainDropdown extends React.Component {
 };
 
 DomainDropdown.propTypes = {
+  i18n: PropTypes.shape({
+    language: PropTypes.string
+  }),
   loadDomains: PropTypes.func,
   multiple: PropTypes.bool,
   onSelected: PropTypes.func,
