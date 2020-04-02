@@ -12,6 +12,8 @@ import {
 } from "react-router-dom";
 
 import {
+  addIdentifier,
+  removeIdentifier,
   updateBorehole,
   loadBorehole,
   checkBorehole,
@@ -32,7 +34,7 @@ import DateText from '../dateText';
 import StratigraphyFormContainer from '../stratigraphy/stratigraphyFormContainer';
 import DomainText from '../domain/domainText';
 
-import NewStratigraphy from '../stratigraphy/newStratigraphy';
+// import NewStratigraphy from '../stratigraphy/newStratigraphy';
 
 import {
   Button,
@@ -63,6 +65,9 @@ class BoreholeForm extends React.Component {
       "custom.public_name_check": true,
       "custom.public_name_fetch": false,
 
+      "identifier": null,
+      "identifierValue": '',
+
       // Stratigraphy
       "newStartModal": false,
       "stratigraphy_id": null,
@@ -73,6 +78,13 @@ class BoreholeForm extends React.Component {
       // Finish
       "note": ""
     };
+    this.loadOrCreate = this.loadOrCreate.bind(this);
+    this.check = this.check.bind(this);
+    this.checkLock = this.checkLock.bind(this);
+    this.isNumber = this.isNumber.bind(this);
+    this.updateNumber = this.updateNumber.bind(this);
+    this.updateChange = this.updateChange.bind(this);
+    this.patch = this.patch.bind(this);
   }
 
   componentDidMount() {
@@ -422,7 +434,200 @@ class BoreholeForm extends React.Component {
                   display: "flex",
                   flexDirection: "column"
                 }}
-              >
+              > 
+                <Segment>
+                  <div
+                    className='flex_row bdms_bold'
+                    style={{
+                      borderBottom: 'thin solid #d2d2d2',
+                      paddingBottom: '0.4em'
+                    }}
+                  >
+                    <div
+                      className='flex_fill'
+                    >
+                      <DomainText
+                        geocode='borehole_identifier'
+                        schema='borehole_form'
+                      />
+                    </div>
+                    <div
+                      className='flex_fill'
+                    >
+                      <DomainText
+                        geocode='identifier_value'
+                        schema='borehole_form'
+                      />
+                    </div>
+                    <div>
+                      {
+                        this.props.borehole.data.lock !== null?
+                          t('common:delete'): null
+                      }
+                    </div>
+                  </div>
+                  {
+                    borehole.custom.identifiers?
+                      borehole.custom.identifiers.map(
+                        (identifier, idx) => (
+                          <div
+                            className='flex_row'
+                            key={'bhfbi-'+idx}
+                            style={{
+                              paddingTop: '0.5em'
+                            }}
+                          >
+                            <div
+                              className='flex_fill'
+                            >
+                              <DomainText
+                                id={identifier.id}
+                                schema='borehole_identifier'
+                              />
+                            </div>
+                            <div
+                              className='flex_fill'
+                            >
+                              {identifier.value}
+                            </div>
+                            <div>
+                              {
+                                this.props.borehole.data.lock !== null?
+                                  <div
+                                    className='linker'
+                                    onClick={()=>{
+                                      removeIdentifier(
+                                        borehole.id, identifier.id
+                                      ).then(
+                                        (response) => {
+                                          if (response.data.success) {
+                                            const tmp = _.cloneDeep(borehole);
+                                            if (tmp.custom.identifiers.length === 1){
+                                              tmp.custom.identifiers = [];
+                                            } else {
+                                              tmp.custom.identifiers = tmp.custom.identifiers.filter(
+                                                el => el.id !== identifier.id
+                                              );
+                                            }
+                                            this.props.updateBorehole(tmp);
+                                          }
+                                        }
+                                      );
+                                    }}
+                                  >
+                                    {t('common:delete')}
+                                  </div>: null
+                              }
+                            </div>
+                          </div>
+                        )
+                      ): null
+                  }
+                  {
+                    this.props.borehole.data.lock !== null?
+                      <Form
+                        autoComplete="off"
+                        size='tiny'
+                      >
+                        <Form.Group widths='equal'>
+                          <Form.Field
+                            error={
+                              this.state.identifier === null
+                            }
+                          >
+                            <label>
+                              &nbsp;
+                            </label>
+                            <DomainDropdown
+                              // exclude={
+                              //   this.props.borehole.data.custom.identifiers?
+                              //   this.props.borehole.data.custom.identifiers.map(el => el.id): []
+                              // }
+                              onSelected={(selected) => {
+                                this.setState({
+                                  identifier: selected.id
+                                });
+                              }}
+                              schema='borehole_identifier'
+                              selected={this.state.identifier}
+                            />
+                          </Form.Field>
+                          <Form.Field
+                            error={
+                              this.state.identifierValue === ''
+                            }
+                          >
+                            <label>
+                              &nbsp;
+                            </label>
+                            <Input
+                              autoCapitalize="off"
+                              autoComplete="off"
+                              autoCorrect="off"
+                              onChange={(e) => {
+                                this.setState({
+                                  identifierValue: e.target.value
+                                });
+                              }}
+                              spellCheck="false"
+                              value={this.state.identifierValue}
+                            />
+                          </Form.Field>
+                          <div
+                            style={{
+                              flex: '0 0 0% !important'
+                            }}
+                          >
+                            <Form.Button
+                              disabled={
+                                this.state.identifier===null ||
+                                this.state.identifierValue === ''
+                              }
+                              icon
+                              label='&nbsp;'
+                              onClick={()=>{
+
+                                // Check duplicate
+                                const alreadySet = borehole.custom.identifiers?
+                                  borehole.custom.identifiers.map(el => el.id): [];
+
+                                if (alreadySet.includes(this.state.identifier)){
+                                  alert(t('messages:identifierAlreadyUsed'));
+                                } else {
+                                  addIdentifier(
+                                    borehole.id,
+                                    this.state.identifier,
+                                    this.state.identifierValue
+                                  ).then(
+                                    (response) => {
+                                      if (response.data.success) {
+                                        this.setState({
+                                          identifier: null,
+                                          identifierValue: ''
+                                        }, () => {
+                                          const tmp = _.cloneDeep(borehole);
+                                          if (tmp.custom.identifiers === null){
+                                            tmp.custom.identifiers = [];
+                                          }
+                                          tmp.custom.identifiers.push(response.data.data);
+                                          this.props.updateBorehole(tmp);
+                                        });
+                                      }
+                                    }
+                                  );
+                                }
+
+                              }}
+                              secondary
+                              size='tiny'
+                            >
+                              <Icon name='plus' />
+                            </Form.Button>
+                          </div>
+                        </Form.Group>
+                      </Form>: null
+                  }
+                </Segment>
                 <Segment>
                   <Form
                     autoComplete="off"
@@ -1601,16 +1806,30 @@ class BoreholeForm extends React.Component {
                           content={t('meta_stratigraphy')}
                           icon='add'
                           onClick={() => {
-                            this.setState({
-                              newStartModal: true
+                            // this.setState({
+                            //   newStartModal: true
+                            // });
+                            createStratigraphy(
+                              borehole.id
+                            ).then(
+                              (response) => {
+                                if (response.data.success) {
+                                  this.setState({
+                                    "stratigraphy_id": response.data.id
+                                  }, () => {
+                                    this.loadOrCreate(borehole.id);
+                                  });
+                                }
+                              }
+                            ).catch(function (error) {
+                              console.log(error);
                             });
-                            return;
                           }}
                           secondary
                           size='small'
                         />
                     }
-                    <NewStratigraphy
+                    {/* <NewStratigraphy
                       close={()=>{
                         this.setState({
                           newStartModal: false
@@ -1639,7 +1858,7 @@ class BoreholeForm extends React.Component {
                         });
                       }}
                       open={this.state.newStartModal}
-                    />
+                    /> */}
                     {
                       _.isArray(borehole.stratigraphy) ?
                         borehole.stratigraphy.map((stratigraphy, sx) => (
@@ -1695,9 +1914,7 @@ class BoreholeForm extends React.Component {
                       this.loadOrCreate(borehole.id);
                     }}
                     onDeleted={(id) => {
-                      const bh = {
-                        ...borehole
-                      };
+                      const bh = _.cloneDeep(borehole);
                       const strt = [];
                       for (var i = 0; i < bh.stratigraphy.length; i++) {
                         if (id !== bh.stratigraphy[i].id) {
@@ -1708,9 +1925,7 @@ class BoreholeForm extends React.Component {
                       this.props.updateBorehole(bh);
                     }}
                     onUpdated={(id, attribute, value) => {
-                      const bh = {
-                        ...borehole
-                      };
+                      const bh = _.cloneDeep(borehole);
                       for (var i = 0; i < bh.stratigraphy.length; i++) {
                         if (id === bh.stratigraphy[i].id) {
                           bh.stratigraphy[i][attribute] = value;
@@ -1789,6 +2004,6 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps
   )(
-    withTranslation(['borehole_form', 'common', 'error'])(BoreholeForm)
+    withTranslation(['borehole_form', 'common', 'error', 'messages'])(BoreholeForm)
   )
 );

@@ -10,7 +10,7 @@ import ViewAs from '../viewas';
 import { Stratigraphy } from '@ist-supsi/stratigraphy';
 
 import {
-  Checkbox, Dropdown, Icon
+  Checkbox, Icon
 } from 'semantic-ui-react';
 
 // import DateText from '../../form/dateText'

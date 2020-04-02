@@ -11,6 +11,7 @@ import {
 
 import LabelReset from '../form/labelReset';
 import DomainDropdown from '../form/domain/dropdown/domainDropdown';
+// import DomainText from '../form/domain/domainText';
 import MunicipalityDropdown from '../form/municipality/dropdown/municipalityDropdown';
 import CantonDropdown from '../form/cantons/dropdown/cantonDropdown';
 import DateField from '../form/dateField';
@@ -106,6 +107,36 @@ class SearchComponent extends React.Component {
                 </Form.Field>
               </Form.Group>
             ]
+        }
+        {
+          this.isVisible('custom.borehole_identifier') ?
+            <Form.Field>
+              <label>{t('borehole_form:identifier')}</label>
+              <DomainDropdown
+                onSelected={(selected) => {
+                  this.props.setFilter(
+                    'borehole_identifier', selected.id
+                  );
+                }}
+                reset={false}
+                schema='borehole_identifier'
+                selected={search.filter.borehole_identifier}
+              />
+              <Input
+                onChange={(eve) => {
+                  this.props.setFilter(
+                    'identifier_value',
+                    eve.target.value
+                  );
+                }}
+                value={search.filter.identifier_value}
+              />
+              <LabelReset
+                onClick={() => {
+                  this.props.resetIdentifier();
+                }}
+              />
+            </Form.Field> : null
         }
         {
           this.isVisible('extended.original_name') ?
@@ -818,6 +849,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         type: 'SEARCH_FILTER_CHANGED',
         key: key,
         value: value
+      });
+    },
+    resetIdentifier: () => {
+      dispatch({
+        type: 'SEARCH_FILTER_RESET_IDENTIFIER'
       });
     },
     resetRestriction: () => {

@@ -17,7 +17,7 @@ let resources = {
       creator: "Created by",
       csvFormat: "Comma-Separated Values (CSV) format",
       degree: "degree",
-      delete: "delete",
+      delete: "Delete",
       deleteForever: "Delete forever",
       deleting: "Deleting {{what}}",
       disable: "disable",
@@ -34,6 +34,7 @@ let resources = {
       filterByName: "Filter by name",
       firstname: 'Firstname',
       from: "from",
+      identifier: "Identifier",
       lastname: 'Lastname',
       meter: "meter",
       newBorehole: "New borehole",
@@ -111,6 +112,9 @@ let resources = {
       ),
       'deletingWorkgroupTip': (
         'The workgroup will be permanently deleted from the database'
+      ),
+      'identifierAlreadyUsed': (
+        'Identifier already used'
       )
     },
     error: {
@@ -399,6 +403,9 @@ let resources = {
       ),
       'deletingWorkgroupTip': (
         'Die Arbeitsgruppe wird dauerhaft aus der Datenbank gelöscht'
+      ),
+      'identifierAlreadyUsed': (
+        'Identifier already used'
       )
     },
     error: {
@@ -686,6 +693,9 @@ let resources = {
       ),
       'deletingWorkgroupTip': (
         'il gruppo di lavoro verrà eliminato definitivamente dal database'
+      ),
+      'identifierAlreadyUsed': (
+        'identificatore già in uso'
       )
     },
     error: {
@@ -760,7 +770,7 @@ let resources = {
       'meta_location': 'Posizione',
       'meta_borehole': 'Sondaggio',
       'form_admin': 'Amministrativo',
-      'meta_stratigraphy': 'Startigrafia',
+      'meta_stratigraphy': 'Stratigrafia',
       'loading_fetch': 'Caricamento di un sondaggio esistente..',
       'creation_fetch': 'Preparazione di un nuovo sondaggio..',
       'duplicate': 'Valore duplicato: assegnare un altro valore.',
@@ -980,6 +990,9 @@ let resources = {
       ),
       'deletingWorkgroupTip': (
         'le groupe de travail sera définitivement supprimé de la base de données'
+      ),
+      'identifierAlreadyUsed': (
+        'Identifiant déjà utilisé'
       )
     },
     error: {

@@ -117,7 +117,6 @@ class LayersList extends React.Component {
       t
     } = this.props;
     const length = layers.length;
-    console.log("style: ", style);
     return (
       <Table
         basic
@@ -495,7 +494,6 @@ class LayersList extends React.Component {
                   </Table.Row>
                 );
               } else {
-                console.log(item);
                 ret.push(
                   (
                     <Table.Row

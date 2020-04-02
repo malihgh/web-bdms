@@ -87,6 +87,10 @@
   margin: 1em;
 }
 
+.bdms_bold {
+  font-weight: bold;
+}
+
 .bdms-text-small {
   font-size: 0.8em;
 }

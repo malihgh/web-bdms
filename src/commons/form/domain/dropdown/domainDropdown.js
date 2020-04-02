@@ -148,65 +148,76 @@ class DomainDropdown extends React.Component {
         )
       });
     }
-    options = _.concat(options, domains.data[schema].map((domain) => ({
-      key: "dom-opt-" + domain.id,
-      value: domain.id,
-      text: domain[this.state.language].text,
-      content: (
-        <Header
-          content={
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row'
-              }}
-            >
-              {
-                domain.conf !== null && domain.conf.hasOwnProperty('color')?
-                  <div
-                    style={{
-                      width: '1em',
-                      backgroundColor: (
-                        '1em solid rgb(' +
-                          domain.conf.color[0] + ", " +
-                          domain.conf.color[1] + ", " +
-                          domain.conf.color[2] + ")"
-                      )
-                    }}
-                  />: null
-              }
+    let data = [];
+    // console.log("exclude: ", this.props.exclude);
+    if (this.props.exclude !== undefined) {
+      data = domains.data[schema].filter(
+        el => !this.props.exclude.includes(el.id)
+      );
+    } else {
+      data = domains.data[schema];
+    }
+    options = _.concat(options, data.map(
+      (domain) => ({
+        key: "dom-opt-" + domain.id,
+        value: domain.id,
+        text: domain[this.state.language].text,
+        content: (
+          <Header
+            content={
               <div
                 style={{
-                  flex: (
-                    domain.conf !== null && domain.conf.hasOwnProperty('image')?
-                      null: '1 1 100%'
-                  )
+                  display: 'flex',
+                  flexDirection: 'row'
                 }}
               >
-                {domain[this.state.language].text}
+                {
+                  domain.conf !== null && domain.conf.hasOwnProperty('color')?
+                    <div
+                      style={{
+                        width: '1em',
+                        backgroundColor: (
+                          '1em solid rgb(' +
+                            domain.conf.color[0] + ", " +
+                            domain.conf.color[1] + ", " +
+                            domain.conf.color[2] + ")"
+                        )
+                      }}
+                    />: null
+                }
+                <div
+                  style={{
+                    flex: (
+                      domain.conf !== null && domain.conf.hasOwnProperty('image')?
+                        null: '1 1 100%'
+                    )
+                  }}
+                >
+                  {domain[this.state.language].text}
+                </div>
+                {
+                  domain.conf !== null && domain.conf.hasOwnProperty('image')?
+                    <div
+                      style={{
+                        flex: '1 1 100%',
+                        marginLeft: '1em',
+                        backgroundImage: (
+                          'url("' + process.env.PUBLIC_URL + '/img/lit/' +
+                            domain.conf.image + '")'
+                        )
+                      }}
+                    />: null
+                }
               </div>
-              {
-                domain.conf !== null && domain.conf.hasOwnProperty('image')?
-                  <div
-                    style={{
-                      flex: '1 1 100%',
-                      marginLeft: '1em',
-                      backgroundImage: (
-                        'url("' + process.env.PUBLIC_URL + '/img/lit/' +
-                          domain.conf.image + '")'
-                      )
-                    }}
-                  />: null
-              }
-            </div>
-          }
-          subheader={
-            !_.isNil(domain[this.state.language].descr)?
-              domain[this.state.language].descr: null
-          }
-        />
-      )
-    })));
+            }
+            subheader={
+              !_.isNil(domain[this.state.language].descr)?
+                domain[this.state.language].descr: null
+            }
+          />
+        )
+      })
+    ));
     return (
       <Form.Select
         fluid
@@ -221,6 +232,7 @@ class DomainDropdown extends React.Component {
 };
 
 DomainDropdown.propTypes = {
+  exclude: PropTypes.array,
   i18n: PropTypes.shape({
     language: PropTypes.string
   }),

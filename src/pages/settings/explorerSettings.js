@@ -896,6 +896,20 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={
+                    setting.data.filter.custom.borehole_identifier
+                  }
+                  label={t('identifier')}
+                  onChange={(e, d) => {
+                    toggleFilter(
+                      'custom.borehole_identifier',
+                      d.checked
+                    );
+                  }}
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={
                     setting.data.filter.kind
                   }
                   label={t('kind')}

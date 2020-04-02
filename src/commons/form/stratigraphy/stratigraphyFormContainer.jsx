@@ -10,7 +10,7 @@ import DateField from '../dateField';
 import {
   Button,
   Checkbox,
-  Dropdown,
+  // Dropdown,
   Input,
   Segment,
   Form,
@@ -88,11 +88,12 @@ class StratigraphyFormContainer extends React.Component {
             const stratigraphy = response.data.data;
             this.setState({
               stratigraphy: stratigraphy,
-              viewas: stratigraphy.kinds.includes(
-                this.props.setting.data.defaults.stratigraphy
-              )?
-                this.props.setting.data.defaults.stratigraphy:
-                stratigraphy.kinds[0]
+              viewas: stratigraphy.kinds[0]
+              // viewas: stratigraphy.kinds.includes(
+              //   this.props.setting.data.defaults.stratigraphy
+              // )?
+              //   this.props.setting.data.defaults.stratigraphy:
+              //   stratigraphy.kinds[0]
             }, () => {
               // Load Stratigraphy Layers
               getLayers(
@@ -334,6 +335,7 @@ class StratigraphyFormContainer extends React.Component {
       consistency: consistency
     });
 
+    console.log(consistency);
   }
 
   render() {
@@ -538,6 +540,7 @@ class StratigraphyFormContainer extends React.Component {
                             });
                           });
                         }}
+                        secondary
                         size='tiny'
                       >
                         Confirm
@@ -634,7 +637,8 @@ class StratigraphyFormContainer extends React.Component {
                       paddingBottom: '0.5em',
                     }}
                   >
-                    <div
+                    <div className='flex_fill' />
+                    {/* <div
                       className='flex_row flex_fill'
                     >
                       <div
@@ -677,7 +681,7 @@ class StratigraphyFormContainer extends React.Component {
                             />: null
                         }
                       </div>
-                    </div>
+                    </div> */}
                     {
                       _.isEmpty(this.state.consistency)?
                         null:

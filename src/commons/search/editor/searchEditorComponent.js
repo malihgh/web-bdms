@@ -205,6 +205,36 @@ class SearchEditorComponent extends React.Component {
             />
           </Form.Field>
           {
+            this.isVisible('custom.borehole_identifier') ?
+              <Form.Field>
+                <label>{t('borehole_form:identifier')}</label>
+                <DomainDropdown
+                  onSelected={(selected) => {
+                    this.props.setFilter(
+                      'borehole_identifier', selected.id
+                    );
+                  }}
+                  reset={false}
+                  schema='borehole_identifier'
+                  selected={search.filter.borehole_identifier}
+                />
+                <Input
+                  onChange={(eve) => {
+                    this.props.setFilter(
+                      'identifier_value',
+                      eve.target.value
+                    );
+                  }}
+                  value={search.filter.identifier_value}
+                />
+                <LabelReset
+                  onClick={() => {
+                    this.props.resetIdentifier();
+                  }}
+                />
+              </Form.Field> : null
+          }
+          {
             this.isVisible('extended.original_name') ?
               <Form.Field>
                 <label>{t('borehole_form:original_name')}</label>
@@ -901,6 +931,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         type: 'SEARCH_EDITOR_FILTER_CHANGED',
         key: key,
         value: value
+      });
+    },
+    resetIdentifier: () => {
+      dispatch({
+        type: 'SEARCH_EDITOR_FILTER_RESET_IDENTIFIER'
       });
     },
     resetRestriction: () => {
