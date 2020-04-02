@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import {
   loadLayers,
   getLayer
@@ -35,7 +35,8 @@ class ProfileContainer extends React.Component {
   }
   render() {
     const {
-      layers
+      layers,
+      stratigraphy
     } = this.props;
     if (layers.data.length === 0){
       return null;
@@ -61,6 +62,7 @@ class ProfileContainer extends React.Component {
           });
         }}
         isFetchingLayer={this.state.isFetchingLayer}
+        kinds={stratigraphy.kinds}
         layer={this.state.layer}
       />
     );
@@ -68,7 +70,8 @@ class ProfileContainer extends React.Component {
 }
 
 ProfileContainer.propTypes = {
-  id: PropTypes.number
+  id: PropTypes.number,
+  stratigraphy: PropTypes.object
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -90,4 +93,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate('borehole_form')(ProfileContainer));
+)(withTranslation('borehole_form')(ProfileContainer));

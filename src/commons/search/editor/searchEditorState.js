@@ -4,6 +4,8 @@ const initialState = {
   "isFetching": false,
   "filter": {
     "refresh": 1,
+    "borehole_identifier": null,
+    "identifier_value": '',
     "role": 'all',
     "workgroup": 'all',
     "original_name": '',
@@ -69,6 +71,12 @@ const searchEditor = (
           _.set(copy, path, action.value);
         }
       }
+      return copy;
+    }
+    case 'SEARCH_EDITOR_FILTER_RESET_IDENTIFIER': {
+      const copy = { ...state };
+      copy.filter.borehole_identifier = null;
+      copy.filter.identifier_value = '';
       return copy;
     }
     case 'SEARCH_EDITOR_FILTER_RESET_RESTRICTION': {

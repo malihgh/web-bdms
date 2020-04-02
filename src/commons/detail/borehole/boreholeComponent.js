@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import _ from 'lodash'
 import {
   Table
@@ -158,4 +158,4 @@ BoreholeComponent.propTypes = {
     data: PropTypes.object
 }
 
-export default translate('borehole_form')(BoreholeComponent)
+export default withTranslation('borehole_form')(BoreholeComponent)

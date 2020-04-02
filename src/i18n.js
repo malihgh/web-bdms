@@ -17,7 +17,7 @@ let resources = {
       creator: "Created by",
       csvFormat: "Comma-Separated Values (CSV) format",
       degree: "degree",
-      delete: "delete",
+      delete: "Delete",
       deleteForever: "Delete forever",
       deleting: "Deleting {{what}}",
       disable: "disable",
@@ -34,6 +34,7 @@ let resources = {
       filterByName: "Filter by name",
       firstname: 'Firstname',
       from: "from",
+      identifier: "Identifier",
       lastname: 'Lastname',
       meter: "meter",
       newBorehole: "New borehole",
@@ -61,6 +62,7 @@ let resources = {
       uploadFile: "Select the CSV file to upload",
       user: "user",
       username: "Username",
+      viewas: "View as",
       workgroup: "workgroup",
       yes: "Yes",
       you: "you"
@@ -110,6 +112,9 @@ let resources = {
       ),
       'deletingWorkgroupTip': (
         'The workgroup will be permanently deleted from the database'
+      ),
+      'identifierAlreadyUsed': (
+        'Identifier already used'
       )
     },
     error: {
@@ -355,6 +360,7 @@ let resources = {
       upload: "Hochladen",
       user: "Benutzer",
       username: "Benutzername",
+      viewas: "Ansicht als",
       workgroup: "Arbeitsgruppe",
       yes: "Ja",
       you: "dir"
@@ -397,6 +403,9 @@ let resources = {
       ),
       'deletingWorkgroupTip': (
         'Die Arbeitsgruppe wird dauerhaft aus der Datenbank gelöscht'
+      ),
+      'identifierAlreadyUsed': (
+        'Identifier already used'
       )
     },
     error: {
@@ -640,6 +649,7 @@ let resources = {
       uploadFile: "Seleziona il file CSV da caricare",
       user: "utente",
       username: "Nome utente",
+      viewas: "Visualizza come",
       workgroup: "Gruppo di Lavoro",
       yes: "Sì",
       you: "te"
@@ -683,6 +693,9 @@ let resources = {
       ),
       'deletingWorkgroupTip': (
         'il gruppo di lavoro verrà eliminato definitivamente dal database'
+      ),
+      'identifierAlreadyUsed': (
+        'identificatore già in uso'
       )
     },
     error: {
@@ -757,7 +770,7 @@ let resources = {
       'meta_location': 'Posizione',
       'meta_borehole': 'Sondaggio',
       'form_admin': 'Amministrativo',
-      'meta_stratigraphy': 'Startigrafia',
+      'meta_stratigraphy': 'Stratigrafia',
       'loading_fetch': 'Caricamento di un sondaggio esistente..',
       'creation_fetch': 'Preparazione di un nuovo sondaggio..',
       'duplicate': 'Valore duplicato: assegnare un altro valore.',
@@ -933,6 +946,7 @@ let resources = {
       uploadFile: "Sélectionnez le fichier CSV à télécharger",
       user: 'Utilisateur',
       username: "Nom d'utilisateur",
+      viewas: "Voir comme",
       workgroup: "Groupe de travail",
       yes: "oui",
       you: "tu"
@@ -976,6 +990,9 @@ let resources = {
       ),
       'deletingWorkgroupTip': (
         'le groupe de travail sera définitivement supprimé de la base de données'
+      ),
+      'identifierAlreadyUsed': (
+        'Identifiant déjà utilisé'
       )
     },
     error: {
@@ -1173,27 +1190,18 @@ let resources = {
 i18n
   .use(LanguageDetector)
   .init({
-    // we init with resources
     resources: resources,
-    // lng: 'en',
-    // fallbackLng: 'en',
     fallbackLng: {
       'en': ['en-US'],
       'default': ['en']
     },
     whitelist: ['en', 'it', 'de', 'fr'],
-
-    // have a common namespace used around the full app
-    // ns: ['common', 'header', 'menu'],
     defaultNS: 'common',
-
-    keySeparator: false, // we use content as keys
-
+    keySeparator: false,
     interpolation: {
-      escapeValue: false, // not needed for react!!
+      escapeValue: false, 
       formatSeparator: ','
     },
-
     react: {
       wait: true
     }

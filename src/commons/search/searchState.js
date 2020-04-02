@@ -9,6 +9,8 @@ const initialState = {
   extent: null,
   filter: {
     refresh: 0,
+    borehole_identifier: null,
+    identifier_value: '',
     identifier: '',
     public_name: '',
     project_name: '',
@@ -112,6 +114,12 @@ const search = (
           _.set(copy, path, action.value);
         }
       }
+      return copy;
+    }
+    case 'SEARCH_FILTER_RESET_IDENTIFIER': {
+      const copy = { ...state };
+      copy.filter.borehole_identifier = null;
+      copy.filter.identifier_value = '';
       return copy;
     }
     case 'SEARCH_FILTER_RESET_RESTRICTION': {

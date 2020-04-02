@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import DomainDropdown from '../domain/dropdown/domainDropdown';
@@ -495,5 +495,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )((
-   translate(['borehole_form', 'common'])(MultipleForm)
+   withTranslation(['borehole_form', 'common'])(MultipleForm)
 ));

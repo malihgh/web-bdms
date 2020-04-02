@@ -26,7 +26,7 @@ import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 
 import MapOverlay from './overlay/mapOverlay';
 
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import {
   getGeojson,
@@ -954,4 +954,4 @@ MapComponent.defaultProps = {
   centerto: null
 };
 
-export default (translate(['borehole_form', 'common'])(MapComponent));
+export default (withTranslation(['borehole_form', 'common'])(MapComponent));

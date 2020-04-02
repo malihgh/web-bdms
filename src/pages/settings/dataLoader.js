@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -19,12 +19,18 @@ import {
 
 class DataLoader extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.fieldToRef = createRef();
+  }
+
   componentDidMount(){
     if (process.env.NODE_ENV === 'development'){
       this.props.setAuthentication('admin', 'admin');
     } else {
       this.props.setAuthentication('', '');
     }
+    this.fieldToRef.current.focus();
   }
 
   componentDidUpdate(prevProps) {
@@ -183,6 +189,7 @@ class DataLoader extends React.Component {
                   this.props.loadUser();
                 }
               }}
+              ref={this.fieldToRef}
               placeholder='username'
               value={
                 this.props.user.authentication !== null?

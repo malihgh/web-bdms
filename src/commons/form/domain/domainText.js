@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import {
   loadDomains
@@ -66,7 +66,11 @@ class DomainText extends React.Component {
 DomainText.propTypes = {
   domains: PropTypes.object,
   geocode: PropTypes.string,
+  i18n: PropTypes.shape({
+    language: PropTypes.string
+  }),
   id: PropTypes.number,
+  loadDomains: PropTypes.func,
   schema: PropTypes.string
 };
 
@@ -89,5 +93,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
-  translate('search')(DomainText)
+  withTranslation('search')(DomainText)
 );

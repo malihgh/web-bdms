@@ -2,7 +2,7 @@ import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 // import {
 //   getLayers
@@ -40,12 +40,22 @@ class LayersList extends React.Component {
 
   getPattern(id){
     const {
-      domains
+      domains,
+      style
     } = this.props;
-    let domain = domains.data['custom.lit_pet_top_bedrock'].find(function(element) {
-      return element.id === id;
-    });
-    if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('image')){
+    let domain = (domains.data[
+      // @todo Think something better!!
+      style.patternNS
+    ]).find(
+      (element) => {
+        return element.id === id;
+      }
+    );
+    if (
+      domain !== undefined &&
+      domain.conf !== null &&
+      domain.conf.hasOwnProperty('image')
+    ){
       return 'url("' + process.env.PUBLIC_URL + '/img/lit/' + domain.conf.image + '")';
     }
     else {
@@ -55,14 +65,19 @@ class LayersList extends React.Component {
 
   getColor(id){
     const {
-      domains
+      domains,
+      style
     } = this.props;
-    let domain = domains.data[
-      'custom.lit_str_top_bedrock'
-    ].find(function(element) {
-      return element.id === id;
-    });
-    if (domain !== undefined && domain.conf !== null && domain.conf.hasOwnProperty('color')){
+    let domain = (domains.data[style.colorNS]).find(
+      (element) => {
+        return element.id === id;
+      }
+    );
+    if (
+      domain !== undefined &&
+      domain.conf !== null &&
+      domain.conf.hasOwnProperty('color')
+    ){
       const color = domain.conf.color;
       return 'rgb(' + color.join(',') + ')';
     }
@@ -86,11 +101,7 @@ class LayersList extends React.Component {
     this.setState({
       resolvingAction: value,
       value: null
-    }/*, () => {
-      if (value === 3) {
-        this.inputRef.current.focus();
-      }
-    }*/);
+    });
   }
 
   handleValue (e, { value }) {
@@ -102,6 +113,7 @@ class LayersList extends React.Component {
       borehole,
       consistency,
       layers,
+      style,
       t
     } = this.props;
     const length = layers.length;
@@ -349,10 +361,10 @@ class LayersList extends React.Component {
                     }}
                   >
                     <Table.Cell
+                      collapsing
                       colSpan={
                         _.isFunction(this.props.onDelete)? '3': '2'
                       }
-                      collapsing
                     >
                       <div
                         style={{
@@ -518,10 +530,16 @@ class LayersList extends React.Component {
                           maxWidth: '40px',
                           width: '40px',
                           minWidth: '40px',
-                          backgroundColor: item.unknown === true?
-                            null: this.getColor(item.lithostratigraphy),
-                          backgroundImage: item.unknown === true?
-                            null: this.getPattern(item.lithology),
+                          backgroundColor: (
+                            item.unknown === true ||
+                            style.color === null
+                          )?
+                            null: this.getColor(item[style.color]),
+                          backgroundImage: (
+                            item.unknown === true ||
+                            style.pattern === null
+                          )?
+                            null: this.getPattern(item[style.pattern]),
                           backgroundSize: 'cover'
                         }}
                       />
@@ -565,10 +583,10 @@ class LayersList extends React.Component {
                           }}
                         >
                           {
-                            item.lithostratigraphy !== null?
+                            item[style.pattern] !== null?
                               <DomainText
-                                id={item.lithostratigraphy}
-                                schema='custom.lit_str_top_bedrock'
+                                id={item[style.pattern]}
+                                schema={style.patternNS}
                               />: '-'
                           }
                         </div>
@@ -918,13 +936,23 @@ class LayersList extends React.Component {
 
 LayersList.propTypes = {
   borehole: PropTypes.object,
+  color: PropTypes.string,
   consistency: PropTypes.object,
+  domains: PropTypes.shape({
+    data: PropTypes.object
+  }),
   layers: PropTypes.array,
   onAddBedrock: PropTypes.func,
   onDelete: PropTypes.func,
   onResolve: PropTypes.func,
   onSelected: PropTypes.func,
   selected: PropTypes.number,
+  style: PropTypes.shape({
+    color: PropTypes.string,
+    colorNS: PropTypes.string,
+    pattern: PropTypes.string,
+    patternNS: PropTypes.string
+  }),
   user: PropTypes.object
 };
 
@@ -945,5 +973,5 @@ export default connect(
   mapStateToProps,
   null
 )((
-  translate('error')(LayersList)
+  withTranslation('error')(LayersList)
 ));

@@ -5,7 +5,7 @@ import 'moment/locale/en-gb';
 import 'moment/locale/it';
 import 'moment/locale/fr';
 import 'moment/locale/de-ch';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 const getFromNow = (props) => {
   const { date, i18n } = props;
@@ -122,4 +122,4 @@ DateText.defaultProps = {
   timer: 60 // seconds
 };
 
-export default translate()(DateText);
+export default withTranslation()(DateText);

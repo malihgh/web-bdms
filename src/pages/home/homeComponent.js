@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import {
   Route,
@@ -32,13 +32,6 @@ class HomeComponent extends React.Component {
       refresh: 0
     };
   }
-
-  // componentDidUpdate(prevProps) {
-  //   const {
-  //     match
-  //   } = this.props;
-  //   console.log(match.params);
-  // }
 
   getMap() {
     const {
@@ -668,5 +661,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(translate('home')(HomeComponent))
+  )(withTranslation('home')(HomeComponent))
 );

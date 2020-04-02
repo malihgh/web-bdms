@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import {
@@ -18,6 +18,8 @@ import {
   patchCodeConfig,
   patchSettings
 } from '@ist-supsi/bmsjs';
+
+import IdentifierSettings from './editor/identifierSettings';
 
 const fields = [
   {
@@ -122,7 +124,8 @@ class EditorSettings extends React.Component {
     super(props);
     this.state = {
       "fields": false,
-      "search": false
+      "search": false,
+      "identifiers": false
     };
   }
 
@@ -211,7 +214,20 @@ class EditorSettings extends React.Component {
         {
           this.state.search === true ?
             <Segment.Group>
-
+              <Segment>
+                <Checkbox
+                  checked={
+                    setting.data.efilter.custom.borehole_identifier
+                  }
+                  label={t('identifier')}
+                  onChange={(e, d) => {
+                    toggleFilter(
+                      'custom.borehole_identifier',
+                      d.checked
+                    );
+                  }}
+                />
+              </Segment>
               <Segment>
                 <Checkbox
                   checked={
@@ -565,8 +581,60 @@ class EditorSettings extends React.Component {
                         </Segment>
                       ))
                     }
-                  </Segment.Group>
-                  : <Divider />
+                  </Segment.Group>: <Divider />
+              }
+            </div>: null
+        }
+        {
+          this.props.user.data.admin === true?
+            <div>
+              <div
+                style={{
+                  flexDirection: 'row',
+                  display: 'flex'
+                }}
+              >
+                <Header
+                  as='h3'
+                  className='link'
+                  onClick={() => {
+                    this.setState({
+                      "identifiers": !this.state.identifiers
+                    });
+                  }}
+                  style={{
+                    margin: '0px'
+                  }}
+                >
+                  Borehole identifiers
+                </Header>
+                <div
+                  style={{
+                    flex: 1,
+                    textAlign: 'right'
+                  }}
+                >
+                  <Button
+                    color='red'
+                    onClick={() => {
+                      this.setState({
+                        "identifiers": !this.state.identifiers
+                      });
+                    }}
+                    size='small'
+                  >
+                    {
+                      this.state.identifiers === true ?
+                        t('common:collapse') : t('common:expand')
+                    }
+                  </Button>
+                </div>
+              </div>
+              {
+                this.state.identifiers === true ?
+                  <Segment>
+                    <IdentifierSettings />
+                  </Segment>: <Divider />
               }
             </div>: null
         }
@@ -611,4 +679,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate(['borehole_form', 'common', 'layer_form'])(EditorSettings));
+)(withTranslation(['borehole_form', 'common', 'layer_form'])(EditorSettings));

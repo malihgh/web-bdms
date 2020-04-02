@@ -1,6 +1,6 @@
 import React, { createRef }  from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import {
@@ -342,7 +342,7 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('description')}</label>
                 <TextArea
-                  autoHeight
+                  // autoHeight
                   onChange={(e)=>{
                     this.updateChange(
                       'description', e.target.value
@@ -359,7 +359,7 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('geology')}</label>
                 <TextArea
-                  autoHeight
+                  // autoHeight
                   onChange={(e)=>{
                     this.updateChange(
                       'geology', e.target.value
@@ -1024,7 +1024,7 @@ class LayerForm extends React.Component {
               <Form.Field>
                 <label>{t('remarks')}</label>
                 <TextArea
-                  autoHeight
+                  // autoHeight
                   onChange={(e)=>{
                     this.updateChange(
                       'notes', e.target.value
@@ -1054,4 +1054,4 @@ LayerForm.defaultProps = {
   conf: {}
 };
 
-export default translate(['layer_form', 'common'])(LayerForm);
+export default withTranslation(['layer_form', 'common'])(LayerForm);

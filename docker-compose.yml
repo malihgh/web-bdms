@@ -1,0 +1,19 @@
+version: '2'
+services:
+  nginx-service-bdms:
+    image: swisstopo/service-bdms-nginx:1.0.0
+    ports:
+      - 80:80
+    restart: always
+
+  service-bdms:
+    image: swisstopo/service-bdms:1.0.0
+    restart: always
+    command:
+    - python
+    - bms/main.py
+    - --port=80
+    - --pg-host=10.14.13.8
+    - --pg-database=bdms
+    - --pg-user=postgres
+    - --pg-password=postgres

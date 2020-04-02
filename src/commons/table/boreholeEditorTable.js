@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import TableComponent from './tableComponent';
@@ -287,4 +287,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate(['borehole_form', 'version', 'common'])(BoreholeEditorTable));
+)(withTranslation(['borehole_form', 'version', 'common'])(BoreholeEditorTable));
