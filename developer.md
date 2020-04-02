@@ -19,18 +19,18 @@ ___
 * Create and edit docker-compose file:
   ```bash
   touch docker-compose.yml
-  open docker-compose.yml
+  nano docker-compose.yml
   ```
+
 * Paste the following config:
   ```bash
   version: '2'
   services:
-    nginx-service-bdms:
+    service-bdms-nginx:
       image: swisstopo/service-bdms-nginx:1.0.0
       ports:
         - 80:80
       restart: always
-
     service-bdms:
       image: swisstopo/service-bdms:1.0.0
       restart: always
@@ -48,7 +48,7 @@ ___
 
 * Open a terminal and run: 
   ```bash 
-  docker-compose up -d
+  docker-compose -p bdms up -d
   ```
 
 ## Debug 
@@ -77,12 +77,12 @@ ___
 
 * Stop and delete all containers:
   ```bash 
-  docker-compose down
+  docker-compose -p bdms down
   ```
 
 * Create and run all containers: 
   ```bash 
-  docker-compose up -d
+  docker-compose -p bdms up -d
   ```
 
 * Delete stopped container: 
