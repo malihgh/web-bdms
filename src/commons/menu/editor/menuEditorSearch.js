@@ -262,7 +262,6 @@ class MenuEditorSearch extends React.Component {
                   >
                     <Input
                       onChange={(e)=>{
-                        console.log(e.target.files[0]);
                         this.setState({
                           selectedFile: e.target.files[0]
                         });
