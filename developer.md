@@ -38,7 +38,7 @@ ___
       - python
       - bms/main.py
       - --port=80
-      - --pg-host=192.168.0.101
+      - --pg-host=192.168.0.10
       - --pg-database=bdms
       - --pg-user=postgres
       - --pg-password=postgres
