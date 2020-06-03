@@ -4,10 +4,6 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 
-// import {
-//   getLayers
-// } from '@ist-supsi/bmsjs'
-
 import {
   Button,
   Form,
@@ -669,6 +665,7 @@ class LayersList extends React.Component {
                                 null:
                                 <Button
                                   basic
+                                  color='red'
                                   icon
                                   onClick={(e)=>{
                                     e.stopPropagation();

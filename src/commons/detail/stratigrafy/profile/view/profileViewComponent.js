@@ -137,8 +137,6 @@ class ProfileView extends React.Component {
       domains
     } = this.props;
 
-    debugger;
-
     const ns = domains.data.layer_kind.find(
       element => element.id === this.state.viewas
     ).conf.patternNS;

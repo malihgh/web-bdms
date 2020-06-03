@@ -1,6 +1,12 @@
 
 # Borhole Management System Frontend
 
+## Install nodejs and npm
+
+```bash
+sudo apt install nodejs npm
+```
+
 ## Install dependencies
 
 ```bash
