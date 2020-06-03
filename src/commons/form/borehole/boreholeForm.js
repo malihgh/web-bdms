@@ -34,6 +34,8 @@ import DateText from '../dateText';
 import StratigraphyFormContainer from '../stratigraphy/stratigraphyFormContainer';
 import DomainText from '../domain/domainText';
 
+import EditorBoreholeFilesTable from '../../files/table/editorBoreholeFilesTable';
+
 // import NewStratigraphy from '../stratigraphy/newStratigraphy';
 
 import {
@@ -131,7 +133,9 @@ class BoreholeForm extends React.Component {
         "layer": null,
         "borehole": this.empty
       }, () => {
-        this.props.getBorehole(id).then(
+        this.props.getBorehole(
+          id
+        ).then(
           (response) => {
             if (response.success) {
               self.setState({
@@ -1942,6 +1946,23 @@ class BoreholeForm extends React.Component {
                   />
                 </div>
               </div>
+            )}
+          />
+          <Route
+            exact
+            path={process.env.PUBLIC_URL + "/editor/:id/attachments"}
+            render={() => (
+              <EditorBoreholeFilesTable
+                id={parseInt(this.props.match.params.id, 10)}
+                unlocked={
+                  !(
+                    this.props.borehole.data.role !== 'EDIT'
+                    || this.props.borehole.data.lock === null
+                    || this.props.borehole.data.lock.username !==
+                        this.props.user.data.username
+                  )
+                }
+              />
             )}
           />
         </Switch>

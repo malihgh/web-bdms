@@ -6,6 +6,7 @@ let resources = {
     common: {
       admin: 'Administrator',
       all: 'all',
+      attachments: 'Attachments',
       new: 'New {{what}}',
       background: "Background",
       borehole: "borehole",
@@ -305,6 +306,7 @@ let resources = {
     common: {
       admin: 'Administrator',
       all: 'alle',
+      attachments: 'Anhänge',
       new: 'Neue {{what}}',
       background: "Hintergrund",
       borehole: "borehole",
@@ -594,6 +596,7 @@ let resources = {
     common: {
       admin: 'Amministratore',
       all: 'tutto',
+      attachments: 'Allegati',
       background: "Sfondo",
       borehole: "perforazione",
       boreholes: "perforazioni",
@@ -892,6 +895,7 @@ let resources = {
     common: {
       admin: 'Administrateur',
       all: 'tout',
+      attachments: 'Pièces jointes',
       background: 'Arrière-plan',
       borehole: "Perforation",
       boreholes: "Perforations",

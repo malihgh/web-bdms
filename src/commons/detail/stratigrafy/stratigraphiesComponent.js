@@ -7,6 +7,9 @@ import DateText from '../../form/dateText';
 import ProfileContainer from './profile/profileContainer';
 import MetaComponent from './../meta/metaComponent';
 
+
+import BoreholeFilesTable from '../../files/table/boreholeFilesTable';
+
 // import Scroller from '../../scroller';
 
 class StratigraphiesComponent extends React.Component {
@@ -68,6 +71,50 @@ class StratigraphiesComponent extends React.Component {
             <MetaComponent
               data={data.borehole}
             />
+          </div>
+        )
+      },
+      {
+        menuItem: (
+          <Menu.Item
+            key={'str-tb-attachments'}
+            // style={{
+            //   color: '#2185d0'
+            // }}
+          >
+            <div>
+              {t('common:attachments')}
+              File
+              <br />
+              <span
+                style={{
+                  fontSize: '0.7em'
+                }}
+              >
+                {data.borehole.attachments} Files
+              </span>
+            </div>
+          </Menu.Item>
+        ),
+        render: () => (
+          <div
+            style={{
+              // flexGrow: 1,
+              overflowY: 'auto',
+              height: '100%',
+              border: '1px solid #D4D4D5',
+              borderTop: 'none',
+              padding: '1em'
+              // border: 'thin solid #cecece'
+            }}
+          >
+            {
+              data.borehole.attachments === 0?
+                'Empty': 
+                <BoreholeFilesTable
+                  id={data.borehole.id}
+                />
+            }
           </div>
         )
       },
@@ -191,7 +238,7 @@ class StratigraphiesComponent extends React.Component {
       >
         <Tab
           defaultActiveIndex={
-            item === null? 0: 1
+            item === null? 0: 2
           }
           panes={tmp}
           style={{
