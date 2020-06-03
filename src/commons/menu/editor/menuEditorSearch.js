@@ -18,7 +18,7 @@ import {
 
 import {
   createBorehole,
-  uploadBoreholeList
+  importBoreholeList
 } from '@ist-supsi/bmsjs';
 
 import SearchEditorComponent from '../../search/editor/searchEditorComponent'
@@ -341,7 +341,7 @@ class MenuEditorSearch extends React.Component {
                   creating: true,
                 }, ()=>{
                   if (this.state.upload === true){
-                    uploadBoreholeList(
+                    importBoreholeList(
                       this.state.workgroup,
                       this.state.selectedFile
                     ).then(
