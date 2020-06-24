@@ -157,4 +157,3 @@ FilesTableComponent.defaultProps = {
 };
 
 export default withTranslation('common')(FilesTableComponent);
-// export default FilesTableComponent;
