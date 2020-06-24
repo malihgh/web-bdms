@@ -84,7 +84,6 @@ class StratigraphiesComponent extends React.Component {
           >
             <div>
               {t('common:attachments')}
-              File
               <br />
               <span
                 style={{
