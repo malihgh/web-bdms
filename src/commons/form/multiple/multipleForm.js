@@ -91,7 +91,7 @@ class MultipleForm extends React.Component {
       'cuttings': 'custom.cuttings',
       'purpose': 'extended.purpose',
       'drill_diameter': 'custom.drill_diameter',
-      'status': 'status.purpose',
+      'status': 'extended.status',
       'qt_bore_inc_dir': 'custom.qt_bore_inc_dir',
       'qt_length': 'custom.qt_length',
       'top_bedrock': 'extended.top_bedrock',
