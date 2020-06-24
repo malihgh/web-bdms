@@ -164,6 +164,10 @@ export default class EditorBoreholeFilesTable extends Component {
                       );
                     });
                   }}
+                  secondary={
+                    this.state.creating === false
+                    && this.state.file !== null
+                  }
                 >
                   Upload
                 </Button>
