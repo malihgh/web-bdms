@@ -1,18 +1,18 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import _ from 'lodash'
+import React from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import {
   getdBoreholeIds,
   deleteBoreholes
-} from '@ist-supsi/bmsjs';
+} from '@ist-supsi/bmsjs'
 
 import {
   Table,
   Pagination,
   Segment,
   Button,
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
 
 class TableComponent extends React.Component {
   constructor(props) {
