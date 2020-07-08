@@ -189,8 +189,8 @@ class DataLoader extends React.Component {
                   this.props.loadUser();
                 }
               }}
-              ref={this.fieldToRef}
               placeholder='username'
+              ref={this.fieldToRef}
               value={
                 this.props.user.authentication !== null?
                   this.props.user.authentication.username: ''
@@ -239,6 +239,7 @@ class DataLoader extends React.Component {
                 this.props.loadUser();
               }}
               primary={this.props.user.data === null}
+              size='small'
               style={{
                 marginTop: '1.5em'
               }}
@@ -254,6 +255,19 @@ class DataLoader extends React.Component {
                   <span>&nbsp;</span>: 'User or password wrong'
               }
             </div>
+            <Button
+              compact
+              content='Enter as guest'
+              disabled={this.props.user.data !== null}
+              fluid
+              onClick={() => {
+                this.props.anonymousLogin(
+                  'guest', 'MeiSe0we1Oowief'
+                );
+              }}
+              secondary
+              size='small'
+            />
           </div>
         </div>
       </div>
@@ -262,6 +276,7 @@ class DataLoader extends React.Component {
 };
 
 DataLoader.propTypes = {
+  anonymousLogin: PropTypes.func,
   loadCantons: PropTypes.func,
   loadDomains: PropTypes.func,
   loadSettings: PropTypes.func,
@@ -292,7 +307,14 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(loadUser());
     },
     setAuthentication: (username, password) => {
-      dispatch(setAuthentication(username, password));
+      return dispatch(setAuthentication(username, password));
+    },
+    anonymousLogin: async (username, password) => {
+      await Promise.all([
+        dispatch(setAuthentication(username, password)),
+        dispatch(loadUser())
+      ]);
+      return 'ciao';
     }
   };
 };
