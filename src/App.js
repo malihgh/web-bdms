@@ -11,6 +11,7 @@ import HomeComponent from './pages/home/homeComponent';
 import EditorComponent from './pages/editor/editorComponent';
 import SettingCmp from './pages/settings/settingCmp';
 import DataLoader from './pages/settings/dataLoader';
+import AcceptTerms from './pages/term/accept';
 
 
 const cpaths = [
@@ -51,31 +52,33 @@ class App extends React.Component {
     return (
       loader.isReady === false ?
         <DataLoader />:
-        <Router>
-          <Switch>
-            {
-              cpaths.map((route, index) => {
-                return (
-                  <Route
-                    component={route.body}
-                    exact={route.exact}
-                    key={index}
-                    path={route.path}
+        loader.terms === false?
+          <AcceptTerms />:
+          <Router>
+            <Switch>
+              {
+                cpaths.map((route, index) => {
+                  return (
+                    <Route
+                      component={route.body}
+                      exact={route.exact}
+                      key={index}
+                      path={route.path}
+                    />
+                  );
+                })
+              }
+              <Route
+                component={(r) => (
+                  <Redirect
+                    to={{
+                      pathname: process.env.PUBLIC_URL + "/"
+                    }}
                   />
-                );
-              })
-            }
-            <Route
-              component={(r) => (
-                <Redirect
-                  to={{
-                    pathname: process.env.PUBLIC_URL + "/"
-                  }}
-                />
-              )}
-            />
-          </Switch>
-        </Router>
+                )}
+              />
+            </Switch>
+          </Router>
     );
   }
 };

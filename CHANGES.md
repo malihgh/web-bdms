@@ -4,6 +4,13 @@
 
 ### New features
 
+ - **Terms of service**: 
+   
+   - On login users have to agree to the terms of service (only once).
+   - In the settings, the terms can be updated, and the users
+   are propted again.
+   - Terms are formatted according to the "Markdown" markup language.
+
  - **Login as guest**: 
    
    Added "*Login as guest*" button in the login panel.

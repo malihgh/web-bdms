@@ -5,6 +5,7 @@ let resources = {
   en: {
     common: {
       admin: 'Administrator',
+      iagree: 'I agree',
       all: 'all',
       attachments: 'Attachments',
       new: 'New {{what}}',
@@ -26,6 +27,7 @@ let resources = {
       disabled: "disabled",
       disabling: "Disabling {{what}}",
       done: "Done",
+      draft: "draft",
       enable: "enable",
       enableWorkgroup: "enable workgroup",
       enabled: "enabled",
@@ -43,6 +45,8 @@ let resources = {
       np: "Unknown",
       overlay: "Maps displayed",
       password: "Password",
+      publish: 'publish',
+      preview: 'preview',
       refresh: "refresh",
       reset: "reset",
       resources: "Resources",
@@ -50,12 +54,14 @@ let resources = {
       results: "results",
       role: "role",
       roles: "roles",
+      save: "save",
       saving: "saving",
       search: "search",
       show: "show {{what}}",
       start: "This page is in English.",
       submit: "Submit",
       sure: "Are you sure?",
+      terms: "Terms of service",
       title: "BMS",
       to: "to",
       upload: "Upload",
@@ -116,6 +122,16 @@ let resources = {
       ),
       'identifierAlreadyUsed': (
         'Identifier already used'
+      ),
+      'disclaimer_publish_title': (
+        'Publish disclaimer'
+      ),
+      'disclaimer_publish_message': (
+        'Are you sure you want to pubblish this new disclaimer?'
+      ),
+      'disclaimer_publish_note': (
+        `Note that, by publishing the new discalimer, you will
+trigger all users to agree again.`
       )
     },
     error: {
@@ -305,6 +321,7 @@ let resources = {
   de: {
     common: {
       admin: 'Administrator',
+      iagree: 'Ich stimme zu',
       all: 'alle',
       attachments: 'Anhänge',
       new: 'Neue {{what}}',
@@ -326,6 +343,7 @@ let resources = {
       disabled: "deaktiviert",
       disabling: "{{what}} deaktivieren",
       done: "Ok",
+      draft: "Entwurf",
       enable: "aktivieren",
       enableWorkgroup: "aktivieren Arbeitsgruppe",
       enabled: "aktiviert",
@@ -342,6 +360,8 @@ let resources = {
       np: "Keine Angabe",
       overlay: "Dargestellte Karten",
       password: "Passwort",
+      publish: 'Veröffentlichen',
+      preview: 'Vorschau',
       refresh: "aufladen",
       reset: "Zurücksetzen",
       result: "ergebnis",
@@ -349,12 +369,14 @@ let resources = {
       resources: "Ressourcen",
       role: "Rolle",
       roles: "Rollen",
+      save: "Sparen",
       saving: "sparen",
       search: "suchen",
       show: "{{what}} anzeigen",
       start: "Diese Seite ist auf deutsch.",
       submit: "Einreichen",
       sure: "Sicher?",
+      terms: "Nutzungsbedingungen",
       title: "BMS",
       to: "zu",
       updateDate: "Update date",
@@ -408,6 +430,16 @@ let resources = {
       ),
       'identifierAlreadyUsed': (
         'Identifier already used'
+      ),
+      'disclaimer_publish_title': (
+        'Haftungsausschluss veröffentlichen'
+      ),
+      'disclaimer_publish_message': (
+        'Sind Sie sicher, dass Sie diesen neuen Haftungsausschluss veröffentlichen möchten?'
+      ),
+      'disclaimer_publish_note': (
+        `Beachten Sie, dass Sie durch die Veröffentlichung
+des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
       )
     },
     error: {
@@ -595,6 +627,7 @@ let resources = {
   it: {
     common: {
       admin: 'Amministratore',
+      iagree: 'Accetto',
       all: 'tutto',
       attachments: 'Allegati',
       background: "Sfondo",
@@ -615,6 +648,7 @@ let resources = {
       disabled: "disabilitato",
       disabling: "Disabilitazione {{what}}",
       done: "Fatto",
+      draft: "bozza",
       enable: "abilitare",
       enableWorkgroup: "abilitare gruppo di lavoro",
       enabled: "abilitati",
@@ -632,6 +666,8 @@ let resources = {
       np: "Sconosciuto",
       overlay: "Mappe visualizzate",
       password: "Password",
+      publish: 'pubblica',
+      preview: 'anteprima',
       refresh: "ricarica",
       reset: "azzerare",
       result: "risultato",
@@ -639,12 +675,14 @@ let resources = {
       resources: "Risorse",
       role: "ruolo",
       roles: "ruoli",
+      save: "salva",
       saving: "salvataggio",
       search: "cerca",
       show: "Mostra {{what}}",
       start: "Questa pagina è in Italiano",
       submit: "Applica",
       sure: "Sei sicuro?",
+      terms: "Termini di servizio",
       title: "BMS",
       to: "a",
       upload: "Carica",
@@ -699,6 +737,16 @@ let resources = {
       ),
       'identifierAlreadyUsed': (
         'identificatore già in uso'
+      ),
+      'disclaimer_publish_title': (
+        'Pubblica i termini'
+      ),
+      'disclaimer_publish_message': (
+        'Sei sicuro di voler pubblicare i nuovi termini di servizio?'
+      ),
+      'disclaimer_publish_note': (
+        `Nota che a tutti gli utenti verrà chiesto di accettare
+nuovamente i termini.`
       )
     },
     error: {
@@ -894,6 +942,7 @@ let resources = {
   fr: {
     common: {
       admin: 'Administrateur',
+      iagree: 'J\'accepte',
       all: 'tout',
       attachments: 'Pièces jointes',
       background: 'Arrière-plan',
@@ -914,6 +963,7 @@ let resources = {
       disabled: 'Désactivé',
       disabling: "Désactiver {{quoi}}",
       done: "Fini",
+      draft: "projet",
       enable: 'Activer',
       enableWorkgroup: "activer le groupe de travail",
       enabled: 'Activé',
@@ -931,18 +981,22 @@ let resources = {
       np: 'Inconnu',
       overlay: "Cartes affichées",
       password: 'Mot de passe',
+      publish: 'publier',
+      preview: 'preview',
       refresh: 'Charge',
       reset: "Reset",
       result: 'Résultat',
       results: 'Résultats',
       role: 'Rôle',
       roles: 'Rôles',
+      save: "enregistrer",
       saving: 'Enregistrement',
       search: 'Recherche',
       show: "Afficher {{what}}",
       start: "Cette page est en italien",
       submit: 'Appliquer',
       sure: "Êtes-vous sûr?",
+      terms: "Conditions de service",
       title: "BMS",
       to: "a",
       upload: 'Télécharger',
@@ -997,6 +1051,16 @@ let resources = {
       ),
       'identifierAlreadyUsed': (
         'Identifiant déjà utilisé'
+      ),
+      'disclaimer_publish_title': (
+        'Publier les conditions de service'
+      ),
+      'disclaimer_publish_message': (
+        'Êtes-vous sûr de vouloir publier cette nouvelle clause de non-responsabilité ?'
+      ),
+      'disclaimer_publish_note': (
+        `Notez qu'en publiant le nouveau disclaimer, vous inciterez tous les
+utilisateurs à donner leur accord.`
       )
     },
     error: {
