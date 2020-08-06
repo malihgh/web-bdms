@@ -103,11 +103,12 @@ class MenuComponent extends React.Component {
         </div>
         <div
           style={{
-            alignItems: 'end',
+            // alignItems: 'end',
             display: 'flex',
             flex: '1 1 100%',
             flexDirection: 'column',
-            padding: '1em'
+            padding: '1em',
+            textAlign: 'right'
           }}
         >
           <Popup
@@ -140,7 +141,8 @@ class MenuComponent extends React.Component {
                 className='linker'
               >
                 Feedback
-              </div>}
+              </div>
+            }
           />
         </div>
         <Popup
