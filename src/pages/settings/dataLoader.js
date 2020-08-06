@@ -257,7 +257,7 @@ class DataLoader extends React.Component {
             </div>
             <Button
               compact
-              content='Enter as guest'
+              content='Enter as viewer'
               disabled={this.props.user.data !== null}
               fluid
               onClick={() => {
