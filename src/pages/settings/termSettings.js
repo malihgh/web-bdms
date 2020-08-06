@@ -43,16 +43,18 @@ class TermSettings extends React.Component {
     getTermsDraft(true)
       .then(
         r => {
-          this.setState({
-            isFetching: false,
-            id: r.data.data.id,
-            draft: r.data.data.draft,
-            en: r.data.data.en,
-            fr: r.data.data.fr,
-            de: r.data.data.de,
-            it: r.data.data.it,
-            ro: r.data.data.ro,
-          });
+          if (r.data.data !== null) {
+            this.setState({
+              isFetching: false,
+              id: r.data.data.id,
+              draft: r.data.data.draft,
+              en: r.data.data.en,
+              fr: r.data.data.fr,
+              de: r.data.data.de,
+              it: r.data.data.it,
+              ro: r.data.data.ro,
+            });
+          }
         }
       );
   }
