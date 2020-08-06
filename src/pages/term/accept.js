@@ -63,7 +63,8 @@ class AcceptTerms extends React.Component {
           backgroundColor: '#787878',
           display: 'flex',
           flex: '1 1 0%',
-          flexDirection: 'column',
+          // flexDirection: 'column',
+          justifyContent: 'center',
           height: '100%'
         }}
       >
@@ -73,9 +74,10 @@ class AcceptTerms extends React.Component {
             borderRadius: '2px',
             boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
             display: 'flex',
-            flex: '1 1 100%',
+            // flex: '1 1 100%',
             flexDirection: 'column',
             margin: '1em 0px',
+            height: '60%',
             overflowY: 'hidden',
             width: '600px',
           }}
@@ -84,7 +86,7 @@ class AcceptTerms extends React.Component {
             style={{
               fontSize: '0.9em',
               padding: '1em',
-              textAlign: 'right'
+              textAlign: 'right',
             }}
           >
             <span
