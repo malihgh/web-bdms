@@ -45,11 +45,11 @@ class DataLoader extends React.Component {
     return (
       <div
         style={{
-          backgroundColor: '#787878',
-          flex: '1 1 0%',
-          display: 'flex',
-          justifyContent: 'center',
           alignItems: 'center',
+          backgroundColor: '#787878',
+          display: 'flex',
+          flex: '1 1 0%',
+          justifyContent: 'center',
           height: '100%'
         }}
       >
