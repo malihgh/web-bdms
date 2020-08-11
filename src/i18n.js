@@ -363,16 +363,16 @@ let resources = {
       viewas: "Ansicht als",
       workgroup: "Arbeitsgruppe",
       yes: "Ja",
-      you: "dir"
+      you: "Du"
     },
     messages: {
       'enablingUser': (
-        'Sie werden den Benutzer "{{user}}" wieder ' +
-        'aktivieren. Dieser Benutzer kann sich anmelden ' +
+        'Der Benutzer "{{user}}" wird wieder ' +
+        'aktiviert. Dieser Benutzer kann sich dann wieder anmelden ' +
         'und Änderungen basierend auf seinen Rollen vornehmen.'
       ),
       'enablingWorkgroup': (
-        'Sie werden die Arbeitsgruppe "{{workgroup}}" wieder aktivieren. ' +
+        'Die Arbeitsgruppe "{{workgroup}}" wird wieder aktiviert. ' +
         'Benutzer, die zu dieser Arbeitsgruppe gehören, können ' +
         'Änderungen basierend auf ihren Rollen vornehmen.'
       ),
@@ -395,17 +395,16 @@ let resources = {
         'da sich derzeit einige Aktivitäten in der Datenbank befinden.'
       ),
       'reenablingTip': (
-        'Sie können es später wieder aktivieren.'
+        'Sie können ihn später wieder aktivieren.'
       ),
       'deletingUserTip': (
-        'Der Benutzer wird aus der Datenbank gelöscht, aber später ' +
-        'können Sie denselben Benutzer erneut erstellen.'
+        'Der Benutzer wird aus der Datenbank gelöscht.'
       ),
       'deletingWorkgroupTip': (
         'Die Arbeitsgruppe wird dauerhaft aus der Datenbank gelöscht'
       ),
       'identifierAlreadyUsed': (
-        'Identifier already used'
+        'Identifikator bereits vergeben.'
       )
     },
     error: {
@@ -461,7 +460,7 @@ let resources = {
       'editingEnabled': 'Die Bearbeitung hat begonnen',
       'locked_by': 'Änderung in Bearbeitung von',
       'locked_at': 'Gesperrt am',
-      'locked_status': 'Zustand'
+      'locked_status': 'Status'
     },
     borehole_form: {
       'editingStart': 'Beginnen Bearbeitung',
