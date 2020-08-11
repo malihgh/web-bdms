@@ -311,7 +311,7 @@ let resources = {
       boreholes: "bohrung",
       clickLayer: "Klicken Sie für Informationen",
       cancel: "abbrechen",
-      collapse: "zusammenbruch",
+      collapse: "zuklappen",
       creation_date: "Erstellungsdatum",
       creator: "Erstellt von",
       csvFormat: "Dateiformat (CSV)",
@@ -328,7 +328,7 @@ let resources = {
       enableWorkgroup: "aktivieren Arbeitsgruppe",
       enabled: "aktiviert",
       enabling: "{{what}} aktivieren",
-      expand: "erweitern",
+      expand: "aufklappen",
       filterByHierarchicalUnits: "Filter by hierarchical units",
       filterByName: "Filter by name",
       firstname: 'Vorname',
@@ -583,11 +583,11 @@ let resources = {
       'spatial_filter': 'Räumlicher Filter'
     },
     version: {
-      '0': 'Fertiggestellt',
-      'EDIT': 'Änderung in Bearbeitung',
-      'CONTROL':'Wissenschaftlich Prüfung',
-      'VALID': 'Bestätigung',
-      'PUBLIC': 'Veröffentlichen'
+      '0': 'fertiggestellt',
+      'EDIT': 'in Bearbeitung',
+      'CONTROL':'wissenschaftlich geprüft',
+      'VALID': 'validiert',
+      'PUBLIC': 'veröffentlicht'
     }
   },
   it: {
