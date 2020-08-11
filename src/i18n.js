@@ -343,7 +343,7 @@ let resources = {
       refresh: "aufladen",
       reset: "Zurücksetzen",
       result: "ergebnis",
-      results: "ergebnisse",
+      results: "Ergebnisse",
       resources: "Ressourcen",
       role: "Rolle",
       roles: "Rollen",
