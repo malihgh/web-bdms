@@ -329,8 +329,8 @@ let resources = {
       enabled: "Aktiviert",
       enabling: "{{what}} aktivieren",
       expand: "Aufklappen",
-      filterByHierarchicalUnits: "Filter by hierarchical units",
-      filterByName: "Filter by name",
+      filterByHierarchicalUnits: "Nach hierarchischen Einheiten filtern",
+      filterByName: "Nach Name filtern",
       firstname: 'Vorname',
       from: "von",
       lastname: 'Nachname',
@@ -356,7 +356,7 @@ let resources = {
       title: "BDMS",
       to: "zu",
       updateDate: "Bearbeitungsdatum",
-      uploadFile: "Wählen Sie die Datei (*.csv) aus",
+      uploadFile: "Wählen Sie eine Datei (*.csv) aus",
       upload: "Hochladen",
       user: "Benutzer",
       username: "Benutzername",
@@ -408,7 +408,7 @@ let resources = {
       )
     },
     error: {
-      'E-900': `Borehole locked by {{user}}`,
+      'E-900': `Bohrung durch den {{user}} gesperrt`,
       'howToResolve': 'How to resolve this issue?',
       'errorGap': 'Non continuos data found',
       'errorGapSolution1': 'Fill gap with "undefined" layer',
@@ -463,8 +463,8 @@ let resources = {
       'locked_status': 'Status'
     },
     borehole_form: {
-      'editingStart': 'Beginnen Bearbeitung',
-      'editingStop': 'Beenden Bearbeitung',
+      'editingStart': 'Bearbeitung beginnen',
+      'editingStop': 'Bearbeitung beenden',
       'completness': 'Vollständigkeit',
       'creation': 'Erstellungsdatum',
       'author': 'Autor',
