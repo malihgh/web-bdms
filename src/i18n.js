@@ -409,29 +409,29 @@ let resources = {
     },
     error: {
       'E-900': `Bohrung durch den {{user}} gesperrt`,
-      'howToResolve': 'How to resolve this issue?',
-      'errorGap': 'Non continuos data found',
-      'errorGapSolution1': 'Fill gap with "undefined" layer',
-      'errorGapSolution2': 'Replace upper layer base with top from lower layer',
-      'errorGapSolution3': 'Replace lower layer top with 0 meters',
-      'errorGapSolution4': 'Replace lower layer top with base from upper layer',
-      'wrongDepth': 'Wrong depth',
+      'howToResolve': 'Wie soll dieser Fehler behoben werden?',
+      'errorGap': 'Schichttiefen sind nicht kontinuierlich',
+      'errorGapSolution1': 'Lücke mit "nicht definierter Schicht" füllen',
+      'errorGapSolution2': 'Basis der oberen Schicht mit Top der unteren Schicht ersetzen',
+      'errorGapSolution3': 'Top der unteren Schicht mit o Metern ersetzen',
+      'errorGapSolution4': 'Top der unteren Schicht mit der Basis der oberen Schicht ersetzen',
+      'wrongDepth': 'Falsche Endtiefe',
       'wrongDepthSolution1': (
-        'Last layer depth ({{lDepth}}) not equals to ' +
-        'total borehole depth ({{bDepth}}). ' +
+        'Tiefe der letzten Schicht ({{lDepth}} m) stimmt nicht mit der ' +
+        'Endtiefe ({{bDepth}}) überein. ' +
         'Ändern Sie das Feld Basis-MD manuell.'
       ),
-      'missingBedrock': 'Missing bedrock',
+      'missingBedrock': 'Tiefe Top-Fels fehlt!',
       'missingBedrockSolution': (
-        'Add the Bedrock automatically from data filled into the ' +
-        'Borehole page.'
+        'Tiefe Top-Fels automatisch aus der Bohrdaten-Seite ' +
+        'übernehmen.'
       ),
-      'missingLayer': 'Missing layers',
+      'missingLayer': 'Fehlende Schicht',
       'missingLayerSolution': (
-        'Please fill the space between the surface and the bedrock (below)'
+        'Bitte Schichten zwischen Geländeoberfläche und Top-Fels (siehe unten) ergänzen'
       ),
-      'errorOverlap': 'Overlapping layers',
-      'errorStartWrong': 'First layer not starting from the surface',
+      'errorOverlap': 'Überlappende Schichten',
+      'errorStartWrong': 'Erste Schicht beginnt nicht an der Geländeoberfläche',
     },
     header: {
       'explore': 'Durchsuchen',
@@ -473,8 +473,8 @@ let resources = {
       'meta_borehole': 'Bohrloch',
       'form_admin': 'Admin',
       'meta_stratigraphy': 'Stratigrafie',
-      'loading_fetch': 'Lade Bohrloch..',
-      'creation_fetch': 'Vorbereitung neues Bohrloch..',
+      'loading_fetch': 'Lade Bohrloch.',
+      'creation_fetch': 'Vorbereitung neues Bohrloch.',
       'duplicate': 'Doppelter Wert: neuen Wert setzen.',
       'date_format': 'tt.mm.yyyy',
       'original_name': 'Originalname',
