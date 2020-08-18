@@ -314,7 +314,7 @@ let resources = {
       collapse: "Zuklappen",
       creation_date: "Erstellungsdatum",
       creator: "Erstellt von",
-      csvFormat: "Dateiformat (CSV)",
+      csvFormat: "Dateiformat (.csv)",
       degree: "Grad",
       delete: "Löschen",
       deleteForever: "Dauerhaft löschen",
@@ -421,14 +421,14 @@ let resources = {
         'Endtiefe ({{bDepth}}) überein. ' +
         'Ändern Sie das Feld Basis-MD manuell.'
       ),
-      'missingBedrock': 'Tiefe Top-Fels fehlt!',
+      'missingBedrock': 'Tiefe Top Fels fehlt!',
       'missingBedrockSolution': (
-        'Tiefe Top-Fels automatisch aus der Bohrdaten-Seite ' +
+        'Tiefe Top Fels automatisch aus der Bohrdaten-Seite ' +
         'übernehmen.'
       ),
       'missingLayer': 'Fehlende Schicht',
       'missingLayerSolution': (
-        'Bitte Schichten zwischen Geländeoberfläche und Top-Fels (siehe unten) ergänzen'
+        'Bitte Schichten zwischen Geländeoberfläche und Top Fels (unten) ergänzen'
       ),
       'errorOverlap': 'Überlappende Schichten',
       'errorStartWrong': 'Erste Schicht beginnt nicht an der Geländeoberfläche',
@@ -476,13 +476,13 @@ let resources = {
       'loading_fetch': 'Lade Bohrloch.',
       'creation_fetch': 'Vorbereitung neues Bohrloch.',
       'duplicate': 'Doppelter Wert: neuen Wert setzen.',
-      'date_format': 'tt.mm.yyyy',
+      'date_format': 'TT.MM.JJJJ',
       'original_name': 'Originalname',
       'public_name': 'Öffentlicher Name',
       'kind': 'Bohrtyp',
       'project_name': 'Projektname',
-      'restriction': 'Restriktion',
-      'restriction_until': 'Restriktion Datum',
+      'restriction': 'Beschränkung',
+      'restriction_until': 'Datum Beschränkung',
       'coordinates': 'Koordinaten',
       'location_x': 'Koordinate O',
       'location_y': 'Koordinate N',
@@ -527,10 +527,10 @@ let resources = {
       'creation_fetch': 'Bereite neue Schicht vor..',
       'depth': 'Bohrendtiefe',
       'depth_from': 'Top MD (m)',
-      'depth_to': 'Base MD (m)',
+      'depth_to': 'Basis MD (m)',
       'description': 'Schichtbeschreibung',
-      'geology': 'Geologiebeschreibung',
-      'last': 'Bohrloch Ende',
+      'geology': 'Geologische Beschreibung',
+      'last': 'Bohrlochende',
       'qt_description': 'QC Beschreibung',
       'lithology': 'Lithologie / Petrologie',
       'lithostratigraphy': 'Lithostratigrafie',
@@ -568,7 +568,7 @@ let resources = {
     search: {
       'reset': 'Zurücksetzen',
       'identifier': 'Kennung',
-      'last_update': 'Last update',
+      'last_update': 'Letzte Aktualisierung',
       'creation': 'Erstellungsdatum',
       'completness': 'Filter auf Vollständigkeit',
       'all': 'Alle',
