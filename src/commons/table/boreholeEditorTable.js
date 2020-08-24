@@ -67,7 +67,8 @@ class BoreholeEditorTable extends TableComponent {
           }
         }}
         style={{
-          cursor: disableOrdering === true ? null : 'pointer'
+          cursor: disableOrdering === true ? null : 'pointer',
+          whiteSpace: 'nowrap'
         }}
         verticalAlign='top'
       >
@@ -80,15 +81,23 @@ class BoreholeEditorTable extends TableComponent {
               }
             /> : null
         } {t(key === 'workgroup'? 'common:workgroup': key)}
-        <br />
-        <span
-          style={{
-            fontSize: '0.8em',
-            color: '#787878'
-          }}
-        >
-          {key === 'workgroup'? 'status': key}
-        </span>
+        {
+          key === 'workgroup'?
+            [
+              <br
+                key={'betjs-1-'+key}
+              />,
+              <span
+                key={'betjs-2-'+key}
+                style={{
+                  fontSize: '0.8em',
+                  color: '#787878'
+                }}
+              >
+                {key === 'workgroup'? 'status': key}
+              </span>
+            ]: null
+        }
       </Table.HeaderCell>
     );
   }

@@ -581,8 +581,10 @@ class LayersList extends React.Component {
                           {
                             item[style.pattern] !== null?
                               <DomainText
-                                id={item[style.pattern]}
-                                schema={style.patternNS}
+                                //id={item[style.pattern]}
+                                //schema={style.patternNS}
+                                id={item.lithostratigraphy}
+                                schema={'custom.lit_str_top_bedrock'}
                               />: '-'
                           }
                         </div>

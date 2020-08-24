@@ -77,7 +77,8 @@ class StratigraphyFormContainer extends React.Component {
       stratigraphyEmpty: false,
       fetchingStratigraphy: true,
       layers: null,
-      layer: null
+      layer: null,
+      viewas: null,
     },() => {
       
       getStratigraphy(id).then(

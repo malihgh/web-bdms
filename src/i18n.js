@@ -322,81 +322,80 @@ trigger all users to agree again.`
     common: {
       admin: 'Administrator',
       iagree: 'Ich stimme zu',
-      all: 'alle',
+      all: 'Alle',
       attachments: 'Anhänge',
       new: 'Neue {{what}}',
       background: "Hintergrund",
-      borehole: "borehole",
-      boreholes: "bohrung",
+      borehole: "Bohrung",
+      boreholes: "Bohrungen",
       clickLayer: "Klicken Sie für Informationen",
-      cancel: "abbrechen",
-      collapse: "zusammenbruch",
+      cancel: "Abbrechen",
+      collapse: "Zuklappen",
       creation_date: "Erstellungsdatum",
       creator: "Erstellt von",
-      csvFormat: "Dateiformat (CSV)",
-      degree: "grad",
-      delete: "Eliminieren",
+      csvFormat: "Dateiformat (.csv)",
+      degree: "Grad",
+      delete: "Löschen",
       deleteForever: "Dauerhaft löschen",
       deleting: "{{what}} löschen",
-      disable: "deaktivieren",
-      disableWorkgroup: "deaktivieren Arbeitsgruppe",
-      disabled: "deaktiviert",
+      disable: "Deaktivieren",
+      disableWorkgroup: "Arbeitsgruppe deaktivieren",
+      disabled: "Deaktiviert",
       disabling: "{{what}} deaktivieren",
       done: "Ok",
       draft: "Entwurf",
-      enable: "aktivieren",
-      enableWorkgroup: "aktivieren Arbeitsgruppe",
-      enabled: "aktiviert",
+      enable: "Aktivieren",
+      enableWorkgroup: "Arbeitsgruppe aktivieren",
+      enabled: "Aktiviert",
       enabling: "{{what}} aktivieren",
-      expand: "erweitern",
-      filterByHierarchicalUnits: "Filter by hierarchical units",
-      filterByName: "Filter by name",
+      expand: "Aufklappen",
+      filterByHierarchicalUnits: "Nach hierarchischen Einheiten filtern",
+      filterByName: "Nach Name filtern",
       firstname: 'Vorname',
       from: "von",
       lastname: 'Nachname',
-      meter: "meter",
-      newBorehole: "Neue borehole",
+      meter: "Meter",
+      newBorehole: "Neue Bohrung",
       no: "Nein",
       np: "Keine Angabe",
       overlay: "Dargestellte Karten",
       password: "Passwort",
       publish: 'Veröffentlichen',
       preview: 'Vorschau',
-      refresh: "aufladen",
+      refresh: "Aktualisieren",
       reset: "Zurücksetzen",
-      result: "ergebnis",
-      results: "ergebnisse",
-      resources: "Ressourcen",
+      result: "Ergebnis",
+      results: "Ergebnisse",
+      resources: "Dokumentation",
       role: "Rolle",
       roles: "Rollen",
-      save: "Speichern",
       saving: "Speichern",
-      search: "suchen",
+      search: "Suchen",
       show: "{{what}} anzeigen",
-      start: "Diese Seite ist auf deutsch.",
-      submit: "Einreichen",
-      sure: "Sicher?",
+      start: "Diese Seite ist auf Deutsch.",
+      submit: "Weiterleiten",
+      sure: "Sind Sie sicher?",
       terms: "Nutzungsbedingungen",
-      title: "BMS",
+      title: "BDMS",
       to: "zu",
-      updateDate: "Update date",
-      uploadFile: "Wählen Sie die hochzuladende CSV aus",
+      updateDate: "Bearbeitungsdatum",
+      uploadFile: "Wählen Sie eine Datei (*.csv) aus",
       upload: "Hochladen",
       user: "Benutzer",
       username: "Benutzername",
       viewas: "Ansicht als",
       workgroup: "Arbeitsgruppe",
       yes: "Ja",
-      you: "dir"
+      you: "Du"
     },
     messages: {
       'enablingUser': (
-        'Sie werden den Benutzer "{{user}}" wieder ' +
-        'aktivieren. Dieser Benutzer kann sich anmelden ' +
+        'Der Benutzer "{{user}}" wird wieder ' +
+        'aktiviert. Dieser Benutzer kann sich dann wieder anmelden ' +
         'und Änderungen basierend auf seinen Rollen vornehmen.'
       ),
       'enablingWorkgroup': (
-        'Sie werden die Arbeitsgruppe "{{workgroup}}" wieder aktivieren. ' +
+        'Die Arbeitsgruppe "{{workgroup}}" wird wieder aktiviert. ' +
         'Benutzer, die zu dieser Arbeitsgruppe gehören, können ' +
         'Änderungen basierend auf ihren Rollen vornehmen.'
       ),
@@ -419,17 +418,16 @@ trigger all users to agree again.`
         'da sich derzeit einige Aktivitäten in der Datenbank befinden.'
       ),
       'reenablingTip': (
-        'Sie können es später wieder aktivieren.'
+        'Sie können ihn später wieder aktivieren.'
       ),
       'deletingUserTip': (
-        'Der Benutzer wird aus der Datenbank gelöscht, aber später ' +
-        'können Sie denselben Benutzer erneut erstellen.'
+        'Der Benutzer wird aus der Datenbank gelöscht.'
       ),
       'deletingWorkgroupTip': (
         'Die Arbeitsgruppe wird dauerhaft aus der Datenbank gelöscht'
       ),
       'identifierAlreadyUsed': (
-        'Identifier already used'
+        'Identifikator bereits vergeben.'
       ),
       'disclaimer_publish_title': (
         'Haftungsausschluss veröffentlichen'
@@ -443,30 +441,30 @@ des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
       )
     },
     error: {
-      'E-900': `Borehole locked by {{user}}`,
-      'howToResolve': 'How to resolve this issue?',
-      'errorGap': 'Non continuos data found',
-      'errorGapSolution1': 'Fill gap with "undefined" layer',
-      'errorGapSolution2': 'Replace upper layer base with top from lower layer',
-      'errorGapSolution3': 'Replace lower layer top with 0 meters',
-      'errorGapSolution4': 'Replace lower layer top with base from upper layer',
-      'wrongDepth': 'Wrong depth',
+      'E-900': `Bohrung durch den {{user}} gesperrt`,
+      'howToResolve': 'Wie soll dieser Fehler behoben werden?',
+      'errorGap': 'Schichttiefen sind nicht kontinuierlich',
+      'errorGapSolution1': 'Lücke mit "nicht definierter Schicht" füllen',
+      'errorGapSolution2': 'Basis der oberen Schicht mit Top der unteren Schicht ersetzen',
+      'errorGapSolution3': 'Top der unteren Schicht mit o Metern ersetzen',
+      'errorGapSolution4': 'Top der unteren Schicht mit der Basis der oberen Schicht ersetzen',
+      'wrongDepth': 'Falsche Endtiefe',
       'wrongDepthSolution1': (
-        'Last layer depth ({{lDepth}}) not equals to ' +
-        'total borehole depth ({{bDepth}}). ' +
+        'Tiefe der letzten Schicht ({{lDepth}} m) stimmt nicht mit der ' +
+        'Endtiefe ({{bDepth}}) überein. ' +
         'Ändern Sie das Feld Basis-MD manuell.'
       ),
-      'missingBedrock': 'Missing bedrock',
+      'missingBedrock': 'Tiefe Top Fels fehlt!',
       'missingBedrockSolution': (
-        'Add the Bedrock automatically from data filled into the ' +
-        'Borehole page.'
+        'Tiefe Top Fels automatisch aus der Bohrdaten-Seite ' +
+        'übernehmen.'
       ),
-      'missingLayer': 'Missing layers',
+      'missingLayer': 'Fehlende Schicht',
       'missingLayerSolution': (
-        'Please fill the space between the surface and the bedrock (below)'
+        'Bitte Schichten zwischen Geländeoberfläche und Top Fels (unten) ergänzen'
       ),
-      'errorOverlap': 'Overlapping layers',
-      'errorStartWrong': 'First layer not starting from the surface',
+      'errorOverlap': 'Überlappende Schichten',
+      'errorStartWrong': 'Erste Schicht beginnt nicht an der Geländeoberfläche',
     },
     header: {
       'explore': 'Durchsuchen',
@@ -495,11 +493,11 @@ des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
       'editingEnabled': 'Die Bearbeitung hat begonnen',
       'locked_by': 'Änderung in Bearbeitung von',
       'locked_at': 'Gesperrt am',
-      'locked_status': 'Zustand'
+      'locked_status': 'Status'
     },
     borehole_form: {
-      'editingStart': 'Beginnen Bearbeitung',
-      'editingStop': 'Beenden Bearbeitung',
+      'editingStart': 'Bearbeitung beginnen',
+      'editingStop': 'Bearbeitung beenden',
       'completness': 'Vollständigkeit',
       'creation': 'Erstellungsdatum',
       'author': 'Autor',
@@ -508,16 +506,16 @@ des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
       'meta_borehole': 'Bohrloch',
       'form_admin': 'Admin',
       'meta_stratigraphy': 'Stratigrafie',
-      'loading_fetch': 'Lade Bohrloch..',
-      'creation_fetch': 'Vorbereitung neues Bohrloch..',
+      'loading_fetch': 'Lade Bohrloch.',
+      'creation_fetch': 'Vorbereitung neues Bohrloch.',
       'duplicate': 'Doppelter Wert: neuen Wert setzen.',
-      'date_format': 'tt.mm.yyyy',
+      'date_format': 'TT.MM.JJJJ',
       'original_name': 'Originalname',
       'public_name': 'Öffentlicher Name',
       'kind': 'Bohrtyp',
       'project_name': 'Projektname',
-      'restriction': 'Restriktion',
-      'restriction_until': 'Restriktion Datum',
+      'restriction': 'Beschränkung',
+      'restriction_until': 'Datum Beschränkung',
       'coordinates': 'Koordinaten',
       'location_x': 'Koordinate O',
       'location_y': 'Koordinate N',
@@ -562,10 +560,10 @@ des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
       'creation_fetch': 'Bereite neue Schicht vor..',
       'depth': 'Bohrendtiefe',
       'depth_from': 'Top MD (m)',
-      'depth_to': 'Base MD (m)',
+      'depth_to': 'Basis MD (m)',
       'description': 'Schichtbeschreibung',
-      'geology': 'Geologiebeschreibung',
-      'last': 'Bohrloch Ende',
+      'geology': 'Geologische Beschreibung',
+      'last': 'Bohrlochende',
       'qt_description': 'QC Beschreibung',
       'lithology': 'Lithologie / Petrologie',
       'lithostratigraphy': 'Lithostratigrafie',
@@ -603,7 +601,7 @@ des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
     search: {
       'reset': 'Zurücksetzen',
       'identifier': 'Kennung',
-      'last_update': 'Last update',
+      'last_update': 'Letzte Aktualisierung',
       'creation': 'Erstellungsdatum',
       'completness': 'Filter auf Vollständigkeit',
       'all': 'Alle',
@@ -617,11 +615,11 @@ des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
       'spatial_filter': 'Räumlicher Filter'
     },
     version: {
-      '0': 'Fertiggestellt',
-      'EDIT': 'Änderung in Bearbeitung',
-      'CONTROL':'Wissenschaftlich Prüfung',
-      'VALID': 'Bestätigung',
-      'PUBLIC': 'Veröffentlichen'
+      '0': 'fertiggestellt',
+      'EDIT': 'in Bearbeitung',
+      'CONTROL':'wissenschaftlich geprüft',
+      'VALID': 'validiert',
+      'PUBLIC': 'veröffentlicht'
     }
   },
   it: {
