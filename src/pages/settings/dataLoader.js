@@ -95,7 +95,7 @@ class DataLoader extends React.Component {
                       fontSize: '1.2em'
                     }}
                   >
-                    Welcome to BDMS
+                    Welcome to swissforage.ch
                   </div>
                   <div
                     style={{
@@ -113,9 +113,8 @@ class DataLoader extends React.Component {
                 paddingTop: '2em'
               }}
             >
-              A platform to manage data of soil investigations according to
-              the Borehole data model defined by the Swiss Geological
-              Survey at swisstopo (
+              A platform to acquire borehole data according to the Borehole
+              data model defined by the Swiss Geological Survey at swisstopo (
               <a
                 className='linker link'
                 href='https://geoservice.ist.supsi.ch/docs/bdms'
@@ -130,17 +129,25 @@ class DataLoader extends React.Component {
                 paddingTop: '1em'
               }}
             >
-              For information or to request a demonstration please &nbsp;
+              For information or to request a demonstration please contact
+              the Swiss Geological Survey at swisstopo: &nbsp;
               <a
                 className='linker link'
-                href='https://geoservice.ist.supsi.ch/docs/bdms'
+                href='mailto:geolinfo@swisstopo.ch.'
                 rel="noopener noreferrer"
-                target='_BLANK'
               >
                 contact
               </a>
-              &nbsp; the Swiss Geological Survey at Swisstopo.
             </div>
+            {/* <div
+              style={{
+                paddingTop: '1em'
+              }}
+            >
+              For any use of swissforages.ch please respect the disclaimer of
+              the Swiss Confederation and in particular the disclaimer
+              (LINK to DISCLAIMER) of swissforages.ch.
+            </div> */}
           </div>
 
           <div
@@ -156,7 +163,7 @@ class DataLoader extends React.Component {
                 textAlign: 'center'
               }}
             >
-              Signin
+              Sign in
             </div>
             {/** Trick to disable autofill in chrome */}
             <input

@@ -28,7 +28,7 @@ class MenuComponent extends React.Component {
   render () {
 
     const {
-      i18n, handleModeChange, mode
+      i18n, handleModeChange, mode, t
     } = this.props;
 
     return (
@@ -56,8 +56,13 @@ class MenuComponent extends React.Component {
             marginLeft: '1em'
           }}
         >
-          <div>
-            Borehole Management System
+          <div
+            style={{
+              fontSize: '1.2em',
+              fontWeight: 'bold'
+            }}
+          >
+            swissforages.ch
           </div>
           <div
             style={{
@@ -73,7 +78,7 @@ class MenuComponent extends React.Component {
                       <span
                         style={{ color: '#ed1d24' }}
                       >
-                        <Icon name='binoculars' /> Viewer mode
+                        <Icon name='binoculars' /> Viewer
                       </span>
                     );
                   case 'editor':
@@ -81,8 +86,7 @@ class MenuComponent extends React.Component {
                       <span
                         style={{ color: '#ed1d24' }}
                       >
-                        <Icon name='edit' />
-                        Editor Mode
+                        <Icon name='edit' /> Editor
                       </span>
                     );
                   case 'setting':
@@ -230,10 +234,10 @@ class MenuComponent extends React.Component {
                 />
                 <List.Content>
                   <List.Header as='h4'>
-                    Viewer mode
+                    Viewer
                   </List.Header>
                   <List.Description>
-                    Search and display
+                    {t('header:viewerdesc')}
                   </List.Description>
                 </List.Content>
               </List.Item>
@@ -262,10 +266,10 @@ class MenuComponent extends React.Component {
                     />
                     <List.Content>
                       <List.Header as='h4'>
-                        Editor mode
+                        Editor
                       </List.Header>
                       <List.Description>
-                        Create or modify
+                        {t('header:editordesc')}
                       </List.Description>
                     </List.Content>
                   </List.Item>: null
@@ -286,10 +290,10 @@ class MenuComponent extends React.Component {
                 />
                 <List.Content>
                   <List.Header as='h4'>
-                    Settings
+                    {t('header:settings')}
                   </List.Header>
                   <List.Description>
-                    Update your preferences
+                    {t('header:settingdesc')}
                   </List.Description>
                 </List.Content>
               </List.Item>

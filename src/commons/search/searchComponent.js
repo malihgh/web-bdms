@@ -61,7 +61,7 @@ class SearchComponent extends React.Component {
                   ) ? null : 'none'
                 }}
               >
-                <label>Filter by Map</label>
+                <label>{t('borehole_form:filterbymap')}</label>
                 <Checkbox
                   checked={search.mapfilter}
                   onChange={(e, d) => {
@@ -81,7 +81,7 @@ class SearchComponent extends React.Component {
                 widths='equal'
               >
                 <Form.Field>
-                  <label>Center to selected</label>
+                  <label>{t('borehole_form:centerselected')}</label>
                   <Checkbox
                     checked={search.center2selected}
                     onChange={(e, d) => {
@@ -96,6 +96,7 @@ class SearchComponent extends React.Component {
                     display: search.center2selected === true ? null : 'none'
                   }}
                 >
+                  <label>{t('borehole_form:andzoom')}</label>
                   <label>...and zoom</label>
                   <Checkbox
                     checked={search.zoom2selected}
@@ -111,7 +112,7 @@ class SearchComponent extends React.Component {
         {
           this.isVisible('custom.borehole_identifier') ?
             <Form.Field>
-              <label>{t('borehole_form:identifier')}</label>
+              <label>{t('common:identifier')}</label>
               <DomainDropdown
                 onSelected={(selected) => {
                   this.props.setFilter(
@@ -302,8 +303,7 @@ class SearchComponent extends React.Component {
         {
           this.isVisible('restriction') ?
             <Form.Field>
-              <label>{t('borehole_form:restriction_until')} (
-                {t('borehole_form:date_format')})</label>
+              <label>{t('borehole_form:restriction_until')}</label>
               <DateField
                 date={search.filter.restriction_until_from}
                 onChange={(selected) => {
@@ -311,7 +311,7 @@ class SearchComponent extends React.Component {
                     'restriction_until_from', selected
                   );
                 }}
-                placeholder='After this date'
+                placeholder={t('borehole_form:afterdate')}
               />
               <DateField
                 date={search.filter.restriction_until_to}
@@ -320,7 +320,7 @@ class SearchComponent extends React.Component {
                     'restriction_until_to', selected
                   );
                 }}
-                placeholder='Before this date'
+                placeholder={t('beforedate:afterdate')}
               />
               <LabelReset
                 onClick={() => {
@@ -340,7 +340,7 @@ class SearchComponent extends React.Component {
                     eve.target.value
                   );
                 }}
-                placeholder='Elevation from meters'
+                placeholder={t('borehole_form:fromelevation')}
                 type='number'
                 value={search.filter.elevation_z_from}
               />
@@ -351,7 +351,7 @@ class SearchComponent extends React.Component {
                     eve.target.value
                   );
                 }}
-                placeholder='Elevation to meters'
+                placeholder={t('borehole_form:toelevation')}
                 type='number'
                 value={search.filter.elevation_z_to}
               />
@@ -373,7 +373,7 @@ class SearchComponent extends React.Component {
                     eve.target.value
                   );
                 }}
-                placeholder='Depth from meters'
+                placeholder={t('borehole_form:fromdepth')}
                 type='number'
                 value={search.filter.length_from}
               />
@@ -384,7 +384,7 @@ class SearchComponent extends React.Component {
                     eve.target.value
                   );
                 }}
-                placeholder='Depth to meters'
+                placeholder={t('borehole_form:todepth')}
                 type='number'
                 value={search.filter.length_to}
               />
@@ -440,7 +440,7 @@ class SearchComponent extends React.Component {
                     eve.target.value
                   );
                 }}
-                placeholder='From meters'
+                placeholder={t('borehole_form:fromdepth')}
                 type='number'
                 value={search.filter.top_bedrock_from}
               />
@@ -451,7 +451,7 @@ class SearchComponent extends React.Component {
                     eve.target.value
                   );
                 }}
-                placeholder='To meters'
+                placeholder={t('borehole_form:todepth')}
                 type='number'
                 value={search.filter.top_bedrock_to}
               />
@@ -534,8 +534,7 @@ class SearchComponent extends React.Component {
         {
           this.isVisible('drilling_date') ?
             <Form.Field>
-              <label>{t('borehole_form:drilling_date')} (
-                {t('borehole_form:date_format')})</label>
+              <label>{t('borehole_form:drilling_date')}</label>
               <DateField
                 date={search.filter.drilling_date_from}
                 onChange={(selected) => {
@@ -543,7 +542,7 @@ class SearchComponent extends React.Component {
                     'drilling_date_from', selected
                   );
                 }}
-                placeholder='After this date'
+                placeholder={t('borehole_form:afterdate')}
               />
               <DateField
                 date={search.filter.drilling_date_to}
@@ -552,7 +551,7 @@ class SearchComponent extends React.Component {
                     'drilling_date_to', selected
                   );
                 }}
-                placeholder='Before this date'
+                placeholder={t('borehole_form:beforedate')}
               />
               <LabelReset
                 onClick={() => {
@@ -572,7 +571,7 @@ class SearchComponent extends React.Component {
                     eve.target.value
                   );
                 }}
-                placeholder='From meters'
+                placeholder={t('borehole_form:fromdiameter')}
                 type='number'
                 value={search.filter.drill_diameter_from}
               />
@@ -583,7 +582,7 @@ class SearchComponent extends React.Component {
                     eve.target.value
                   );
                 }}
-                placeholder='To meters'
+                placeholder={t('borehole_form:todiameter')}
                 type='number'
                 value={search.filter.drill_diameter_to}
               />
@@ -758,7 +757,7 @@ class SearchComponent extends React.Component {
         {
           this.isVisible('custom.canton') ?
             <Form.Field>
-              <label>Municipality</label>
+              <label>{t('borehole_form:municipality')}</label>
               <MunicipalityDropdown
                 canton={search.filter.canton}
                 disabled={search.filter.canton === null}

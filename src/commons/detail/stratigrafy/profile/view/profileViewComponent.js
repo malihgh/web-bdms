@@ -158,8 +158,7 @@ class ProfileView extends React.Component {
     ){
       return 'url("' + process.env.PUBLIC_URL + '/img/lit/' +
         domain.conf.image + '")';
-    }
-    else {
+    } else {
       return null;
     }
   }
@@ -361,7 +360,7 @@ class ProfileView extends React.Component {
                     >
                       <Checkbox
                         checked={this.state.allfields}
-                        label='Show all fields'
+                        label={t('common:showallfields')}
                         onChange={(ev, data)=>{
                           this.setState({
                             allfields: data.checked

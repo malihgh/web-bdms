@@ -437,7 +437,9 @@ class StratigraphyFormContainer extends React.Component {
                     width: '50%'
                   }}
                 >
-                  <label>Date</label>
+                  <label>
+                    {t('common:date')}
+                  </label>
                   <DateField
                     date={stratigraphy.date}
                     onChange={(selected)=>{
@@ -699,9 +701,12 @@ class StratigraphyFormContainer extends React.Component {
                           /> {(()=>{
                             const l = Object.keys(this.state.consistency).length;
                             if (l === 1) {
-                              return 'One error found.';
+                              return t('error:oneerror');
                             }
-                            return `${l} errors found.`;
+                            return t(
+                              'error:moreerror',
+                              { number: l }
+                            );
                           })()}
                         </div>
                     }
@@ -959,5 +964,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )((
-  withTranslation(['borehole_form', 'common'])(StratigraphyFormContainer)
+  withTranslation(['borehole_form', 'common', 'error'])(StratigraphyFormContainer)
 ));

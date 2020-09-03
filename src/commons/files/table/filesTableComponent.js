@@ -24,16 +24,25 @@ const FilesTableComponent = props => {
           <Table.Row>
             {
               props.editor === true &&
-              <Table.HeaderCell>Public</Table.HeaderCell>
+              <Table.HeaderCell>
+                {props.t('public')}
+              </Table.HeaderCell>
             }
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Description</Table.HeaderCell>
-            <Table.HeaderCell>Type</Table.HeaderCell>
-            <Table.HeaderCell>Uploaded</Table.HeaderCell>
+            <Table.HeaderCell>
+              {props.t('name')}
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              {props.t('description')}
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              {props.t('type')}
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              {props.t('uploaded')}
+            </Table.HeaderCell>
             {props.unlocked === true? <Table.HeaderCell />: null}
           </Table.Row>
         </Table.Header>
-
         <Table.Body>
           {
             props.files.map(

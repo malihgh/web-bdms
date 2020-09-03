@@ -254,7 +254,8 @@ class BoreholeTable extends TableComponent {
           }}
         >
           {
-            item.extended.top_bedrock
+            _.isNil(item.extended.top_bedrock)?
+              '': item.extended.top_bedrock + " m"
             // _.isNil(item.extended.top_bedrock)?
             //   <span>&nbsp;</span>:
             //   item.extended.top_bedrock

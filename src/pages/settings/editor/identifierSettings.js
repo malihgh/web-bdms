@@ -93,7 +93,8 @@ class IdentifierSettings extends React.Component {
                 >
                   {
                     this.state.uId !== null?
-                      <Icon name='save' />:  <Icon name='plus' />
+                      <Icon name='save' />: 
+                      <Icon name='plus' />
                   }
                 </Form.Button>
               </div>
@@ -151,7 +152,7 @@ class IdentifierSettings extends React.Component {
                       secondary
                       size='tiny'
                     >
-                      Confirm
+                      {t('confirm')}
                     </Button>
                   </Popup>
                   <div

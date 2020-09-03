@@ -286,7 +286,7 @@ class LayersList extends React.Component {
                                     }}
                                     size='mini'
                                   >
-                                    <Icon name='cancel' /> Cancel
+                                    <Icon name='cancel' /> {t('common:cancel')}
                                   </Button>
                                   <Button
                                     disabled={this.state.resolvingAction === null}
@@ -306,7 +306,7 @@ class LayersList extends React.Component {
                                     secondary
                                     size='mini'
                                   >
-                                    <Icon name='check' /> Confirm
+                                    <Icon name='check' /> {t('common:confirm')}
                                   </Button>
                                 </div>
                               </div>: null
@@ -367,15 +367,14 @@ class LayersList extends React.Component {
                           fontWeight: 'bold'
                         }}
                       >
-                        Attention:
+                        {t('layer_form:attention')}
                       </div>
                       <div
                         style={{
                           fontSize: '0.8em'
                         }}
                       >
-                        You are about to delete this level, 
-                        how do you want to procede?
+                        {t('layer_form:deletelayerconfirmation')}
                       </div>
                       <div
                         style={{
@@ -386,7 +385,7 @@ class LayersList extends React.Component {
                           <Form.Field>
                             <Radio
                               checked={this.state.deleteAction === 0}
-                              label='Just delete this layer'
+                              label={t('layer_form:deletelayer')}
                               name='radioGroup'
                               onChange={this.handleDeleteAction}
                               value={0}
@@ -397,7 +396,7 @@ class LayersList extends React.Component {
                               <Form.Field>
                                 <Radio
                                   checked={this.state.deleteAction === 1}
-                                  label='Extend upper layer to bottom'
+                                  label={t('layer_form:extendupper')}
                                   name='radioGroup'
                                   onChange={this.handleDeleteAction}
                                   value={1}
@@ -409,7 +408,7 @@ class LayersList extends React.Component {
                               <Form.Field>
                                 <Radio
                                   checked={this.state.deleteAction === 2}
-                                  label='Extend lower layer to top'
+                                  label={t('layer_form:extendlower')}
                                   name='radioGroup'
                                   onChange={this.handleDeleteAction}
                                   value={2}
@@ -421,7 +420,7 @@ class LayersList extends React.Component {
                               <Form.Field>
                                 <Radio
                                   checked={this.state.deleteAction === 3}
-                                  label='Set manually'
+                                  label={t('layer_form:setmanually')}
                                   name='radioGroup'
                                   onChange={this.handleDeleteAction}
                                   value={3}
@@ -460,7 +459,7 @@ class LayersList extends React.Component {
                           }}
                           size='mini'
                         >
-                          <Icon name='cancel' /> Cancel
+                          <Icon name='cancel' /> {t('common:cancel')}
                         </Button>
                         <Button
                           icon
@@ -482,7 +481,7 @@ class LayersList extends React.Component {
                           }}
                           size='mini'
                         >
-                          <Icon name='trash alternate outline' /> Confirm
+                          <Icon name='trash alternate outline' /> {t('common:confirm')}
                         </Button>
                       </div>
                     </Table.Cell>
@@ -766,7 +765,7 @@ class LayersList extends React.Component {
                                   }}
                                   size='mini'
                                 >
-                                  <Icon name='cancel' /> Cancel
+                                  <Icon name='cancel' /> {t('common:cancel')}
                                 </Button>
                                 <Button
                                   icon
@@ -782,7 +781,7 @@ class LayersList extends React.Component {
                                   secondary
                                   size='mini'
                                 >
-                                  <Icon name='plus' /> Add
+                                  <Icon name='plus' /> {t('common:add')}
                                 </Button>
                               </div>
                             </div>: null
@@ -888,7 +887,7 @@ class LayersList extends React.Component {
                                   }}
                                   size='mini'
                                 >
-                                  Close
+                                  {t('common:close')}
                                 </Button>
                               </div>
                             </div>: null
@@ -972,5 +971,5 @@ export default connect(
   mapStateToProps,
   null
 )((
-  withTranslation('error')(LayersList)
+  withTranslation(['error', 'common', 'layer_form'])(LayersList)
 ));

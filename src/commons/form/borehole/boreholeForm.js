@@ -839,7 +839,7 @@ class BoreholeForm extends React.Component {
                           <DomainText
                             geocode='restriction_until'
                             schema='borehole_form'
-                          /> ({t('date_format')})
+                          />
                         </label>
                         <DateField
                           date={borehole.restriction_until}
@@ -1323,7 +1323,7 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('drilling_date')} ({t('date_format')})</label>
+                            <label>{t('drilling_date')}</label>
                             <DateField
                               date={borehole.drilling_date}
                               onChange={(selected) => {

@@ -65,7 +65,7 @@ const MenuSettings = (props) => {
           />
           <List.Content>
             <List.Header as='h3'>
-              Viewer mode  
+              Viewer  
             </List.Header>
           </List.Content>
         </List.Item>
@@ -91,7 +91,7 @@ const MenuSettings = (props) => {
               />
               <List.Content>
                 <List.Header as='h3'>
-                  Editor mode  
+                  Editor  
                 </List.Header>
               </List.Content>
             </List.Item>: null
