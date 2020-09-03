@@ -246,7 +246,12 @@ class WorkflowForm extends React.Component {
                 null:
                 <div>
                   <span>
-                    Your comments {readOnly? '(disabled)': null}:
+                    {
+                      t('common:yourcomments')
+                    } {
+                      readOnly?
+                        '(' + t('common:disabled') + ')': null
+                    }:
                   </span>
                   <CommentArea
                     onChange={this.handleChange}

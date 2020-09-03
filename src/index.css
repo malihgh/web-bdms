@@ -83,6 +83,18 @@
   flex: 1 1 100%;
 }
 
+.bdms-padding-1 {
+  padding: 1em;
+}
+
+.bdms-padding-2 {
+  padding: 2em;
+}
+
+.bdms-padding-4 {
+  padding: 4em;
+}
+
 .bdms-margin-1 {
   margin: 1em;
 }

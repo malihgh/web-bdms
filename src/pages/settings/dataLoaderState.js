@@ -3,7 +3,8 @@ const initialState = {
   isReady: false,
   coreCantonList: false,
   coreDomainList: false,
-  coreUser: false
+  coreUser: false,
+  terms: false
 };
 
 const dataLoaderState = (state = initialState, action) => {
@@ -12,6 +13,7 @@ const dataLoaderState = (state = initialState, action) => {
     path !== '/geoapi/canton'
     && path !== '/borehole/codes'
     && path !== '/user'
+    && path !== '/terms'
   ) {
     return state;
   }
@@ -36,15 +38,26 @@ const dataLoaderState = (state = initialState, action) => {
       default:
         return state;
     }
+  } else if (path === '/terms'){
+    switch (action.type) {
+      case 'ACCEPT_OK':
+        copy.terms = action.json.success;
+        break;
+
+      default:
+        return state;
+    }
   } else if (path === '/user'){
     switch (action.type) {
       case 'GET_OK':
         copy.coreUser = true;
+        copy.terms = action.json.data.terms;
         break;
 
       case 'UNSET_AUTHENTICATION':
         copy.coreUser = false;
         copy.isReady = false;
+        copy.terms = false;
         break;
 
       default:

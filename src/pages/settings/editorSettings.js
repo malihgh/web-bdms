@@ -187,7 +187,7 @@ class EditorSettings extends React.Component {
               margin: '0px'
             }}
           >
-            Search filters
+            {t('common:searchfilters')}
           </Header>
           <div
             style={{
@@ -537,7 +537,7 @@ class EditorSettings extends React.Component {
                     margin: '0px'
                   }}
                 >
-                  Stratigraphy fields
+                  {t('common:stratigraphyfields')}
                 </Header>
                 <div
                   style={{

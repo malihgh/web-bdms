@@ -271,7 +271,7 @@ class LayerForm extends React.Component {
         >
           <Checkbox
             checked={this.state.allfields}
-            label='Show all fields'
+            label={t('common:showallfields')}
             onChange={(ev, data)=>{
               this.setState({
                 allfields: data.checked

@@ -45,11 +45,11 @@ class DataLoader extends React.Component {
     return (
       <div
         style={{
-          backgroundColor: '#787878',
-          flex: '1 1 0%',
-          display: 'flex',
-          justifyContent: 'center',
           alignItems: 'center',
+          backgroundColor: '#787878',
+          display: 'flex',
+          flex: '1 1 0%',
+          justifyContent: 'center',
           height: '100%'
         }}
       >
@@ -95,7 +95,7 @@ class DataLoader extends React.Component {
                       fontSize: '1.2em'
                     }}
                   >
-                    Welcome to BDMS
+                    Welcome to swissforage.ch
                   </div>
                   <div
                     style={{
@@ -113,9 +113,8 @@ class DataLoader extends React.Component {
                 paddingTop: '2em'
               }}
             >
-              A platform to manage data of soil investigations according to
-              the Borehole data model defined by the Swiss Geological
-              Survey at swisstopo (
+              A platform to acquire borehole data according to the Borehole
+              data model defined by the Swiss Geological Survey at swisstopo (
               <a
                 className='linker link'
                 href='https://geoservice.ist.supsi.ch/docs/bdms'
@@ -130,17 +129,25 @@ class DataLoader extends React.Component {
                 paddingTop: '1em'
               }}
             >
-              For information or to request a demonstration please &nbsp;
+              For information or to request a demonstration please contact
+              the Swiss Geological Survey at swisstopo: &nbsp;
               <a
                 className='linker link'
-                href='https://geoservice.ist.supsi.ch/docs/bdms'
+                href='mailto:geolinfo@swisstopo.ch.'
                 rel="noopener noreferrer"
-                target='_BLANK'
               >
                 contact
               </a>
-              &nbsp; the Swiss Geological Survey at Swisstopo.
             </div>
+            {/* <div
+              style={{
+                paddingTop: '1em'
+              }}
+            >
+              For any use of swissforages.ch please respect the disclaimer of
+              the Swiss Confederation and in particular the disclaimer
+              (LINK to DISCLAIMER) of swissforages.ch.
+            </div> */}
           </div>
 
           <div
@@ -156,7 +163,7 @@ class DataLoader extends React.Component {
                 textAlign: 'center'
               }}
             >
-              Signin
+              Sign in
             </div>
             {/** Trick to disable autofill in chrome */}
             <input
@@ -189,8 +196,8 @@ class DataLoader extends React.Component {
                   this.props.loadUser();
                 }
               }}
-              ref={this.fieldToRef}
               placeholder='username'
+              ref={this.fieldToRef}
               value={
                 this.props.user.authentication !== null?
                   this.props.user.authentication.username: ''
@@ -239,6 +246,7 @@ class DataLoader extends React.Component {
                 this.props.loadUser();
               }}
               primary={this.props.user.data === null}
+              size='small'
               style={{
                 marginTop: '1.5em'
               }}
@@ -254,6 +262,19 @@ class DataLoader extends React.Component {
                   <span>&nbsp;</span>: 'User or password wrong'
               }
             </div>
+            <Button
+              compact
+              content='Enter as viewer'
+              disabled={this.props.user.data !== null}
+              fluid
+              onClick={() => {
+                this.props.anonymousLogin(
+                  'guest', 'MeiSe0we1Oowief'
+                );
+              }}
+              secondary
+              size='small'
+            />
           </div>
         </div>
       </div>
@@ -262,6 +283,7 @@ class DataLoader extends React.Component {
 };
 
 DataLoader.propTypes = {
+  anonymousLogin: PropTypes.func,
   loadCantons: PropTypes.func,
   loadDomains: PropTypes.func,
   loadSettings: PropTypes.func,
@@ -292,7 +314,14 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(loadUser());
     },
     setAuthentication: (username, password) => {
-      dispatch(setAuthentication(username, password));
+      return dispatch(setAuthentication(username, password));
+    },
+    anonymousLogin: async (username, password) => {
+      await Promise.all([
+        dispatch(setAuthentication(username, password)),
+        dispatch(loadUser())
+      ]);
+      return 'ciao';
     }
   };
 };

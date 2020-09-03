@@ -65,7 +65,7 @@ const MenuSettings = (props) => {
           />
           <List.Content>
             <List.Header as='h3'>
-              Viewer mode  
+              Viewer  
             </List.Header>
           </List.Content>
         </List.Item>
@@ -91,7 +91,7 @@ const MenuSettings = (props) => {
               />
               <List.Content>
                 <List.Header as='h3'>
-                  Editor mode  
+                  Editor  
                 </List.Header>
               </List.Content>
             </List.Item>: null
@@ -141,6 +141,32 @@ const MenuSettings = (props) => {
               <List.Content>
                 <List.Header as='h3'>
                   Admin
+                </List.Header>
+              </List.Content>
+            </List.Item>: null
+        }
+        {
+          props.user.data.admin === true?
+            <List.Item
+              onClick={()=>{
+                history.push(
+                  process.env.PUBLIC_URL + '/setting/term'
+                );
+              }}
+              style={{
+                padding: '1em',
+                borderLeft: location.pathname.indexOf('/setting/term') >= 0?
+                  '0.5em solid rgb(237, 29, 36)': null
+              }}
+            >
+              <List.Icon
+                name='pencil'
+                size='large'
+                verticalAlign='middle'
+              />
+              <List.Content>
+                <List.Header as='h3'>
+                  {t('common:terms')}
                 </List.Header>
               </List.Content>
             </List.Item>: null

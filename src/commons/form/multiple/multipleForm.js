@@ -91,7 +91,7 @@ class MultipleForm extends React.Component {
       'cuttings': 'custom.cuttings',
       'purpose': 'extended.purpose',
       'drill_diameter': 'custom.drill_diameter',
-      'status': 'status.purpose',
+      'status': 'extended.status',
       'qt_bore_inc_dir': 'custom.qt_bore_inc_dir',
       'qt_length': 'custom.qt_length',
       'top_bedrock': 'extended.top_bedrock',
@@ -277,7 +277,7 @@ class MultipleForm extends React.Component {
                   {this.getDomain('restriction')}
                   <Form.Field
                     required={this.state.data.restriction === 29}>
-                    <label>{t('restriction_until')} ({t('date_format')})</label>
+                    <label>{t('restriction_until')}</label>
                     <DateField
                       date={this.state.data.restriction_until}
                       onChange={(selected)=>{
@@ -346,7 +346,7 @@ class MultipleForm extends React.Component {
               {
                 this.isActive('drilling_date')?
                   <Form.Field>
-                    <label>{t('drilling_date')} ({t('date_format')})</label>
+                    <label>{t('drilling_date')}</label>
                     <DateField
                       date={this.state.data.drilling_date}
                       onChange={(selected)=>{

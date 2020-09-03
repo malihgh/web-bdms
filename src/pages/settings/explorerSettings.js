@@ -97,7 +97,7 @@ class ExplorerSettings extends React.Component {
               margin: '0px'
             }}
           >
-            Appearance
+            {t('common:appearance')}
           </Header>
           <div
             style={{
@@ -116,7 +116,7 @@ class ExplorerSettings extends React.Component {
             >
               {
                 this.state.appearance === true ?
-                  'Collapse' : 'Expand'
+                  t('common:collapse'): t('common:expand')
               }
             </Button>
           </div>
@@ -211,7 +211,7 @@ class ExplorerSettings extends React.Component {
               margin: '0px'
             }}
           >
-            Map
+            {t('common:map')}
           </Header>
           <div
             style={{
@@ -230,7 +230,7 @@ class ExplorerSettings extends React.Component {
             >
               {
                 this.state.map === true ?
-                  'Collapse' : 'Expand'
+                  t('common:collapse'): t('common:expand')
               }
             </Button>
           </div>
@@ -362,7 +362,7 @@ class ExplorerSettings extends React.Component {
                         }}
                         // size='mini'
                       >
-                        Load
+                        {t('common:load')}
                       </Button>
                     </div>
                     {
@@ -812,7 +812,7 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={setting.data.filter.mapfilter}
-                  label='Filter by Map'
+                  label={t('borehole_form:filterbymap')}
                   onChange={(e, d) => {
                     toggleFilter(
                       'mapfilter',
@@ -842,7 +842,7 @@ class ExplorerSettings extends React.Component {
               margin: '0px'
             }}
           >
-            Search filters
+            {t('common:searchfilters')}
           </Header>
           <div
             style={{
@@ -861,7 +861,7 @@ class ExplorerSettings extends React.Component {
             >
               {
                 this.state.search_filter === true ?
-                  'Collapse' : 'Expand'
+                  t('common:collapse'): t('common:expand')
               }
             </Button>
           </div>

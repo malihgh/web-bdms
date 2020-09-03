@@ -14,6 +14,7 @@ import EditorSettings from './editorSettings';
 import AdminSettings from './adminSettings';
 import DatabaseSettings from './databaseSettings';
 import ResourcesSettings from './resourcesSettings';
+import TermSettings from './termSettings';
 
 const SettingCmp = (props) => {
   
@@ -64,6 +65,10 @@ const SettingCmp = (props) => {
             <Route
               component={AdminSettings}
               path={process.env.PUBLIC_URL + "/setting/admin"}
+            />
+            <Route
+              component={TermSettings}
+              path={process.env.PUBLIC_URL + "/setting/term"}
             />
             <Route
               component={DatabaseSettings}

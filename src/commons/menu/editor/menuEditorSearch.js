@@ -18,7 +18,7 @@ import {
 
 import {
   createBorehole,
-  uploadBoreholeList
+  importBoreholeList
 } from '@ist-supsi/bmsjs';
 
 import SearchEditorComponent from '../../search/editor/searchEditorComponent'
@@ -218,7 +218,7 @@ class MenuEditorSearch extends React.Component {
             });
           }}
           open={this.state.modal===true}
-          size='mini'
+          size='tiny'
         >
           <Header
             content={t(`common:newBorehole`)}
@@ -242,11 +242,14 @@ class MenuEditorSearch extends React.Component {
                     style={{
                       border: 'thin solid #787878',
                       margin: '1em 0px',
-                      padding: '1em'
+                      padding: '1em',
+                      overflow: 'auto',
+                      whiteSpace: 'nowrap'
                     }}
                   >
-                    "location_east";"location_north";"original_name"
-                    2719603;1081038.5;"test001"
+                    "location_east";"location_north";"original_name";"public_name";"project_name";"elevation_z";"drillend_date";"total_depth";"top_bedrock";"remarks"
+                    <br/>
+                    2719603;1081038.5;"test001";"foo";"bar";"foobar";273.7;"2020-06-16";28.2;18.7;"lorem ipsum"
                   </div>
                   <span
                     style={{
@@ -262,7 +265,6 @@ class MenuEditorSearch extends React.Component {
                   >
                     <Input
                       onChange={(e)=>{
-                        console.log(e.target.files[0]);
                         this.setState({
                           selectedFile: e.target.files[0]
                         });
@@ -342,7 +344,7 @@ class MenuEditorSearch extends React.Component {
                   creating: true,
                 }, ()=>{
                   if (this.state.upload === true){
-                    uploadBoreholeList(
+                    importBoreholeList(
                       this.state.workgroup,
                       this.state.selectedFile
                     ).then(

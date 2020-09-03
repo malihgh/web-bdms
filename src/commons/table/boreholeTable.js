@@ -81,12 +81,14 @@ class BoreholeTable extends TableComponent {
           />
         </Table.HeaderCell> */}
         <Table.HeaderCell
-          verticalAlign='top'>
+          verticalAlign='top'
+        >
           {this.getIcon('original_name')}
           {this.getIcon('kind', true)}
         </Table.HeaderCell>
         <Table.HeaderCell
-          verticalAlign='top'>
+          verticalAlign='top'
+        >
           {this.getIcon('restriction')}
           {this.getIcon('restriction_until', true)}
         </Table.HeaderCell>
@@ -103,19 +105,21 @@ class BoreholeTable extends TableComponent {
           </span>
         </Table.HeaderCell>*/}
         <Table.HeaderCell
-          verticalAlign='top'>
+          verticalAlign='top'
+        >
           {this.getIcon('length')}
           {this.getIcon('top_bedrock', true)}
         </Table.HeaderCell>
         <Table.HeaderCell
-          verticalAlign='top'>
+          verticalAlign='top'
+        >
           {this.getIcon('drilling_date')}
           {this.getIcon('purpose', true)}
         </Table.HeaderCell>
         <Table.HeaderCell
           style={{ width: '4em' }}
-          verticalAlign='top'>
-
+          verticalAlign='top'
+        >
         </Table.HeaderCell>
       </Table.Row>
     );
@@ -250,7 +254,8 @@ class BoreholeTable extends TableComponent {
           }}
         >
           {
-            item.extended.top_bedrock
+            _.isNil(item.extended.top_bedrock)?
+              '': item.extended.top_bedrock + " m"
             // _.isNil(item.extended.top_bedrock)?
             //   <span>&nbsp;</span>:
             //   item.extended.top_bedrock

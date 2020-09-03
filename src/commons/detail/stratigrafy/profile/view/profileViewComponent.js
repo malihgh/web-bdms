@@ -137,8 +137,6 @@ class ProfileView extends React.Component {
       domains
     } = this.props;
 
-    debugger;
-
     const ns = domains.data.layer_kind.find(
       element => element.id === this.state.viewas
     ).conf.patternNS;
@@ -160,8 +158,7 @@ class ProfileView extends React.Component {
     ){
       return 'url("' + process.env.PUBLIC_URL + '/img/lit/' +
         domain.conf.image + '")';
-    }
-    else {
+    } else {
       return null;
     }
   }
@@ -363,7 +360,7 @@ class ProfileView extends React.Component {
                     >
                       <Checkbox
                         checked={this.state.allfields}
-                        label='Show all fields'
+                        label={t('common:showallfields')}
                         onChange={(ev, data)=>{
                           this.setState({
                             allfields: data.checked
