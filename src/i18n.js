@@ -219,7 +219,7 @@ trigger all users to agree again.`
       'date': 'Date',
       'editingStart': 'Start editing',
       'editingStop': 'Stop editing',
-      'centerselected': 'Center to celected',
+      'centerselected': 'Center to selected',
       'completness': 'Completness',
       'creation': 'Creation date',
       'author': 'Author',
