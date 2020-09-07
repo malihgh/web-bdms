@@ -1,6 +1,6 @@
 # List of all changes
 
-## What's new in web-bdms 1.0.1-RC1
+## What's new in web-bdms 1.0.1
 
 ### New features
 

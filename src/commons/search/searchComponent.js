@@ -81,7 +81,11 @@ class SearchComponent extends React.Component {
                 widths='equal'
               >
                 <Form.Field>
-                  <label>{t('borehole_form:centerselected')}</label>
+                  <label
+                    style={{
+                      whiteSpace: 'nowrap'
+                    }}
+                  >{t('borehole_form:centerselected')}</label>
                   <Checkbox
                     checked={search.center2selected}
                     onChange={(e, d) => {
@@ -97,7 +101,6 @@ class SearchComponent extends React.Component {
                   }}
                 >
                   <label>{t('borehole_form:andzoom')}</label>
-                  <label>...and zoom</label>
                   <Checkbox
                     checked={search.zoom2selected}
                     onChange={(e, d) => {

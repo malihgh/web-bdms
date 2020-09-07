@@ -133,7 +133,7 @@ class DataLoader extends React.Component {
               the Swiss Geological Survey at swisstopo: &nbsp;
               <a
                 className='linker link'
-                href='mailto:geolinfo@swisstopo.ch.'
+                href='mailto:geolinfo@swisstopo.ch'
                 rel="noopener noreferrer"
               >
                 contact

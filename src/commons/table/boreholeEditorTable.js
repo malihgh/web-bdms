@@ -80,7 +80,19 @@ class BoreholeEditorTable extends TableComponent {
                   'sort down' : 'sort up'
               }
             /> : null
-        } {t(key === 'workgroup'? 'common:workgroup': key)}
+        } {
+          key === 'workgroup'?
+            <span
+              key={'betjs-2-'+key}
+              style={{
+                fontSize: '0.8em',
+                color: '#787878'
+              }}
+            >
+              {t('common:workgroup')}
+            </span>:
+            t(key)
+        }
         {
           key === 'workgroup'?
             [
@@ -89,12 +101,8 @@ class BoreholeEditorTable extends TableComponent {
               />,
               <span
                 key={'betjs-2-'+key}
-                style={{
-                  fontSize: '0.8em',
-                  color: '#787878'
-                }}
               >
-                {key === 'workgroup'? 'status': key}
+                {key === 'workgroup'? 'Status': key}
               </span>
             ]: null
         }
