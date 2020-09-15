@@ -26,7 +26,7 @@ class DataLoader extends React.Component {
 
   componentDidMount(){
     if (process.env.NODE_ENV === 'development'){
-      this.props.setAuthentication('admin', 'admin');
+      this.props.setAuthentication('admin', 'swissforages');
     } else {
       this.props.setAuthentication('', '');
     }
