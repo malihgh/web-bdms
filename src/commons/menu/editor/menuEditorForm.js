@@ -7,9 +7,12 @@ import {
 } from "react-router-dom";
 
 import {
+  Button,
+  Header,
   Icon,
   List,
   Menu,
+  Modal,
   Progress
 } from 'semantic-ui-react';
 
@@ -33,9 +36,19 @@ class MenuEditorForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      confirmDelete: false,
       delete: false,
+      deleting: false,
       timeout: 0
     };
+  }
+
+  handleOpen(){
+    this.setState({ confirmDelete: true });
+  }
+
+  handleClose(){
+    this.setState({ confirmDelete: false });
   }
 
   render() {
@@ -429,29 +442,73 @@ class MenuEditorForm extends React.Component {
           {
             editableByCurrentUser === true?
               null:
-              <Menu.Item
-                disabled={
-                  borehole.data.lock === null
-                  || borehole.data.lock.username !== user.data.username
-                }
-                onClick={() => {
-                  deleteBorehole(borehole.data.id).then(
-                    function () {
-                      history.push(
-                        process.env.PUBLIC_URL + "/editor"
-                      );
+              <Modal
+                closeIcon
+                onClose={this.handleClose}
+                open={this.state.confirmDelete}
+                size='mini'
+                trigger={
+                  <Menu.Item
+                    disabled={
+                      borehole.data.lock === null
+                      || borehole.data.lock.username !== user.data.username
                     }
-                  );
-                }}
-                style={{
-                  flex: 1
-                }}
+                    onClick={() => {
+                      this.setState({
+                        confirmDelete: true
+                      });
+                      // deleteBorehole(borehole.data.id).then(
+                      //   function () {
+                      //     history.push(
+                      //       process.env.PUBLIC_URL + "/editor"
+                      //     );
+                      //   }
+                      // );
+                    }}
+                    style={{
+                      flex: 1
+                    }}
+                  >
+                    <Icon
+                      name='trash alternate'
+                    />
+                    {t('common:delete')}
+                  </Menu.Item>
+                }
               >
-                <Icon
-                  name='trash alternate'
+                <Header
+                  content={t('common:deleteForever')}
+                  // icon='archive'
                 />
-                {t('common:delete')}
-              </Menu.Item>
+                <Modal.Content>
+                  <p>
+                    {t('common:sure')}
+                  </p>
+                </Modal.Content>
+                <Modal.Actions>
+                  <Button
+                    negative
+                    loading={this.state.deleting}
+                    onClick={() => {
+                      this.setState({
+                        deleting: true
+                      }, () => {
+                        deleteBorehole(borehole.data.id).then(
+                          function () {
+                            history.push(
+                              process.env.PUBLIC_URL + "/editor"
+                            );
+                          }
+                        );
+                      });
+                    }}
+                  >
+                    <Icon
+                      name='trash alternate'
+                    /> {t('common:delete')}
+                  </Button>
+                </Modal.Actions>
+              </Modal>
           }
           {
             editableByCurrentUser === true?
