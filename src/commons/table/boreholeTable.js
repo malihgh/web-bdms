@@ -10,6 +10,7 @@ import DateText from '../form/dateText';
 import {
   Button,
   Icon,
+  Segment,
   Table
 } from 'semantic-ui-react';
 
@@ -324,6 +325,23 @@ class BoreholeTable extends TableComponent {
         /> */}
       </Table.Cell>,
     ]);
+  }
+  render() {
+    return (
+      <Segment
+        basic
+        loading={this.props.store.isFetching}
+        style={{
+          flex: "1 1 100%",
+          display: 'flex',
+          flexDirection: 'column',
+          // height: '100%',
+          overflow: 'hidden'
+        }}
+      >
+        {super.render()}
+      </Segment>
+    );
   }
 };
 

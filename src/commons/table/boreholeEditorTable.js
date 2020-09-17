@@ -3,19 +3,33 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
-import TableComponent from './tableComponent';
+// import TableComponent from './tableComponent';
 import DomainText from '../form/domain/domainText';
 import DateText from '../form/dateText';
 
+import TTable from './table';
+
 import {
-  Table, Icon, Checkbox
+  Button, Table, Icon, Checkbox, Segment, Modal, Header
 } from 'semantic-ui-react';
 
 import {
-  loadEditingBoreholes
+  loadEditingBoreholes, 
+  getdBoreholeIds,
+  deleteBoreholes,
 } from '@ist-supsi/bmsjs';
 
-class BoreholeEditorTable extends TableComponent {
+class BoreholeEditorTable extends TTable {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      ...this.state,
+      deleting: false,
+      confirmDelete: false,
+    };
+  }
+
   componentDidMount(){
     const {
       filter
@@ -56,6 +70,75 @@ class BoreholeEditorTable extends TableComponent {
     this.setState({
       selected: tmp
     });
+  }
+  handleMultipleClick() {
+    const {
+      filter,
+      onMultiple
+    } = this.props;
+    if (this.state.all === true || this.state.selected.length > 0) {
+      // Load selected id if all is true
+      if (onMultiple !== undefined) {
+        if (this.state.all === true) {
+          getdBoreholeIds(filter).then((response) => {
+            if (
+              response.data.success
+            ) {
+              //TODO check this part. Updating state is not incorrect!
+              onMultiple(
+                _.pullAll(response.data.data, this.state.selected)
+              );
+            }
+          }).catch((err) => {
+            console.log(err);
+          });
+        } else {
+          onMultiple(this.state.selected);
+        }
+      }
+    }
+  }
+  deleteList() {
+    const {
+      filter
+    } = this.props;
+    if (this.state.all === true || this.state.selected.length > 0) {
+      if (this.state.all === true) {
+        getdBoreholeIds(filter).then((response) => {
+          if (
+            response.data.success
+          ) {
+            deleteBoreholes(
+              _.pullAll(response.data.data, this.state.selected)
+            ).then(() => {
+              this.setState({
+                confirmDelete: false,
+                deleting: false,
+                selected: [],
+                all: false
+              }, () => {
+                this.props.loadData(1, filter);
+              });
+            });
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      } else {
+        deleteBoreholes(
+          this.state.selected
+        ).then(() => {
+          this.setState({
+            confirmDelete: false,
+            deleting: false,
+            selected: [],
+            all: false
+          }, () => {
+            this.props.loadData(1, filter);
+          });
+        });
+      }
+    }
   }
   getHeaderLabel(key, disableOrdering = false) {
     const { store, t } = this.props;
@@ -169,7 +252,9 @@ class BoreholeEditorTable extends TableComponent {
             />
         }
       </Table.Cell>,
-      <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
+      <Table.Cell
+        key={this.uid + "_" + idx + "_" + colIdx++}
+      >
         <span
           style={{
             fontSize: '0.8em',
@@ -273,6 +358,160 @@ class BoreholeEditorTable extends TableComponent {
       </Table.Cell>,
     ]);
   }
+  render() {
+    const {
+      t
+    } = this.props;
+    const {
+      selected,
+      all
+    } = this.state;
+    return (
+      <Segment
+        basic
+        loading={this.props.store.isFetching}
+        style={{
+          flex: "1 1 100%",
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          margin: '0px',
+          padding: '0px'
+        }}
+      >
+        {
+          all === true || selected.length > 0 ?
+            <div
+              style={{
+                backgroundColor: 'rgb(236, 236, 236)',
+                color: 'black',
+                textAlign: 'center',
+                padding: '0.5em'
+              }}
+            >
+              <span
+                style={{
+                  fontWeight: 'bold'
+                }}
+              >
+                {
+                  all === true ?
+                    t('common:allSelected'):
+                    selected.length === 1 ?
+                      t('common:oneSelected'):
+                      t(
+                        'common:someSelected',
+                        {
+                          howMany: selected.length
+                        }
+                      )
+                }
+              </span> (
+              <span
+                onClick={() => {
+                  this.setState({
+                    selected: [],
+                    all: false
+                  });
+                }}
+                style={{
+                  color: 'rgb(242, 113, 28)',
+                  textDecoration: 'underline',
+                  cursor: 'pointer'
+                }}
+              >
+                {t('common:reset')}
+              </span>)
+              &nbsp;
+              <Button
+                color='black'
+                onClick={() => {
+                  this.handleMultipleClick();
+                }}
+                size='mini'
+              >
+                {t('common:bulkEditing')}
+              </Button>
+              &nbsp;
+              {
+                all === false
+                && selected.length === 1?
+                  <Button
+                    onClick={() => {
+                      console.log('clone click');
+                    }}
+                    primary
+                    size='mini'
+                  >
+                    {t('common:copy')}
+                  </Button>:
+                  null
+              }
+              &nbsp;
+              <Modal
+                closeIcon
+                onClose={this.handleClose}
+                open={this.state.confirmDelete}
+                size='mini'
+                trigger={
+                  <Button
+                    loading={this.state.deleting}
+                    negative
+                    onClick={() => {
+                      this.setState({
+                        confirmDelete: true
+                      });
+                    }}
+                    size='mini'
+                  >
+                    {t('common:delete')}
+                  </Button>
+                }
+              >
+                <Header
+                  content={t('common:deleteForever')}
+                  // icon='archive'
+                />
+                <Modal.Content>
+                  <p>
+                    {t('common:sure')}
+                  </p>
+                </Modal.Content>
+                <Modal.Actions>
+                  <Button
+                    loading={this.state.deleting}
+                    negative
+                    onClick={() => {
+                      this.setState({
+                        deleting: true
+                      }, () => {
+                        this.deleteList();
+                      });
+                    }}
+                  >
+                    <Icon
+                      name='trash alternate'
+                    /> {t('common:delete')}
+                  </Button>
+                </Modal.Actions>
+              </Modal>
+            </div> : null
+        }
+        {/* <div
+          style={{
+            backgroundColor: '#ececec',
+            borderBottom: 'thin solid #c5c5c5',
+            color: 'black',
+            textAlign: 'center',
+            padding: '0.5em'
+          }}
+        >
+          {super.render()}
+        </div> */}
+        {super.render()}
+      </Segment>
+    );
+  }
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -304,4 +543,7 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(['borehole_form', 'version', 'common'])(BoreholeEditorTable));
+)(
+  withTranslation(
+    ['borehole_form', 'version', 'common']
+  )(BoreholeEditorTable));

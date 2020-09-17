@@ -86,7 +86,7 @@ const EditorComponent = function (props) {
                 <div
                   style={{
                     flex: '1 1.5 100%',
-                    padding: "1em",
+                    // padding: "1em",
                     // boxShadow: 'rgba(0, 0, 0, 0.5) 0px 0px 8px 0px inset',
                     display: 'flex',
                     flexDirection: 'column'
@@ -101,7 +101,8 @@ const EditorComponent = function (props) {
                         props.editor.direction
                       );
                     }}
-                    open={props.store.mselected}
+                    // open={props.store.mselected}
+                    open={Array.isArray(props.store.mselected)}
                   >
                     <Modal.Content
                       style={{

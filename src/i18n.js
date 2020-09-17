@@ -5,6 +5,9 @@ let resources = {
   en: {
     common: {
       appearance: 'Appearance',
+      allSelected: 'All boreholes selected',
+      oneSelected: 'One borehole selected',
+      someSelected: '{{howMany}} boreholes selected',
       map: 'Map',
       boreholeidentifiers: 'Borehole identifiers',
       searchfilters: 'Search filters',
@@ -12,7 +15,9 @@ let resources = {
       admin: 'Administrator',
       date: 'Date',
       add: 'Add',
+      bulkEditing: 'Bulk editing',
       close: 'Close',
+      copy: 'Copy selected',
       confirm: 'Confirm',
       iagree: 'I agree',
       all: 'all',
@@ -365,6 +370,9 @@ trigger all users to agree again.`
   de: {
     common: {
       appearance: 'Erscheinungsbild',
+      allSelected: 'Alle Bohrungen ausgewählt',
+      oneSelected: 'Ein Bohrung ausgewählt',
+      someSelected: '{{howMany}} Bohrungen ausgewählt',
       map: 'Karte',
       boreholeidentifiers: 'Bohrungskennung',
       searchfilters: 'Suchfilter',
@@ -372,7 +380,9 @@ trigger all users to agree again.`
       admin: 'Administrator',
       date: 'Datum',
       add: 'Hinzufüden',
+      bulkEditing: 'Bulk-Editing',
       close: 'Schlissen',
+      copy: 'Kopie erstellen',
       confirm: 'Bestätigen',
       iagree: 'Ich stimme zu',
       all: 'Alle',
@@ -713,6 +723,9 @@ des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
   it: {
     common: {
       appearance: 'Aspetto',
+      allSelected: 'Tutte le perforazioni selezionate',
+      oneSelected: 'Una perforazione selezionata',
+      someSelected: '{{howMany}} perforazioni selezionate',
       map: 'Mappa',
       boreholeidentifiers: 'Identificatori perforazione',
       searchfilters: 'Filtri di ricerca',
@@ -720,7 +733,9 @@ des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
       admin: 'Amministratore',
       date: 'Data',
       add: 'Aggiungi',
+      bulkEditing: 'Modifica in blocco',
       close: 'Chiudi',
+      copy: 'Crea copia',
       confirm: 'Conferma',
       iagree: 'Accetto',
       all: 'tutto',
@@ -1073,6 +1088,9 @@ nuovamente i termini.`
   fr: {
     common: {
       appearance: 'Aspect',
+      allSelected: 'Tous perforations sélectionnés',
+      oneSelected: 'un perforation sélectionné',
+      someSelected: '{{howMany}} perforations sélectionnés',
       map: 'Carte',
       boreholeidentifiers: 'Identificateurs de forage',
       searchfilters: 'Filtres de recherche',
@@ -1080,7 +1098,9 @@ nuovamente i termini.`
       admin: 'Administrateur',
       date: 'Date',
       add: 'Ajouter',
+      bulkEditing: 'Édition en gros',
       close: 'Fermer',
+      copy: 'Créer une copie',
       confirm: 'Confirmer',
       iagree: 'J\'accepte',
       all: 'tout',
