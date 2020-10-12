@@ -41,6 +41,8 @@ class MenuEditorForm extends React.Component {
       deleting: false,
       timeout: 0
     };
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   handleOpen(){

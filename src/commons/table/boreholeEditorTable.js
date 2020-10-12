@@ -450,7 +450,11 @@ class BoreholeEditorTable extends TTable {
               &nbsp;
               <Modal
                 closeIcon
-                onClose={this.handleClose}
+                onClose={
+                  () => this.setState({
+                    confirmDelete: false
+                  })
+                }
                 open={this.state.confirmDelete}
                 size='mini'
                 trigger={

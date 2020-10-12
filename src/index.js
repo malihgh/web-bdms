@@ -7,7 +7,7 @@ import i18n from './i18n';
 import './index.css';
 import 'ol/ol.css';
 import App from './App';
-import { unregister as unregisterServiceWorker } from './registerServiceWorker';
+// import { unregister as unregisterServiceWorker } from './registerServiceWorker';
 
 import 'semantic-ui-css/semantic.css';
 
@@ -21,4 +21,4 @@ ReactDOM.render(
   </I18nextProvider>,
   document.getElementById('root')
 );
-unregisterServiceWorker();
+// unregisterServiceWorker();

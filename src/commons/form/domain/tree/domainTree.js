@@ -489,7 +489,6 @@ class DomainTree extends React.Component {
                           fluid
                           onChange={(ev, data) => {
 
-                            debugger;
                             if (data.value === null) {
                               const selectedFilters = {
                                 ...this.state.selectedFilters

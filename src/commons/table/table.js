@@ -113,7 +113,6 @@ class TTable extends React.Component {
   }
 
   render() {
-    console.log("Table", this.props);
     const {
       store,
       filter
