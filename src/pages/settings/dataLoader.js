@@ -2,9 +2,12 @@ import React, { createRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { withTranslation } from 'react-i18next';
+import Markdown from 'markdown-to-jsx';
 
 import {
   Button,
+  Icon,
   Input
 } from 'semantic-ui-react';
 
@@ -14,6 +17,7 @@ import {
   loadSettings,
   loadUser,
   setAuthentication,
+  getContent,
 } from '@ist-supsi/bmsjs';
 
 
@@ -22,6 +26,25 @@ class DataLoader extends React.Component {
   constructor(props) {
     super(props);
     this.fieldToRef = createRef();
+    this.state = {
+      isFetching: true,
+      title: window.loginContent.title,
+      body: window.loginContent.body,
+      // title: {
+      //   en: '',
+      //   de: '',
+      //   fr: '',
+      //   it: '',
+      //   ro: '',
+      // },
+      // body: {
+      //   en: '',
+      //   de: '',
+      //   fr: '',
+      //   it: '',
+      //   ro: '',
+      // },
+    };
   }
 
   componentDidMount(){
@@ -31,6 +54,23 @@ class DataLoader extends React.Component {
       this.props.setAuthentication('', '');
     }
     this.fieldToRef.current.focus();
+
+    // setTimeout(
+    //   () => {
+    //     getContent('login')
+    //       .then(
+    //         r => {
+    //           if (r.data.data !== null) {
+    //             this.setState({
+    //               isFetching: false,
+    //               title: r.data.data.title,
+    //               body: r.data.data.body,
+    //             });
+    //           }
+    //         }
+    //       );
+    //   }, 500
+    // );
   }
 
   componentDidUpdate(prevProps) {
@@ -42,6 +82,9 @@ class DataLoader extends React.Component {
   }
 
   render() {
+    const {
+      i18n, t
+    } = this.props;
     return (
       <div
         style={{
@@ -59,222 +102,280 @@ class DataLoader extends React.Component {
             borderRadius: '2px',
             boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
             display: 'flex',
-            flexDirection: 'row',
-            padding: '2em'
+            flexDirection: 'column'
           }}
         >
           <div
             style={{
-              width: '300px',
-              paddingRight: '1em'
+              display: 'flex',
+              flexDirection: 'row',
+              padding: '2em',
             }}
           >
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'row'
+                width: '300px',
+                paddingRight: '1em'
               }}
             >
-              <img
-                alt="Swiss Logo"
-                src={process.env.PUBLIC_URL + '/img/ch.png'}
+              <div
                 style={{
-                  height: '30px',
-                  width: '27.27px'
+                  display: 'flex',
+                  flexDirection: 'row'
+                }}
+              >
+                <img
+                  alt="Swiss Logo"
+                  src={process.env.PUBLIC_URL + '/img/ch.png'}
+                  style={{
+                    height: '30px',
+                    width: '27.27px'
+                  }}
+                />
+                <div
+                  style={{
+                    marginLeft: '1em',
+                    textAlign: 'left'
+                  }}
+                >
+                  <div>
+                    <div
+                      style={{
+                        fontSize: '1.2em'
+                      }}
+                    >
+                      {
+                        this.state.title[
+                          this.props.i18n.language
+                        ]
+                      }
+                    </div>
+                    <div
+                      style={{
+                        fontSize: '0.8em'
+                      }}
+                    >
+                      Borehole Data Management System
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div
+                style={{
+                  paddingTop: '2em'
+                }}
+              >
+                <Markdown>
+                  {this.state.body[
+                    this.props.i18n.language
+                  ]}
+                </Markdown>
+              </div>
+              {/* <div
+                style={{
+                  paddingTop: '1em'
+                }}
+              >
+                For any use of swissforages.ch please respect the disclaimer of
+                the Swiss Confederation and in particular the disclaimer
+                (LINK to DISCLAIMER) of swissforages.ch.
+              </div> */}
+            </div>
+            <div
+              style={{
+                width: '300px',
+                padding: '0px 1em 0px 2em'
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '1.2em',
+                  paddingBottom: '2em',
+                  textAlign: 'center'
+                }}
+              >
+                Sign in
+              </div>
+              {/** Trick to disable autofill in chrome */}
+              <input
+                name='password'
+                style={{
+                  display: 'none'
+                }}
+                type='password'
+              />
+              <div
+                style={{
+                  fontSize: '0.8em',
+                  paddingBottom: '4px'
+                }}
+              >
+                Username
+              </div>
+              <Input
+                autoComplete="off"
+                fluid
+                onChange={(e) => {
+                  this.props.setAuthentication(
+                    e.target.value,
+                    this.props.user.authentication !== null?
+                      this.props.user.authentication.password: ''
+                  );
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter'){
+                    this.props.loadUser();
+                  }
+                }}
+                placeholder='username'
+                ref={this.fieldToRef}
+                value={
+                  this.props.user.authentication !== null?
+                    this.props.user.authentication.username: ''
+                }
+              />
+              
+              <div
+                style={{
+                  fontSize: '0.8em',
+                  padding: '8px 0px 4px 0px'
+                }}
+              >
+                Password
+              </div>
+              <Input
+                autoComplete="off"
+                fluid
+                onChange={(e) => {
+                  this.props.setAuthentication(
+                    this.props.user.authentication !== null?
+                      this.props.user.authentication.username: '',
+                    e.target.value
+                  );
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter'){
+                    this.props.loadUser();
+                  }
+                }}
+                placeholder='password'
+                type='password'
+                value={
+                  this.props.user.authentication !== null?
+                    this.props.user.authentication.password: ''
+                }
+              />
+              <Button
+                color={
+                  this.props.user.data !== null? 'green': null
+                }
+                compact
+                content='Login'
+                fluid
+                loading={this.props.user.data !== null}
+                onClick={() => {
+                  this.props.loadUser();
+                }}
+                primary={this.props.user.data === null}
+                size='small'
+                style={{
+                  marginTop: '1.5em'
                 }}
               />
               <div
                 style={{
-                  marginLeft: '1em',
-                  textAlign: 'left'
+                  color: 'red',
+                  fontSize: '0.8em'
                 }}
               >
-                <div>
-                  <div
-                    style={{
-                      fontSize: '1.2em'
-                    }}
-                  >
-                    Welcome to swissforage.ch
-                  </div>
-                  <div
-                    style={{
-                      fontSize: '0.8em'
-                    }}
-                  >
-                    Borehole Data Management System
-                  </div>
-                </div>
+                {
+                  this.props.user.error === false?
+                    <span>&nbsp;</span>: 'User or password wrong'
+                }
               </div>
+              <Button
+                compact
+                content='Enter as viewer'
+                disabled={this.props.user.data !== null}
+                fluid
+                onClick={() => {
+                  this.props.anonymousLogin(
+                    'guest', 'MeiSe0we1Oowief'
+                  );
+                }}
+                secondary
+                size='small'
+              />
             </div>
-            
-            <div
-              style={{
-                paddingTop: '2em'
-              }}
-            >
-              A platform to acquire borehole data according to the Borehole
-              data model defined by the Swiss Geological Survey at swisstopo (
-              <a
-                className='linker link'
-                href='https://geoservice.ist.supsi.ch/docs/bdms'
-                rel="noopener noreferrer"
-                target='_BLANK'
-              >
-                more
-              </a>).
-            </div>
-            <div
-              style={{
-                paddingTop: '1em'
-              }}
-            >
-              For information or to request a demonstration please contact
-              the Swiss Geological Survey at swisstopo: &nbsp;
-              <a
-                className='linker link'
-                href='mailto:geolinfo@swisstopo.ch'
-                rel="noopener noreferrer"
-              >
-                contact
-              </a>
-            </div>
-            {/* <div
-              style={{
-                paddingTop: '1em'
-              }}
-            >
-              For any use of swissforages.ch please respect the disclaimer of
-              the Swiss Confederation and in particular the disclaimer
-              (LINK to DISCLAIMER) of swissforages.ch.
-            </div> */}
           </div>
-
+          
           <div
             style={{
-              width: '300px',
-              padding: '0px 1em 0px 2em'
+              fontSize: '0.9em',
+              textAlign: 'center',
+              paddingBottom: '1em',
             }}
           >
-            <div
-              style={{
-                fontSize: '1.2em',
-                paddingBottom: '2em',
-                textAlign: 'center'
-              }}
-            >
-              Sign in
-            </div>
-            {/** Trick to disable autofill in chrome */}
-            <input
-              name='password'
-              style={{
-                display: 'none'
-              }}
-              type='password'
-            />
-            <div
-              style={{
-                fontSize: '0.8em',
-                paddingBottom: '4px'
-              }}
-            >
-              Username
-            </div>
-            <Input
-              autoComplete="off"
-              fluid
-              onChange={(e) => {
-                this.props.setAuthentication(
-                  e.target.value,
-                  this.props.user.authentication !== null?
-                    this.props.user.authentication.password: ''
-                );
-              }}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter'){
-                  this.props.loadUser();
-                }
-              }}
-              placeholder='username'
-              ref={this.fieldToRef}
-              value={
-                this.props.user.authentication !== null?
-                  this.props.user.authentication.username: ''
-              }
-            />
-            
-            <div
-              style={{
-                fontSize: '0.8em',
-                padding: '8px 0px 4px 0px'
-              }}
-            >
-              Password
-            </div>
-            <Input
-              autoComplete="off"
-              fluid
-              onChange={(e) => {
-                this.props.setAuthentication(
-                  this.props.user.authentication !== null?
-                    this.props.user.authentication.username: '',
-                  e.target.value
-                );
-              }}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter'){
-                  this.props.loadUser();
-                }
-              }}
-              placeholder='password'
-              type='password'
-              value={
-                this.props.user.authentication !== null?
-                  this.props.user.authentication.password: ''
-              }
-            />
-            <Button
-              color={
-                this.props.user.data !== null? 'green': null
-              }
-              compact
-              content='Login'
-              fluid
-              loading={this.props.user.data !== null}
+            <span
+              className='link'
               onClick={() => {
-                this.props.loadUser();
+                i18n.changeLanguage('de');
               }}
-              primary={this.props.user.data === null}
-              size='small'
               style={{
-                marginTop: '1.5em'
-              }}
-            />
-            <div
-              style={{
-                color: 'red',
-                fontSize: '0.8em'
+                paddingRight: '0.5em',
+                color: i18n.language === 'de' ?
+                  '#ed1d24' : null,
+                textDecoration: i18n.language === 'de' ?
+                  'underline' : null
               }}
             >
-              {
-                this.props.user.error === false?
-                  <span>&nbsp;</span>: 'User or password wrong'
-              }
-            </div>
-            <Button
-              compact
-              content='Enter as viewer'
-              disabled={this.props.user.data !== null}
-              fluid
+              DE
+            </span>
+            <span
+              className='link'
               onClick={() => {
-                this.props.anonymousLogin(
-                  'guest', 'MeiSe0we1Oowief'
-                );
+                i18n.changeLanguage('fr');
               }}
-              secondary
-              size='small'
-            />
+              style={{
+                paddingRight: '0.5em',
+                color: i18n.language === 'fr' ?
+                  '#ed1d24' : null,
+                textDecoration: i18n.language === 'fr' ?
+                  'underline' : null
+              }}
+            >
+              FR
+            </span>
+            <span
+              className='link'
+              onClick={() => {
+                i18n.changeLanguage('it');
+              }}
+              style={{
+                paddingRight: '0.5em',
+                color: i18n.language === 'it' ?
+                  '#ed1d24' : null,
+                textDecoration: i18n.language === 'it' ?
+                  'underline' : null
+              }}
+            >
+              IT
+            </span>
+            <span
+              className='link'
+              onClick={() => {
+                i18n.changeLanguage('en');
+              }}
+              style={{
+                color: i18n.language === 'en' ?
+                  '#ed1d24' : null,
+                textDecoration: i18n.language === 'en' ?
+                  'underline' : null
+              }}
+            >
+              EN
+            </span>
           </div>
         </div>
       </div>
@@ -329,4 +430,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DataLoader);
+)(withTranslation('common')(DataLoader));

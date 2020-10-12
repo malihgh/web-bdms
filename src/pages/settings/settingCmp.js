@@ -15,6 +15,7 @@ import AdminSettings from './adminSettings';
 import DatabaseSettings from './databaseSettings';
 import ResourcesSettings from './resourcesSettings';
 import TermSettings from './termSettings';
+import LoginScreen from './loginScreen';
 
 const SettingCmp = (props) => {
   
@@ -69,6 +70,10 @@ const SettingCmp = (props) => {
             <Route
               component={TermSettings}
               path={process.env.PUBLIC_URL + "/setting/term"}
+            />
+            <Route
+              component={LoginScreen}
+              path={process.env.PUBLIC_URL + "/setting/login"}
             />
             <Route
               component={DatabaseSettings}
