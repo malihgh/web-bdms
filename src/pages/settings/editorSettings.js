@@ -606,7 +606,7 @@ class EditorSettings extends React.Component {
                     margin: '0px'
                   }}
                 >
-                  Borehole identifiers
+                  {t('common:identifierManager')}
                 </Header>
                 <div
                   style={{
