@@ -434,7 +434,32 @@ class DomainTree extends React.Component {
         }
       >
         <Modal.Header>
-          {this.props.title}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row'
+            }}
+          >
+            <div
+              style={{
+                flex: '1 1 100%'
+              }}
+            >
+              {this.props.title}
+            </div>
+            {
+              this.props.schema === "custom.lit_str_top_bedrock"?
+                <div>
+                  <a
+                    className='link'
+                    href='https://strati.ch/'
+                    target='_BLANK'
+                  >
+                    strati.ch
+                  </a>
+                </div>: null
+            }
+          </div>
         </Modal.Header>
         <Modal.Content>
           <div
