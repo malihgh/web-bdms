@@ -136,7 +136,7 @@ class LoginScreen extends React.Component {
       >
         <div
           style={{
-            flex: '1 1 100%',
+            flex: '1 1 60%',
             padding: '1em',
             margin: '1em'
           }}
@@ -379,18 +379,24 @@ class LoginScreen extends React.Component {
               height: '100%'
             }}
           >
-            <Login
-              body={this.state.body[this.state.lang]}
-              title={this.state.title[this.state.lang]}
-              user={{
-                data: null,
-                authentication: {
-                  password: '',
-                  username: ''
-                },
-                error: false
+            <div
+              style={{
+                transform: 'scale(0.80)'
               }}
-            />
+            >
+              <Login
+                body={this.state.body[this.state.lang]}
+                title={this.state.title[this.state.lang]}
+                user={{
+                  data: null,
+                  authentication: {
+                    password: '',
+                    username: ''
+                  },
+                  error: false
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
