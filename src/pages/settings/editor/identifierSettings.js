@@ -7,7 +7,9 @@ import {
   Button,
   Icon,
   Form,
-  Popup,
+  // Popup,
+  Modal,
+  Header,
 } from 'semantic-ui-react';
 
 import DomainText from '../../../commons/form/domain/domainText';
@@ -28,6 +30,7 @@ class IdentifierSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isOpenConfirmDelete: false,
       id: "",
       de: "",
       fr: "",
@@ -49,6 +52,14 @@ class IdentifierSettings extends React.Component {
       it: "",
       en: "",
     });
+  }
+
+  handleOpenConfirmDelete = () => {
+    this.setState({ isOpenConfirmDelete: true });
+  }
+
+  handleCloseConfirmDelete = () => {
+    this.setState({ isOpenConfirmDelete: false });
   }
 
   render() {
@@ -146,12 +157,8 @@ class IdentifierSettings extends React.Component {
                         }
                       ).then(
                         (response) => {
-                          this.setState({
-                            identifier: ''
-                          }, ()=>{
-                            console.log(response);
-                            this.props.listIdentifier();
-                          });
+                          // this.reset();
+                          this.props.listIdentifier();
                         }
                       );
                     } else {
@@ -164,12 +171,8 @@ class IdentifierSettings extends React.Component {
                         }  
                       ).then(
                         (response) => {
-                          this.setState({
-                            identifier: ''
-                          }, ()=>{
-                            console.log(response);
-                            this.props.listIdentifier();
-                          });
+                          this.reset();
+                          this.props.listIdentifier();
                         }
                       );
                     }
@@ -210,7 +213,10 @@ class IdentifierSettings extends React.Component {
         <hr />
         <div>
           {
-            domains.data.hasOwnProperty('borehole_identifier')?
+            (
+              domains.data.hasOwnProperty('borehole_identifier')
+              && domains.data['borehole_identifier'].length > 0 
+            )?
               domains.data['borehole_identifier'].map((val, idx) => (
                 <div
                   className='selectable'
@@ -276,65 +282,77 @@ class IdentifierSettings extends React.Component {
                   >
                     {val.en.text}
                   </div>
-                  <Popup
-                    flowing
-                    hoverable
-                    on='click'
-                    position='top right'
-                    trigger={
-                      <Button
-                        color='red'
-                        icon
-                        onClick={e=>{
-                          e.stopPropagation();
-                        }}
-                        size='tiny'
-                      >
-                        <Icon
-                          name='trash alternate outline'
-                        />
-                      </Button>
-                    }
+                  <Button
+                    color='red'
+                    icon
+                    onClick={e=>{
+                      e.stopPropagation();
+                      this.setState({
+                        id: val.id,
+                        isOpenConfirmDelete: true,
+                        de: val.de.text,
+                        fr: val.fr.text,
+                        it: val.it.text,
+                        en: val.de.text,
+                      });
+                    }}
+                    size='tiny'
                   >
-                    Delete "
-                    <DomainText
-                      id={val.id}
-                      schema='borehole_identifier'
-                    />" forever?
-                    <br />
-                    <br />
-                    <Button
-                      icon
-                      onClick={
-                        e => {
-                          e.stopPropagation();
-                          deleteIdentifier(val.id).then(
-                            r => {
-                              if (r.data.success === true) {
-                                this.props.listIdentifier();
-                              } else if (
-                                r.data.error === 'E-205'
-                              ){
-                                alert(
-                                  t('messages:identifierDeletionAlreadyUsed')
-                                );
-                              }
-                              this.reset();
-                            }
-                          );
-                        }
-                      }
-                      secondary
-                      size='tiny'
-                    >
-                      {t('confirm')}
-                    </Button>
-                  </Popup>
+                    <Icon
+                      name='trash alternate outline'
+                    />
+                  </Button>
                 </div>
               )):
               'Empty'
           }
         </div>
+        <Modal
+          closeIcon
+          onClose={this.handleCloseConfirmDelete}
+          // onOpen={this.handleOpenConfirmDelete}
+          open={this.state.isOpenConfirmDelete}
+          size='mini'
+        >
+          <Header
+            content={t('common:deleteForever')}
+            // icon='archive'
+          />
+          <Modal.Content>
+            <p>
+              {t('common:sure')}
+            </p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button
+              icon
+              negative
+              onClick={
+                e => {
+                  e.stopPropagation();
+                  deleteIdentifier(this.state.id).then(
+                    r => {
+                      if (r.data.success === true) {
+                        this.props.listIdentifier();
+                      } else if (
+                        r.data.error === 'E-205'
+                      ){
+                        alert(
+                          t('messages:identifierDeletionAlreadyUsed')
+                        );
+                      }
+                      this.reset();
+                      this.handleCloseConfirmDelete();
+                    }
+                  );
+                }
+              }
+              size='tiny'
+            >
+              {t('confirm')}
+            </Button>
+          </Modal.Actions>
+        </Modal>
       </div>
     );
   }
