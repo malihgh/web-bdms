@@ -452,7 +452,7 @@ class DomainTree extends React.Component {
                 <div>
                   <a
                     className='link'
-                    href='https://strati.ch/'
+                    href='https://www.strati.ch/'
                     target='_BLANK'
                   >
                     strati.ch
