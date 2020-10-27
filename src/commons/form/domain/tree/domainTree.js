@@ -16,7 +16,6 @@ import {
   List,
   Modal,
   Form,
-  // Popup
 } from 'semantic-ui-react';
 
 class DomainTree extends React.Component {
@@ -453,6 +452,7 @@ class DomainTree extends React.Component {
                   <a
                     className='link'
                     href='https://www.strati.ch/'
+                    rel="noopener noreferrer"
                     target='_BLANK'
                   >
                     strati.ch

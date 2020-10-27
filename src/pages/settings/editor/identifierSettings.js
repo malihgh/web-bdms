@@ -12,8 +12,6 @@ import {
   Header,
 } from 'semantic-ui-react';
 
-import DomainText from '../../../commons/form/domain/domainText';
-
 import {
   listIdentifier,
   createIdentifier,

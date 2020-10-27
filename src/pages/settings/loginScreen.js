@@ -5,7 +5,6 @@ import { withTranslation } from 'react-i18next';
 import {
   Button,
   Form,
-  Input,
   Modal,
   TextArea,
 } from 'semantic-ui-react';

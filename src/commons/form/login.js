@@ -1,5 +1,4 @@
 import React, { createRef } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { Button, Input } from 'semantic-ui-react';

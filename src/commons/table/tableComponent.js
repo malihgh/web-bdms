@@ -10,8 +10,6 @@ import {
 import {
   Table,
   Pagination,
-  Segment,
-  Button,
 } from 'semantic-ui-react';
 
 class TableComponent extends React.Component {

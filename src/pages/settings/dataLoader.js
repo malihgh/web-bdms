@@ -7,7 +7,6 @@ import Markdown from 'markdown-to-jsx';
 
 import {
   Button,
-  Icon,
   Input
 } from 'semantic-ui-react';
 
@@ -17,7 +16,6 @@ import {
   loadSettings,
   loadUser,
   setAuthentication,
-  getContent,
 } from '@ist-supsi/bmsjs';
 
 
@@ -28,22 +26,24 @@ class DataLoader extends React.Component {
     this.fieldToRef = createRef();
     this.state = {
       isFetching: true,
-      title: window.loginContent.title,
-      body: window.loginContent.body,
-      // title: {
-      //   en: '',
-      //   de: '',
-      //   fr: '',
-      //   it: '',
-      //   ro: '',
-      // },
-      // body: {
-      //   en: '',
-      //   de: '',
-      //   fr: '',
-      //   it: '',
-      //   ro: '',
-      // },
+      title: window.loginContent?
+        window.loginContent.title:
+        {
+          en: '',
+          de: '',
+          fr: '',
+          it: '',
+          ro: '',
+        },
+      body: window.loginContent?
+        window.loginContent.body:
+        {
+          en: '',
+          de: '',
+          fr: '',
+          it: '',
+          ro: '',
+        },
     };
   }
 
@@ -83,7 +83,7 @@ class DataLoader extends React.Component {
 
   render() {
     const {
-      i18n, t
+      i18n
     } = this.props;
     return (
       <div
