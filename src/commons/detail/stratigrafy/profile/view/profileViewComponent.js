@@ -440,7 +440,7 @@ class ProfileView extends React.Component {
                     layer.compactness,
                     'compactness'
                   )}
-                  {this.getDomainRowMultiple(
+                  {/* {this.getDomainRowMultiple(
                     'mlpr113',
                     layer.jointing,
                     'jointing'
@@ -449,7 +449,7 @@ class ProfileView extends React.Component {
                     'mlpr108',
                     layer.soil_state,
                     'soil_state'
-                  )}
+                  )} */}
                   {this.getDomainRowMultiple(
                     'mlpr108',
                     layer.organic_component,

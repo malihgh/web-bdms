@@ -61,12 +61,12 @@ const fields = [
   {
     name: 'compactness'
   },
-  {
-    name: 'jointing'
-  },
-  {
-    name: 'soil_state'
-  },
+  // {
+  //   name: 'jointing'
+  // },
+  // {
+  //   name: 'soil_state'
+  // },
   {
     name: 'organic_component'
   },
