@@ -1,5 +1,31 @@
 # List of all changes
 
+## What's new in web-bdms 1.0.2
+
+### New features
+
+ - **Editor are prompted to confirm when deleting boreholes**
+
+    - A modal window is displayed asking the ditor to confirm the deletion of a borehole.
+
+ - **Borehole identifiers multilanguage**
+
+    - In the settings pages the admin user can define identifiers in each supported language.
+
+ - **Login screen customization**
+
+    - In the settings pages the admin user can customize the title and the welcome message using markdown.
+
+ - **Added link to strati.ch**
+
+    - In the Litostratigraphies window a link to the official https://strati.ch/ is added. 
+
+### Minor fixes
+
+ - fixed to wide hidden feedback link in header
+ - updated hardcoded DEV mode default password
+ - updated table in editor mode and viewer to include translations
+
 ## What's new in web-bdms 1.0.1
 
 ### New features
