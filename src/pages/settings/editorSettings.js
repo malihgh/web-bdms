@@ -61,12 +61,12 @@ const fields = [
   {
     name: 'compactness'
   },
-  {
-    name: 'jointing'
-  },
-  {
-    name: 'soil_state'
-  },
+  // {
+  //   name: 'jointing'
+  // },
+  // {
+  //   name: 'soil_state'
+  // },
   {
     name: 'organic_component'
   },
@@ -606,7 +606,7 @@ class EditorSettings extends React.Component {
                     margin: '0px'
                   }}
                 >
-                  Borehole identifiers
+                  {t('common:identifierManager')}
                 </Header>
                 <div
                   style={{

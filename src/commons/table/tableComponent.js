@@ -4,14 +4,12 @@ import _ from 'lodash';
 
 import {
   getdBoreholeIds,
-  deleteBoreholes
-} from '@ist-supsi/bmsjs'
+  // deleteBoreholes
+} from '@ist-supsi/bmsjs';
 
 import {
   Table,
   Pagination,
-  Segment,
-  Button,
 } from 'semantic-ui-react';
 
 class TableComponent extends React.Component {
@@ -21,7 +19,7 @@ class TableComponent extends React.Component {
     this.uid = _.uniqueId();
     this.add2selection = this.add2selection.bind(this);
     this.inSelection = this.inSelection.bind(this);
-    this.deleteList = this.deleteList.bind(this);
+    // this.deleteList = this.deleteList.bind(this);
     const {
       activeItem,
       filter
@@ -87,6 +85,7 @@ class TableComponent extends React.Component {
             if (
               response.data.success
             ) {
+              //TODO check this part. Updating state is not incorrect!
               onMultiple(
                 _.pullAll(response.data.data, this.state.selected)
               );
@@ -108,44 +107,44 @@ class TableComponent extends React.Component {
       onHover(selected);
     }
   }
-  deleteList() {
-    const {
-      filter
-    } = this.props;
-    if (this.state.all === true || this.state.selected.length > 0) {
-      if (this.state.all === true) {
-        getdBoreholeIds(filter).then((response) => {
-          if (
-            response.data.success
-          ) {
-            deleteBoreholes(
-              _.pullAll(response.data.data, this.state.selected)
-            ).then(() => {
-              this.setState({
-                selected: [],
-                all: false
-              }, () => {
-                this.props.loadData(1, filter);
-              });
-            });
-          }
-        }).catch((err) => {
-          console.log(err);
-        });
-      } else {
-        deleteBoreholes(
-          this.state.selected
-        ).then(() => {
-          this.setState({
-            selected: [],
-            all: false
-          }, () => {
-            this.props.loadData(1, filter);
-          });
-        });
-      }
-    }
-  }
+  // deleteList() {
+  //   const {
+  //     filter
+  //   } = this.props;
+  //   if (this.state.all === true || this.state.selected.length > 0) {
+  //     if (this.state.all === true) {
+  //       getdBoreholeIds(filter).then((response) => {
+  //         if (
+  //           response.data.success
+  //         ) {
+  //           deleteBoreholes(
+  //             _.pullAll(response.data.data, this.state.selected)
+  //           ).then(() => {
+  //             this.setState({
+  //               selected: [],
+  //               all: false
+  //             }, () => {
+  //               this.props.loadData(1, filter);
+  //             });
+  //           });
+  //         }
+  //       }).catch((err) => {
+  //         console.log(err);
+  //       });
+  //     } else {
+  //       deleteBoreholes(
+  //         this.state.selected
+  //       ).then(() => {
+  //         this.setState({
+  //           selected: [],
+  //           all: false
+  //         }, () => {
+  //           this.props.loadData(1, filter);
+  //         });
+  //       });
+  //     }
+  //   }
+  // }
 
   add2selection(id) {
     const {
@@ -195,20 +194,18 @@ class TableComponent extends React.Component {
     const {
       store,
       filter
-    } = this.props, {
+    } = this.props;
+    const {
       activeItem,
       selected,
       all
     } = this.state;
     return (
-      <Segment
-        basic
-        loading={store.isFetching}
+      <div
         style={{
           flex: "1 1 100%",
           display: 'flex',
           flexDirection: 'column',
-          // height: '100%',
           overflow: 'hidden'
         }}
       >
@@ -217,7 +214,7 @@ class TableComponent extends React.Component {
             textAlign: 'center',
           }}
         >
-          {
+          {/* {
             all === true || selected.length > 0 ?
               <div
                 style={{
@@ -286,7 +283,7 @@ class TableComponent extends React.Component {
                   Delete
                 </Button>
               </div> : null
-          }
+          } */}
           <Table
             basic='very'
             compact='very'
@@ -315,16 +312,11 @@ class TableComponent extends React.Component {
               {
                 store.data.map((item, idx) => (
                   <Table.Row
-                    style={{
-                      cursor: 'pointer'
-                      // cursor: all === true || selected.length > 0 ?
-                      //   'copy' : 'pointer'
-                    }}
-                    key={this.uid + "_" + idx}
                     active={
                       activeItem === item.id
                       || this.props.highlight === item.id
                     }
+                    key={this.uid + "_" + idx}
                     onClick={e => {
                       if (all === true || selected.length > 0) {
                         this.add2selection(item.id);
@@ -334,6 +326,11 @@ class TableComponent extends React.Component {
                     }}
                     onMouseEnter={e => this.handleHover(item)}
                     onMouseLeave={e => this.handleHover(null)}
+                    style={{
+                      cursor: 'pointer'
+                      // cursor: all === true || selected.length > 0 ?
+                      //   'copy' : 'pointer'
+                    }}
                   >
                     {
                       this.getCols(item, idx)
@@ -346,13 +343,13 @@ class TableComponent extends React.Component {
         </div>
         {
           store.pages > 1 ?
-            <div style={{
-              textAlign: 'center',
-              padding: '1em 0px 0px 1em'
-            }}>
+            <div
+              style={{
+                textAlign: 'center',
+                padding: '1em 0px 0px 1em'
+              }}
+            >
               <Pagination
-                secondary
-                pointing
                 activePage={store.page}
                 onPageChange={(ev, data) => {
                   this.props.loadData(
@@ -360,11 +357,13 @@ class TableComponent extends React.Component {
                     filter
                   );
                 }}
+                pointing
+                secondary
                 totalPages={store.pages}
               />
             </div> : null
         }
-      </Segment>
+      </div>
     );
   }
 }

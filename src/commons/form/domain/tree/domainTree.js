@@ -16,7 +16,6 @@ import {
   List,
   Modal,
   Form,
-  // Popup
 } from 'semantic-ui-react';
 
 class DomainTree extends React.Component {
@@ -434,7 +433,33 @@ class DomainTree extends React.Component {
         }
       >
         <Modal.Header>
-          {this.props.title}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row'
+            }}
+          >
+            <div
+              style={{
+                flex: '1 1 100%'
+              }}
+            >
+              {this.props.title}
+            </div>
+            {
+              this.props.schema === "custom.lit_str_top_bedrock"?
+                <div>
+                  <a
+                    className='link'
+                    href='https://www.strati.ch/'
+                    rel="noopener noreferrer"
+                    target='_BLANK'
+                  >
+                    strati.ch
+                  </a>
+                </div>: null
+            }
+          </div>
         </Modal.Header>
         <Modal.Content>
           <div
@@ -489,7 +514,6 @@ class DomainTree extends React.Component {
                           fluid
                           onChange={(ev, data) => {
 
-                            debugger;
                             if (data.value === null) {
                               const selectedFilters = {
                                 ...this.state.selectedFilters

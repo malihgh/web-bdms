@@ -172,6 +172,32 @@ const MenuSettings = (props) => {
             </List.Item>: null
         }
         {
+          props.user.data.admin === true?
+            <List.Item
+              onClick={()=>{
+                history.push(
+                  process.env.PUBLIC_URL + '/setting/login'
+                );
+              }}
+              style={{
+                padding: '1em',
+                borderLeft: location.pathname.indexOf('/setting/login') >= 0?
+                  '0.5em solid rgb(237, 29, 36)': null
+              }}
+            >
+              <List.Icon
+                name='sign-in'
+                size='large'
+                verticalAlign='middle'
+              />
+              <List.Content>
+                <List.Header as='h3'>
+                  {t('common:loginScreen')}
+                </List.Header>
+              </List.Content>
+            </List.Item>: null
+        }
+        {
           // props.user.data.admin === true?
           //   <List.Item
           //     onClick={()=>{

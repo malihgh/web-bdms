@@ -107,9 +107,13 @@ class MenuComponent extends React.Component {
         </div>
         <div
           style={{
+            flex: '1 1 100%',
+          }}
+        />
+        <div
+          style={{
             // alignItems: 'end',
             display: 'flex',
-            flex: '1 1 100%',
             flexDirection: 'column',
             padding: '1em',
             textAlign: 'right'

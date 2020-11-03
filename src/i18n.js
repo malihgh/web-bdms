@@ -4,7 +4,14 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 let resources = {
   en: {
     common: {
+      german: 'german',
+      french: 'french',
+      italian: 'italian',
+      english: 'english',
       appearance: 'Appearance',
+      allSelected: 'All boreholes selected',
+      oneSelected: 'One borehole selected',
+      someSelected: '{{howMany}} boreholes selected',
       map: 'Map',
       boreholeidentifiers: 'Borehole identifiers',
       searchfilters: 'Search filters',
@@ -12,7 +19,9 @@ let resources = {
       admin: 'Administrator',
       date: 'Date',
       add: 'Add',
+      bulkEditing: 'Bulk editing',
       close: 'Close',
+      copy: 'Copy selected',
       confirm: 'Confirm',
       iagree: 'I agree',
       all: 'all',
@@ -47,8 +56,10 @@ let resources = {
       firstname: 'Firstname',
       from: "from",
       identifier: "Identifier",
+      identifierManager: "Manage identifiers",
       lastname: 'Lastname',
       load: 'Load',
+      loginScreen: 'Login screen',
       meter: "meter",
       newBorehole: "New borehole",
       no: "No",
@@ -140,6 +151,9 @@ let resources = {
       'identifierAlreadyUsed': (
         'Identifier already used'
       ),
+      'identifierDeletionAlreadyUsed': (
+        'Connot delete in use identifier'
+      ),
       'disclaimer_publish_title': (
         'Publish disclaimer'
       ),
@@ -149,6 +163,12 @@ let resources = {
       'disclaimer_publish_note': (
         `Note that, by publishing the new discalimer, you will
 trigger all users to agree again.`
+      ),
+      'content_publish_title': (
+        'Publish content'
+      ),
+      'content_publish_message': (
+        'Are you sure you want to pubblish this new content?'
       )
     },
     error: {
@@ -364,7 +384,14 @@ trigger all users to agree again.`
   },
   de: {
     common: {
+      german: 'deutsch',
+      french: 'französisch',
+      italian: 'italienisch',
+      english: 'english',
       appearance: 'Erscheinungsbild',
+      allSelected: 'Alle Bohrungen ausgewählt',
+      oneSelected: 'Ein Bohrung ausgewählt',
+      someSelected: '{{howMany}} Bohrungen ausgewählt',
       map: 'Karte',
       boreholeidentifiers: 'Bohrungskennung',
       searchfilters: 'Suchfilter',
@@ -372,7 +399,9 @@ trigger all users to agree again.`
       admin: 'Administrator',
       date: 'Datum',
       add: 'Hinzufüden',
+      bulkEditing: 'Bulk-Editing',
       close: 'Schlissen',
+      copy: 'Kopie erstellen',
       confirm: 'Bestätigen',
       iagree: 'Ich stimme zu',
       all: 'Alle',
@@ -407,8 +436,10 @@ trigger all users to agree again.`
       firstname: 'Vorname',
       from: "von",
       identifier: "Kennung",
+      identifierManager: "Kennung verwalten",
       lastname: 'Nachname',
       load: 'Laden',
+      loginScreen: 'Login-Bildschirm',
       meter: "Meter",
       newBorehole: "Neue Bohrung",
       no: "Nein",
@@ -491,6 +522,9 @@ trigger all users to agree again.`
       'identifierAlreadyUsed': (
         'Identifikator bereits vergeben.'
       ),
+      'identifierDeletionAlreadyUsed': (
+        'Identifikator kann nicht im Gebrauch gelöscht werden'
+      ),
       'disclaimer_publish_title': (
         'Haftungsausschluss veröffentlichen'
       ),
@@ -500,6 +534,12 @@ trigger all users to agree again.`
       'disclaimer_publish_note': (
         `Beachten Sie, dass Sie durch die Veröffentlichung
 des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
+      ),
+      'content_publish_title': (
+        'Inhalt veröffentlichen'
+      ),
+      'content_publish_message': (
+        'Sind Sie sicher, dass Sie diese neuen Inhalte veröffentlichen wollen?'
       )
     },
     error: {
@@ -712,15 +752,24 @@ des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
   },
   it: {
     common: {
+      german: 'tedesco',
+      french: 'francese',
+      italian: 'italiano',
+      english: 'inglese',
       appearance: 'Aspetto',
+      allSelected: 'Tutte le perforazioni selezionate',
+      oneSelected: 'Una perforazione selezionata',
+      someSelected: '{{howMany}} perforazioni selezionate',
       map: 'Mappa',
       boreholeidentifiers: 'Identificatori perforazione',
       searchfilters: 'Filtri di ricerca',
-      stratigraphyfields: 'Champs stratigraphiques',
+      stratigraphyfields: 'Campi della stratigrafia',
       admin: 'Amministratore',
       date: 'Data',
       add: 'Aggiungi',
+      bulkEditing: 'Modifica in blocco',
       close: 'Chiudi',
+      copy: 'Crea copia',
       confirm: 'Conferma',
       iagree: 'Accetto',
       all: 'tutto',
@@ -754,8 +803,10 @@ des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
       firstname: 'Nome',
       from: "da",
       identifier: "Identificatore",
+      identifierManager: "Gestione degli identificatori",
       lastname: 'Cognome',
       load: 'Carica',
+      loginScreen: 'Schermata di login',
       meter: "metri",
       new: 'Nuovo {{what}}',
       newBorehole: "Nuova perforazione",
@@ -842,6 +893,9 @@ des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
       'identifierAlreadyUsed': (
         'identificatore già in uso'
       ),
+      'identifierDeletionAlreadyUsed': (
+        'Non puoi cancellare l\'identificatore in uso'
+      ),
       'disclaimer_publish_title': (
         'Pubblica i termini'
       ),
@@ -851,6 +905,12 @@ des neuen Discalimers alle Benutzer erneut zur Zustimmung veranlassen.`
       'disclaimer_publish_note': (
         `Nota che a tutti gli utenti verrà chiesto di accettare
 nuovamente i termini.`
+      ),
+      'content_publish_title': (
+        'Pubblicazione contenuto'
+      ),
+      'content_publish_message': (
+        'Sei sicuro di voler pubblicare questo nuovo contenuto?'
       )
     },
     error: {
@@ -1072,15 +1132,24 @@ nuovamente i termini.`
   },
   fr: {
     common: {
+      german: 'allemand',
+      french: 'français',
+      italian: 'italien',
+      english: 'anglais',
       appearance: 'Aspect',
+      allSelected: 'Tous perforations sélectionnés',
+      oneSelected: 'un perforation sélectionné',
+      someSelected: '{{howMany}} perforations sélectionnés',
       map: 'Carte',
       boreholeidentifiers: 'Identificateurs de forage',
       searchfilters: 'Filtres de recherche',
-      stratigraphyfields: 'Campi stratigrafia',
+      stratigraphyfields: 'Champs stratigraphiques',
       admin: 'Administrateur',
       date: 'Date',
       add: 'Ajouter',
+      bulkEditing: 'Édition en gros',
       close: 'Fermer',
+      copy: 'Créer une copie',
       confirm: 'Confirmer',
       iagree: 'J\'accepte',
       all: 'tout',
@@ -1114,8 +1183,10 @@ nuovamente i termini.`
       firstname: 'Prenom',
       from: 'De',
       identifier: "Identifiant",
+      identifierManager: "Gérer les identifiants",
       lastname: 'Nom de famille',
       load: 'Charger',
+      loginScreen: 'Écran de connexion',
       meter: 'Mètres',
       new: 'Neuf {{what}}',
       newBorehole: "Nouveau forage",
@@ -1201,6 +1272,9 @@ nuovamente i termini.`
       'identifierAlreadyUsed': (
         'Identifiant déjà utilisé'
       ),
+      'identifierDeletionAlreadyUsed': (
+        'Ne peut pas supprimer l\'identifiant en cours d\'utilisation'
+      ),
       'disclaimer_publish_title': (
         'Publier les conditions de service'
       ),
@@ -1210,6 +1284,12 @@ nuovamente i termini.`
       'disclaimer_publish_note': (
         `Notez qu'en publiant le nouveau disclaimer, vous inciterez tous les
 utilisateurs à donner leur accord.`
+      ),
+      'content_publish_title': (
+        'Publier le contenu'
+      ),
+      'content_publish_message': (
+        'Êtes-vous sûr de vouloir publier ce nouveau contenu ?'
       )
     },
     error: {

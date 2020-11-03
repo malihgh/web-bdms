@@ -53,8 +53,8 @@ class LayerForm extends React.Component {
       consistance: null,
       alteration: null,
       compactness: null,
-      jointing: [],
-      soil_state: null,
+      jointing: [], // hidden 
+      soil_state: null, // hidden 
       organic_component: [],
       striae: null,
       grain_size_1: null,
@@ -640,42 +640,42 @@ class LayerForm extends React.Component {
             )
           }
           {
-            this.isVisible(
-              'jointing',
-              <Form.Field>
-                <label>{t('jointing')}</label>
-                <DomainDropdown
-                  multiple
-                  onSelected={(selected)=>{
-                    this.updateChange(
-                      'jointing',
-                      selected.map(jng=>jng.id),
-                      false
-                    );
-                  }}
-                  schema='mlpr113'
-                  search
-                  selected={this.state.layer.jointing}
-                />
-              </Form.Field>
-            )
+            // this.isVisible(
+            //   'jointing',
+            //   <Form.Field>
+            //     <label>{t('jointing')}</label>
+            //     <DomainDropdown
+            //       multiple
+            //       onSelected={(selected)=>{
+            //         this.updateChange(
+            //           'jointing',
+            //           selected.map(jng=>jng.id),
+            //           false
+            //         );
+            //       }}
+            //       schema='mlpr113'
+            //       search
+            //       selected={this.state.layer.jointing}
+            //     />
+            //   </Form.Field>
+            // )
           }
           {
-            this.isVisible(
-              'soil_state',
-              <Form.Field>
-                <label>{t('soil_state')}</label>
-                <DomainDropdown
-                  onSelected={(selected)=>{
-                    this.updateChange(
-                      'soil_state', selected.id, false
-                    );
-                  }}
-                  schema='mlpr108'
-                  selected={this.state.layer.soil_state}
-                />
-              </Form.Field>
-            )
+            // this.isVisible(
+            //   'soil_state',
+            //   <Form.Field>
+            //     <label>{t('soil_state')}</label>
+            //     <DomainDropdown
+            //       onSelected={(selected)=>{
+            //         this.updateChange(
+            //           'soil_state', selected.id, false
+            //         );
+            //       }}
+            //       schema='mlpr108'
+            //       selected={this.state.layer.soil_state}
+            //     />
+            //   </Form.Field>
+            // )
           }
           {
             this.isVisible(

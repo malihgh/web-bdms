@@ -7,10 +7,10 @@ import {
   Button,
   Icon,
   Form,
-  Popup,
+  // Popup,
+  Modal,
+  Header,
 } from 'semantic-ui-react';
-
-import DomainText from '../../../commons/form/domain/domainText';
 
 import {
   listIdentifier,
@@ -19,17 +19,45 @@ import {
   // updateIdentifier
 } from '@ist-supsi/bmsjs';
 
+import {
+  updateIdentifier
+} from '@ist-supsi/bmsjs/build/actions/identifier';
+
 class IdentifierSettings extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      identifier: ""
+      isOpenConfirmDelete: false,
+      id: "",
+      de: "",
+      fr: "",
+      it: "",
+      en: "",
     };
+    this.reset = this.reset.bind(this);
   }
 
   componentDidMount(){
     this.props.listIdentifier();
+  }
+
+  reset(){
+    this.setState({
+      id: "",
+      de: "",
+      fr: "",
+      it: "",
+      en: "",
+    });
+  }
+
+  handleOpenConfirmDelete = () => {
+    this.setState({ isOpenConfirmDelete: true });
+  }
+
+  handleCloseConfirmDelete = () => {
+    this.setState({ isOpenConfirmDelete: false });
   }
 
   render() {
@@ -60,14 +88,47 @@ class IdentifierSettings extends React.Component {
             >
               <Form.Input
                 fluid
-                label={t('identifier')}
+                label={t('common:german')}
                 onChange={(e)=>{
                   this.setState({
-                    identifier: e.target.value
+                    de: e.target.value
                   });
                 }}
                 placeholder={t('identifier')}
-                value={this.state.identifier}
+                value={this.state.de}
+              />
+              <Form.Input
+                fluid
+                label={t('common:french')}
+                onChange={(e)=>{
+                  this.setState({
+                    fr: e.target.value
+                  });
+                }}
+                placeholder={t('identifier')}
+                value={this.state.fr}
+              />
+              <Form.Input
+                fluid
+                label={t('common:italian')}
+                onChange={(e)=>{
+                  this.setState({
+                    it: e.target.value
+                  });
+                }}
+                placeholder={t('identifier')}
+                value={this.state.it}
+              />
+              <Form.Input
+                fluid
+                label={t('common:english')}
+                onChange={(e)=>{
+                  this.setState({
+                    en: e.target.value
+                  });
+                }}
+                placeholder={t('identifier')}
+                value={this.state.en}
               />
               <div
                 style={{
@@ -75,101 +136,221 @@ class IdentifierSettings extends React.Component {
                 }}
               >
                 <Form.Button
-                  disabled={this.state.identifier===''}
+                  // disabled={this.state.identifier===''}
                   icon
                   label='&nbsp;'
-                  onClick={()=>{
-                    createIdentifier(this.state.identifier).then(
-                      (response) => {
-                        this.setState({
-                          identifier: ''
-                        }, ()=>{
-                          console.log(response);
+                  onClick={(e)=>{
+                    e.stopPropagation();
+                    if (
+                      this.state.id !== null &&
+                      this.state.id !== ''
+                    ) {
+                      updateIdentifier(
+                        this.state.id,
+                        {
+                          "de": this.state.de,
+                          "fr": this.state.fr,
+                          "it": this.state.it,
+                          "en": this.state.en,
+                        }
+                      ).then(
+                        (response) => {
+                          // this.reset();
                           this.props.listIdentifier();
-                        })
-                      }
-                    );
+                        }
+                      );
+                    } else {
+                      createIdentifier(
+                        {
+                          "de": this.state.de,
+                          "fr": this.state.fr,
+                          "it": this.state.it,
+                          "en": this.state.en,
+                        }  
+                      ).then(
+                        (response) => {
+                          this.reset();
+                          this.props.listIdentifier();
+                        }
+                      );
+                    }
                   }}
                 >
-                  {
-                    this.state.uId !== null?
-                      <Icon name='save' />: 
-                      <Icon name='plus' />
-                  }
+                  <span
+                    style={{
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
+                    {
+                      (
+                        this.state.id !== null &&
+                        this.state.id !== ''
+                      )?
+                        <Icon name='save' />: 
+                        <Icon name='plus' />
+                    } {
+                      (
+                        this.state.id !== null &&
+                        this.state.id !== ''
+                      )?
+                        t('common:save'): t('common:add')
+                    }
+                  </span>
                 </Form.Button>
+
+                <div
+                  className='linker link'
+                  onClick={() => this.reset()}
+                >
+                  {t('common:reset')}
+                </div>
               </div>
             </Form.Group>
           </Form>
         </div>
+        <hr />
         <div>
           {
-            domains.data.hasOwnProperty('borehole_identifier')?
+            (
+              domains.data.hasOwnProperty('borehole_identifier')
+              && domains.data['borehole_identifier'].length > 0 
+            )?
               domains.data['borehole_identifier'].map((val, idx) => (
                 <div
+                  className='selectable'
                   key={'bisp-'+idx}
+                  onClick={
+                    () => {
+                      if (
+                        this.state.id === val.id
+                      ) {
+                        this.reset();
+                      } else {
+                        this.setState({
+                          id: val.id,
+                          de: val.de.text,
+                          fr: val.fr.text,
+                          it: val.it.text,
+                          en: val.de.text,
+                        });
+                      }
+                    }
+                  }
                   style={{
                     alignItems: 'center',
                     display: 'flex',
                     flex: 1,
                     flexDirection: 'row',
                     paddingBottom: '0.5em',
+                    backgroundColor: this.state.id === val.id?
+                      '#595959': null,
+                    color: this.state.id === val.id?
+                      'white': null
                   }}
                 >
-                  <Popup
-                    flowing
-                    hoverable
-                    on='click'
-                    // position='right center'
-                    trigger={
-                      <Button
-                        color='red'
-                        icon
-                        size='tiny'
-                      >
-                        <Icon
-                          name='trash alternate outline'
-                        />
-                      </Button>
-                    }
-                  >
-                    Delete "
-                    <DomainText
-                      id={val.id}
-                      schema='borehole_identifier'
-                    />" forever?
-                    <br />
-                    <br />
-                    <Button
-                      icon
-                      onClick={()=>{
-                        deleteIdentifier(val.id).then(
-                          (response) => {
-                            console.log(response);
-                            this.props.listIdentifier();
-                          }
-                        );
-                      }}
-                      secondary
-                      size='tiny'
-                    >
-                      {t('confirm')}
-                    </Button>
-                  </Popup>
                   <div
                     style={{
-                      marginLeft: '1em'
+                      marginLeft: '1em',
+                      flex: '1 1 100%',
                     }}
                   >
-                    <DomainText
-                      id={val.id}
-                      schema='borehole_identifier'
-                    />
+                    {val.de.text}
                   </div>
+                  <div
+                    style={{
+                      marginLeft: '1em',
+                      flex: '1 1 100%',
+                    }}
+                  >
+                    {val.fr.text}
+                  </div>
+                  <div
+                    style={{
+                      marginLeft: '1em',
+                      flex: '1 1 100%',
+                    }}
+                  >
+                    {val.it.text}
+                  </div>
+                  <div
+                    style={{
+                      marginLeft: '1em',
+                      flex: '1 1 100%',
+                    }}
+                  >
+                    {val.en.text}
+                  </div>
+                  <Button
+                    color='red'
+                    icon
+                    onClick={e=>{
+                      e.stopPropagation();
+                      this.setState({
+                        id: val.id,
+                        isOpenConfirmDelete: true,
+                        de: val.de.text,
+                        fr: val.fr.text,
+                        it: val.it.text,
+                        en: val.de.text,
+                      });
+                    }}
+                    size='tiny'
+                  >
+                    <Icon
+                      name='trash alternate outline'
+                    />
+                  </Button>
                 </div>
               )):
               'Empty'
           }
         </div>
+        <Modal
+          closeIcon
+          onClose={this.handleCloseConfirmDelete}
+          // onOpen={this.handleOpenConfirmDelete}
+          open={this.state.isOpenConfirmDelete}
+          size='mini'
+        >
+          <Header
+            content={t('common:deleteForever')}
+            // icon='archive'
+          />
+          <Modal.Content>
+            <p>
+              {t('common:sure')}
+            </p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button
+              icon
+              negative
+              onClick={
+                e => {
+                  e.stopPropagation();
+                  deleteIdentifier(this.state.id).then(
+                    r => {
+                      if (r.data.success === true) {
+                        this.props.listIdentifier();
+                      } else if (
+                        r.data.error === 'E-205'
+                      ){
+                        alert(
+                          t('messages:identifierDeletionAlreadyUsed')
+                        );
+                      }
+                      this.reset();
+                      this.handleCloseConfirmDelete();
+                    }
+                  );
+                }
+              }
+              size='tiny'
+            >
+              {t('confirm')}
+            </Button>
+          </Modal.Actions>
+        </Modal>
       </div>
     );
   }
@@ -203,4 +384,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(['common'])(IdentifierSettings));
+)(withTranslation(['common', 'messages'])(IdentifierSettings));
