@@ -17,7 +17,6 @@ import {
   updateBorehole,
   loadBorehole,
   checkBorehole,
-  // createBorehole,
   createStratigraphy,
   patchBorehole
 } from '@ist-supsi/bmsjs';
@@ -26,17 +25,12 @@ import PointComponent from '../../map/pointComponent';
 import DomainDropdown from '../domain/dropdown/domainDropdown';
 import DomainTree from '../domain/tree/domainTree';
 import MunicipalityDropdown from '../municipality/dropdown/municipalityDropdown';
-// import DomainTabs from '../domain/domainTabs';
 import CantonDropdown from '../cantons/dropdown/cantonDropdown';
 import DateField from '../dateField';
 import DateText from '../dateText';
-// import StratigraphyForm from '../stratigraphy/stratigraphyForm';
 import StratigraphyFormContainer from '../stratigraphy/stratigraphyFormContainer';
 import DomainText from '../domain/domainText';
-
 import EditorBoreholeFilesTable from '../../files/table/editorBoreholeFilesTable';
-
-// import NewStratigraphy from '../stratigraphy/newStratigraphy';
 
 import {
   Button,
