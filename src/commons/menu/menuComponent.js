@@ -15,6 +15,7 @@ import {
 } from '@ist-supsi/bmsjs';
 
 import Feedback from '../feedback/feedbackComponent';
+import TranslationText from '../form/translationText';
 
 class MenuComponent extends React.Component {
 
@@ -28,7 +29,7 @@ class MenuComponent extends React.Component {
   render () {
 
     const {
-      i18n, handleModeChange, mode, t
+      i18n, handleModeChange, mode,
     } = this.props;
 
     return (
@@ -45,9 +46,9 @@ class MenuComponent extends React.Component {
       >
         <img
           alt='ch logo'
-          src={process.env.PUBLIC_URL + '/img/ch.png'}
+          src={process.env.PUBLIC_URL + '/logo.svg'}
           style={{
-            height: '30px',
+            height: '45px',
             width: 'auto'
           }}
         />
@@ -241,7 +242,9 @@ class MenuComponent extends React.Component {
                     Viewer
                   </List.Header>
                   <List.Description>
-                    {t('header:viewerdesc')}
+                    <TranslationText
+                      id='header_viewerdesc'
+                    />
                   </List.Description>
                 </List.Content>
               </List.Item>
@@ -273,7 +276,9 @@ class MenuComponent extends React.Component {
                         Editor
                       </List.Header>
                       <List.Description>
-                        {t('header:editordesc')}
+                        <TranslationText
+                          id='header_editordesc'
+                        />
                       </List.Description>
                     </List.Content>
                   </List.Item>: null
@@ -294,13 +299,51 @@ class MenuComponent extends React.Component {
                 />
                 <List.Content>
                   <List.Header as='h4'>
-                    {t('header:settings')}
+                    <TranslationText
+                      id='header_settings'
+                    />
                   </List.Header>
                   <List.Description>
-                    {t('header:settingdesc')}
+                    <TranslationText
+                      id='header_settingdesc'
+                    />
                   </List.Description>
                 </List.Content>
               </List.Item>
+              {
+                this.props.user.data.admin === true?
+                  <List.Item
+                    onClick={() => {
+                      this.props.dispatch({
+                        type: 'DEBUG_SWITCH'
+                      });
+                    }}
+                    style={{
+                      padding: '0.5em'
+                    }}
+                  >
+                    <List.Icon
+                      name='edit'
+                      verticalAlign='middle'
+                    />
+                    <List.Content>
+                      <List.Header as='h4'>
+                        Debug
+                      </List.Header>
+                      <List.Description>
+                        {
+                          this.props.developer.debug === true?   
+                            <TranslationText
+                              id='enabled'
+                            />:
+                            <TranslationText
+                              id='disabled'
+                            />
+                        }
+                      </List.Description>
+                    </List.Content>
+                  </List.Item>: null
+              }
             </List>
             <div
               style={{
@@ -378,6 +421,7 @@ class MenuComponent extends React.Component {
 const mapStateToProps = (state) => {
   return {
     checkout: state.checkout,
+    developer: state.developer,
     user: state.core_user
   };
 };
@@ -406,4 +450,4 @@ MenuComponent.propTypes = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(['common', 'header', 'borehole_form'])(MenuComponent));
+)(withTranslation(['common'])(MenuComponent));

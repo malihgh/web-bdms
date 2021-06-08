@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
+// import { withTranslation } from 'react-i18next';
 import { Button, Input } from 'semantic-ui-react';
 import Markdown from 'markdown-to-jsx';
 
@@ -48,10 +48,9 @@ class Login extends React.Component {
           >
             <img
               alt="Swiss Logo"
-              src={process.env.PUBLIC_URL + '/img/ch.png'}
+              src={process.env.PUBLIC_URL + '/logo.svg'}
               style={{
-                height: '30px',
-                width: '27.27px'
+                height: '100px',
               }}
             />
             <div
@@ -241,7 +240,7 @@ Login.propTypes = {
   body: PropTypes.string,
   guest: PropTypes.bool,
   onGuestLogin: PropTypes.func,
-  onLogin: PropTypes.func,
+  // onLogin: PropTypes.func,
   // t: PropTypes.func,
   title: PropTypes.string,
   user: PropTypes.shape({
@@ -260,4 +259,4 @@ Login.defaultProps = {
   body: ''
 };
 
-export default withTranslation('search')(Login);
+export default Login; //withTranslation()(Login);

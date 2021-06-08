@@ -77,4 +77,4 @@ class ResourcesSettings extends React.Component {
   }
 }
 
-export default (withTranslation(['borehole_form', 'common'])(ResourcesSettings));
+export default (withTranslation(['common'])(ResourcesSettings));

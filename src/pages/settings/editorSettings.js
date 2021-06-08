@@ -20,46 +20,47 @@ import {
 } from '@ist-supsi/bmsjs';
 
 import IdentifierSettings from './editor/identifierSettings';
+import TranslationText from '../../commons/form/translationText';
 
 const fields = [
   {
     name: 'description'
   },
   {
-    name: 'geology'
+    name: 'layer_geology'
   },
   {
-    name: 'qt_description'
+    name: 'layer_qt_description'
   },
   {
-    name: 'lithology'
+    name: 'layer_lithology'
   },
   {
-    name: 'lithostratigraphy'
+    name: 'layer_lithostratigraphy'
   },
   {
-    name: 'chronostratigraphy'
+    name: 'layer_chronostratigraphy'
   },
   {
-    name: 'tectonic_unit'
+    name: 'layer_tectonic_unit'
   },
   {
-    name: 'color'
+    name: 'layer_color'
   },
   {
-    name: 'plasticity'
+    name: 'layer_plasticity'
   },
   {
-    name: 'humidity'
+    name: 'layer_humidity'
   },
   {
-    name: 'consistance'
+    name: 'layer_consistance'
   },
   {
-    name: 'alteration'
+    name: 'layer_alteration'
   },
   {
-    name: 'compactness'
+    name: 'layer_compactness'
   },
   // {
   //   name: 'jointing'
@@ -68,52 +69,52 @@ const fields = [
   //   name: 'soil_state'
   // },
   {
-    name: 'organic_component'
+    name: 'layer_organic_component'
   },
   {
-    name: 'striae'
+    name: 'layer_striae'
   },
   {
-    name: 'grain_size_1'
+    name: 'layer_grain_size_1'
   },
   {
-    name: 'grain_size_2'
+    name: 'layer_grain_size_2'
   },
   {
-    name: 'grain_shape'
+    name: 'layer_grain_shape'
   },
   {
-    name: 'grain_granularity'
+    name: 'layer_grain_granularity'
   },
   {
-    name: 'cohesion'
+    name: 'layer_cohesion'
   },
   {
-    name: 'further_properties'
+    name: 'layer_further_properties'
   },
   {
-    name: 'uscs_1'
+    name: 'layer_uscs_1'
   },
   {
-    name: 'uscs_2'
+    name: 'layer_uscs_2'
   },
   {
-    name: 'uscs_3'
+    name: 'layer_uscs_3'
   },
   {
-    name: 'uscs_original'
+    name: 'layer_uscs_original'
   },
   {
-    name: 'uscs_determination'
+    name: 'layer_uscs_determination'
   },
   {
-    name: 'debris'
+    name: 'layer_debris'
   },
   {
-    name: 'lit_pet_deb'
+    name: 'layer_lit_pet_deb'
   },
   {
-    name: 'notes'
+    name: 'layer_notes'
   }
 ];
 
@@ -187,7 +188,9 @@ class EditorSettings extends React.Component {
               margin: '0px'
             }}
           >
-            {t('common:searchfilters')}
+            <TranslationText
+              id="searchfilters"
+            />
           </Header>
           <div
             style={{
@@ -206,7 +209,12 @@ class EditorSettings extends React.Component {
             >
               {
                 this.state.search === true ?
-                  t('common:collapse') : t('common:expand')
+                  <TranslationText
+                    id='collapse'
+                  />:
+                  <TranslationText
+                    id='expand'
+                  />
               }
             </Button>
           </div>
@@ -219,7 +227,7 @@ class EditorSettings extends React.Component {
                   checked={
                     setting.data.efilter.custom.borehole_identifier
                   }
-                  label={t('identifier')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.borehole_identifier',
@@ -227,13 +235,16 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='borehole_identifier'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.extended.original_name
                   }
-                  label={t('original_name')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'extended.original_name',
@@ -241,13 +252,16 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='original_name'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.kind
                   }
-                  label={t('kind')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'kind',
@@ -255,13 +269,16 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='kind'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.extended.method
                   }
-                  label={t('method')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'extended.method',
@@ -269,19 +286,25 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='drillingmethod'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.custom.project_name
                   }
-                  label={t('project_name')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.project_name',
                       d.checked
                     );
                   }}
+                />
+                <TranslationText
+                  id='project_name'
                 />
               </Segment>
               <Segment>
@@ -297,13 +320,16 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='project_name'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.custom.landuse
                   }
-                  label={t('landuse')}
+                  label=''
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.landuse',
@@ -311,13 +337,16 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='landuse'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.custom.canton
                   }
-                  label={t('canton') + "/" + t('city') + "/" + t('address')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.canton',
@@ -325,13 +354,24 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='canton'
+                />
+                &nbsp;/&nbsp;
+                <TranslationText
+                  id='city'
+                />
+                &nbsp;/&nbsp;
+                <TranslationText
+                  id='address'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.elevation_z
                   }
-                  label={t('elevation_z')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'elevation_z',
@@ -339,13 +379,16 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='elevation_z'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.length
                   }
-                  label={t('length')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'length',
@@ -353,13 +396,16 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='totaldepth'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.extended.groundwater
                   }
-                  label={t('groundwater')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'extended.groundwater',
@@ -367,13 +413,16 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='groundwater'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.extended.top_bedrock
                   }
-                  label={t('top_bedrock')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'extended.top_bedrock',
@@ -381,13 +430,16 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='top_bedrock'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.extended.status
                   }
-                  label={t('status')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'extended.status',
@@ -395,13 +447,16 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='status'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.extended.purpose
                   }
-                  label={t('purpose')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'extended.purpose',
@@ -409,13 +464,16 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='purpose'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.custom.cuttings
                   }
-                  label={t('cuttings')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.cuttings',
@@ -423,13 +481,16 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='cuttings'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.drilling_date
                   }
-                  label={t('drilling_date')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'drilling_date',
@@ -437,19 +498,25 @@ class EditorSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='drilling_date'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.efilter.custom.drill_diameter
                   }
-                  label={t('drill_diameter')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.drill_diameter',
                       d.checked
                     );
                   }}
+                />
+                <TranslationText
+                  id='drilldiameter'
                 />
               </Segment>
 
@@ -458,13 +525,16 @@ class EditorSettings extends React.Component {
                   checked={
                     setting.data.efilter.bore_inc
                   }
-                  label={t('bore_inc')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'bore_inc',
                       d.checked
                     );
                   }}
+                />
+                <TranslationText
+                  id='inclination'
                 />
               </Segment>
 
@@ -473,13 +543,16 @@ class EditorSettings extends React.Component {
                   checked={
                     setting.data.efilter.custom.lit_pet_top_bedrock
                   }
-                  label={t('lit_pet_top_bedrock')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.lit_pet_top_bedrock',
                       d.checked
                     );
                   }}
+                />
+                <TranslationText
+                  id='lit_pet_top_bedrock'
                 />
               </Segment>
 
@@ -488,13 +561,16 @@ class EditorSettings extends React.Component {
                   checked={
                     setting.data.efilter.custom.lit_str_top_bedrock
                   }
-                  label={t('lit_str_top_bedrock')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.lit_str_top_bedrock',
                       d.checked
                     );
                   }}
+                />
+                <TranslationText
+                  id='lit_str_top_bedrock'
                 />
               </Segment>
 
@@ -503,13 +579,16 @@ class EditorSettings extends React.Component {
                   checked={
                     setting.data.efilter.custom.chro_str_top_bedrock
                   }
-                  label={t('chro_str_top_bedrock')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.chro_str_top_bedrock',
                       d.checked
                     );
                   }}
+                />
+                <TranslationText
+                  id='chro_str_top_bedrock'
                 />
               </Segment>
 
@@ -537,7 +616,9 @@ class EditorSettings extends React.Component {
                     margin: '0px'
                   }}
                 >
-                  {t('common:stratigraphyfields')}
+                  <TranslationText
+                    id='stratigraphyfields'
+                  />
                 </Header>
                 <div
                   style={{
@@ -556,7 +637,12 @@ class EditorSettings extends React.Component {
                   >
                     {
                       this.state.fields === true ?
-                        t('common:collapse') : t('common:expand')
+                        <TranslationText
+                          id='collapse'
+                        />:
+                        <TranslationText
+                          id='expand'
+                        />
                     }
                   </Button>
                 </div>
@@ -571,12 +657,17 @@ class EditorSettings extends React.Component {
                         >
                           <Checkbox
                             checked={
-                              this.isVisible(field.name)
+                              this.isVisible(
+                                field.name.replace("layer_","")
+                              )
                             }
-                            label={t(`layer_form:${field.name}`)}
+                            label=""
                             onChange={(e, d) => {
-                              toggleField(field.name, d.checked);
+                              toggleField(field.name.replace("layer_",""), d.checked);
                             }}
+                          />
+                          <TranslationText
+                            id={field.name}
                           />
                         </Segment>
                       ))
@@ -606,7 +697,9 @@ class EditorSettings extends React.Component {
                     margin: '0px'
                   }}
                 >
-                  {t('common:identifierManager')}
+                  <TranslationText
+                    id='identifierManager'
+                  />
                 </Header>
                 <div
                   style={{
@@ -625,7 +718,12 @@ class EditorSettings extends React.Component {
                   >
                     {
                       this.state.identifiers === true ?
-                        t('common:collapse') : t('common:expand')
+                        <TranslationText
+                          id='collapse'
+                        />:
+                        <TranslationText
+                          id='expand'
+                        />
                     }
                   </Button>
                 </div>
@@ -679,4 +777,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(['borehole_form', 'common', 'layer_form'])(EditorSettings));
+)(withTranslation('common')(EditorSettings));

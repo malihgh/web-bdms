@@ -18,6 +18,9 @@ import {
   Form,
 } from 'semantic-ui-react';
 
+import TranslationText from '../../translationText';
+import DomainText from '../domainText';
+
 class DomainTree extends React.Component {
 
   constructor(props) {
@@ -186,7 +189,6 @@ class DomainTree extends React.Component {
     const {
       domains,
       schema,
-      t,
     } = this.props;
     if (!domains.data.hasOwnProperty(schema)) {
       if (domains.isFetching === true) {
@@ -208,7 +210,9 @@ class DomainTree extends React.Component {
               color: 'red'
             }}
           >
-            {t('reset')}
+            <TranslationText
+              id='reset'
+            />
           </span>
         )
       }
@@ -267,7 +271,9 @@ class DomainTree extends React.Component {
                       color: 'red'
                     }}
                   >
-                    {t('reset')}
+                    <TranslationText
+                      id='reset'
+                    />
                   </span>
                 )
               }
@@ -288,7 +294,27 @@ class DomainTree extends React.Component {
             //     domain.code +
             //     ' (' + domain[this.state.language].text + ')':
             //     domain.code,
-            content: domain[this.state.language].text
+            // content: domain[this.state.language].text
+            content: (
+              <DomainText
+                id={domain.id}
+                schema={schema}
+              />
+              // <span
+              //   style={{
+              //     color: 'red'
+              //   }}
+              // >
+              // <DomainText
+              //   id={identifier.id}
+              //   schema='borehole_identifier'
+              // />
+              // import DomainText from '../domain/domainText';
+              //   <TranslationText
+              //     id='reset'
+              //   />
+              // </span>
+            )
             // content: domain.code === '' ?
             //   domain[this.state.language].text :
             //   domain.code !== domain[this.state.language].text ?
@@ -354,11 +380,18 @@ class DomainTree extends React.Component {
                     }}
                   >
                     {domain[this.state.language].text}
-                    {/* {
-                      domain.code === ''?
-                        domain[this.state.language].text:
-                        domain.code
-                    } */}
+                    {
+                      this.props.developer.debug === true?
+                        <span
+                          style={{
+                            color: 'red',
+                            margin: '5px'
+                          }}
+                          title={`gcode=${domain.id}`}
+                        >
+                          gcode={domain.id}
+                        </span>: null
+                    }
                   </div>
                   {
                     domain.conf !== null && domain.conf.hasOwnProperty('image')?
@@ -482,7 +515,9 @@ class DomainTree extends React.Component {
               >
                 <Form.Field>
                   <label>
-                    {t('filterByHierarchicalUnits')}
+                    <TranslationText
+                      id='filterByHierarchicalUnits'
+                    />
                   </label>
                 </Form.Field>
               </Form>
@@ -514,27 +549,34 @@ class DomainTree extends React.Component {
                           fluid
                           onChange={(ev, data) => {
 
-                            if (data.value === null) {
-                              const selectedFilters = {
-                                ...this.state.selectedFilters
-                              };
-                              const filter = [];
-                              for (
-                                let index2 = 0,
-                                  l = this.state.levels.length;
-                                index2 < l;
-                                index2++
-                              ) {
-                                const lev2 = this.state.levels[index2];
-                                if (
-                                  lev2 >= lev
-                                  && selectedFilters.hasOwnProperty(lev)
-                                ){
-                                  selectedFilters[lev2] = null;
-                                } else {
-                                  filter.push(this.state.filter[index2]);
-                                }
+                            // Remove childs if necessary
+
+                            const selectedFilters = {
+                              ...this.state.selectedFilters
+                            };
+                            const filter = [];
+                            for (
+                              let index2 = 0, l = this.state.levels.length;
+                              index2 < l;
+                              index2++
+                            ) {
+                              const lev2 = this.state.levels[index2];
+                              if (
+                                lev2 >= lev
+                                && selectedFilters.hasOwnProperty(lev)
+                              ){
+                                selectedFilters[lev2] = null;
+                              } else {
+                                filter.push(this.state.filter[index2]);
                               }
+                            }
+
+                            const option = _.find(
+                              data.options, { 'value': data.value }
+                            );
+
+                            if (data.value === null) {
+
                               this.setState({
                                 filter: filter,
                                 selectedFilters: {
@@ -542,19 +584,8 @@ class DomainTree extends React.Component {
                                 }
                               });
 
-                              // this.setState({
-                              //   filter: [],
-                              //   selectedFilters: {
-                              //     ...this.state.selectedFiltersTmpl
-                              //   }
-                              // });
                             } else {
 
-                              const option = _.find(
-                                data.options, { 'value': data.value }
-                              );
-  
-                              let selectedFilters = {};
                               selectedFilters[lev] = {
                                 path: option.path,
                                 id: data.value
@@ -563,7 +594,6 @@ class DomainTree extends React.Component {
                               this.setState({
                                 filter: option.path.split('.'),
                                 selectedFilters: {
-                                  ...this.state.selectedFilters,
                                   ...selectedFilters
                                 }
                               });
@@ -601,7 +631,9 @@ class DomainTree extends React.Component {
                 >
                   <Form.Field>
                     <label>
-                      {t('filterByName')}
+                      <TranslationText
+                        id='filterByName'
+                      />
                     </label>
                     <Input
                       fluid
@@ -652,7 +684,10 @@ DomainTree.propTypes = {
     PropTypes.number,
     PropTypes.arrayOf(PropTypes.number)
   ]),
-  title: PropTypes.string
+  title: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.node
+  ])
 };
 
 DomainTree.defaultProps = {
@@ -665,6 +700,7 @@ DomainTree.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    developer: state.developer,
     domains: state.core_domain_list
   };
 };

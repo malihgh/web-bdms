@@ -6,6 +6,7 @@ import _ from 'lodash';
 import LayerForm from '../layer/layerForm';
 import LayersList from '../../layers/layerList';
 import DateField from '../dateField';
+import TranslationText from '../translationText';
 // import DomainDropdown from '../domain/dropdown/domainDropdown';
 import {
   Button,
@@ -69,15 +70,20 @@ class StratigraphyFormContainer extends React.Component {
     }
   }
 
-  load(id) {
+  load(id, keepselected = false) {
     // Get Stratigraphy by borehole and stratigraphy kind
     this.setState({
       consistency: {},
-      stratigraphy: null,
       stratigraphyEmpty: false,
       fetchingStratigraphy: true,
       layers: null,
-      layer: null,
+      ...(
+        keepselected === false?
+          {
+            layer: null,
+            stratigraphy: null,
+          }: null
+      ),
       viewas: null,
     },() => {
       
@@ -343,7 +349,6 @@ class StratigraphyFormContainer extends React.Component {
     const { stratigraphy } = this.state;
     const {
       domains,
-      t,
       onDeleted,
       onClone
     } = this.props;
@@ -397,7 +402,11 @@ class StratigraphyFormContainer extends React.Component {
                     width: '50%'
                   }}
                 >
-                  <label>{t('stratigraphy_name')}</label>
+                  <label>  
+                    <TranslationText
+                      id='stratigraphy_name'
+                    />  
+                  </label>
                   <Input
                     autoCapitalize="off"
                     autoComplete="off"
@@ -418,7 +427,7 @@ class StratigraphyFormContainer extends React.Component {
                     width: '50%'
                   }}
                 >
-                  <label>{t('meta_stratigraphy')}</label>
+                  <label>{t('stratigraphy')}</label>
                   <DomainDropdown
                     onSelected={(selected)=>{
                       this.updateChange(
@@ -437,8 +446,10 @@ class StratigraphyFormContainer extends React.Component {
                     width: '50%'
                   }}
                 >
-                  <label>
-                    {t('common:date')}
+                  <label>  
+                    <TranslationText
+                      id='date'
+                    />  
                   </label>
                   <DateField
                     date={stratigraphy.date}
@@ -472,7 +483,7 @@ class StratigraphyFormContainer extends React.Component {
                 >
                   <Checkbox
                     checked={stratigraphy.primary}
-                    label={t('mainStratigraphy')}
+                    label=''
                     onChange={(ev, data)=>{
                       if (data.checked===true){
                         this.updateChange(
@@ -482,12 +493,15 @@ class StratigraphyFormContainer extends React.Component {
                     }}
                     toggle
                   />
+                  <TranslationText
+                    id='mainStratigraphy'
+                  />  
                 </Form>
               </div>
               {
                 this.props.borehole.data.lock === null
-                || this.props.borehole.data.lock.username !==
-                    this.props.user.data.username?
+                || this.props.borehole.data.lock.username !== this.props.user.data.username
+                || this.props.borehole.data.role !== 'EDIT'?
                   null:
                   <div
                     style={{
@@ -527,7 +541,9 @@ class StratigraphyFormContainer extends React.Component {
                         </Button>
                       }
                     >
-                      Delete?
+                      <TranslationText
+                        id='deleteForever'
+                      />?
                       <br />
                       <Button
                         icon
@@ -546,7 +562,9 @@ class StratigraphyFormContainer extends React.Component {
                         secondary
                         size='tiny'
                       >
-                        Confirm
+                        <TranslationText
+                          id='yes'
+                        />
                       </Button>
                     </Popup>
                   </div>
@@ -565,8 +583,8 @@ class StratigraphyFormContainer extends React.Component {
                 >
                   {
                     this.props.borehole.data.lock === null
-                    || this.props.borehole.data.lock.username !==
-                        this.props.user.data.username?
+                    || this.props.borehole.data.lock.username !== this.props.user.data.username
+                    || this.props.borehole.data.role !== 'EDIT'?
                       null:
                       <div
                         style={{
@@ -630,7 +648,9 @@ class StratigraphyFormContainer extends React.Component {
                           secondary
                           size='tiny'
                         >
-                          Add layer
+                          <TranslationText
+                            id='add'
+                          />
                         </Button>
                       </div>
                   }
@@ -701,11 +721,17 @@ class StratigraphyFormContainer extends React.Component {
                           /> {(()=>{
                             const l = Object.keys(this.state.consistency).length;
                             if (l === 1) {
-                              return t('error:oneerror');
+                              return (
+                                <TranslationText
+                                  id='errorOneerror'
+                                />
+                              );
                             }
-                            return t(
-                              'error:moreerror',
-                              { number: l }
+                            return (
+                              <TranslationText
+                                extra={{ number: l }}
+                                id='errorMoreerror'
+                              />
                             );
                           })()}
                         </div>
@@ -905,6 +931,7 @@ class StratigraphyFormContainer extends React.Component {
                         || attribute === 'chronostratigraphy'
                       ){
                         this.checkConsistency();
+                        this.load(this.props.id, true);
                       }
                     });
                   }}
@@ -964,5 +991,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )((
-  withTranslation(['borehole_form', 'common', 'error'])(StratigraphyFormContainer)
+  withTranslation(['common'])(StratigraphyFormContainer)
 ));

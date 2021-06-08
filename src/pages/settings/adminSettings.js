@@ -27,10 +27,12 @@ import {
   updateUser,
   setRole,
   listUsers,
-  listWorkgroups
+  listWorkgroups,
+  reloadUser,
 } from '@ist-supsi/bmsjs';
 
 import DateText from '../../commons/form/dateText';
+import TranslationText from '../../commons/form/translationText';
 
 
 class AdminSettings extends React.Component {
@@ -137,7 +139,7 @@ class AdminSettings extends React.Component {
         ).then((response)=>{
           this.props.listUsers().then(
             ()=>{
-              this.props.listWorkgroups();
+              this.props.listWorkgroups(true);
             }
           );
         });
@@ -149,7 +151,7 @@ class AdminSettings extends React.Component {
         ).then((response)=>{
           this.props.listUsers().then(
             ()=>{
-              this.props.listWorkgroups();
+              this.props.listWorkgroups(true);
             }
           );
         });
@@ -204,7 +206,12 @@ class AdminSettings extends React.Component {
             >
               <Form.Input
                 fluid
-                label={t('username')}
+                // label={t('username')}
+                label={
+                  <TranslationText
+                    id="username"
+                  />
+                }
                 onChange={(e)=>{
                   this.setState({
                     uUsername: e.target.value
@@ -216,7 +223,12 @@ class AdminSettings extends React.Component {
               <Form.Input
                 autoComplete='new-password'
                 fluid
-                label={t('password')}
+                // label={t('password')}
+                label={
+                  <TranslationText
+                    id="password"
+                  />
+                }
                 onChange={(e)=>{
                   this.setState({
                     uPassword: e.target.value
@@ -228,7 +240,11 @@ class AdminSettings extends React.Component {
               />
               <Form.Input
                 fluid
-                label={t('firstname')}
+                label={
+                  <TranslationText
+                    id="firstname"
+                  />
+                }
                 onChange={(e)=>{
                   this.setState({
                     uFirstname: e.target.value
@@ -240,7 +256,11 @@ class AdminSettings extends React.Component {
               <Form.Input
                 autoComplete='off'
                 fluid
-                label={t('lastname')}
+                label={
+                  <TranslationText
+                    id="lastname"
+                  />
+                }
                 onChange={(e)=>{
                   this.setState({
                     uLastname: e.target.value
@@ -251,7 +271,9 @@ class AdminSettings extends React.Component {
               />
               <Form.Field>
                 <label>
-                  {t('admin')}
+                  <TranslationText
+                    id="admin"
+                  />
                 </label>
                 <div
                   className='ui fluid input'
@@ -310,6 +332,7 @@ class AdminSettings extends React.Component {
                           alert(response.data.message);
                         } else {
                           this.props.listUsers();
+                          // this.props.reloadUser();
                         }
                       });
                     } else {
@@ -326,6 +349,7 @@ class AdminSettings extends React.Component {
                           alert(response.data.message);
                         } else {
                           this.props.listUsers();
+                          // this.props.reloadUser();
                         }
                       });
                     }
@@ -362,7 +386,20 @@ class AdminSettings extends React.Component {
                     whiteSpace: 'nowrap'
                   }}
                 >
-                  {t('show', { what: t('all') })}
+                  <TranslationText
+                    extra={{ what: t('all') }}
+                    id="show"
+                  />
+                  {
+                    this.props.developer.debug === true?
+                      <div
+                        style={{
+                          color: 'red',
+                        }}
+                      >
+                        trans=all
+                      </div>: null
+                  }
                 </div>: null
             }
             {
@@ -380,13 +417,19 @@ class AdminSettings extends React.Component {
                     whiteSpace: 'nowrap'
                   }}
                 >
+                  <TranslationText
+                    extra={{ what: t('enabled') }}
+                    id="show"
+                  />
                   {
-                    t(
-                      'show',
-                      {
-                        what: t('enabled')
-                      }
-                    )
+                    this.props.developer.debug === true?
+                      <div
+                        style={{
+                          color: 'red',
+                        }}
+                      >
+                        trans=enabled
+                      </div>: null
                   }
                 </div>: null
             }
@@ -405,13 +448,19 @@ class AdminSettings extends React.Component {
                     whiteSpace: 'nowrap'
                   }}
                 >
+                  <TranslationText
+                    extra={{ what: t('disabled') }}
+                    id="show"
+                  />
                   {
-                    t(
-                      'show',
-                      {
-                        what: t('disabled')
-                      }
-                    )
+                    this.props.developer.debug === true?
+                      <div
+                        style={{
+                          color: 'red',
+                        }}
+                      >
+                        trans=disabled
+                      </div>: null
                   }
                 </div>: null
             }
@@ -462,19 +511,19 @@ class AdminSettings extends React.Component {
                     this.state.deleteUser.disabled !== null?
                       <Modal.Description>
                         <p>
-                          {t(
-                            'messages:enablingUser',
-                            {
-                              user: this.state.deleteUser.username
-                            }
-                          )}
+                          <TranslationText
+                            extra={{ user: this.state.deleteUser.username }}
+                            id="enablingUser"
+                          />
                         </p>
                       </Modal.Description>:
                       this.state.deleteUser !== null
                       && this.state.deleteUser.contributions === 0?
                         <Modal.Description>
                           <p>
-                            {t('messages:deleteUser')}
+                            <TranslationText
+                              id="msgDeleteUser"
+                            />
                           </p>
                           <ul>
                             <li>
@@ -484,10 +533,14 @@ class AdminSettings extends React.Component {
                                   textTransform: 'capitalize'
                                 }}
                               >
-                                {t('disable')}:
+                                <TranslationText
+                                  id="disable"
+                                />:
                               </span>
                               <br />
-                              {t('messages:reenablingTip')}
+                              <TranslationText
+                                id="msgReenablingTip"
+                              />
                               <br />
                               &nbsp;
                             </li>
@@ -498,16 +551,22 @@ class AdminSettings extends React.Component {
                                   textTransform: 'capitalize'
                                 }}
                               >
-                                {t('deleteForever')}:
+                                <TranslationText
+                                  id="deleteForever"
+                                />
                               </span>
                               <br />
-                              {t('messages:deletingUserTip')}
+                              <TranslationText
+                                id="msgDeletingUserTip"
+                              />
                             </li>
                           </ul>
                         </Modal.Description>:
                         <Modal.Description>
                           <p>
-                            {t('messages:disablingUser')}
+                            <TranslationText
+                              id="msgDisablingUser"
+                            />
                           </p>
                           <ul>
                             <li>
@@ -517,10 +576,14 @@ class AdminSettings extends React.Component {
                                   textTransform: 'capitalize'
                                 }}
                               >
-                                {t('disable')}:
+                                <TranslationText
+                                  id="disable"
+                                />:
                               </span>
                               <br />
-                              {t('messages:reenablingTip')}
+                              <TranslationText
+                                id="msgReenablingTip"
+                              />
                             </li>
                           </ul>
                         </Modal.Description>
@@ -548,7 +611,9 @@ class AdminSettings extends React.Component {
                         whiteSpace: 'nowrap'
                       }}
                     >
-                      {t('cancel')}
+                      <TranslationText
+                        id="cancel"
+                      />
                     </span>
                   </Button>
                   <div style={{ flex: '1 1 100%' }} />
@@ -563,7 +628,10 @@ class AdminSettings extends React.Component {
                             ).then(()=>{
                               this.setState({
                                 deleteUser: null
-                              }, this.props.listUsers);
+                              }, () => {
+                                this.props.listUsers();
+                                // this.props.reloadUser();
+                              });
                             });
                           }}
                           secondary
@@ -574,7 +642,9 @@ class AdminSettings extends React.Component {
                               whiteSpace: 'nowrap'
                             }}
                           >
-                            {t('enable')}
+                            <TranslationText
+                              id="enable"
+                            />
                           </span>
                         </Button>:
                         <Button
@@ -595,7 +665,9 @@ class AdminSettings extends React.Component {
                               whiteSpace: 'nowrap'
                             }}
                           >
-                            {t('disable')}
+                            <TranslationText
+                              id="disable"
+                            />
                           </span>
                         </Button>
                   }
@@ -621,7 +693,9 @@ class AdminSettings extends React.Component {
                             whiteSpace: 'nowrap'
                           }}
                         >
-                          {t('deleteForever')}
+                          <TranslationText
+                            id="deleteForever"
+                          />
                         </span>
                       </Button>: null
                   }
@@ -637,13 +711,19 @@ class AdminSettings extends React.Component {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>
-                    {t('username')}
+                    <TranslationText
+                      id="username"
+                    />
                   </Table.HeaderCell>
                   <Table.HeaderCell>
-                    {t('firstname')}
+                    <TranslationText
+                      id="firstname"
+                    />
                   </Table.HeaderCell>
                   <Table.HeaderCell>
-                    {t('lastname')}
+                    <TranslationText
+                      id="lastname"
+                    />
                   </Table.HeaderCell>
                   <Table.HeaderCell
                     colSpan='2'
@@ -651,7 +731,9 @@ class AdminSettings extends React.Component {
                       width: '4em'
                     }}
                   >
-                    {t('admin')}
+                    <TranslationText
+                      id="admin"
+                    />
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
@@ -728,7 +810,10 @@ class AdminSettings extends React.Component {
                                   marginLeft: '0.5em',
                                 }}
                               >
-                                {t('disabled')}&nbsp;
+                                <TranslationText
+                                  id="disabled"
+                                />
+                                &nbsp;
                                 <DateText
                                   date={currentUser.disabled}
                                   fromnow
@@ -747,7 +832,12 @@ class AdminSettings extends React.Component {
                         >
                           {
                             currentUser.admin === true?
-                              t('yes'): t('no')
+                              <TranslationText
+                                id="yes"
+                              />:
+                              <TranslationText
+                                id="no"
+                              />
                           }
                         </Table.Cell>
                         <Table.Cell
@@ -767,7 +857,12 @@ class AdminSettings extends React.Component {
                           >
                             {
                               currentUser.disabled !== null? // isDisabled
-                                t('enable'): t('disable')
+                                <TranslationText
+                                  id="enable"
+                                />:
+                                <TranslationText
+                                  id="disable"
+                                />
                             }
                           </span>
                         </Table.Cell>
@@ -800,15 +895,12 @@ class AdminSettings extends React.Component {
                           this.resetWorkgroup();
                         }}
                       >
-                        {
-                          t(
-                            'new',
-                            {
-                              what: t('workgroup')
-                            }
-                          )
-                        }
-                      </span>: <span>&nbsp;</span>
+                        <TranslationText
+                          extra="workgroup"
+                          id="new"
+                        />
+                      </span>:
+                      <span>&nbsp;</span>
                   }
                 </div>
                 <Form
@@ -820,7 +912,11 @@ class AdminSettings extends React.Component {
                   >
                     <Form.Input
                       fluid
-                      label={t('workgroup')}
+                      label={
+                        <TranslationText
+                          id="workgroup"
+                        />
+                      }
                       onChange={(e)=>{
                         this.setState({
                           wName: e.target.value
@@ -841,19 +937,24 @@ class AdminSettings extends React.Component {
                           if (this.state.wId === null){
                             createWorkgroup(
                               this.state.wName
-                            ).then(this.props.listWorkgroups);
+                            ).then(() => {
+                              this.props.listWorkgroups(true);
+                            });
                           } else {
                             updateWorkgroup(
                               this.state.wId,
                               this.state.wName
-                            ).then(this.props.listWorkgroups);
+                            ).then(() => {
+                              this.props.listWorkgroups(true);
+                            });
                           }
 
                         }}
                       >
                         {
                           this.state.wId !== null?
-                            <Icon name='save' />:  <Icon name='plus' />
+                            <Icon name='save' />:
+                            <Icon name='plus' />
                         }
                       </Form.Button>
                     </div>
@@ -882,7 +983,20 @@ class AdminSettings extends React.Component {
                           whiteSpace: 'nowrap'
                         }}
                       >
-                        {t('show', { what: t('all') })}
+                        <TranslationText
+                          extra={{ what: t('all') }}
+                          id="show"
+                        />
+                        {
+                          this.props.developer.debug === true?
+                            <div
+                              style={{
+                                color: 'red',
+                              }}
+                            >
+                              trans=all
+                            </div>: null
+                        }
                       </div>: null
                   }
                   {
@@ -900,13 +1014,19 @@ class AdminSettings extends React.Component {
                           whiteSpace: 'nowrap'
                         }}
                       >
+                        <TranslationText
+                          extra={{ what: t('enabled') }}
+                          id="show"
+                        />
                         {
-                          t(
-                            'show',
-                            {
-                              what: t('enabled')
-                            }
-                          )
+                          this.props.developer.debug === true?
+                            <div
+                              style={{
+                                color: 'red',
+                              }}
+                            >
+                              trans=enabled
+                            </div>: null
                         }
                       </div>: null
                   }
@@ -925,13 +1045,19 @@ class AdminSettings extends React.Component {
                           whiteSpace: 'nowrap'
                         }}
                       >
+                        <TranslationText
+                          extra={{ what: t('disabled') }}
+                          id="show"
+                        />
                         {
-                          t(
-                            'show',
-                            {
-                              what: t('disabled')
-                            }
-                          )
+                          this.props.developer.debug === true?
+                            <div
+                              style={{
+                                color: 'red',
+                              }}
+                            >
+                              trans=disabled
+                            </div>: null
                         }
                       </div>: null
                   }
@@ -970,8 +1096,24 @@ class AdminSettings extends React.Component {
                       {
                         this.state.deleteWorkgroup !== null
                         && this.state.deleteWorkgroup.disabled !== null?
-                          t('enabling', { what: t('workgroup') }):
-                          t('disabling', { what: t('workgroup') })
+                          <TranslationText
+                            extra={{ what: t('workgroup') }}
+                            id="enabling"
+                          />:
+                          <TranslationText
+                            extra={{ what: t('workgroup') }}
+                            id="disabling"
+                          />
+                      }
+                      {
+                        this.props.developer.debug === true?
+                          <div
+                            style={{
+                              color: 'red',
+                            }}
+                          >
+                            trans=workgroup
+                          </div>: null
                       }
                     </Modal.Header>
                     <Modal.Content>
@@ -981,21 +1123,21 @@ class AdminSettings extends React.Component {
                           this.state.deleteWorkgroup.disabled !== null?
                             <Modal.Description>
                               <p>
-                                {
-                                  t(
-                                    'messages:enablingWorkgroup',
-                                    {
-                                      workgroup: this.state.deleteWorkgroup.name
-                                    }
-                                  )
-                                }
+                                <TranslationText
+                                  extra={{
+                                    workgroup: this.state.deleteWorkgroup.name
+                                  }}
+                                  id="msgEnablingWorkgroup"
+                                />
                               </p>
                             </Modal.Description>:
                             this.state.deleteWorkgroup !== null
                             && this.state.deleteWorkgroup.boreholes === 0?
                               <Modal.Description>
                                 <p>
-                                  {t('messages:deleteWorkgroup')}
+                                  <TranslationText
+                                    id="msgDeleteWorkgroup"
+                                  />
                                 </p>
                                 <ul>
                                   <li>
@@ -1005,10 +1147,14 @@ class AdminSettings extends React.Component {
                                         textTransform: 'capitalize'
                                       }}
                                     >
-                                      {t('disable')}:
+                                      <TranslationText
+                                        id="disable"
+                                      />
                                     </span>
                                     <br />
-                                    {t('messages:reenablingTip')}
+                                    <TranslationText
+                                      id="msgReenablingTip"
+                                    />
                                     <br />
                                     &nbsp;
                                   </li>
@@ -1019,16 +1165,22 @@ class AdminSettings extends React.Component {
                                         textTransform: 'capitalize'
                                       }}
                                     >
-                                      {t('deleteForever')}:
+                                      <TranslationText
+                                        id="deleteForever"
+                                      />:
                                     </span>
                                     <br />
-                                    {t('messages:deletingWorkgroupTip')}
+                                    <TranslationText
+                                      id="msgDeletingWorkgroupTip"
+                                    />
                                   </li>
                                 </ul>
                               </Modal.Description>:
                               <Modal.Description>
                                 <p>
-                                  {t('messages:disablingWorkgroup')}
+                                  <TranslationText
+                                    id="msgDisablingWorkgroup"
+                                  />
                                 </p>
                                 <ul>
                                   <li>
@@ -1038,10 +1190,14 @@ class AdminSettings extends React.Component {
                                         textTransform: 'capitalize'
                                       }}
                                     >
-                                      {t('disable')}:
+                                      <TranslationText
+                                        id="disable"
+                                      />:
                                     </span>
                                     <br />
-                                    {t('messages:reenablingTip')}
+                                    <TranslationText
+                                      id="msgReenablingTip"
+                                    />
                                   </li>
                                 </ul>
                               </Modal.Description>
@@ -1067,7 +1223,9 @@ class AdminSettings extends React.Component {
                               whiteSpace: 'nowrap'
                             }}
                           >
-                            {t('cancel')}
+                            <TranslationText
+                              id="cancel"
+                            />
                           </span>
                         </Button>
                         <div style={{ flex: '1 1 100%' }} />
@@ -1082,7 +1240,9 @@ class AdminSettings extends React.Component {
                                   ).then(()=>{
                                     this.setState({
                                       "deleteWorkgroup": null
-                                    }, this.props.listWorkgroups);
+                                    }, () => {
+                                      this.props.listWorkgroups(true);
+                                    });
                                   });
                                 }}
                                 secondary
@@ -1093,7 +1253,9 @@ class AdminSettings extends React.Component {
                                     whiteSpace: 'nowrap'
                                   }}
                                 >
-                                  {t('enable')}
+                                  <TranslationText
+                                    id="enable"
+                                  />
                                 </span>
                               </Button>:
                               <Button
@@ -1103,7 +1265,9 @@ class AdminSettings extends React.Component {
                                   ).then(()=>{
                                     this.resetWorkgroup({
                                       "deleteWorkgroup": null
-                                    }, this.props.listWorkgroups);
+                                    }, () => {
+                                      this.props.listWorkgroups(true);
+                                    });
                                   });
                                 }}
                                 secondary
@@ -1114,7 +1278,9 @@ class AdminSettings extends React.Component {
                                     whiteSpace: 'nowrap'
                                   }}
                                 >
-                                  {t('disable')}
+                                  <TranslationText
+                                    id="disable"
+                                  />
                                 </span>
                               </Button>
                         }
@@ -1130,7 +1296,9 @@ class AdminSettings extends React.Component {
                                 ).then(()=>{
                                   this.resetWorkgroup({
                                     "deleteWorkgroup": null
-                                  }, this.props.listWorkgroups);
+                                  }, () => {
+                                    this.props.listWorkgroups(true);
+                                  });
                                 });
                               }}
                             >
@@ -1140,7 +1308,9 @@ class AdminSettings extends React.Component {
                                   whiteSpace: 'nowrap'
                                 }}
                               >
-                                {t('deleteForever')}
+                                <TranslationText
+                                  id="deleteForever"
+                                />
                               </span>
                             </Button>: null
                         }
@@ -1160,7 +1330,9 @@ class AdminSettings extends React.Component {
                             whiteSpace: 'nowrap'
                           }}
                         >
-                          {t('workgroup')}
+                          <TranslationText
+                            id="workgroup"
+                          />
                         </Table.HeaderCell>
                         <Table.HeaderCell
                           style={{
@@ -1168,7 +1340,9 @@ class AdminSettings extends React.Component {
                             whiteSpace: 'nowrap'
                           }}
                         >
-                          {t('boreholes')}
+                          <TranslationText
+                            id="boreholes"
+                          />
                         </Table.HeaderCell>
                         <Table.HeaderCell
                           style={{
@@ -1176,7 +1350,9 @@ class AdminSettings extends React.Component {
                             whiteSpace: 'nowrap'
                           }}
                         >
-                          {t('roles')}
+                          <TranslationText
+                            id="roles"
+                          />
                         </Table.HeaderCell>
                         <Table.HeaderCell />
                       </Table.Row>
@@ -1232,7 +1408,10 @@ class AdminSettings extends React.Component {
                                       }}
                                     />: null
                                 }
-                                {workgroup.name}
+                                {workgroup.name} {
+                                  workgroup.supplier === true?
+                                    <span style={{ color: 'red' }}>(supplier)</span>: ''
+                                }
                               </Table.Cell>
                               <Table.Cell>
                                 {workgroup.boreholes}
@@ -1265,45 +1444,59 @@ class AdminSettings extends React.Component {
                                             }}
                                           />
                                         </Form.Field>
-                                        <Form.Field>
-                                          <Checkbox
-                                            checked={
-                                              uwg !== undefined
-                                              && uwg.roles.indexOf('EDIT') >= 0
-                                            }
-                                            label='EDITOR'
-                                            onChange={(e, d) => {
-                                              e.stopPropagation();
-                                              this.setRole(uwg, workgroup, 'EDIT');
-                                            }}
-                                          />
-                                        </Form.Field>
-                                        <Form.Field>
-                                          <Checkbox
-                                            checked={
-                                              uwg !== undefined
-                                              && uwg.roles.indexOf('CONTROL') >= 0
-                                            }
-                                            label='CONTROLLER'
-                                            onChange={(e, d) => {
-                                              e.stopPropagation();
-                                              this.setRole(uwg, workgroup, 'CONTROL');
-                                            }}
-                                          />
-                                        </Form.Field>
-                                        <Form.Field>
-                                          <Checkbox
-                                            checked={
-                                              uwg !== undefined
-                                              && uwg.roles.indexOf('VALID') >= 0
-                                            }
-                                            label='VALIDATOR'
-                                            onChange={(e, d) => {
-                                              e.stopPropagation();
-                                              this.setRole(uwg, workgroup, 'VALID');
-                                            }}
-                                          />
-                                        </Form.Field>
+                                        {
+                                          workgroup.supplier === false?
+                                            <Form.Field>
+                                              <Checkbox
+                                                checked={
+                                                  uwg !== undefined
+                                                  && uwg.roles.indexOf('EDIT') >= 0
+                                                }
+                                                label='EDITOR'
+                                                onChange={(e, d) => {
+                                                  e.stopPropagation();
+                                                  this.setRole(uwg, workgroup, 'EDIT');
+                                                }}
+                                              />
+                                            </Form.Field>: null
+                                        }
+                                        {
+                                          workgroup.supplier === false?
+                                            <Form.Field>
+                                              <Checkbox
+                                                checked={
+                                                  uwg !== undefined
+                                                  && uwg.roles.indexOf('CONTROL') >= 0
+                                                }
+                                                label='CONTROLLER'
+                                                onChange={(e, d) => {
+                                                  e.stopPropagation();
+                                                  this.setRole(uwg, workgroup, 'CONTROL');
+                                                }}
+                                              />
+                                            </Form.Field>: null
+                                        }
+                                      </Form.Group>
+                                      <Form.Group
+                                        autoComplete='off'
+                                        widths='equal'
+                                      >
+                                        {
+                                          workgroup.supplier === false?
+                                            <Form.Field>
+                                              <Checkbox
+                                                checked={
+                                                  uwg !== undefined
+                                                  && uwg.roles.indexOf('VALID') >= 0
+                                                }
+                                                label='VALIDATOR'
+                                                onChange={(e, d) => {
+                                                  e.stopPropagation();
+                                                  this.setRole(uwg, workgroup, 'VALID');
+                                                }}
+                                              />
+                                            </Form.Field>: null
+                                        }
                                         <Form.Field>
                                           <Checkbox
                                             checked={
@@ -1330,7 +1523,10 @@ class AdminSettings extends React.Component {
                                         marginLeft: '0.5em',
                                       }}
                                     >
-                                      {t('disabled')}&nbsp;
+                                      <TranslationText
+                                        id="disabled"
+                                      />
+                                      &nbsp;
                                       <DateText
                                         date={workgroup.disabled}
                                         fromnow
@@ -1354,7 +1550,12 @@ class AdminSettings extends React.Component {
                                 >
                                   {
                                     workgroup.disabled !== null? // isDisabled
-                                      t('enableWorkgroup'): t('disableWorkgroup')
+                                      <TranslationText
+                                        id="enableWorkgroup"
+                                      />:
+                                      <TranslationText
+                                        id="disableWorkgroup"
+                                      />
                                   }
                                 </span>
                               </Table.Cell>
@@ -1374,8 +1575,10 @@ class AdminSettings extends React.Component {
 };
 
 AdminSettings.propTypes = {
+  developer: PropTypes.object,
   listUsers: PropTypes.func,
   listWorkgroups: PropTypes.func,
+  reloadUser: PropTypes.func,
   t: PropTypes.func,
   user: PropTypes.object,
   users: PropTypes.object
@@ -1386,6 +1589,7 @@ AdminSettings.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
+    developer: state.developer,
     user: state.core_user,
     users: state.core_users,
     workgroups: state.core_workgroups
@@ -1396,15 +1600,22 @@ const mapDispatchToProps = (dispatch) => {
   return {
     dispatch: dispatch,
     listUsers: () => {
+      dispatch(reloadUser());
       return dispatch(listUsers());
     },
-    listWorkgroups: () => {
+    listWorkgroups: (ru=false) => {
+      if (ru === true) {
+        dispatch(reloadUser());
+      }
       return dispatch(listWorkgroups());
-    }
+    },
+    reloadUser: () => {
+      dispatch(reloadUser());
+    },
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(['common', 'messages'])(AdminSettings));
+)(withTranslation(['common'])(AdminSettings));

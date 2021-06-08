@@ -18,6 +18,7 @@ import {
 
 // import DomainText from '../../form/domain/domainText';
 import DateText from '../../form/dateText';
+import TranslationText from '../../form/translationText';
 import moment from 'moment';
 
 import {
@@ -116,7 +117,9 @@ class MenuEditorForm extends React.Component {
               />
               <List.Content>
                 <List.Header as='h3'>
-                  {t('common:done')}
+                  <TranslationText
+                    id="done"
+                  />
                 </List.Header>
               </List.Content>
             </List.Item>
@@ -147,7 +150,10 @@ class MenuEditorForm extends React.Component {
               />
               <List.Content>
                 <List.Header as='h3'>
-                  {t('borehole_form:meta_location')}
+                  <TranslationText
+                    firstUpperCase
+                    id="location"
+                  />
                 </List.Header>
               </List.Content>
             </List.Item>
@@ -178,7 +184,10 @@ class MenuEditorForm extends React.Component {
               />
               <List.Content>
                 <List.Header as='h3'>
-                  {t('borehole_form:meta_borehole')}
+                  <TranslationText
+                    firstUpperCase
+                    id="borehole"
+                  />
                 </List.Header>
               </List.Content>
             </List.Item>
@@ -209,7 +218,10 @@ class MenuEditorForm extends React.Component {
               />
               <List.Content>
                 <List.Header as='h3'>
-                  {t('borehole_form:meta_stratigraphy')}
+                  <TranslationText
+                    firstUpperCase
+                    id="stratigraphy"
+                  />
                 </List.Header>
               </List.Content>
             </List.Item>
@@ -240,7 +252,10 @@ class MenuEditorForm extends React.Component {
               />
               <List.Content>
                 <List.Header as='h3'>
-                  {t('common:attachments')}
+                  <TranslationText
+                    firstUpperCase
+                    id="attachments"
+                  />
                 </List.Header>
               </List.Content>
             </List.Item>
@@ -259,7 +274,9 @@ class MenuEditorForm extends React.Component {
                 color: '#787878'
               }}
             >
-              {t('editor:locked_status')}:
+              <TranslationText
+                id="locked_status"
+              />
             </div>
             <div
               style={{
@@ -272,13 +289,135 @@ class MenuEditorForm extends React.Component {
                 }}
               >
                 {
-                  borehole.data.lock !== null?
-                    t('editor:editingEnabled'):
-                    t(`version:${borehole.data.role}`)
+                  (
+                    borehole.data.lock !== null ||
+                    borehole.data.role === null
+                  )?
+                    <TranslationText
+                      id="editingEnabled"
+                    />:
+                    <TranslationText
+                      id={`status${borehole.data.role.toLowerCase()}`}
+                    />
                 }
               </span>
             </div>
           </div>
+
+          {
+            borehole.data.imported === true?
+              <div
+                style={{
+                  fontSize: '0.7em',
+                  color: 'rgb(33, 133, 208)'
+                }}
+              >
+                <TranslationText
+                  id="importedData"
+                />
+              </div>: null
+          }
+          
+          <div
+            style={{
+              fontSize: '0.7em',
+              color: '#787878'
+            }}
+          >
+            {
+              borehole.data.workgroup && borehole.data.workgroup.supplier === true?
+                <TranslationText
+                  id="supplier"
+                />:
+                <TranslationText
+                  id="workgroup"
+                />
+            }
+          </div>
+          <div
+            style={{
+              fontWeight: 'bold'
+            }}
+          >
+            {borehole.data.workgroup && borehole.data.workgroup.name}
+          </div>
+
+          <div>
+            <div
+              style={{
+                fontSize: '0.7em',
+                color: '#787878'
+              }}
+            >
+              {
+                borehole.data.imported === true?
+                  <TranslationText
+                    id="importedBy"
+                  />:
+                  <TranslationText
+                    id="createdBy"
+                  />
+              }:
+            </div>
+            <div
+              style={{
+                fontWeight: 'bold'
+              }}
+            >
+              {
+                borehole.data.author !== undefined?
+                  borehole.data.author.username === this.props.user.data.username?
+                    borehole.data.author.fullname + ' (' + t('common:you') + ')':
+                    borehole.data.author.fullname: '-'
+              }
+            </div>
+          </div>
+
+          <div
+            style={{
+              fontSize: '0.7em',
+              color: '#787878'
+            }}
+          >
+            {
+              borehole.data.imported === true?
+                <TranslationText
+                  id="importDate"
+                />:
+                <TranslationText
+                  id="createDate"
+                />
+            }:
+          </div>
+          <div
+            style={{
+              fontWeight: 'bold'
+            }}
+          >
+            {
+              borehole.data.author &&
+              <DateText
+                date={borehole.data.author.date}
+                hours
+              />
+            }
+          </div>
+
+          <div
+            style={{
+              fontSize: '0.8em',
+              marginBottom: '0.25em'
+            }}
+          >
+            {
+              borehole.data.author !== undefined?
+                <DateText
+                  date={borehole.data.author.date}
+                  fromnow
+                />: '-'
+            }
+          </div>
+          
           <div>
             <div
               style={{
@@ -288,8 +427,12 @@ class MenuEditorForm extends React.Component {
             >
               {
                 borehole.data.lock !== null?
-                  t('editor:locked_by'):
-                  t('common:creator')
+                  <TranslationText
+                    id="locked_by"
+                  />:
+                  <TranslationText
+                    id="updatedBy"
+                  />
               }:
             </div>
             <div
@@ -315,8 +458,12 @@ class MenuEditorForm extends React.Component {
             >
               {
                 borehole.data.lock !== null?
-                  t('editor:locked_at'):
-                  t('common:updateDate')
+                  <TranslationText
+                    id="locked_at"
+                  />:
+                  <TranslationText
+                    id="updateDate"
+                  />
               }:
             </div>
             <div
@@ -425,7 +572,9 @@ class MenuEditorForm extends React.Component {
                         );
                       }}
                     >
-                      {t('refresh')}
+                      <TranslationText
+                        id='refresh'
+                      />
                     </span>
                   </div>
                 </div>: null
@@ -474,17 +623,25 @@ class MenuEditorForm extends React.Component {
                     <Icon
                       name='trash alternate'
                     />
-                    {t('common:delete')}
+                    <TranslationText
+                      id='delete'
+                    />
                   </Menu.Item>
                 }
               >
                 <Header
-                  content={t('common:deleteForever')}
+                  content={
+                    <TranslationText
+                      id='deleteForever'
+                    />  
+                  }
                   // icon='archive'
                 />
                 <Modal.Content>
                   <p>
-                    {t('common:sure')}
+                    <TranslationText
+                      id='sure'
+                    />
                   </p>
                 </Modal.Content>
                 <Modal.Actions>
@@ -507,7 +664,11 @@ class MenuEditorForm extends React.Component {
                   >
                     <Icon
                       name='trash alternate'
-                    /> {t('common:delete')}
+                    /> 
+                    &nbsp;
+                    <TranslationText
+                      id='delete'
+                    />
                   </Button>
                 </Modal.Actions>
               </Modal>
@@ -556,7 +717,12 @@ class MenuEditorForm extends React.Component {
                     moment(borehole.data.lock.date),
                     'seconds'
                   ) < (timeout * 60)?
-                    t('borehole_form:editingStop'): t('borehole_form:editingStart')
+                    <TranslationText
+                      id='editingStop'
+                    />:
+                    <TranslationText
+                      id='editingStart'
+                    />
                 }
               </Menu.Item>
           }
@@ -653,5 +819,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(withTranslation(['common', 'borehole_form', 'editor', 'version'])(MenuEditorForm))
+  )(withTranslation(['common'])(MenuEditorForm))
 );

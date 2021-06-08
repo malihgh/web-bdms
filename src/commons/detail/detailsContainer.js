@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import DetailsComponent from './detailsComponent';
 
@@ -152,4 +151,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation('borehole_form')(DetailsContainer));
+)(DetailsContainer);

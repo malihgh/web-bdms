@@ -22,6 +22,7 @@ import {
   getWms
 } from '@ist-supsi/bmsjs';
 
+import TranslationText from '../../commons/form/translationText';
 
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
@@ -97,7 +98,9 @@ class ExplorerSettings extends React.Component {
               margin: '0px'
             }}
           >
-            {t('common:appearance')}
+            <TranslationText
+              id='appearance'
+            />
           </Header>
           <div
             style={{
@@ -116,7 +119,12 @@ class ExplorerSettings extends React.Component {
             >
               {
                 this.state.appearance === true ?
-                  t('common:collapse'): t('common:expand')
+                  <TranslationText
+                    id='collapse'
+                  />:
+                  <TranslationText
+                    id='expand'
+                  />
               }
             </Button>
           </div>
@@ -128,54 +136,67 @@ class ExplorerSettings extends React.Component {
                 <div>
                   <Checkbox
                     checked={setting.data.appearance.explorer === 0}
-                    label='Big map'
+                    label=''
                     onChange={(e, d) => {
                       patchAppearance(0);
                     }}
                     radio
                   />
+                  <TranslationText
+                    id='appearanceBigMap'
+                  />
                 </div>
                 <div>
                   <Checkbox
                     checked={setting.data.appearance.explorer === 1}
-                    label='Full'
+                    label=''
                     onChange={(e, d) => {
                       patchAppearance(1);
                     }}
                     radio
                   />
+                  <TranslationText
+                    id='appearanceFull'
+                  />
                 </div>
-
-
                 <div>
                   <Checkbox
                     checked={setting.data.appearance.explorer === 2}
-                    label='Map + List/Details'
+                    label=''
                     onChange={(e, d) => {
                       patchAppearance(2);
                     }}
                     radio
                   />
+                  <TranslationText
+                    id='appearanceMapListDetails'
+                  />
                 </div>
                 <div>
                   <Checkbox
                     checked={setting.data.appearance.explorer === 3}
-                    label='List + Map/Details'
+                    label=''
                     onChange={(e, d) => {
                       patchAppearance(3);
                     }}
                     radio
+                  />
+                  <TranslationText
+                    id='appearanceListMapDetails'
                   />
                 </div>
 
                 <div>
                   <Checkbox
                     checked={setting.data.appearance.explorer === 4}
-                    label='Map/Details + List'
+                    label=''
                     onChange={(e, d) => {
                       patchAppearance(4);
                     }}
                     radio
+                  />
+                  <TranslationText
+                    id='appearanceMapDetailsList'
                   />
                 </div>
                 <div>
@@ -186,6 +207,9 @@ class ExplorerSettings extends React.Component {
                       patchAppearance(5);
                     }}
                     radio
+                  />
+                  <TranslationText
+                    id='appearanceListDetailsMap'
                   />
                 </div>
 
@@ -205,13 +229,15 @@ class ExplorerSettings extends React.Component {
             onClick={() => {
               this.setState({
                 map: !this.state.map
-              })
+              });
             }}
             style={{
               margin: '0px'
             }}
           >
-            {t('common:map')}
+            <TranslationText
+              id='map'
+            />
           </Header>
           <div
             style={{
@@ -230,7 +256,12 @@ class ExplorerSettings extends React.Component {
             >
               {
                 this.state.map === true ?
-                  t('common:collapse'): t('common:expand')
+                  <TranslationText
+                    id='collapse'
+                  />:
+                  <TranslationText
+                    id='expand'
+                  />
               }
             </Button>
           </div>
@@ -265,7 +296,7 @@ class ExplorerSettings extends React.Component {
                         }}
                       >
                         <Dropdown
-                          additionLabel='Add WMS: '
+                          additionLabel=''
                           allowAdditions
                           fluid
                           onAddItem={(e, { value }) => {
@@ -287,7 +318,7 @@ class ExplorerSettings extends React.Component {
                             });
                           }}
                           options={setting.WMS}
-                          placeholder='Select a WMS'
+                          placeholder=''
                           search
                           selection
                           value={setting.selectedWMS}
@@ -362,7 +393,9 @@ class ExplorerSettings extends React.Component {
                         }}
                         // size='mini'
                       >
-                        {t('common:load')}
+                        <TranslationText
+                          id='load'
+                        />
                       </Button>
                     </div>
                     {
@@ -678,7 +711,9 @@ class ExplorerSettings extends React.Component {
                           flex: 1
                         }}
                       >
-                        User's maps
+                        <TranslationText
+                          id='usersMap'
+                        />
                       </div>
                       <div>
                         <Input
@@ -812,7 +847,7 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={setting.data.filter.mapfilter}
-                  label={t('borehole_form:filterbymap')}
+                  label={t('filterbymap')}
                   onChange={(e, d) => {
                     toggleFilter(
                       'mapfilter',
@@ -842,7 +877,9 @@ class ExplorerSettings extends React.Component {
               margin: '0px'
             }}
           >
-            {t('common:searchfilters')}
+            <TranslationText
+              id='searchfilters'
+            />
           </Header>
           <div
             style={{
@@ -861,7 +898,12 @@ class ExplorerSettings extends React.Component {
             >
               {
                 this.state.search_filter === true ?
-                  t('common:collapse'): t('common:expand')
+                  <TranslationText
+                    id='collapse'
+                  />:
+                  <TranslationText
+                    id='expand'
+                  />
               }
             </Button>
           </div>
@@ -872,7 +914,7 @@ class ExplorerSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={setting.data.filter.mapfilter}
-                  label='Filter by Map'
+                  label=''
                   onChange={(e, d) => {
                     toggleFilter(
                       'mapfilter',
@@ -880,11 +922,14 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='filterbymap'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={setting.data.filter.zoom2selected}
-                  label='Zoom to selected'
+                  label=''
                   onChange={(e, d) => {
                     toggleFilter(
                       'zoom2selected',
@@ -892,13 +937,16 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='centerselected'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.custom.borehole_identifier
                   }
-                  label={t('identifier')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.borehole_identifier',
@@ -906,13 +954,16 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='borehole_identifier'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.kind
                   }
-                  label={t('kind')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'kind',
@@ -920,13 +971,16 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='kind'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.extended.method
                   }
-                  label={t('method')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'extended.method',
@@ -934,13 +988,16 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='drillingmethod'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.custom.project_name
                   }
-                  label={t('project_name')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.project_name',
@@ -948,13 +1005,16 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='project_name'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.restriction
                   }
-                  label={t('restriction') + "/" + t('restriction_until')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'restriction',
@@ -962,13 +1022,20 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='restriction'
+                />
+                &nbsp;/&nbsp;
+                <TranslationText
+                  id='restriction_until'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.custom.landuse
                   }
-                  label={t('landuse')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.landuse',
@@ -976,13 +1043,16 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='landuse'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.custom.canton
                   }
-                  label={t('canton') + "/" + t('city') + "/" + t('address')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.canton',
@@ -990,13 +1060,24 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='canton'
+                />
+                &nbsp;/&nbsp;
+                <TranslationText
+                  id='city'
+                />
+                &nbsp;/&nbsp;
+                <TranslationText
+                  id='address'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.elevation_z
                   }
-                  label={t('elevation_z')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'elevation_z',
@@ -1004,13 +1085,16 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='elevation_z'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.length
                   }
-                  label={t('length')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'length',
@@ -1018,13 +1102,16 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='totaldepth'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.extended.groundwater
                   }
-                  label={t('groundwater')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'extended.groundwater',
@@ -1032,13 +1119,16 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='groundwater'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.extended.top_bedrock
                   }
-                  label={t('top_bedrock')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'extended.top_bedrock',
@@ -1046,27 +1136,33 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='top_bedrock'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.extended.status
                   }
-                  label={t('status')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'extended.status',
                       d.checked
                     );
                   }}
-                />>
+                />
+                <TranslationText
+                  id='status'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.extended.purpose
                   }
-                  label={t('purpose')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'extended.purpose',
@@ -1074,13 +1170,16 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='purpose'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.custom.cuttings
                   }
-                  label={t('cuttings')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.cuttings',
@@ -1088,13 +1187,16 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='cuttings'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.drilling_date
                   }
-                  label={t('drilling_date')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'drilling_date',
@@ -1102,19 +1204,25 @@ class ExplorerSettings extends React.Component {
                     );
                   }}
                 />
+                <TranslationText
+                  id='drilling_date'
+                />
               </Segment>
               <Segment>
                 <Checkbox
                   checked={
                     setting.data.filter.custom.drill_diameter
                   }
-                  label={t('drill_diameter')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.drill_diameter',
                       d.checked
                     );
                   }}
+                />
+                <TranslationText
+                  id='drilldiameter'
                 />
               </Segment>
 
@@ -1123,13 +1231,16 @@ class ExplorerSettings extends React.Component {
                   checked={
                     setting.data.filter.bore_inc
                   }
-                  label={t('bore_inc')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'bore_inc',
                       d.checked
                     );
                   }}
+                />
+                <TranslationText
+                  id='inclination'
                 />
               </Segment>
 
@@ -1138,13 +1249,16 @@ class ExplorerSettings extends React.Component {
                   checked={
                     setting.data.filter.custom.lit_pet_top_bedrock
                   }
-                  label={t('lit_pet_top_bedrock')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.lit_pet_top_bedrock',
                       d.checked
                     );
                   }}
+                />
+                <TranslationText
+                  id='lit_pet_top_bedrock'
                 />
               </Segment>
 
@@ -1153,13 +1267,16 @@ class ExplorerSettings extends React.Component {
                   checked={
                     setting.data.filter.custom.lit_str_top_bedrock
                   }
-                  label={t('lit_str_top_bedrock')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.lit_str_top_bedrock',
                       d.checked
                     );
                   }}
+                />
+                <TranslationText
+                  id='lit_str_top_bedrock'
                 />
               </Segment>
 
@@ -1168,13 +1285,16 @@ class ExplorerSettings extends React.Component {
                   checked={
                     setting.data.filter.custom.chro_str_top_bedrock
                   }
-                  label={t('chro_str_top_bedrock')}
+                  label=""
                   onChange={(e, d) => {
                     toggleFilter(
                       'custom.chro_str_top_bedrock',
                       d.checked
                     );
                   }}
+                />
+                <TranslationText
+                  id='chro_str_top_bedrock'
                 />
               </Segment>
 
@@ -1303,4 +1423,4 @@ const mapDispatchToProps = (dispatch, state) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(['borehole_form', 'common'])(ExplorerSettings));
+)(withTranslation('common')(ExplorerSettings));

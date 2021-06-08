@@ -10,6 +10,7 @@ import {
 
 
 import FilesTableComponent from './filesTableComponent';
+import TranslationText from '../../form/translationText';
 import { Button } from 'semantic-ui-react';
 
 
@@ -124,7 +125,10 @@ export default class EditorBoreholeFilesTable extends Component {
               <div
                 className='bdms-padding-1'
               >
-                Upload new file: &nbsp;
+                <TranslationText
+                  id='uploadNewFile'
+                />:
+                &nbsp;
                 <input
                   onChange={(e)=>{
                     this.setState({
@@ -169,7 +173,9 @@ export default class EditorBoreholeFilesTable extends Component {
                     && this.state.file !== null
                   }
                 >
-                  Upload
+                  <TranslationText
+                    id='upload'
+                  />
                 </Button>
               </div>: null
           }

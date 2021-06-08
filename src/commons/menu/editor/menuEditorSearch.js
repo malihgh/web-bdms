@@ -6,6 +6,8 @@ import {
   withRouter
 } from 'react-router-dom';
 
+import TranslationText from '../../form/translationText';
+
 import {
   Button,
   Dropdown,
@@ -28,19 +30,21 @@ class MenuEditorSearch extends React.Component {
   constructor(props) {
     super(props);
     this.updateDimensions = this.updateDimensions.bind(this);
+    const wgs = this.props.user.data.workgroups.filter(
+      w => w.disabled === null && w.supplier === false
+    );
     this.state = {
       creating: false,
       delete: false,
-      enabledWorkgroups: this.props.user.data.workgroups.filter(
-        w => w.disabled === null
-      ),
+      enabledWorkgroups: wgs,
       modal: false,
       upload: false,
       selectedFile: null,
       scroller: false,
-      workgroup: this.props.user.data.workgroups !== null
-        && this.props.user.data.workgroups.length > 0?
-        this.props.user.data.workgroups[0].id: null
+      workgroup: wgs !== null && wgs.length > 0? wgs[0].id: null,
+      // workgroup: this.props.user.data.workgroups !== null
+      //   && this.props.user.data.workgroups.length > 0?
+      //   this.props.user.data.workgroups[0].id: null
     };
   }
 
@@ -69,7 +73,7 @@ class MenuEditorSearch extends React.Component {
 
   render() {
     const {
-      history, boreholes, t
+      history, boreholes
     } = this.props;
     return (
       [
@@ -83,19 +87,27 @@ class MenuEditorSearch extends React.Component {
             padding: '1em 1em 0px 1em'
           }}
         >
-          {
-            t("common:boreholes").charAt(0).toUpperCase()
-            + t("common:boreholes").slice(1)
-          }: {
+          <TranslationText
+            firstUpperCase
+            id='boreholes'
+          />: {
             boreholes.isFetching ?
               <Icon
                 loading
                 name='spinner'
               /> :
-              boreholes.dlen + ' ' + (
-                boreholes.dlen > 1 || boreholes.dlen === 0 ?
-                  t("common:results") : t("common:result")
-              )
+              boreholes.dlen
+              // boreholes.dlen + ' ' + (
+              //   boreholes.dlen > 1 || boreholes.dlen === 0 ?
+              //     <TranslationText
+              //       firstUpperCase
+              //       id='results'
+              //     />:
+              //     <TranslationText
+              //       firstUpperCase
+              //       id='result'
+              //     />
+              // )
           }
         </div>,
         <div
@@ -144,7 +156,10 @@ class MenuEditorSearch extends React.Component {
               name='refresh'
               size='tiny'
             />
-            Refresh
+            <TranslationText
+              firstUpperCase
+              id='refresh'
+            />
           </Menu.Item>
           <Menu.Item
             onClick={() => {
@@ -159,7 +174,10 @@ class MenuEditorSearch extends React.Component {
               name='undo'
               size='tiny'
             />
-            Reset
+            <TranslationText
+              firstUpperCase
+              id='reset'
+            />
           </Menu.Item>
         </Menu>,
         <Menu
@@ -187,7 +205,10 @@ class MenuEditorSearch extends React.Component {
               name='upload'
               size='tiny'
             />
-            Upload
+            <TranslationText
+              firstUpperCase
+              id='upload'
+            />
           </Menu.Item>
           <Menu.Item
             disabled={this.props.user.data.roles.indexOf('EDIT')===-1}
@@ -206,7 +227,11 @@ class MenuEditorSearch extends React.Component {
               name='add'
               size='tiny'
             />
-            New
+            
+            <TranslationText
+              firstUpperCase
+              id='new'
+            />
           </Menu.Item>
         </Menu>,
         <Modal
@@ -221,7 +246,12 @@ class MenuEditorSearch extends React.Component {
           size='tiny'
         >
           <Header
-            content={t(`common:newBorehole`)}
+            content={
+              <TranslationText
+                id='newBorehole'
+              />
+            }
+            // content={t(`common:newBorehole`)}
             icon={
               this.state.upload === true?
                 'upload': 'plus'
@@ -236,7 +266,9 @@ class MenuEditorSearch extends React.Component {
                       fontWeight: 'bold'
                     }}
                   >
-                    {t(`common:csvFormat`)}:
+                    <TranslationText
+                      id='csvFormat'
+                    />:
                   </span>
                   <div
                     style={{
@@ -248,7 +280,7 @@ class MenuEditorSearch extends React.Component {
                     }}
                   >
                     "location_east";"location_north";"original_name";"public_name";"project_name";"elevation_z";"drillend_date";"total_depth";"top_bedrock";"remarks"
-                    <br/>
+                    <br />
                     2719603;1081038.5;"test001";"foo";"bar";"foobar";273.7;"2020-06-16";28.2;18.7;"lorem ipsum"
                   </div>
                   <span
@@ -256,7 +288,9 @@ class MenuEditorSearch extends React.Component {
                       fontWeight: 'bold'
                     }}
                   >
-                    {t(`common:uploadFile`)}:
+                    <TranslationText
+                      id='uploadFile'
+                    />:
                   </span>
                   <div
                     style={{
@@ -280,7 +314,9 @@ class MenuEditorSearch extends React.Component {
                   fontWeight: 'bold'
                 }}
               >
-                {t('common:workgroup')}:
+                <TranslationText
+                  id='workgroup'
+                />
               </span>
               <div
                 style={{
@@ -291,11 +327,14 @@ class MenuEditorSearch extends React.Component {
                   (()=>{
                     const wg = this.state.enabledWorkgroups;
                     if (wg.length === 0){
-                      return  t("common:disabled");
+                      return (
+                        <TranslationText
+                          id='disabled'
+                        />
+                      );
 
                     } else if (wg.length === 1){
                       return wg[0].workgroup;
-
                     }
                     return (
                       <Dropdown
@@ -403,8 +442,14 @@ class MenuEditorSearch extends React.Component {
                 }
               /> {
                 this.state.upload === true?
-                  t('editor:upload'):
-                  t('editor:create')
+                  <TranslationText
+                    id='upload'
+                  />:
+                  <TranslationText
+                    id='create'
+                  />
+                  // t('editor:upload'):
+                  // t('editor:create')
               }
             </Button>
           </Modal.Actions>
@@ -458,6 +503,6 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps
   )(
-    withTranslation(['home', 'common', 'borehole_form', 'editor'])(MenuEditorSearch)
+    withTranslation(['common'])(MenuEditorSearch)
   )
 );

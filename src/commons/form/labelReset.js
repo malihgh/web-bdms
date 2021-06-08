@@ -1,19 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
+import TranslationText from './translationText';
 
 
 const LabelReset = props => {
-  const {
-    onClick,
-    t
-  } = props;
   return (
     <label
       onClick={
-        onClick !== undefined?
+        props.onClick !== undefined?
           ()=>{
-            onClick();
+            props.onClick();
           }:
           undefined
       }
@@ -26,14 +22,15 @@ const LabelReset = props => {
         fontSize: '0.9em'
       }}
     >
-      {t('reset')}
+      <TranslationText
+        id='reset'
+      />
     </label>
   );
 };
 
 LabelReset.propTypes = {
-  onClick: PropTypes.func,
-  t: PropTypes.func
+  onClick: PropTypes.func
 };
 
-export default withTranslation('search')(LabelReset);
+export default LabelReset;

@@ -495,5 +495,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )((
-   withTranslation(['borehole_form', 'common'])(MultipleForm)
+   withTranslation(['common'])(MultipleForm)
 ));

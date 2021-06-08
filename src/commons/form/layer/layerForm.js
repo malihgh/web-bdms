@@ -1,5 +1,6 @@
 import React, { createRef }  from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
@@ -12,6 +13,7 @@ import {
 // import DomainText from '../domain/domainText'
 import DomainDropdown from '../domain/dropdown/domainDropdown';
 import DomainTree from '../domain/tree/domainTree';
+import TranslationText from '../translationText';
 
 import {
   // Segment,
@@ -266,18 +268,25 @@ class LayerForm extends React.Component {
         </Dimmer>
         <div
           style={{
-            textAlign: 'right'
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            textAlign: 'right',
+            whiteSpace: 'nowrap'
           }}
         >
           <Checkbox
             checked={this.state.allfields}
-            label={t('common:showallfields')}
             onChange={(ev, data)=>{
               this.setState({
                 allfields: data.checked
               });
             }}
             toggle
+          />
+          &nbsp;
+          <TranslationText
+            id='showallfields'
           />
         </div>
         <Form
@@ -291,7 +300,11 @@ class LayerForm extends React.Component {
             }
             required
           >
-            <label>{t('depth_from')}</label>
+            <label>
+              <TranslationText
+                id='layer_depth_from'
+              />  
+            </label>
             <Input
               autoCapitalize="off"
               autoComplete="off"
@@ -318,7 +331,11 @@ class LayerForm extends React.Component {
             }
             required
           >
-            <label>{t('depth_to')}</label>
+            <label>
+              <TranslationText
+                id='layer_depth_to'
+              />  
+            </label>
             <Input
               autoCapitalize="off"
               autoComplete="off"
@@ -340,7 +357,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'description',
               <Form.Field>
-                <label>{t('description')}</label>
+                <label>
+                  <TranslationText
+                    id='description'
+                  />  
+                </label>
                 <TextArea
                   // autoHeight
                   onChange={(e)=>{
@@ -357,7 +378,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'geology',
               <Form.Field>
-                <label>{t('geology')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_geology'
+                  />  
+                </label>
                 <TextArea
                   // autoHeight
                   onChange={(e)=>{
@@ -374,7 +399,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'last',
               <Form.Field>
-                <label>{t('last')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_last'
+                  />  
+                </label>
                 <Form.Group inline>
                   <Form.Radio
                     checked={this.state.layer.last === true}
@@ -396,6 +425,25 @@ class LayerForm extends React.Component {
                         'last', false, false);
                     }}
                   />
+                  {
+                    this.props.developer.debug === true?
+                      <div>
+                        <div
+                          style={{
+                            color: 'red',
+                          }}
+                        >
+                          trans=yes
+                        </div>
+                        <div
+                          style={{
+                            color: 'red',
+                          }}
+                        >
+                          trans=no
+                        </div>
+                      </div>: null
+                  }
                 </Form.Group>
               </Form.Field>
             )
@@ -404,7 +452,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'qt_description',
               <Form.Field>
-                <label>{t('qt_description')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_qt_description'
+                  />  
+                </label>
                 <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
@@ -423,17 +475,11 @@ class LayerForm extends React.Component {
               <Form.Field
                 required
               >
-                <label>{t('lithology')}</label>
-                {/* <DomainDropdown
-                  onSelected={(selected)=>{
-                    this.updateChange(
-                      'lithology', selected.id, false
-                    );
-                  }}
-                  schema='custom.lit_pet_top_bedrock'
-                  selected={this.state.layer.lithology}
-                /> */}
-
+                <label>
+                  <TranslationText
+                    id='layer_lithology'
+                  />  
+                </label>
                 <DomainTree
                   levels={{
                     1: 'rock',
@@ -447,7 +493,11 @@ class LayerForm extends React.Component {
                   }}
                   schema='custom.lit_pet_top_bedrock'
                   selected={this.state.layer.lithology}
-                  title={t('lithology')}
+                  title={
+                    <TranslationText
+                      id='layer_lithology'
+                    />  
+                  }
                 />
               </Form.Field>
             )
@@ -458,6 +508,11 @@ class LayerForm extends React.Component {
               <Form.Field
                 required
               >
+                <label>
+                  <TranslationText
+                    id='layer_lithostratigraphy'
+                  />  
+                </label>
                 <label>{t('lithostratigraphy')}</label>
                 <DomainTree
                   levels={{
@@ -476,7 +531,11 @@ class LayerForm extends React.Component {
                   }}
                   schema='custom.lit_str_top_bedrock'
                   selected={this.state.layer.lithostratigraphy}
-                  title={t('lithostratigraphy')}
+                  title={
+                    <TranslationText
+                      id='layer_lithostratigraphy'
+                    />  
+                  }
                 />
               </Form.Field>
             )
@@ -485,7 +544,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'chronostratigraphy',
               <Form.Field>
-                <label>{t('chronostratigraphy')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_chronostratigraphy'
+                  />  
+                </label>
                 {/* <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
@@ -511,7 +574,11 @@ class LayerForm extends React.Component {
                   }}
                   schema='custom.chro_str_top_bedrock'
                   selected={this.state.layer.chronostratigraphy}
-                  title={t('chronostratigraphy')}
+                  title={
+                    <TranslationText
+                      id='layer_chronostratigraphy'
+                    />  
+                  }
                 />
               </Form.Field>
             )
@@ -537,7 +604,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'color',
               <Form.Field>
-                <label>{t('color')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_color'
+                  />  
+                </label>
                 <DomainDropdown
                   multiple
                   onSelected={(selected)=>{
@@ -558,7 +629,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'plasticity',
               <Form.Field>
-                <label>{t('plasticity')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_plasticity'
+                  />  
+                </label>
                 <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
@@ -575,7 +650,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'humidity',
               <Form.Field>
-                <label>{t('humidity')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_humidity'
+                  />  
+                </label>
                 <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
@@ -592,7 +671,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'consistance',
               <Form.Field>
-                <label>{t('consistance')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_consistance'
+                  />  
+                </label>
                 <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
@@ -609,7 +692,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'alteration',
               <Form.Field>
-                <label>{t('alteration')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_alteration'
+                  />  
+                </label>
                 <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
@@ -626,7 +713,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'compactness',
               <Form.Field>
-                <label>{t('compactness')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_compactness'
+                  />  
+                </label>
                 <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
@@ -681,7 +772,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'organic_component',
               <Form.Field>
-                <label>{t('organic_component')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_organic_component'
+                  />  
+                </label>
                 <DomainDropdown
                   multiple
                   onSelected={(selected)=>{
@@ -702,7 +797,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'striae',
               <Form.Field>
-                <label>{t('striae')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_striae'
+                  />  
+                </label>
                 <Form.Group inline>
                   <Form.Radio
                     checked={this.state.layer.striae === true}
@@ -724,6 +823,25 @@ class LayerForm extends React.Component {
                         'striae', false, false);
                     }}
                   />
+                  {
+                    this.props.developer.debug === true?
+                      <div>
+                        <div
+                          style={{
+                            color: 'red',
+                          }}
+                        >
+                          trans=yes
+                        </div>
+                        <div
+                          style={{
+                            color: 'red',
+                          }}
+                        >
+                          trans=no
+                        </div>
+                      </div>: null
+                  }
                 </Form.Group>
               </Form.Field>
             )
@@ -732,7 +850,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'grain_size_1',
               <Form.Field>
-                <label>{t('grain_size_1')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_grain_size_1'
+                  />  
+                </label>
                 <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
@@ -749,7 +871,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'grain_size_2',
               <Form.Field>
-                <label>{t('grain_size_2')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_grain_size_2'
+                  />  
+                </label>
                 <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
@@ -766,7 +892,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'grain_shape',
               <Form.Field>
-                <label>{t('grain_shape')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_grain_shape'
+                  />  
+                </label>
                 <DomainDropdown
                   multiple
                   onSelected={(selected)=>{
@@ -787,7 +917,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'grain_granularity',
               <Form.Field>
-                <label>{t('grain_granularity')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_grain_granularity'
+                  />  
+                </label>
                 <DomainDropdown
                   multiple
                   onSelected={(selected)=>{
@@ -808,7 +942,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'cohesion',
               <Form.Field>
-                <label>{t('cohesion')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_cohesion'
+                  />  
+                </label>
                 <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
@@ -825,7 +963,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'further_properties',
               <Form.Field>
-                <label>{t('further_properties')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_further_properties'
+                  />  
+                </label>
                 <DomainDropdown
                   multiple
                   onSelected={(selected)=>{
@@ -846,7 +988,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'uscs_1',
               <Form.Field>
-                <label>{t('uscs_1')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_uscs_1'
+                  />  
+                </label>
                 <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
@@ -863,7 +1009,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'uscs_2',
               <Form.Field>
-                <label>{t('uscs_2')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_uscs_2'
+                  />  
+                </label>
                 <DomainDropdown
                   onSelected={(selected)=>{
                     this.updateChange(
@@ -880,7 +1030,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'uscs_3',
               <Form.Field>
-                <label>{t('uscs_3')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_uscs_3'
+                  />  
+                </label>
                 <DomainDropdown
                   multiple
                   onSelected={(selected)=>{
@@ -901,7 +1055,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'uscs_original',
               <Form.Field>
-                <label>{t('uscs_original')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_uscs_original'
+                  />  
+                </label>
                 <Input
                   autoCapitalize="off"
                   autoComplete="off"
@@ -921,7 +1079,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'uscs_determination',
               <Form.Field>
-                <label>{t('uscs_determination')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_uscs_determination'
+                  />  
+                </label>
                 <DomainDropdown
                   multiple
                   onSelected={(selected)=>{
@@ -954,6 +1116,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'debris',
               <Form.Field>
+                <label>
+                  <TranslationText
+                    id='layer_debris'
+                  />  
+                </label>
                 <label>{t('debris')}</label>
                 <DomainDropdown
                   multiple
@@ -975,7 +1142,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'lit_pet_deb',
               <Form.Field>
-                <label>{t('lit_pet_deb')}</label>
+                <label>
+                  <TranslationText
+                    id='layer_lit_pet_deb'
+                  />  
+                </label>
                 <DomainDropdown
                   multiple
                   onSelected={(selected)=>{
@@ -1022,7 +1193,11 @@ class LayerForm extends React.Component {
             this.isVisible(
               'notes',
               <Form.Field>
-                <label>{t('remarks')}</label>
+                <label>
+                  <TranslationText
+                    id='remarks'
+                  />  
+                </label>
                 <TextArea
                   // autoHeight
                   onChange={(e)=>{
@@ -1044,6 +1219,9 @@ class LayerForm extends React.Component {
 LayerForm.propTypes = {
   borehole: PropTypes.object,
   conf: PropTypes.object,
+  developer: PropTypes.shape({
+    debug: PropTypes.bool
+  }),
   id: PropTypes.number,
   onUpdated: PropTypes.func,
   user: PropTypes.object
@@ -1054,4 +1232,16 @@ LayerForm.defaultProps = {
   conf: {}
 };
 
-export default withTranslation(['layer_form', 'common'])(LayerForm);
+const mapStateToProps = (state) => {
+  return {
+    developer: state.developer
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)((
+  withTranslation('common')(LayerForm)
+));
+

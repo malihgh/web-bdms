@@ -26,6 +26,7 @@ import {
 
 import CommentArea from './commentArea';
 import DateText from '../dateText';
+import TranslationText from '../../form/translationText';
 
 
 class WorkflowForm extends React.Component {
@@ -115,6 +116,9 @@ class WorkflowForm extends React.Component {
     const readOnly = borehole.data.lock === null
       || borehole.data.lock.username !== user.data.username;
 
+    const supplier = borehole.data.workgroup &&
+      borehole.data.workgroup.supplier;
+
     return (
       <div
         style={{
@@ -141,7 +145,14 @@ class WorkflowForm extends React.Component {
             >
               {
                 this.state.expanded === false?
-                  '+ show history': '- hide history'
+                  <TranslationText
+                    id='showHistory'
+                    prepend='+ '
+                  />:
+                  <TranslationText
+                    id='showHistory'
+                    prepend='- '
+                  />
               }
             </div>:
             null
@@ -193,7 +204,9 @@ class WorkflowForm extends React.Component {
                             color: '#787878',
                           }}
                         >
-                          ({t('common:you')})
+                          <TranslationText
+                            id='you'
+                          />
                         </span>: null
                     }
                   </div>
@@ -230,7 +243,9 @@ class WorkflowForm extends React.Component {
                             fontStyle: 'italic'
                           }}
                         >
-                          No comments
+                          <TranslationText
+                            id='noComments'
+                          />
                         </div>
                     }
                   </div>
@@ -246,11 +261,17 @@ class WorkflowForm extends React.Component {
                 null:
                 <div>
                   <span>
+                    <TranslationText
+                      id='yourcomments'
+                    />
+                    &nbsp;
                     {
-                      t('common:yourcomments')
-                    } {
                       readOnly?
-                        '(' + t('common:disabled') + ')': null
+                        <TranslationText
+                          append=")"
+                          id='disabled'
+                          prepend="("
+                        />: null
                     }:
                   </span>
                   <CommentArea
@@ -265,7 +286,11 @@ class WorkflowForm extends React.Component {
                           loading
                           name='spinner'
                           size='small'
-                        /> {t('common:saving')}
+                        />
+                        &nbsp;
+                        <TranslationText
+                          id='saving'
+                        />
                       </div>: null
                   }
                 </div>
@@ -339,7 +364,11 @@ class WorkflowForm extends React.Component {
                               whiteSpace: 'nowrap'
                             }}
                           >
-                            <h4>{t(`version:${role}`)}</h4>
+                            <h4>
+                              <TranslationText
+                                id={`status${role.toLowerCase()}`}
+                              />
+                            </h4>
                           </div>
                           <div
                             style={{
@@ -355,7 +384,9 @@ class WorkflowForm extends React.Component {
                                     fontSize: '0.9em'
                                   }}
                                 >
-                                  Rejected
+                                  <TranslationText
+                                    id='rejected'
+                                  />
                                   <br />
                                   <DateText
                                     date={status[role].finished}
@@ -368,7 +399,9 @@ class WorkflowForm extends React.Component {
                                       fontSize: '0.9em'
                                     }}
                                   >
-                                    Submitted
+                                    <TranslationText
+                                      id='submitted'
+                                    />
                                     <br />
                                     <DateText
                                       date={status[role].finished}
@@ -410,7 +443,9 @@ class WorkflowForm extends React.Component {
                                             }}
                                             size='mini'
                                           >
-                                            Reject
+                                            <TranslationText
+                                              id='reject'
+                                            />
                                           </Button>: null
                                       }
                                       <Button
@@ -429,7 +464,9 @@ class WorkflowForm extends React.Component {
                                         secondary
                                         size='mini'
                                       >
-                                        {t('common:submit')}
+                                        <TranslationText
+                                          id='submit'
+                                        />
                                       </Button>
                                       {
                                         role === 'PUBLIC'?
@@ -449,7 +486,9 @@ class WorkflowForm extends React.Component {
                                             secondary
                                             size='mini'
                                           >
-                                            Public
+                                            <TranslationText
+                                              id='public'
+                                            />
                                           </Button>: null
                                       }
                                       <Modal
@@ -471,11 +510,15 @@ class WorkflowForm extends React.Component {
                                           <p>
                                             {
                                               this.state.modal === 2?
-                                                'pubblicazione': null
+                                                <TranslationText
+                                                  id='pubblicazione'
+                                                />: null
                                             }
                                           </p>
                                           <p>
-                                            {t('common:sure')}
+                                            <TranslationText
+                                              id='sure'
+                                            />
                                           </p>
                                         </Modal.Content>
                                         <Modal.Actions>
@@ -503,7 +546,11 @@ class WorkflowForm extends React.Component {
                                               >
                                                 <Icon
                                                   name='checkmark'
-                                                /> {t('common:submit')}
+                                                />
+                                                &nbsp;
+                                                <TranslationText
+                                                  id='submit'
+                                                />
                                               </Button>:
                                               <Button
                                                 disabled={
@@ -526,7 +573,11 @@ class WorkflowForm extends React.Component {
                                               >
                                                 <Icon
                                                   name='checkmark'
-                                                /> Reject
+                                                />
+                                                &nbsp;
+                                                <TranslationText
+                                                  id='reject'
+                                                />
                                               </Button>
                                           }
                                         </Modal.Actions>
@@ -560,7 +611,11 @@ class WorkflowForm extends React.Component {
                               whiteSpace: 'nowrap'
                             }}
                           >
-                            <h4 style={{ color: '#909090' }}>{t(`version:${role}`)}</h4>
+                            <h4 style={{ color: '#909090' }}>
+                              <TranslationText
+                                id={`status${role.toLowerCase()}`}
+                              />
+                            </h4>
                           </div>
                           <div
                             style={{
@@ -574,7 +629,8 @@ class WorkflowForm extends React.Component {
                 );
                 if (current === null){
                   current = (
-                    status[role] !== null && status[role].finished === null?
+                    status[role] !== null &&
+                    status[role].finished === null?
                       true: null
                   );
                 }
@@ -593,7 +649,9 @@ class WorkflowForm extends React.Component {
               }}
             >
               <h4>
-                Visibility
+                <TranslationText
+                  id='visibility'
+                />
               </h4>
               <div
                 style={{
@@ -610,7 +668,9 @@ class WorkflowForm extends React.Component {
                       'bold': null
                   }}
                 >
-                  Hidden
+                  <TranslationText
+                    id='hidden'
+                  />
                 </div>
                 <div
                   style={{
@@ -650,32 +710,39 @@ class WorkflowForm extends React.Component {
                       'bold': null
                   }}
                 >
-                  Visible
+                  <TranslationText
+                    id='visible'
+                  />
                 </div>
               </div>
-              <div
-                style={{
-                  padding: '2em 1em 0px 1em'
-                }}
-              >
-                <Button
-                  disabled={
-                    this.props.borehole.data.lock === null
-                    || this.props.borehole.data.lock.username !== this.props.user.data.username
-                  }
-                  fluid
-                  loading={workflows.isRejecting === true}
-                  negative
-                  onClick={()=>{
-                    this.props.rejectWorkflow(
-                      workflow.data.id
-                    );
+              {
+                (supplier === false) &&
+                <div
+                  style={{
+                    padding: '2em 1em 0px 1em'
                   }}
-                  size='mini'
                 >
-                  Reject
-                </Button>
-              </div>
+                  <Button
+                    disabled={
+                      this.props.borehole.data.lock === null
+                      || this.props.borehole.data.lock.username !== this.props.user.data.username
+                    }
+                    fluid
+                    loading={workflows.isRejecting === true}
+                    negative
+                    onClick={()=>{
+                      this.props.rejectWorkflow(
+                        workflow.data.id
+                      );
+                    }}
+                    size='mini'
+                  >
+                    <TranslationText
+                      id='reject'
+                    />
+                  </Button>
+                </div>
+              }
             </div>: null
         }
       </div>
@@ -742,4 +809,4 @@ const mapDispatchToProps = (dispatch, props) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(['common', 'version', 'header'])(WorkflowForm));
+)(withTranslation(['common'])(WorkflowForm));

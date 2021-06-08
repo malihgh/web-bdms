@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 // import {
 //   Table
@@ -10,13 +9,14 @@ import DomainText from '../../form/domain/domainText';
 import DateText from '../../form/dateText';
 import MunicipalityText from '../../form/municipality/municipalityText';
 import CantonText from '../../form/cantons/cantonText';
+import TranslationText from '../../form/translationText';
 // import FromNowText from '../../form/fromNowText';
 
 class MetaComponent extends React.Component {
   getDomainRow(schema, id, i18n = undefined) {
     // const { t } = this.props;
-    return this.getTextRow(
-      _.isUndefined(i18n) ? schema : i18n,
+    return this.getTextRow( 
+      _.isUndefined(i18n)? schema :i18n,
       _.isNil(id) || id === '' ?
         null :
         <div>
@@ -41,7 +41,6 @@ class MetaComponent extends React.Component {
   }
 
   getTextRow(schema, text) {
-    const { t } = this.props;
     return (
       <div>
         <div
@@ -51,7 +50,10 @@ class MetaComponent extends React.Component {
             lineHeight: '1em',
           }}
         >
-          {t(schema)}
+          <TranslationText
+            id={schema}
+            // ns='borehole'
+          />
         </div>
         <div
           style={{
@@ -68,7 +70,7 @@ class MetaComponent extends React.Component {
   }
   render() {
     const {
-      data, t
+      data
     } = this.props;
     const margin = '0.5em 0px';
     const padding = '0.5em';
@@ -78,6 +80,48 @@ class MetaComponent extends React.Component {
           minWidth: '250px',
         }}
       >
+
+        {
+          data.custom.identifiers && data.custom.identifiers.length>0?
+            <div
+              style={{
+                borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
+                display: 'flex',
+                flexDirection: 'column',
+                margin: margin,
+                padding: padding
+              }}
+            >
+              {
+                data.custom.identifiers.map(
+                  (identifier, index) => (
+                    <div
+                      key={`bdms-metadata-cmp-identifiers-${index}`}
+                      style={{
+                        flex: '1 1 100%',
+                        marginBottom: '0.4em'
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: '0.8em',
+                          color: '#787878',
+                          lineHeight: '1em',
+                        }}
+                      >
+                        <DomainText
+                          id={identifier.id}
+                          schema='borehole_identifier'
+                        />
+                      </div>
+                      {identifier.value}
+                    </div>
+                  )
+                )
+              }
+            </div>: null
+        }
+
         <div
           style={{
             borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
@@ -351,9 +395,13 @@ class MetaComponent extends React.Component {
             {this.getTextRow(
               'groundwater',
               data.extended.groundwater === true ?
-                t("yes") :
+                <TranslationText
+                  id='yes'
+                />:
                 data.extended.groundwater === false ?
-                  t("no") : null
+                  <TranslationText
+                    id='no'
+                  />: null
             )}
           </div>
           <div
@@ -405,4 +453,4 @@ MetaComponent.propTypes = {
   data: PropTypes.object
 };
 
-export default withTranslation('borehole_form')(MetaComponent);
+export default MetaComponent;

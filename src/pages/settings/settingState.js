@@ -77,8 +77,8 @@ const initialState = {
         "lit_str_top_bedrock": true,
         "chro_str_top_bedrock": true,
         remarks: true,
-        mistakes: true,
-        "processing_status": true,
+        // mistakes: true,
+        // "processing_status": true,
         "national_relevance": true,
         // "attributes_to_edit": true
       }
@@ -114,9 +114,9 @@ const initialState = {
         "lit_str_top_bedrock": true,
         "chro_str_top_bedrock": true,
         remarks: true,
-        mistakes: true,
-        "processing_status": true,
-        "national_relevance": true,
+        // mistakes: true,
+        // "processing_status": true,
+        // "national_relevance": true,
         // "attributes_to_edit": true
       }
     }

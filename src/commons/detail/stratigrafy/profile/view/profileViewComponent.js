@@ -13,7 +13,7 @@ import {
   Checkbox, Icon
 } from 'semantic-ui-react';
 
-// import DateText from '../../form/dateText'
+import TranslationText from '../../../../form/translationText';
 
 class ProfileView extends React.Component {
   
@@ -82,7 +82,7 @@ class ProfileView extends React.Component {
     );
   }
   getTextRow(schema, text){
-    const { domains, layer, t } = this.props;
+    const { domains, layer } = this.props;
     return this.isVisible(
       schema,
       <div>
@@ -94,7 +94,10 @@ class ProfileView extends React.Component {
             // marginTop: '0.5em 0px 0.4em'
           }}
         >
-          {t(schema)}
+          <TranslationText
+            id={schema}
+            // ns='layer'
+          />
         </div>
         <div
           style={{
@@ -232,6 +235,7 @@ class ProfileView extends React.Component {
         }}
       >
         {
+          // Not yet implemented (multi-profile stratigraphies)
           kinds.length > 1?
             <ViewAs
               kinds={kinds}
@@ -339,7 +343,9 @@ class ProfileView extends React.Component {
                     }}
                   >
                     <Icon name='arrow left' />
-                    {t('common:clickLayer')}
+                    <TranslationText
+                      id='clickLayer'
+                    />
                   </div>
                 </div>:
                 <div>
@@ -349,24 +355,36 @@ class ProfileView extends React.Component {
                       flexDirection: 'row'
                     }}
                   >
-                    {this.getTextRow(
-                      'depth_from', layer.depth_from
-                    )}
                     <div
                       style={{
-                        flex: '1',
-                        textAlign: 'right'
+                        flex: '1 1 100%'
+                      }}
+                    >
+                      {this.getTextRow(
+                        'depth_from', layer.depth_from
+                      )}
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        textAlign: 'right',
+                        whiteSpace: 'nowrap'
                       }}
                     >
                       <Checkbox
                         checked={this.state.allfields}
-                        label={t('common:showallfields')}
                         onChange={(ev, data)=>{
                           this.setState({
                             allfields: data.checked
                           });
                         }}
                         toggle
+                      />
+                      &nbsp;
+                      <TranslationText
+                        id='showallfields'
                       />
                     </div>
                   </div>
@@ -588,5 +606,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
-  withTranslation(['layer_form','common'])(ProfileView)
+  withTranslation(['common'])(ProfileView)
 );

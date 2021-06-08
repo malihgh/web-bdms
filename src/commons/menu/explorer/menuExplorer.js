@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import {
   Route,
@@ -17,6 +16,7 @@ import {
 } from 'semantic-ui-react';
 import DateText from '../../form/dateText';
 import SearchComponent from '../../search/searchComponent';
+import TranslationText from '../../form/translationText';
 
 class MenuExplorer extends React.Component {
 
@@ -55,7 +55,6 @@ class MenuExplorer extends React.Component {
     const {
       history,
       boreholes,
-      t,
       detail
     } = this.props;
     return (
@@ -80,7 +79,9 @@ class MenuExplorer extends React.Component {
                 primary
               >
                 <Icon name='caret left' />
-                {t('back_to_list')}
+                <TranslationText
+                  id='back_to_list'
+                />
               </Button>
               <Segment
                 loading={detail.isFetching}
@@ -103,7 +104,9 @@ class MenuExplorer extends React.Component {
                       fontSize: '0.8em'
                     }}
                   >
-                    {t('common:creator')}
+                    <TranslationText
+                      id="creator"
+                    />
                   </span>
                   <br />
                   {
@@ -123,7 +126,9 @@ class MenuExplorer extends React.Component {
                       fontSize: '0.8em'
                     }}
                   >
-                    {t('common:creation_date')}
+                    <TranslationText
+                      id="creation_date"
+                    />
                   </span>
                   <br />
                   {
@@ -152,19 +157,27 @@ class MenuExplorer extends React.Component {
                   padding: '1em 1em 0px 1em'
                 }}
               >
-                {
-                  t("common:boreholes").charAt(0).toUpperCase()
-                  + t("common:boreholes").slice(1)
-                }: {
+                <TranslationText
+                  firstUpperCase
+                  id='boreholes'
+                />: {
                   boreholes.isFetching ?
                     <Icon
                       loading
                       name='spinner'
                     /> :
-                    boreholes.dlen + ' ' + (
-                      boreholes.dlen > 1 || boreholes.dlen === 0?
-                        t("common:results"): t("common:result")
-                    )
+                    boreholes.dlen
+                    //  + ' ' + (
+                    //   boreholes.dlen > 1 || boreholes.dlen === 0?
+                    //     <TranslationText
+                    //       firstUpperCase
+                    //       id='results'
+                    //     />:
+                    //     <TranslationText
+                    //       firstUpperCase
+                    //       id='result'
+                    //     />
+                    // )
                 }
               </div>,
               <div
@@ -206,25 +219,11 @@ class MenuExplorer extends React.Component {
                     name='refresh'
                     loading={boreholes.isFetching}
                   />
-                  Refresh
+                  <TranslationText
+                    firstUpperCase
+                    id='refresh'
+                  />
                 </Menu.Item>
-                {/* <Menu.Item
-                  onClick={() => {
-                    window.open(
-                      process.env.PUBLIC_URL + '/api/v1/borehole/export?'
-                      + Object.keys(search.filter).map((k) => {
-                        return encodeURIComponent(k)
-                          + '=' + encodeURIComponent(search.filter[k])
-                      }).join('&')
-                    );
-                  }}
-                  style={{
-                    flex: 1
-                  }}
-                >
-                  <Icon name='download' />
-                  Export
-                </Menu.Item> */}
                 <Menu.Item
                   onClick={() => {
                     this.props.reset();
@@ -233,7 +232,11 @@ class MenuExplorer extends React.Component {
                     flex: 1
                   }}
                 >
-                  <Icon name='undo' /> Reset
+                  <Icon name='undo' />&nbsp;
+                  <TranslationText
+                    firstUpperCase
+                    id='reset'
+                  />
                 </Menu.Item>  
               </Menu>
             ]
@@ -281,5 +284,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(withTranslation(['home', 'common'])(MenuExplorer))
+  )(MenuExplorer)
 );

@@ -6,28 +6,54 @@ import _ from 'lodash';
 // import TableComponent from './tableComponent';
 import DomainText from '../form/domain/domainText';
 import DateText from '../form/dateText';
+import TranslationText from '../form/translationText';
 
 import TTable from './table';
 
 import {
-  Button, Table, Icon, Checkbox, Segment, Modal, Header
+  Button, Table, Icon, Checkbox, Segment, Modal, Header, Dropdown
 } from 'semantic-ui-react';
 
 import {
   loadEditingBoreholes, 
   getdBoreholeIds,
   deleteBoreholes,
+  exportDatabaseById,
+  copyBorehole,
 } from '@ist-supsi/bmsjs';
 
 class BoreholeEditorTable extends TTable {
 
   constructor(props) {
     super(props);
+    
+    const wgs = this.props.user.data.workgroups.filter(
+      w => (
+        w.disabled === null
+        && w.supplier === false
+        && w.roles.indexOf('EDIT') >= 0
+      )
+    );
     this.state = {
       ...this.state,
+
+      enabledWorkgroups: wgs,
+      workgroup: wgs !== null && wgs.length > 0? wgs[0].id: null,
+      
       deleting: false,
       confirmDelete: false,
+
+      copy: false,
+      copying: false,
     };
+    this.reorder = this.reorder.bind(this);
+    this.add2selection = this.add2selection.bind(this);
+    this.handleMultipleClick = this.handleMultipleClick.bind(this);
+    this.deleteList = this.deleteList.bind(this);
+    this.copyBorehole = this.copyBorehole.bind(this);
+    this.getHeaderLabel = this.getHeaderLabel.bind(this);
+    this.getHeader = this.getHeader.bind(this);
+    this.getCols = this.getCols.bind(this);
   }
 
   componentDidMount(){
@@ -140,8 +166,80 @@ class BoreholeEditorTable extends TTable {
       }
     }
   }
+  exportList() {
+    const {
+      filter
+    } = this.props;
+    if (this.state.all === true || this.state.selected.length > 0) {
+      if (this.state.all === true) {
+        getdBoreholeIds(filter).then((response) => {
+          if (
+            response.data.success
+          ) {
+            exportDatabaseById(
+              _.pullAll(response.data.data, this.state.selected)
+            ).then(
+              response => {
+                if (response.success === false) {
+                  alert(response.message);
+                }
+              }
+            );
+            // ).then(() => {
+            //   this.setState({
+            //     confirmDelete: false,
+            //     deleting: false,
+            //     selected: [],
+            //     all: false
+            //   }, () => {
+            //     this.props.loadData(1, filter);
+            //   });
+            // });
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      } else {
+        exportDatabaseById(
+          this.state.selected
+        ).then(
+          response => {
+            if (response.success === false) {
+              alert(response.message);
+            }
+          }
+        );
+        // ).then(() => {
+        //   this.setState({
+        //     confirmDelete: false,
+        //     deleting: false,
+        //     selected: [],
+        //     all: false
+        //   }, () => {
+        //     this.props.loadData(1, filter);
+        //   });
+        // });
+      }
+    }
+  }
+  copyBorehole() {
+    copyBorehole(
+      this.state.selected[0],
+      this.state.workgroup,
+    ).then(
+      r => {
+        debugger;
+        this.setState({
+          copy: false,
+          copying: false
+        }, () => {
+          super.handleClick({ id: r.data.id });
+        });
+      }
+    );
+  }
   getHeaderLabel(key, disableOrdering = false) {
-    const { store, t } = this.props;
+    const { store } = this.props;
     return (
       <Table.HeaderCell
         onClick={() => {
@@ -172,9 +270,13 @@ class BoreholeEditorTable extends TTable {
                 color: '#787878'
               }}
             >
-              {t('common:workgroup')}
+              <TranslationText
+                id='workgroup'
+              />
             </span>:
-            t(key)
+            <TranslationText
+              id={key}
+            />
         }
         {
           key === 'workgroup'?
@@ -211,7 +313,7 @@ class BoreholeEditorTable extends TTable {
           />
         </Table.HeaderCell>
         {this.getHeaderLabel('workgroup')}
-        {this.getHeaderLabel('creation')}
+        {this.getHeaderLabel('creationdate')}
         {this.getHeaderLabel('author')}
         {this.getHeaderLabel('original_name')}
         {this.getHeaderLabel('kind')}
@@ -222,8 +324,8 @@ class BoreholeEditorTable extends TTable {
         {this.getHeaderLabel('elevation_z')}
         {this.getHeaderLabel('hrs', true)}
         {this.getHeaderLabel('drilling_date')}
-        {this.getHeaderLabel('status')}
-        {this.getHeaderLabel('length')}
+        {this.getHeaderLabel('boreholestatus')}
+        {this.getHeaderLabel('totaldepth')}
       </Table.Row>
     );
   }
@@ -273,24 +375,10 @@ class BoreholeEditorTable extends TTable {
               name='check circle'
             />
         } {item.percentage}% */}
-        {
-          this.props.t(`version:${item.role}`)
-        } {
-          // item.role === 'EDIT'?
-          //   <span>
-          //     ({
-          //       item.percentage < 100 ?
-          //         null :
-          //         <Icon
-          //           color='green'
-          //           name='check circle'
-          //           style={{
-          //             marginRight: '0.2em'
-          //           }}
-          //         />
-          //     }{item.percentage}%)
-          //   </span>: null
-        }
+
+        <TranslationText
+          id={`status${item.role.toLowerCase()}`}
+        />
       </Table.Cell>,
       <Table.Cell
         key={this.uid + "_" + idx + "_" + colIdx++}
@@ -426,6 +514,16 @@ class BoreholeEditorTable extends TTable {
               <Button
                 color='black'
                 onClick={() => {
+                  this.exportList();
+                }}
+                size='mini'
+              >
+                {t('common:export')}
+              </Button>
+              &nbsp;
+              <Button
+                color='black'
+                onClick={() => {
                   this.handleMultipleClick();
                 }}
                 size='mini'
@@ -436,15 +534,95 @@ class BoreholeEditorTable extends TTable {
               {
                 all === false
                 && selected.length === 1?
-                  <Button
-                    onClick={() => {
-                      console.log('clone click');
-                    }}
-                    primary
+                  <Modal
+                    closeIcon
+                    onClose={
+                      () => this.setState({
+                        copy: false
+                      })
+                    }
+                    open={this.state.copy}
                     size='mini'
+                    trigger={
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            copy: true
+                          });
+                        }}
+                        primary
+                        size='mini'
+                      >
+                        {t('common:copy')}
+                      </Button>
+                    }
                   >
-                    {t('common:copy')}
-                  </Button>:
+                    <Header
+                      content={t('common:copy')}
+                      // icon='archive'
+                    />
+                    <Modal.Content>
+                      <div
+                        style={{
+                          padding: '1em'
+                        }}
+                      >
+                        {
+                          (()=>{
+                            const wg = this.state.enabledWorkgroups;
+                            if (wg.length === 0){
+                              return (
+                                <TranslationText
+                                  id='disabled'
+                                />
+                              );
+
+                            } else if (wg.length === 1){
+                              return wg[0].workgroup;
+                            }
+                            return (
+                              <Dropdown
+                                item
+                                onChange={(ev, data) => {
+                                  this.setState({
+                                    workgroup: data.value
+                                  });
+                                }}
+                                options={
+                                  wg.filter(
+                                    w => w.roles.indexOf('EDIT') >= 0
+                                  ).map(wg => (
+                                    {
+                                      key: wg['id'],
+                                      text: wg['workgroup'],
+                                      value: wg['id']
+                                    }
+                                  ))
+                                }
+                                simple
+                                value={this.state.workgroup}
+                              />
+                            );
+                          })()
+                        }
+                      </div>
+                    </Modal.Content>
+                    <Modal.Actions>
+                      <Button
+                        loading={this.state.copying}
+                        onClick={() => {
+                          this.setState({
+                            copying: true
+                          }, () => {
+                            this.copyBorehole();
+                          });
+                        }}
+                        primary
+                      >
+                        {t('common:copy')}
+                      </Button>
+                    </Modal.Actions>
+                  </Modal>:
                   null
               }
               &nbsp;
@@ -499,6 +677,7 @@ class BoreholeEditorTable extends TTable {
                   </Button>
                 </Modal.Actions>
               </Modal>
+              
             </div> : null
         }
         {/* <div
@@ -521,6 +700,7 @@ class BoreholeEditorTable extends TTable {
 const mapStateToProps = (state, ownProps) => {
   return {
     store: state.core_borehole_editor_list,
+    user: state.core_user,
     ...ownProps
   };
 };
@@ -549,5 +729,5 @@ export default connect(
   mapDispatchToProps
 )(
   withTranslation(
-    ['borehole_form', 'version', 'common']
+    ['common']
   )(BoreholeEditorTable));

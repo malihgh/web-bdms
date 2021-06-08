@@ -7,7 +7,7 @@ import Markdown from 'markdown-to-jsx';
 
 import {
   Button,
-  Input
+  Input,
 } from 'semantic-ui-react';
 
 import {
@@ -74,6 +74,7 @@ class DataLoader extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    // console.log(this.props.i18n.language, this.props.i18n);
     if (!_.isEqual(this.props.user.data, prevProps.user.data)) {
       this.props.loadSettings();
       this.props.loadDomains();
@@ -126,10 +127,9 @@ class DataLoader extends React.Component {
               >
                 <img
                   alt="Swiss Logo"
-                  src={process.env.PUBLIC_URL + '/img/ch.png'}
+                  src={process.env.PUBLIC_URL + '/logo.svg'}
                   style={{
-                    height: '30px',
-                    width: '27.27px'
+                    height: '70px',
                   }}
                 />
                 <div
@@ -166,11 +166,16 @@ class DataLoader extends React.Component {
                   paddingTop: '2em'
                 }}
               >
-                <Markdown>
-                  {this.state.body[
-                    this.props.i18n.language
-                  ]}
-                </Markdown>
+                {
+                  this.state.body.hasOwnProperty(this.props.i18n.language)?
+                    <Markdown>
+                      {
+                        this.state.body[
+                          this.props.i18n.language
+                        ]
+                      }
+                    </Markdown>: null
+                }
               </div>
               {/* <div
                 style={{
@@ -385,6 +390,7 @@ class DataLoader extends React.Component {
 
 DataLoader.propTypes = {
   anonymousLogin: PropTypes.func,
+  i18n: PropTypes.object,
   loadCantons: PropTypes.func,
   loadDomains: PropTypes.func,
   loadSettings: PropTypes.func,

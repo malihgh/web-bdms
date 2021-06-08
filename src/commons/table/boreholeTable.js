@@ -6,6 +6,7 @@ import _ from 'lodash';
 import TableComponent from './tableComponent';
 import DomainText from '../form/domain/domainText';
 import DateText from '../form/dateText';
+import TranslationText from '../form/translationText';
 
 import {
   Button,
@@ -30,7 +31,7 @@ class BoreholeTable extends TableComponent {
     );
   }
   getIcon(orderby, sub = false) {
-    const { store, t } = this.props;
+    const { store } = this.props;
     let style = {
       cursor: 'pointer'
     };
@@ -57,7 +58,9 @@ class BoreholeTable extends TableComponent {
               }
             /> : null
         }
-        {t(orderby)}
+        <TranslationText
+          id={orderby}
+        />
       </div>
     );
   }
@@ -108,7 +111,7 @@ class BoreholeTable extends TableComponent {
         <Table.HeaderCell
           verticalAlign='top'
         >
-          {this.getIcon('length')}
+          {this.getIcon('totaldepth')}
           {this.getIcon('top_bedrock', true)}
         </Table.HeaderCell>
         <Table.HeaderCell
@@ -372,4 +375,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation('borehole_form')(BoreholeTable));
+)(withTranslation('common')(BoreholeTable));
