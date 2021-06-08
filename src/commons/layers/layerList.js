@@ -4,6 +4,8 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 
+import TranslationText from '../form/translationText';
+
 import {
   Button,
   Form,
@@ -151,8 +153,8 @@ class LayersList extends React.Component {
                         }}
                       >
                         <Table.Cell
-                          colSpan='3'
                           collapsing
+                          colSpan='3'
                           style={{
                             width: '100%'
                           }}
@@ -163,9 +165,11 @@ class LayersList extends React.Component {
                               whiteSpace: 'normal'
                             }}
                           >
-                            <Icon name='warning sign' /> {
-                              t('missingLayerSolution')
-                            }
+                            <Icon name='warning sign' />
+                            &nbsp;
+                            <TranslationText
+                              id='errorMissingLayerSolution'
+                            />
                           </div>
                         </Table.Cell>
                       </Table.Row>
@@ -181,12 +185,12 @@ class LayersList extends React.Component {
                         }}
                       >
                         <Table.Cell
+                          collapsing
                           colSpan={
                             resolving === true?
                               '3': _.isFunction(this.props.onDelete)?
                                 '2': '1'
                           }
-                          collapsing
                           style={{
                             width: '100%'
                           }}
@@ -199,10 +203,16 @@ class LayersList extends React.Component {
                           >
                             <Icon name='warning sign' /> {
                               consistency[item.id].errorGap === true?
-                                t('errorGap'):
+                                <TranslationText
+                                  id='errorGap'
+                                />:
                                 consistency[item.id].errorStartWrong === true?
-                                  t('errorStartWrong'):
-                                  t('errorOverlap')
+                                  <TranslationText
+                                    id='errorStartWrong'
+                                  />:
+                                  <TranslationText
+                                    id='errorOverlap'
+                                  />
                             }
                           </div>
                           {
@@ -213,7 +223,9 @@ class LayersList extends React.Component {
                                     fontSize: '0.8em'
                                   }}
                                 >
-                                  {t('howToResolve')}
+                                  <TranslationText
+                                    id='errorHowToResolve'
+                                  />
                                 </div>
                                 <div
                                   style={{
@@ -234,6 +246,16 @@ class LayersList extends React.Component {
                                             onChange={this.handleResolvingAction}
                                             value={0}
                                           />
+                                          {
+                                            this.props.developer.debug === true?
+                                              <div
+                                                style={{
+                                                  color: 'red',
+                                                }}
+                                              >
+                                                trans=errorGapSolution1
+                                              </div>: null
+                                          }
                                         </Form.Field>: null
                                     }
                                     {
@@ -248,6 +270,16 @@ class LayersList extends React.Component {
                                             onChange={this.handleResolvingAction}
                                             value={1}
                                           />
+                                          {
+                                            this.props.developer.debug === true?
+                                              <div
+                                                style={{
+                                                  color: 'red',
+                                                }}
+                                              >
+                                                trans=errorGapSolution2
+                                              </div>: null
+                                          }
                                         </Form.Field>: null
                                     }
                                     {
@@ -264,6 +296,21 @@ class LayersList extends React.Component {
                                             onChange={this.handleResolvingAction}
                                             value={2}
                                           />
+                                          {
+                                            this.props.developer.debug === true?
+                                              <div
+                                                style={{
+                                                  color: 'red',
+                                                }}
+                                              >
+                                                {
+                                                  consistency[item.id].errorStartWrong === true?
+                                                    'trans=errorGapSolution3':
+                                                    'trans=errorGapSolution4'
+                                                }
+                                                
+                                              </div>: null
+                                          }
                                         </Form.Field>: null
                                     }
                                   </Form>
@@ -286,7 +333,11 @@ class LayersList extends React.Component {
                                     }}
                                     size='mini'
                                   >
-                                    <Icon name='cancel' /> {t('common:cancel')}
+                                    <Icon name='cancel' />
+                                    &nbsp;
+                                    <TranslationText
+                                      id='cancel'
+                                    />
                                   </Button>
                                   <Button
                                     disabled={this.state.resolvingAction === null}
@@ -313,29 +364,34 @@ class LayersList extends React.Component {
                           }
                         </Table.Cell>
                         {
-                          this.state.resolving === null
-                          || this.state.resolving.id !== item.id?
-                            <Table.Cell
-                              collapsing
-                            >
-                              <Button
-                                basic
-                                icon
-                                onClick={(e)=>{
-                                  e.stopPropagation();
-                                  this.setState({
-                                    resolving: item,
-                                    resolvingAction: null,
-                                    deleting: null,
-                                    deleteAction: 0,
-                                    value: null
-                                  });
-                                }}
-                                size='mini'
+
+                          this.props.borehole.data.lock === null
+                          || this.props.borehole.data.lock.username !== this.props.user.data.username
+                          || this.props.borehole.data.role !== 'EDIT'?
+                            null:
+                            this.state.resolving === null
+                            || this.state.resolving.id !== item.id?
+                              <Table.Cell
+                                collapsing
                               >
-                                <Icon name='wrench' />
-                              </Button>
-                            </Table.Cell>: null
+                                <Button
+                                  basic
+                                  icon
+                                  onClick={(e)=>{
+                                    e.stopPropagation();
+                                    this.setState({
+                                      resolving: item,
+                                      resolvingAction: null,
+                                      deleting: null,
+                                      deleteAction: 0,
+                                      value: null
+                                    });
+                                  }}
+                                  size='mini'
+                                >
+                                  <Icon name='wrench' />
+                                </Button>
+                              </Table.Cell>: null
                         }
                       </Table.Row>
                     );
@@ -367,14 +423,18 @@ class LayersList extends React.Component {
                           fontWeight: 'bold'
                         }}
                       >
-                        {t('layer_form:attention')}
+                        <TranslationText
+                          id='errorAttention'
+                        />
                       </div>
                       <div
                         style={{
                           fontSize: '0.8em'
                         }}
                       >
-                        {t('layer_form:deletelayerconfirmation')}
+                        <TranslationText
+                          id='deletelayerconfirmation'
+                        />
                       </div>
                       <div
                         style={{
@@ -385,22 +445,42 @@ class LayersList extends React.Component {
                           <Form.Field>
                             <Radio
                               checked={this.state.deleteAction === 0}
-                              label={t('layer_form:deletelayer')}
+                              label={t('deletelayer')}
                               name='radioGroup'
                               onChange={this.handleDeleteAction}
                               value={0}
                             />
+                            {
+                              this.props.developer.debug === true?
+                                <div
+                                  style={{
+                                    color: 'red',
+                                  }}
+                                >
+                                  trans=deletelayer
+                                </div>: null
+                            }
                           </Form.Field>
                           {
                             idx > 0?
                               <Form.Field>
                                 <Radio
                                   checked={this.state.deleteAction === 1}
-                                  label={t('layer_form:extendupper')}
+                                  label={t('extendupper')}
                                   name='radioGroup'
                                   onChange={this.handleDeleteAction}
                                   value={1}
                                 />
+                                {
+                                  this.props.developer.debug === true?
+                                    <div
+                                      style={{
+                                        color: 'red',
+                                      }}
+                                    >
+                                      trans=extendupper
+                                    </div>: null
+                                }
                               </Form.Field>: null
                           }
                           {
@@ -408,11 +488,21 @@ class LayersList extends React.Component {
                               <Form.Field>
                                 <Radio
                                   checked={this.state.deleteAction === 2}
-                                  label={t('layer_form:extendlower')}
+                                  label={t('extendlower')}
                                   name='radioGroup'
                                   onChange={this.handleDeleteAction}
                                   value={2}
                                 />
+                                {
+                                  this.props.developer.debug === true?
+                                    <div
+                                      style={{
+                                        color: 'red',
+                                      }}
+                                    >
+                                      trans=extendlower
+                                    </div>: null
+                                }
                               </Form.Field>: null
                           }
                           {
@@ -420,11 +510,21 @@ class LayersList extends React.Component {
                               <Form.Field>
                                 <Radio
                                   checked={this.state.deleteAction === 3}
-                                  label={t('layer_form:setmanually')}
+                                  label={t('setmanually')}
                                   name='radioGroup'
                                   onChange={this.handleDeleteAction}
                                   value={3}
                                 />
+                                {
+                                  this.props.developer.debug === true?
+                                    <div
+                                      style={{
+                                        color: 'red',
+                                      }}
+                                    >
+                                      trans=setmanually
+                                    </div>: null
+                                }
                               </Form.Field>: null
                           }
                           {
@@ -459,7 +559,11 @@ class LayersList extends React.Component {
                           }}
                           size='mini'
                         >
-                          <Icon name='cancel' /> {t('common:cancel')}
+                          <Icon name='cancel' />
+                          &nbsp;
+                          <TranslationText
+                            id='cancel'
+                          />
                         </Button>
                         <Button
                           icon
@@ -481,7 +585,11 @@ class LayersList extends React.Component {
                           }}
                           size='mini'
                         >
-                          <Icon name='trash alternate outline' /> {t('common:confirm')}
+                          <Icon name='trash alternate outline' />
+                          &nbsp;
+                          <TranslationText
+                            id='confirm'
+                          />
                         </Button>
                       </div>
                     </Table.Cell>
@@ -580,8 +688,6 @@ class LayersList extends React.Component {
                           {
                             item[style.pattern] !== null?
                               <DomainText
-                                //id={item[style.pattern]}
-                                //schema={style.patternNS}
                                 id={item.lithostratigraphy}
                                 schema={'custom.lit_str_top_bedrock'}
                               />: '-'
@@ -648,7 +754,9 @@ class LayersList extends React.Component {
                                 title={
                                   consistency.hasOwnProperty(item.id)
                                   && consistency[item.id].errorInverted?
-                                    'Inverted depths': null
+                                    <TranslationText
+                                      id='invertedDepth'
+                                    />: null
                                 }
                               />: null
                           } {item.depth_to} m
@@ -661,8 +769,8 @@ class LayersList extends React.Component {
                           >
                             {
                               borehole.data.lock === null
-                              || borehole.data.lock.username
-                                 !== this.props.user.data.username?
+                              || borehole.data.lock.username !== this.props.user.data.username
+                              || this.props.borehole.data.role !== 'EDIT'?
                                 null:
                                 <Button
                                   basic
@@ -727,7 +835,11 @@ class LayersList extends React.Component {
                             fontWeight: 'bold'
                           }}
                         >
-                          <Icon name='warning sign' /> {t('missingBedrock')}
+                          <Icon name='warning sign' />
+                          &nbsp;
+                          <TranslationText
+                            id='errorMissingBedrock'
+                          />
                         </div>
                         {
                           resolving === true?
@@ -737,7 +849,9 @@ class LayersList extends React.Component {
                                   fontSize: '0.8em'
                                 }}
                               >
-                                {t('howToResolve')}
+                                <TranslationText
+                                  id='errorHowToResolve'
+                                />
                               </div>
                               <div
                                 style={{
@@ -745,7 +859,9 @@ class LayersList extends React.Component {
                                   whiteSpace: 'normal'
                                 }}
                               >
-                                {t('missingBedrockSolution')}
+                                <TranslationText
+                                  id='errorMissingBedrockSolution'
+                                />
                               </div>
                               <div
                                 style={{
@@ -765,7 +881,11 @@ class LayersList extends React.Component {
                                   }}
                                   size='mini'
                                 >
-                                  <Icon name='cancel' /> {t('common:cancel')}
+                                  <Icon name='cancel' />
+                                  &nbsp;
+                                  <TranslationText
+                                    id='cancel'
+                                  />
                                 </Button>
                                 <Button
                                   icon
@@ -781,37 +901,45 @@ class LayersList extends React.Component {
                                   secondary
                                   size='mini'
                                 >
-                                  <Icon name='plus' /> {t('common:add')}
+                                  <Icon name='plus' />
+                                  &nbsp;
+                                  <TranslationText
+                                    id='add'
+                                  />
                                 </Button>
                               </div>
                             </div>: null
                         }
                       </Table.Cell>
                       {
-                        resolving === false?
-                          <Table.Cell
-                            collapsing
-                          >
-                            <Button
-                              basic
-                              icon
-                              onClick={(e)=>{
-                                e.stopPropagation();
-                                this.setState({
-                                  resolving: {
-                                    id: 'missingBedrock'
-                                  },
-                                  resolvingAction: null,
-                                  deleting: null,
-                                  deleteAction: 0,
-                                  value: null
-                                });
-                              }}
-                              size='mini'
+                        this.props.borehole.data.lock === null
+                        || this.props.borehole.data.lock.username !== this.props.user.data.username
+                        || this.props.borehole.data.role !== 'EDIT'?
+                          null:
+                          resolving === false?
+                            <Table.Cell
+                              collapsing
                             >
-                              <Icon name='wrench' />
-                            </Button>
-                          </Table.Cell>: null
+                              <Button
+                                basic
+                                icon
+                                onClick={(e)=>{
+                                  e.stopPropagation();
+                                  this.setState({
+                                    resolving: {
+                                      id: 'missingBedrock'
+                                    },
+                                    resolvingAction: null,
+                                    deleting: null,
+                                    deleteAction: 0,
+                                    value: null
+                                  });
+                                }}
+                                size='mini'
+                              >
+                                <Icon name='wrench' />
+                              </Button>
+                            </Table.Cell>: null
                       }
                     </Table.Row>
                   );
@@ -831,11 +959,11 @@ class LayersList extends React.Component {
                       }}
                     >
                       <Table.Cell
+                        collapsing
                         colSpan={
                           resolving === true?
                             '3': '2'
                         }
-                        collapsing
                         style={{
                           width: '100%'
                         }}
@@ -845,7 +973,11 @@ class LayersList extends React.Component {
                             fontWeight: 'bold'
                           }}
                         >
-                          <Icon name='warning sign' /> {t('wrongDepth')}
+                          <Icon name='warning sign' />
+                          &nbsp;
+                          <TranslationText
+                            id='errorWrongDepth'
+                          />
                         </div>
                         {
                           resolving === true?
@@ -856,9 +988,8 @@ class LayersList extends React.Component {
                                   whiteSpace: 'normal'
                                 }}
                               >
-                                {t(
-                                  'wrongDepthSolution1',
-                                  {
+                                <TranslationText
+                                  extra={{
                                     lDepth: (
                                       _.isNil(layers[layers.length-1].depth_to)?
                                         'n/a': layers[layers.length-1].depth_to
@@ -867,8 +998,9 @@ class LayersList extends React.Component {
                                       _.isNil(borehole.data.length)?
                                         'n/a': borehole.data.length + 'm'
                                     )
-                                  }
-                                )}
+                                  }}
+                                  id='errorWrongDepth'
+                                />
                               </div>
                               <div
                                 style={{
@@ -887,37 +1019,43 @@ class LayersList extends React.Component {
                                   }}
                                   size='mini'
                                 >
-                                  {t('common:close')}
+                                  <TranslationText
+                                    id='close'
+                                  />
                                 </Button>
                               </div>
                             </div>: null
                         }
                       </Table.Cell>
                       {
-                        resolving === false?
-                          <Table.Cell
-                            collapsing
-                          >
-                            <Button
-                              basic
-                              icon
-                              onClick={(e)=>{
-                                e.stopPropagation();
-                                this.setState({
-                                  resolving: {
-                                    id: 'wrongDepth'
-                                  },
-                                  resolvingAction: null,
-                                  deleting: null,
-                                  deleteAction: 0,
-                                  value: null
-                                });
-                              }}
-                              size='mini'
+                        this.props.borehole.data.lock === null
+                        || this.props.borehole.data.lock.username !== this.props.user.data.username
+                        || this.props.borehole.data.role !== 'EDIT'?
+                          null:
+                          resolving === false?
+                            <Table.Cell
+                              collapsing
                             >
-                              <Icon name='wrench' />
-                            </Button>
-                          </Table.Cell>: null
+                              <Button
+                                basic
+                                icon
+                                onClick={(e)=>{
+                                  e.stopPropagation();
+                                  this.setState({
+                                    resolving: {
+                                      id: 'wrongDepth'
+                                    },
+                                    resolvingAction: null,
+                                    deleting: null,
+                                    deleteAction: 0,
+                                    value: null
+                                  });
+                                }}
+                                size='mini'
+                              >
+                                <Icon name='wrench' />
+                              </Button>
+                            </Table.Cell>: null
                       }
                     </Table.Row>
                   );
@@ -936,6 +1074,7 @@ LayersList.propTypes = {
   borehole: PropTypes.object,
   color: PropTypes.string,
   consistency: PropTypes.object,
+  developer: PropTypes.object,
   domains: PropTypes.shape({
     data: PropTypes.object
   }),
@@ -962,6 +1101,7 @@ LayersList.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     borehole: state.core_borehole,
+    developer: state.developer,
     domains: state.core_domain_list,
     user: state.core_user,
   };
@@ -971,5 +1111,5 @@ export default connect(
   mapStateToProps,
   null
 )((
-  withTranslation(['error', 'common', 'layer_form'])(LayersList)
+  withTranslation('common')(LayersList)
 ));

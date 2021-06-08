@@ -1,6 +1,6 @@
 {
   "name": "bdms",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Bohrehole Data Management System",
   "private": true,
   "proxy": "http://localhost:8888",
@@ -9,13 +9,14 @@
     "Milan P. Antonovic <milan.antonovic@supsi.ch> (https://github.com/mantonovic)"
   ],
   "dependencies": {
-    "@ist-supsi/bmsjs": "1.0.8",
+    "@ist-supsi/bmsjs": "1.0.9",
     "@ist-supsi/stratigraphy": "1.0.6",
     "axios": "^0.19.0",
     "date-fns": "^2.9.0",
     "eslint": "^6.8.0",
     "i18next": "^19.1.0",
     "i18next-browser-languagedetector": "^4.0.1",
+    "i18next-http-backend": "^1.0.21",
     "lodash": "^4.17.15",
     "markdown-to-jsx": "^6.11.4",
     "moment": "^2.24.0",
@@ -44,8 +45,11 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "csv-parser": "^2.3.3",
     "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-react": "^7.18.3"
+    "eslint-plugin-react": "^7.18.3",
+    "minimist": "^1.2.5",
+    "wget-improved": "^3.2.1"
   },
   "browserslist": {
     "production": [

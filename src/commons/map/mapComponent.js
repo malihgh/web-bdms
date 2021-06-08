@@ -503,13 +503,17 @@ class MapComponent extends React.Component {
     }
     if (centerto !== null && centerto !== this.props.centerto) {
       let feature = this.points.getFeatureById(centerto);
-      var point = feature.getGeometry();
-      if (zoomto === true) {
-        this.map.getView().fit(
-          point, { minResolution: 1 }
-        );
+      if (feature !== null) {
+        var point = feature.getGeometry();
+        if (zoomto === true) {
+          this.map.getView().fit(
+            point, { minResolution: 1 }
+          );
+        } else {
+          this.map.getView().setCenter(point.getCoordinates());
+        }
       } else {
-        this.map.getView().setCenter(point.getCoordinates());
+        console.error("Feature not found.");
       }
     }
     if (refresh) {
@@ -954,4 +958,4 @@ MapComponent.defaultProps = {
   centerto: null
 };
 
-export default (withTranslation(['borehole_form', 'common'])(MapComponent));
+export default (withTranslation(['common'])(MapComponent));

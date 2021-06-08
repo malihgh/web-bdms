@@ -23,6 +23,8 @@ import {
   updateIdentifier
 } from '@ist-supsi/bmsjs/build/actions/identifier';
 
+import TranslationText from '../../../commons/form/translationText';
+
 class IdentifierSettings extends React.Component {
 
   constructor(props) {
@@ -88,46 +90,62 @@ class IdentifierSettings extends React.Component {
             >
               <Form.Input
                 fluid
-                label={t('common:german')}
+                label={
+                  <TranslationText
+                    id='german'
+                  />
+                }
                 onChange={(e)=>{
                   this.setState({
                     de: e.target.value
                   });
                 }}
-                placeholder={t('identifier')}
+                placeholder={t('borehole_identifier')}
                 value={this.state.de}
               />
               <Form.Input
                 fluid
-                label={t('common:french')}
+                label={
+                  <TranslationText
+                    id='french'
+                  />
+                }
                 onChange={(e)=>{
                   this.setState({
                     fr: e.target.value
                   });
                 }}
-                placeholder={t('identifier')}
+                placeholder={t('borehole_identifier')}
                 value={this.state.fr}
               />
               <Form.Input
                 fluid
-                label={t('common:italian')}
+                label={
+                  <TranslationText
+                    id='italian'
+                  />
+                }
                 onChange={(e)=>{
                   this.setState({
                     it: e.target.value
                   });
                 }}
-                placeholder={t('identifier')}
+                placeholder={t('borehole_identifier')}
                 value={this.state.it}
               />
               <Form.Input
                 fluid
-                label={t('common:english')}
+                label={
+                  <TranslationText
+                    id='english'
+                  />
+                }
                 onChange={(e)=>{
                   this.setState({
                     en: e.target.value
                   });
                 }}
-                placeholder={t('identifier')}
+                placeholder={t('borehole_identifier')}
                 value={this.state.en}
               />
               <div
@@ -193,7 +211,12 @@ class IdentifierSettings extends React.Component {
                         this.state.id !== null &&
                         this.state.id !== ''
                       )?
-                        t('common:save'): t('common:add')
+                        <TranslationText
+                          id='save'
+                        />:
+                        <TranslationText
+                          id='add'
+                        />
                     }
                   </span>
                 </Form.Button>
@@ -202,7 +225,9 @@ class IdentifierSettings extends React.Component {
                   className='linker link'
                   onClick={() => this.reset()}
                 >
-                  {t('common:reset')}
+                  <TranslationText
+                    id='reset'
+                  />
                 </div>
               </div>
             </Form.Group>
@@ -313,12 +338,18 @@ class IdentifierSettings extends React.Component {
           size='mini'
         >
           <Header
-            content={t('common:deleteForever')}
+            content={
+              <TranslationText
+                id='deleteForever'
+              />
+            }
             // icon='archive'
           />
           <Modal.Content>
             <p>
-              {t('common:sure')}
+              <TranslationText
+                id='sure'
+              />
             </p>
           </Modal.Content>
           <Modal.Actions>
@@ -347,7 +378,9 @@ class IdentifierSettings extends React.Component {
               }
               size='tiny'
             >
-              {t('confirm')}
+              <TranslationText
+                id='confirm'
+              />
             </Button>
           </Modal.Actions>
         </Modal>

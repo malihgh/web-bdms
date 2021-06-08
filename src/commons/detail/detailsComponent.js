@@ -1,11 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
 import StratigraphiesComponent from './stratigrafy/stratigraphiesComponent';
 import MunicipalityText from '../form/municipality/municipalityText';
 import CantonText from '../form/cantons/cantonText';
 import DomainText from '../form/domain/domainText';
 import DateText from '../form/dateText';
+import TranslationText from '../form/translationText';
 import ExportLink from '../exportlink';
 import {
   Icon
@@ -15,7 +16,7 @@ import {
 class DetailsComponent extends React.Component {
   render() {
     const {
-      detail, t
+      detail
     } = this.props;
     return (
       <div
@@ -155,7 +156,9 @@ class DetailsComponent extends React.Component {
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent: 'flex-end'
+                    justifyContent: 'flex-end',
+                    flexWrap: this.props.developer.debug === true?
+                      'wrap': 'nowrap'
                   }}
                 >
                   <div
@@ -181,7 +184,9 @@ class DetailsComponent extends React.Component {
                         fontSize: '0.8em'
                       }}
                     >
-                      {t('purpose')}
+                      <TranslationText
+                        id='purpose'
+                      />
                     </div>
                   </div>
                   <div
@@ -204,7 +209,9 @@ class DetailsComponent extends React.Component {
                         fontSize: '0.8em'
                       }}
                     >
-                      {t('length')}
+                      <TranslationText
+                        id='qt_length'
+                      />
                     </div>
                   </div>
                   <div
@@ -227,7 +234,9 @@ class DetailsComponent extends React.Component {
                         fontSize: '0.8em'
                       }}
                     >
-                      {t('elevation_z')}
+                      <TranslationText
+                        id='elevation_z'
+                      />
                     </div>
                   </div>
                   <div
@@ -252,7 +261,9 @@ class DetailsComponent extends React.Component {
                         fontSize: '0.8em'
                       }}
                     >
-                      {t('drilling_date')}
+                      <TranslationText
+                        id='drilling_date'
+                      />
                     </div>
                   </div>
                 </div>
@@ -299,9 +310,23 @@ class DetailsComponent extends React.Component {
   }
 }
 
-DetailsComponent.propTypes = {
-  detail: PropTypes.object,
-  domains: PropTypes.object
+const mapStateToProps = (state) => {
+  return {
+    developer: state.developer
+  };
 };
 
-export default withTranslation('borehole_form')(DetailsComponent);
+DetailsComponent.propTypes = {
+  detail: PropTypes.object,
+  domains: PropTypes.object,
+  developer: PropTypes.shape({
+    debug: PropTypes.bool
+  }),
+  i18n: PropTypes.shape({
+    t: PropTypes.func
+  }),
+};
+export default connect(
+  mapStateToProps,
+  null
+)(DetailsComponent);

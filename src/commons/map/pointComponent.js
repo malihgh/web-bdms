@@ -139,7 +139,6 @@ class PointComponent extends React.Component {
         attributionOptions: {
           collapsed: false,
           collapsible: false,
-          collapseLabel: 'tettine'
         }
       }),
       layers: [

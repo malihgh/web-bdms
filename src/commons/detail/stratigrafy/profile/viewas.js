@@ -7,6 +7,8 @@ import {
   Dropdown
 } from 'semantic-ui-react';
 
+import TranslationText from '../../../form/translationText';
+
 class ViewAs extends React.Component {
 
   constructor(props) {
@@ -30,7 +32,6 @@ class ViewAs extends React.Component {
       kinds,
       i18n,
       style,
-      t
     } = this.props;
     return (
       <div
@@ -45,7 +46,9 @@ class ViewAs extends React.Component {
             marginRight: '0.3em'
           }}
         >
-          {t('viewas')}:
+          <TranslationText
+            id='viewas'
+          />:
         </div>
         <div
           className='flex_fill'
@@ -70,7 +73,13 @@ class ViewAs extends React.Component {
                     )
                   ).map((domain) => ({
                     value: domain.id,
-                    text: domain[i18n.language].text
+                    text: domain[i18n.language].text,
+                    ...(
+                      this.props.developer.debug === true?
+                        {
+                          description: `geolcode=${domain.id}`
+                        }: null
+                    )
                   }))
                 }
               />: null
@@ -82,6 +91,9 @@ class ViewAs extends React.Component {
 }
 
 ViewAs.propTypes = {
+  developer: PropTypes.shape({
+    debug: PropTypes.bool
+  }),
   domains: PropTypes.shape({
     data: PropTypes.object
   }),
@@ -94,7 +106,6 @@ ViewAs.propTypes = {
     data: PropTypes.object
   }),
   style: PropTypes.object,
-  t: PropTypes.func
 };
 
 ViewAs.defaultProps = {
@@ -104,6 +115,7 @@ ViewAs.defaultProps = {
 
 const mapStateToProps = (state) => {
   return {
+    developer: state.developer,
     domains: state.core_domain_list,
     setting: state.setting,
   };

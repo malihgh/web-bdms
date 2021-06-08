@@ -12,6 +12,7 @@ import {
   Form,
   Header,
 } from 'semantic-ui-react';
+import TranslationText from '../../translationText';
 
 class DomainDropdown extends React.Component {
 
@@ -61,6 +62,8 @@ class DomainDropdown extends React.Component {
     if (this.props.selected !== nextProps.selected) {
       return true;
     } else if (this.state.language !== nextProps.i18n.language) {
+      return true;
+    } else if (this.props.developer.debug !== nextProps.developer.debug){
       return true;
     }
     return false;
@@ -115,7 +118,6 @@ class DomainDropdown extends React.Component {
     const {
       domains,
       schema,
-      t,
       search,
       multiple
     } = this.props, {
@@ -143,7 +145,9 @@ class DomainDropdown extends React.Component {
               color: 'red'
             }}  
           >
-            {t('reset')}
+            <TranslationText
+              id='reset'
+            />
           </span>
         )
       });
@@ -211,8 +215,17 @@ class DomainDropdown extends React.Component {
               </div>
             }
             subheader={
-              !_.isNil(domain[this.state.language].descr)?
-                domain[this.state.language].descr: null
+              this.props.developer.debug === true?
+                <div
+                  style={{
+                    color: 'red',
+                    fontSize: '0.8em'
+                  }}
+                >
+                  gcode={domain.id}
+                </div>: null
+              // !_.isNil(domain[this.state.language].descr)?
+              //   domain[this.state.language].descr: null
             }
           />
         )
@@ -256,6 +269,7 @@ DomainDropdown.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    developer: state.developer,
     domains: state.core_domain_list
   };
 };

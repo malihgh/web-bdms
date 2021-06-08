@@ -10,6 +10,8 @@ import {
   List
 } from 'semantic-ui-react';
 
+import TranslationText from '../../form/translationText';
+
 
 const MenuSettings = (props) => {
   const {
@@ -42,7 +44,9 @@ const MenuSettings = (props) => {
           />
           <List.Content>
             <List.Header as='h3'>
-              {t('common:done')}
+              <TranslationText
+                id='done'
+              />
             </List.Header>
           </List.Content>
         </List.Item>
@@ -198,30 +202,33 @@ const MenuSettings = (props) => {
             </List.Item>: null
         }
         {
-          // props.user.data.admin === true?
-          //   <List.Item
-          //     onClick={()=>{
-          //       history.push(
-          //         process.env.PUBLIC_URL + '/setting/database'
-          //       );
-          //     }}
-          //     style={{
-          //       padding: '1em',
-          //       borderLeft: location.pathname.indexOf('/setting/database') >= 0?
-          //         '0.5em solid rgb(237, 29, 36)': null
-          //     }}
-          //   >
-          //     <List.Icon
-          //       name='database'
-          //       size='large'
-          //       verticalAlign='middle'
-          //     />
-          //     <List.Content>
-          //       <List.Header as='h3'>
-          //         Database
-          //       </List.Header>
-          //     </List.Content>
-          //   </List.Item>: null
+          props.user.data !== null &&
+          (
+            props.user.data.admin === true
+          )?
+            <List.Item
+              onClick={()=>{
+                history.push(
+                  process.env.PUBLIC_URL + '/setting/database'
+                );
+              }}
+              style={{
+                padding: '1em',
+                borderLeft: location.pathname.indexOf('/setting/database') >= 0?
+                  '0.5em solid rgb(237, 29, 36)': null
+              }}
+            >
+              <List.Icon
+                name='database'
+                size='large'
+                verticalAlign='middle'
+              />
+              <List.Content>
+                <List.Header as='h3'>
+                  Database
+                </List.Header>
+              </List.Content>
+            </List.Item>: null
         }
         <List.Item
           onClick={()=>{
@@ -285,6 +292,6 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps
   )(
-    withTranslation(['home','common', 'borehole_form'])(MenuSettings)
+    withTranslation(['common'])(MenuSettings)
   )
 );

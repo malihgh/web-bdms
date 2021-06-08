@@ -10,6 +10,7 @@ import {
 } from 'semantic-ui-react';
 import DateText from '../../form/dateText';
 import DownloadLink from '../downloadlink';
+import TranslationText from '../../form/translationText';
 
 const FilesTableComponent = props => {
   return (
@@ -25,20 +26,30 @@ const FilesTableComponent = props => {
             {
               props.editor === true &&
               <Table.HeaderCell>
-                {props.t('public')}
+                <TranslationText
+                  id='public'
+                />
               </Table.HeaderCell>
             }
             <Table.HeaderCell>
-              {props.t('name')}
+              <TranslationText
+                id='name'
+              />
             </Table.HeaderCell>
             <Table.HeaderCell>
-              {props.t('description')}
+              <TranslationText
+                id='description'
+              />
             </Table.HeaderCell>
             <Table.HeaderCell>
-              {props.t('type')}
+              <TranslationText
+                id='type'
+              />
             </Table.HeaderCell>
             <Table.HeaderCell>
-              {props.t('uploaded')}
+              <TranslationText
+                id='uploaded'
+              />
             </Table.HeaderCell>
             {props.unlocked === true? <Table.HeaderCell />: null}
           </Table.Row>
@@ -82,7 +93,7 @@ const FilesTableComponent = props => {
                     <DownloadLink
                       caption={file.name}
                       id={file.id}
-                    />                    
+                    />
                   </Table.Cell>
                   <Table.Cell>
                     {
@@ -115,7 +126,7 @@ const FilesTableComponent = props => {
                         color: '#787878'
                       }}
                     >
-                      by {file.username}
+                      {file.username}
                     </span>
                   </Table.Cell>
                   {

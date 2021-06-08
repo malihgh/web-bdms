@@ -17,7 +17,6 @@ import {
   updateBorehole,
   loadBorehole,
   checkBorehole,
-  // createBorehole,
   createStratigraphy,
   patchBorehole
 } from '@ist-supsi/bmsjs';
@@ -26,17 +25,13 @@ import PointComponent from '../../map/pointComponent';
 import DomainDropdown from '../domain/dropdown/domainDropdown';
 import DomainTree from '../domain/tree/domainTree';
 import MunicipalityDropdown from '../municipality/dropdown/municipalityDropdown';
-// import DomainTabs from '../domain/domainTabs';
 import CantonDropdown from '../cantons/dropdown/cantonDropdown';
 import DateField from '../dateField';
 import DateText from '../dateText';
-// import StratigraphyForm from '../stratigraphy/stratigraphyForm';
 import StratigraphyFormContainer from '../stratigraphy/stratigraphyFormContainer';
 import DomainText from '../domain/domainText';
-
 import EditorBoreholeFilesTable from '../../files/table/editorBoreholeFilesTable';
-
-// import NewStratigraphy from '../stratigraphy/newStratigraphy';
+import TranslationText from '../translationText';
 
 import {
   Button,
@@ -347,7 +342,7 @@ class BoreholeForm extends React.Component {
           });
         } else if (response.status === 200){
           alert(response.data.message);
-          if (response.data.error === 'E-900'){
+          if (response.data.error === 'errorLocked'){
             this.setState({
               patchFetch: false
             }, () => {
@@ -375,7 +370,7 @@ class BoreholeForm extends React.Component {
         <div>
           {
             t(
-              'error:'+this.props.borehole.error,
+              this.props.borehole.error,
               this.props.borehole.data
             )}
         </div>
@@ -418,9 +413,17 @@ class BoreholeForm extends React.Component {
                 this.props.borehole.isFetching
                 || this.state.loadingFetch === true
               ) {
-                return (t('loadingFetch'));
+                return (
+                  <TranslationText
+                    id='layer_loading_fetch'
+                  />
+                );
               } else if (this.state.creationFetch === true) {
-                return (t('creationFetch'));
+                return (
+                  <TranslationText
+                    id='layer_creation_fetch'
+                  />
+                );
               }
             })()}
           </Loader>
@@ -450,23 +453,23 @@ class BoreholeForm extends React.Component {
                     <div
                       className='flex_fill'
                     >
-                      <DomainText
-                        geocode='borehole_identifier'
-                        schema='borehole_form'
+                      <TranslationText
+                        id='borehole_identifier'
                       />
                     </div>
                     <div
                       className='flex_fill'
                     >
-                      <DomainText
-                        geocode='identifier_value'
-                        schema='borehole_form'
+                      <TranslationText
+                        id='borehole_identifier_value'
                       />
                     </div>
                     <div>
                       {
                         this.props.borehole.data.lock !== null?
-                          t('common:delete'): null
+                          <TranslationText
+                            id='delete'
+                          />: null
                       }
                     </div>
                   </div>
@@ -519,7 +522,9 @@ class BoreholeForm extends React.Component {
                                       );
                                     }}
                                   >
-                                    {t('common:delete')}
+                                    <TranslationText
+                                      id='delete'
+                                    />
                                   </div>: null
                               }
                             </div>
@@ -596,7 +601,7 @@ class BoreholeForm extends React.Component {
                                   borehole.custom.identifiers.map(el => el.id): [];
 
                                 if (alreadySet.includes(this.state.identifier)){
-                                  alert(t('messages:identifierAlreadyUsed'));
+                                  alert(t('msgIdentifierAlreadyUsed'));
                                 } else {
                                   addIdentifier(
                                     borehole.id,
@@ -651,9 +656,8 @@ class BoreholeForm extends React.Component {
                         required
                       >
                         <label>
-                          <DomainText
-                            geocode='original_name'
-                            schema='borehole_form'
+                          <TranslationText
+                            id='original_name'
                           />
                         </label>
                         <Input
@@ -684,9 +688,8 @@ class BoreholeForm extends React.Component {
                         }
                       >
                         <label>  
-                          <DomainText
-                            geocode='project_name'
-                            schema='borehole_form'
+                          <TranslationText
+                            id='project_name'
                           />
                         </label>
                         <Input
@@ -708,8 +711,12 @@ class BoreholeForm extends React.Component {
                       && this.state['extended.original_name_fetch'] === false ?
                         <Message
                           content={
-                            t('original_name') + ', '
-                            + t('duplicate')
+                            <TranslationText
+                              id='original_name'
+                            /> + ', ' +
+                              <TranslationText
+                                id='duplicate'
+                              />
                           }
                           error
                           size={size}
@@ -727,10 +734,9 @@ class BoreholeForm extends React.Component {
                         }
                         required
                       >
-                        <label>  
-                          <DomainText
-                            geocode='public_name'
-                            schema='borehole_form'
+                        <label>
+                          <TranslationText
+                            id='public_name'
                           />
                         </label>
                         <Input
@@ -766,9 +772,8 @@ class BoreholeForm extends React.Component {
                         required
                       >
                         <label>  
-                          <DomainText
-                            geocode='kind'
-                            schema='borehole_form'
+                          <TranslationText
+                            id='kind'
                           />
                         </label>
                         <DomainDropdown
@@ -785,8 +790,12 @@ class BoreholeForm extends React.Component {
                       && this.state['custom.public_name_fetch'] === false ?
                         <Message
                           content={
-                            t('public_name') + ', '
-                            + t('duplicate')
+                            <TranslationText
+                              id='public_name'
+                            /> + ', ' +
+                              <TranslationText
+                                id='duplicate'
+                              />
                           }
                           error
                           size={size}
@@ -805,9 +814,8 @@ class BoreholeForm extends React.Component {
                         required
                       >
                         <label>  
-                          <DomainText
-                            geocode='restriction'
-                            schema='borehole_form'
+                          <TranslationText
+                            id='restriction'
                           />
                         </label>
                         <DomainDropdown
@@ -836,15 +844,13 @@ class BoreholeForm extends React.Component {
                         required={borehole.restriction === 20111003}
                       >
                         <label>
-                          <DomainText
-                            geocode='restriction_until'
-                            schema='borehole_form'
+                          <TranslationText
+                            id='restriction_until'
                           />
                         </label>
                         <DateField
                           date={borehole.restriction_until}
                           onChange={(selected) => {
-                            debugger;
                             this.updateChange(
                               'restriction_until', selected, false
                             );
@@ -874,7 +880,11 @@ class BoreholeForm extends React.Component {
                             }
                             // required
                           >
-                            <label>{t('srs')}</label>
+                            <label>
+                              <TranslationText
+                                id='srs'
+                              />
+                            </label>
                             <div
                               style={{
                                 height: "36px",
@@ -896,7 +906,11 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('qt_location')}</label>
+                            <label>
+                              <TranslationText
+                                id='qt_location'
+                              />
+                            </label>
                             <DomainDropdown
                               onSelected={(selected) => {
                                 this.updateChange(
@@ -919,7 +933,11 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('location_x')}</label>
+                            <label>    
+                              <TranslationText
+                                id='location_x'
+                              />
+                            </label>
                             <Input
                               autoCapitalize="off"
                               autoComplete="off"
@@ -947,7 +965,11 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('location_y')}</label>
+                            <label>
+                              <TranslationText
+                                id='location_y'
+                              />
+                            </label>
                             <Input
                               autoCapitalize="off"
                               autoComplete="off"
@@ -980,10 +1002,9 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>  
-                              <DomainText
-                                geocode='elevation_z'
-                                schema='borehole_form'
+                            <label>
+                              <TranslationText
+                                id='elevation_z'
                               />
                             </label>
                             <Input
@@ -1016,7 +1037,11 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('hrs')}</label>
+                            <label>
+                              <TranslationText
+                                id='hrs'
+                              />
+                            </label>
                             {/* <DomainDropdown
                               onSelected={(selected) => {
                                 this.updateChange('hrs', selected.id, false);
@@ -1045,7 +1070,11 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('qt_elevation')}</label>
+                            <label>
+                              <TranslationText
+                                id='qt_elevation'
+                              />
+                            </label>
                             <DomainDropdown
                               onSelected={(selected) => {
                                 this.updateChange(
@@ -1075,9 +1104,14 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('country')}</label>
+                            <label>
+                              <TranslationText
+                                id='country'
+                              />
+                            </label>
                             <Input
-                              value={'Switzerland'} />
+                              value={'Switzerland'}
+                            />
                           </Form.Field>
                           <Form.Field
                             error={
@@ -1086,7 +1120,11 @@ class BoreholeForm extends React.Component {
                             required
                           >
                             <label>
-                              {t('canton')} {
+                              <TranslationText
+                                id='canton'
+                              />
+                              &nbsp;
+                              {
                                 borehole.custom.canton !== null ?
                                   <span
                                     className='link'
@@ -1135,7 +1173,11 @@ class BoreholeForm extends React.Component {
                             required
                           >
                             <label>
-                              {t('city')} {
+                              <TranslationText
+                                id='city'
+                              />
+                              &nbsp;
+                              {
                                 borehole.custom.city !== null ?
                                   <span
                                     className='link'
@@ -1188,7 +1230,11 @@ class BoreholeForm extends React.Component {
                               mentions.indexOf('address') >= 0
                             }
                           >
-                            <label>{t('address')}</label>
+                            <label>
+                              <TranslationText
+                                id='address'
+                              />
+                            </label>
                             <Input
                               autoCapitalize="off"
                               autoComplete="off"
@@ -1210,7 +1256,11 @@ class BoreholeForm extends React.Component {
                               mentions.indexOf('landuse') >= 0
                             }
                           >
-                            <label>{t('landuse')}</label>
+                            <label>
+                              <TranslationText
+                                id='landuse'
+                              />
+                            </label>
                             <DomainDropdown
                               onSelected={(selected) => {
                                 this.updateChange(
@@ -1302,7 +1352,11 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('method')}</label>
+                            <label>
+                              <TranslationText
+                                id='drillingmethod'
+                              />
+                            </label>
                             <DomainDropdown
                               onSelected={(selected) => {
                                 this.updateChange(
@@ -1323,14 +1377,19 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('drilling_date')}</label>
+                            <label>
+                              <TranslationText
+                                id='drilling_date'
+                              />
+                            </label>
                             <DateField
                               date={borehole.drilling_date}
                               onChange={(selected) => {
                                 this.updateChange(
                                   'drilling_date', selected, false
                                 );
-                              }} />
+                              }}
+                            />
                           </Form.Field>
                         </Form.Group>
                         <Form.Group widths='equal'>
@@ -1340,7 +1399,11 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('cuttings')}</label>
+                            <label>
+                              <TranslationText
+                                id='cuttings'
+                              />
+                            </label>
                             <DomainDropdown
                               onSelected={(selected) => {
                                 this.updateChange(
@@ -1356,7 +1419,11 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('purpose')}</label>
+                            <label>
+                              <TranslationText
+                                id='purpose'
+                              />
+                            </label>
                             <DomainDropdown
                               onSelected={(selected) => {
                                 this.updateChange(
@@ -1375,7 +1442,11 @@ class BoreholeForm extends React.Component {
                               display: 'none'
                             }}
                           >
-                            <label>{t('drill_diameter')}</label>
+                            <label>
+                              <TranslationText
+                                id='drilldiameter'
+                              />
+                            </label>
                             <Input
                               spellCheck="false"
                               type='number'
@@ -1390,7 +1461,11 @@ class BoreholeForm extends React.Component {
                               mentions.indexOf('drill_diameter') >= 0
                             }
                           >
-                            <label>{t('drill_diameter')}</label>
+                            <label>
+                              <TranslationText
+                                id='drilldiameter'
+                              />
+                            </label>
                             <Input
                               onChange={(e) => {
                                 this.updateNumber(
@@ -1420,7 +1495,12 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('status')}</label>
+                            <label>
+                              <TranslationText
+                                firstUpperCase
+                                id='status'
+                              />
+                            </label>
                             <DomainDropdown
                               onSelected={(selected) => {
                                 this.updateChange(
@@ -1438,7 +1518,12 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('bore_inc')}</label>
+                            <label>
+                              <TranslationText
+                                firstUpperCase
+                                id='inclination'
+                              />
+                            </label>
                             <Input
                               autoCapitalize="off"
                               autoComplete="off"
@@ -1468,7 +1553,12 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('bore_inc_dir')}</label>
+                            <label>
+                              <TranslationText
+                                firstUpperCase
+                                id='inclinationdirection'
+                              />
+                            </label>
                             <Input
                               autoCapitalize="off"
                               autoComplete="off"
@@ -1498,7 +1588,12 @@ class BoreholeForm extends React.Component {
                             }
                             required
                           >
-                            <label>{t('qt_bore_inc_dir')}</label>
+                            <label>
+                              <TranslationText
+                                firstUpperCase
+                                id='qt_bore_inc_dir'
+                              />
+                            </label>
                             <DomainDropdown
                               onSelected={(selected) => {
                                 this.updateChange(
@@ -1524,7 +1619,9 @@ class BoreholeForm extends React.Component {
                         size={size}
                       >
                         <Form.Field>
-                          <label>{t('remarks')}</label>
+                          <TranslationText
+                            id='remarks'
+                          />
                           <TextArea
                             onChange={(e, data) => {
                               this.updateChange(
@@ -1552,7 +1649,11 @@ class BoreholeForm extends React.Component {
                         }
                         required
                       >
-                        <label>{t('length')}</label>
+                        <label>
+                          <TranslationText
+                            id='totaldepth'
+                          />
+                        </label>
                         <Input
                           autoCapitalize="off"
                           autoComplete="off"
@@ -1582,7 +1683,11 @@ class BoreholeForm extends React.Component {
                         }
                         required
                       >
-                        <label>{t('qt_length')}</label>
+                        <label>
+                          <TranslationText
+                            id='qt_length'
+                          />
+                        </label>
                         <DomainDropdown
                           onSelected={(selected) => {
                             this.updateChange(
@@ -1602,7 +1707,11 @@ class BoreholeForm extends React.Component {
                         }
                         required
                       >
-                        <label>{t('top_bedrock')}</label>
+                        <label>
+                          <TranslationText
+                            id='top_bedrock'
+                          />
+                        </label>
                         <Input
                           autoCapitalize="off"
                           autoComplete="off"
@@ -1632,7 +1741,11 @@ class BoreholeForm extends React.Component {
                         }
                         required
                       >
-                        <label>{t('qt_top_bedrock')}</label>
+                        <label>
+                          <TranslationText
+                            id='qt_top_bedrock'
+                          />
+                        </label>
                         <DomainDropdown
                           onSelected={(selected) => {
                             this.updateChange(
@@ -1652,11 +1765,15 @@ class BoreholeForm extends React.Component {
                       }
                       required
                     >
-                      <label>{t('groundwater')}</label>
+                      <label>
+                        <TranslationText
+                          id='groundwater'
+                        />
+                      </label>
                       <Form.Group inline>
                         <Form.Radio
                           checked={borehole.extended.groundwater === true}
-                          label={t('common:yes')}
+                          label={t('yes')}
                           onChange={(e, d) => {
                             this.updateChange(
                               'extended.groundwater', true, false);
@@ -1664,7 +1781,7 @@ class BoreholeForm extends React.Component {
                         />
                         <Form.Radio
                           checked={borehole.extended.groundwater === false}
-                          label={t('common:no')}
+                          label={t('no')}
                           onChange={(e, d) => {
                             this.updateChange(
                               'extended.groundwater', false, false);
@@ -1672,12 +1789,38 @@ class BoreholeForm extends React.Component {
                         />
                         <Form.Radio
                           checked={borehole.extended.groundwater === null}
-                          label={t('common:np')}
+                          label={t('np')}
                           onChange={(e, d) => {
                             this.updateChange(
                               'extended.groundwater', null, false);
                           }}
                         />
+                        {
+                          this.props.developer.debug === true?
+                            <div>
+                              <div
+                                style={{
+                                  color: 'red',
+                                }}
+                              >
+                                trans=yes
+                              </div>
+                              <div
+                                style={{
+                                  color: 'red',
+                                }}
+                              >
+                                trans=no
+                              </div>
+                              <div
+                                style={{
+                                  color: 'red',
+                                }}
+                              >
+                                trans=np
+                              </div>
+                            </div>: null
+                        }
                       </Form.Group>
                     </Form.Field>
                     <Form.Field
@@ -1686,7 +1829,11 @@ class BoreholeForm extends React.Component {
                       }
                       required
                     >
-                      <label>{t('lit_pet_top_bedrock')}</label>
+                      <label>
+                        <TranslationText
+                          id='lit_pet_top_bedrock'
+                        />
+                      </label>
                       <DomainTree
                         levels={{
                           1: 'rock',
@@ -1703,7 +1850,11 @@ class BoreholeForm extends React.Component {
                         }}
                         schema='custom.lit_pet_top_bedrock'
                         selected={borehole.custom.lit_pet_top_bedrock}
-                        title={t('lit_pet_top_bedrock')}
+                        title={
+                          <TranslationText
+                            id='lit_pet_top_bedrock'
+                          />
+                        }
                       />
                     </Form.Field>
                     <Form.Field
@@ -1712,7 +1863,11 @@ class BoreholeForm extends React.Component {
                       }
                       required
                     >
-                      <label>{t('lit_str_top_bedrock')}</label>
+                      <label>
+                        <TranslationText
+                          id='lit_str_top_bedrock'
+                        />
+                      </label>
                       <DomainTree
                         levels={{
                           1: 'super',
@@ -1730,7 +1885,11 @@ class BoreholeForm extends React.Component {
                         }}
                         schema='custom.lit_str_top_bedrock'
                         selected={borehole.custom.lit_str_top_bedrock}
-                        title={t('lit_str_top_bedrock')}
+                        title={
+                          <TranslationText
+                            id='lit_str_top_bedrock'
+                          />
+                        }
                       />
                     </Form.Field>
                     <Form.Field
@@ -1739,7 +1898,11 @@ class BoreholeForm extends React.Component {
                       }
                       required
                     >
-                      <label>{t('chro_str_top_bedrock')}</label>
+                      <label>
+                        <TranslationText
+                          id='chro_str_top_bedrock'
+                        />
+                      </label>
                       {/* <DomainDropdown
                         onSelected={(selected) => {
                           this.updateChange(
@@ -1769,7 +1932,11 @@ class BoreholeForm extends React.Component {
                         }}
                         schema='custom.chro_str_top_bedrock'
                         selected={borehole.custom.chro_str_top_bedrock}
-                        title={t('chro_str_top_bedrock')}
+                        title={
+                          <TranslationText
+                            id='chro_str_top_bedrock'
+                          />
+                        }
                       />
                     </Form.Field>
                   </Form>
@@ -1803,11 +1970,15 @@ class BoreholeForm extends React.Component {
                   >
                     {
                       this.props.borehole.data.lock === null
-                      || this.props.borehole.data.lock.username !==
-                         this.props.user.data.username?
+                      || this.props.borehole.data.lock.username !== this.props.user.data.username
+                      || this.props.borehole.data.role !== 'EDIT'?
                         null:
                         <Button
-                          content={t('meta_stratigraphy')}
+                          content={
+                            <TranslationText
+                              id='stratigraphy'
+                            />
+                          }
                           icon='add'
                           onClick={() => {
                             // this.setState({
@@ -1981,6 +2152,7 @@ class BoreholeForm extends React.Component {
 
 BoreholeForm.propTypes = {
   borehole: PropTypes.object,
+  developer: PropTypes.object,
   getBorehole: PropTypes.func,
   id: PropTypes.number,
   match: PropTypes.shape({
@@ -2000,6 +2172,7 @@ BoreholeForm.defaultProps = {
 const mapStateToProps = (state) => {
   return {
     borehole: state.core_borehole,
+    developer: state.developer,
     workflow: state.core_workflow,
     domains: state.core_domain_list,
     cantons: state.core_canton_list.data,
@@ -2025,6 +2198,6 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps
   )(
-    withTranslation(['borehole_form', 'common', 'error', 'messages'])(BoreholeForm)
+    withTranslation(['common'])(BoreholeForm)
   )
 );

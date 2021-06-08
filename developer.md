@@ -197,17 +197,18 @@ After a code update you should rebuild and push to [service-bdms dockerhub](http
     ```bash
   docker push swisstopo/service-bdms-nginx:x.x.x
   ```
-## Cronjob
-* Set crontab to run docker-compose at startup, useful for VM fails:
-  ```bash
-  crontab -e
-  ```
-* Paste the following script, adjusting the path:
-  ```bash
-  @reboot sleep 60 && /usr/local/bin/docker-compose -f </path/docker-compose.yml> up -d
-  ```
 
+## Build Docker image
 
+Build release candidate on github image:
 
+```bash
+docker build \
+  -t docker.pkg.github.com/geoadmin/web-bdms/service-bdms-nginx:1.0.3-beta.210504 .
+```
 
+Build image:
 
+```bash
+docker build -t service-bdms-nginx:1.0.3 .
+```

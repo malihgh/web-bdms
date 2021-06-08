@@ -28,6 +28,7 @@ class DomainText extends React.Component {
       i18n,
       schema,
     } = this.props;
+
     if (id === null) {
       return '';
     }
@@ -57,6 +58,32 @@ class DomainText extends React.Component {
       return null;
     }
 
+    if (this.props.developer.debug === true) {
+      return (
+        <span
+          style={{
+            backgroundColor: '#ececec',
+            color: 'black',
+            lineHeight: '2em',
+            margin: '5px',
+            padding: '5px'
+          }}
+          title={`gcode=${geocode !== undefined? geocode: id}`}
+        >
+          {found[i18n.language].text}
+          <br />
+          <span
+            style={{
+              color: 'red',
+              margin: '5px'
+            }}
+          >
+            gcode={geocode !== undefined? geocode: id}
+          </span>
+        </span>
+      );
+    }
+
     return (
       found[i18n.language].text
     );
@@ -64,6 +91,9 @@ class DomainText extends React.Component {
 }
 
 DomainText.propTypes = {
+  developer: PropTypes.shape({
+    debug: PropTypes.bool
+  }),
   domains: PropTypes.object,
   geocode: PropTypes.string,
   i18n: PropTypes.shape({
@@ -76,6 +106,7 @@ DomainText.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
+    developer: state.developer,
     domains: state.core_domain_list
   };
 };
@@ -93,5 +124,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
-  withTranslation('search')(DomainText)
+  withTranslation()(DomainText)
 );

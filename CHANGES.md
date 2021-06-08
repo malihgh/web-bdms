@@ -1,5 +1,33 @@
 # List of all changes
 
+## What's new in web-bdms 1.0.3
+
+### New features
+
+ - **Export and Import**
+
+    - Administrator user and editors are able to export data and files that can be used to be imported into an other bdms instance. Import can add data to an exisitng workgroup or they can be added to a read only supplier workgroup. Importing data into this kind of workgroups overwrite all existing data.
+
+ - **Admin debug mode**
+
+    - Administrator user can enable a debug mode on the interface to see extra information. Currently multilanguage terms identification.
+
+ - **Multilanguage optimization**
+
+    - Separation of ui specific translations from terms in the database (geolcodes).
+
+ - **New Swissforages Logo**
+
+    - A brand new logo and favicon has been created
+
+### Minor fixes
+
+ - fixed wrong status in the editor grid page
+ - handling orderby error
+ - editor copy selected
+ - disallow adding new stratigraphy layers outside editing status
+ - some minor bug fixes
+
 ## What's new in web-bdms 1.0.2
 
 ### New features

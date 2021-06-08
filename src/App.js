@@ -13,7 +13,6 @@ import SettingCmp from './pages/settings/settingCmp';
 import DataLoader from './pages/settings/dataLoader';
 import AcceptTerms from './pages/term/accept';
 
-
 const cpaths = [
   {
     path: process.env.PUBLIC_URL + '/editor',

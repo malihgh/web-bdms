@@ -7,10 +7,6 @@ import DatePicker, {
 } from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-// import 'moment/locale/en-gb';
-// import 'moment/locale/it';
-// import 'moment/locale/fr';
-// import 'moment/locale/de-ch';
 
 import {
   enGB,
@@ -81,7 +77,6 @@ class DateField extends React.Component {
           if (onChange!==undefined){
             onChange(
               date? moment(date).format('YYYY-MM-DD'): ''
-              // date? date.format('YYYY-MM-DD'): ''
             );
           }
         }}
@@ -114,4 +109,4 @@ DateField.defaultProps = {
 
 
 
-export default withTranslation('search')(DateField);
+export default withTranslation()(DateField);

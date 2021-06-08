@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
 import { Dropdown, Icon, Tab, Menu } from 'semantic-ui-react';
-// import DomainText from '../../form/domain/domainText';
 import DateText from '../../form/dateText';
 import ProfileContainer from './profile/profileContainer';
 import MetaComponent from './../meta/metaComponent';
+import TranslationText from '../../form/translationText';
 
 
 import BoreholeFilesTable from '../../files/table/boreholeFilesTable';
@@ -27,7 +26,7 @@ class StratigraphiesComponent extends React.Component {
   
   render(){
     const {
-      data, t
+      data
     } = this.props;
     const item = data.borehole.stratigraphy !== null
       && data.borehole.stratigraphy.length > 0? 
@@ -44,14 +43,18 @@ class StratigraphiesComponent extends React.Component {
             }}
           >
             <div>
-              Borehole
+              <TranslationText
+                id='borehole'  
+              />
               <br />
               <span
                 style={{
                   fontSize: '0.7em'
                 }}
               >
-                Details
+                <TranslationText
+                  id='details'  
+                />
               </span>
             </div>
           </Menu.Item>
@@ -83,7 +86,9 @@ class StratigraphiesComponent extends React.Component {
             // }}
           >
             <div>
-              {t('common:attachments')}
+              <TranslationText
+                id='attachments'
+              />
               <br />
               <span
                 style={{
@@ -135,7 +140,9 @@ class StratigraphiesComponent extends React.Component {
                   }
                   {
                     item.name === null || item.name === ''?
-                      t('common:np'): item.name
+                      <TranslationText
+                        id='np'
+                      />: item.name
                   }
                   {
                     data.borehole.stratigraphy.length<=1?
@@ -151,8 +158,6 @@ class StratigraphiesComponent extends React.Component {
                           data.borehole.stratigraphy.map((ditem, idx2) => ({
                             value: idx2, // ditem.id,
                             selected: ditem.id === item.id,
-                            // content: ditem.name === null || ditem.name === ''?
-                            //   t('common:np'): ditem.name,
                             text: (
                               <div>
                                 {
@@ -167,7 +172,9 @@ class StratigraphiesComponent extends React.Component {
                                     />: null
                                 }{
                                   ditem.name === null || ditem.name === ''?
-                                    t('common:np'): ditem.name
+                                    <TranslationText
+                                      id='np'
+                                    />: ditem.name
                                 }
                                 <br />
                                 <span
@@ -255,4 +262,4 @@ StratigraphiesComponent.propTypes = {
   data: PropTypes.object
 };
 
-export default withTranslation(['borehole_form', 'common'])(StratigraphiesComponent);
+export default StratigraphiesComponent;

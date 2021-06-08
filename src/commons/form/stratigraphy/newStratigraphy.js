@@ -71,7 +71,7 @@ class NewStratigraphy extends React.Component {
             t(
               'new',
               {
-                what: t('borehole_form:meta_stratigraphy').toLowerCase()
+                what: t('stratigraphy').toLowerCase()
               }
             )
           }
@@ -149,6 +149,6 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps, null // mapDispatchToProps
 )(
-  withTranslation(['common', 'borehole_form'])(NewStratigraphy)
+  withTranslation(['common'])(NewStratigraphy)
 );
 

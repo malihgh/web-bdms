@@ -14,6 +14,8 @@ import DomainDropdown from '../../form/domain/dropdown/domainDropdown';
 import MunicipalityDropdown from '../../form/municipality/dropdown/municipalityDropdown';
 import CantonDropdown from '../../form/cantons/dropdown/cantonDropdown';
 import DateField from '../../form/dateField';
+import TranslationText from '../../form/translationText';
+import WorkgroupRadioGroup from '../../form/workgroup/radio';
 
 class SearchEditorComponent extends React.Component {
   componentDidUpdate(prevProps){
@@ -44,53 +46,17 @@ class SearchEditorComponent extends React.Component {
     const { search, t, user } = this.props;
     return (
       <div>
-        {
-          user.data.workgroups.length > 1?
-            <Form
-              size='tiny'
-              style={{
-                marginBottom: '1em'
-              }}
-            >
-              <Form.Field >
-                <label>Workgroups</label>
-                <Radio
-                  checked={search.filter.workgroup === 'all'}
-                  label={t('all')}
-                  name='radioGroup'
-                  onChange={()=>{
-                    this.props.setFilter(
-                      'workgroup', 'all'
-                    );
-                  }}
-                />
-              </Form.Field>
-              {
-                user.data.workgroups.map((workgroup, idx)=>(
-                  <Form.Field
-                    key={"sec-" + workgroup.id}
-                  >
-                    <Radio
-                      checked={search.filter.workgroup === workgroup.id}
-                      label={
-                        workgroup.workgroup + 
-                        (
-                          workgroup.disabled !== null?
-                            ' ( ' + t('common:disabled') + ')': ''
-                        )
-                      }
-                      name='radioGroup'
-                      onChange={()=>{
-                        this.props.setFilter(
-                          'workgroup', workgroup.id
-                        );
-                      }}
-                    />
-                  </Form.Field>
-                ))
-              }
-            </Form>: null
-        }
+        <WorkgroupRadioGroup
+          filter={search.filter.workgroup}
+          onChange={
+            workgroup => {
+              this.props.setFilter(
+                'workgroup', workgroup
+              );
+            }
+          }
+          workgroups={user.data.workgroups}
+        />
         <Form
           size='tiny'
           style={{
@@ -98,10 +64,15 @@ class SearchEditorComponent extends React.Component {
           }}
         >
           <Form.Field >
-            <label>Status</label>
+            <label>
+              <TranslationText
+                firstUpperCase
+                id='status'
+              />
+            </label>
             <Radio
               checked={search.filter.role === 'all'}
-              label={t('all')}
+              label={''}
               name='radioGroup'
               onChange={()=>{
                 this.props.setFilter(
@@ -109,33 +80,52 @@ class SearchEditorComponent extends React.Component {
                 );
               }}
             />
+            <span
+              style={{
+                color: 'black',
+                fontSize: '1.1em',
+                fontWeight: 'bold'
+              }}
+            >
+              <TranslationText
+                firstUpperCase
+                id='alls'
+              />
+            </span>
           </Form.Field>
           {
             [
-              "EDIT",
-              "CONTROL",
-              "VALID",
-              "PUBLIC",
+              "statusedit",
+              "statuscontrol",
+              "statusvalid",
+              "statuspublic",
             ].map((role, idx)=>(
               <Form.Field
                 key={"sec-" + role}
               >
                 <Radio
-                  checked={search.filter.role === role}
-                  label={
-                    t(`version:${role}`)
-                    + (
-                      user.data.roles.indexOf(role) >= 0?
-                        ' *': ''
-                    )
+                  checked={
+                    search.filter.role === (role.replace('status', '')).toUpperCase()
                   }
+                  label={''}
                   name='radioGroup'
                   onChange={()=>{
                     this.props.setFilter(
-                      'role', role
+                      'role', (role.replace('status', '')).toUpperCase()
                     );
                   }}
                 />
+                <span
+                  style={{
+                    color: 'black',
+                    fontSize: '1.1em',
+                  }}
+                >
+                  <TranslationText
+                    firstUpperCase
+                    id={role}
+                  />
+                </span>
               </Form.Field>
             ))
           }
@@ -188,7 +178,9 @@ class SearchEditorComponent extends React.Component {
 
           <Form.Field>
             <label>
-              {t('common:creation_date')}
+              <TranslationText
+                id='creationdate'
+              />
             </label>
             <DateField
               date={search.filter.creation}
@@ -209,7 +201,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('custom.borehole_identifier') ?
               <Form.Field>
-                <label>{t('borehole_form:identifier')}</label>
+                <label>
+                  <TranslationText
+                    id='borehole_identifier'
+                  />
+                </label>
                 <DomainDropdown
                   onSelected={(selected) => {
                     this.props.setFilter(
@@ -239,7 +235,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('extended.original_name') ?
               <Form.Field>
-                <label>{t('borehole_form:original_name')}</label>
+                <label>
+                  <TranslationText
+                    id='original_name'
+                  />
+                </label>
                 <Input
                   onChange={(e)=>{
                     this.props.setFilter(
@@ -247,9 +247,19 @@ class SearchEditorComponent extends React.Component {
                       e.target.value
                     );
                   }}
-                  placeholder={t('borehole_form:original_name')}
+                  placeholder={t('original_name')}
                   value={search.filter.original_name}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                      }}
+                    >
+                      trans=original_name
+                    </div>: null
+                }
                 <LabelReset
                   onClick={()=>{
                     this.props.setFilter('original_name', '');
@@ -260,7 +270,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('custom.public_name') ?
               <Form.Field>
-                <label>{t('borehole_form:public_name')}</label>
+                <label>
+                  <TranslationText
+                    id='public_name'
+                  />
+                </label>
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -268,9 +282,19 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('borehole_form:public_name')}
+                  placeholder={t('public_name')}
                   value={search.filter.public_name}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                      }}
+                    >
+                      trans=public_name
+                    </div>: null
+                }
                 <LabelReset
                   onClick={() => {
                     this.props.setFilter(
@@ -283,7 +307,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('kind') ?
               <Form.Field>
-                <label>{t('borehole_form:kind')}</label>
+                <label>
+                  <TranslationText
+                    id='kind'
+                  />
+                </label>
                 <DomainDropdown
                   onSelected={(selected)=>{
                     this.props.setFilter(
@@ -306,7 +334,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('extended.method') ?
               <Form.Field>
-                <label>{t('borehole_form:method')}</label>
+                <label>
+                  <TranslationText
+                    id='drillingmethod'
+                  />
+                </label>
                 <DomainDropdown
                   onSelected={(selected) => {
                     this.props.setFilter(
@@ -329,7 +361,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('custom.project_name') ?
               <Form.Field>
-                <label>{t('borehole_form:project_name')}</label>
+                <label>
+                  <TranslationText
+                    id='project_name'
+                  />
+                </label>
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -337,9 +373,19 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('borehole_form:project_name')}
+                  placeholder={t('project_name')}
                   value={search.filter.project_name}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                      }}
+                    >
+                      trans=project_name
+                    </div>: null
+                }
                 <LabelReset
                   onClick={() => {
                     this.props.setFilter(
@@ -352,7 +398,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('restriction') ?
               <Form.Field>
-                <label>{t('borehole_form:restriction')}</label>
+                <label>
+                  <TranslationText
+                    id='restriction'
+                  />
+                </label>
                 <DomainDropdown
                   onSelected={(selected) => {
                     this.props.setFilter(
@@ -375,7 +425,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('custom.landuse') ?
               <Form.Field>
-                <label>{t('borehole_form:landuse')}</label>
+                <label>
+                  <TranslationText
+                    id='landuse'
+                  />
+                </label>
                 <DomainDropdown
                   onSelected={(selected) => {
                     this.props.setFilter(
@@ -398,7 +452,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('restriction') ?
               <Form.Field>
-                <label>{t('borehole_form:restriction_until')}</label>
+                <label>
+                  <TranslationText
+                    id='restriction_until'
+                  />
+                </label>
                 <DateField
                   date={search.filter.restriction_until_from}
                   onChange={(selected) => {
@@ -406,8 +464,18 @@ class SearchEditorComponent extends React.Component {
                       'restriction_until_from', selected
                     );
                   }}
-                  placeholder={t('borehole_form:afterdate')}
+                  placeholder={t('afterdate')}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                      }}
+                    >
+                      trans=afterdate
+                    </div>: null
+                }
                 <DateField
                   date={search.filter.restriction_until_to}
                   onChange={(selected) => {
@@ -415,8 +483,18 @@ class SearchEditorComponent extends React.Component {
                       'restriction_until_to', selected
                     );
                   }}
-                  placeholder={t('borehole_form:beforedate')}
+                  placeholder={t('beforedate')}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                      }}
+                    >
+                      trans=beforedate
+                    </div>: null
+                }
                 <LabelReset
                   onClick={() => {
                     this.props.resetRestriction();
@@ -427,7 +505,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('elevation_z') ?
               <Form.Field>
-                <label>{t('borehole_form:elevation_z')}</label>
+                <label>
+                  <TranslationText
+                    id='elevation_z'
+                  />
+                </label>
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -435,10 +517,20 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('borehole_form:fromelevation')}
+                  placeholder={t('fromelevation')}
                   type='number'
                   value={search.filter.elevation_z_from}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                      }}
+                    >
+                      trans=fromelevation
+                    </div>: null
+                }
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -446,10 +538,20 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('borehole_form:toelevation')}
+                  placeholder={t('toelevation')}
                   type='number'
                   value={search.filter.elevation_z_to}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                      }}
+                    >
+                      trans=toelevation
+                    </div>: null
+                }
                 <LabelReset
                   onClick={() => {
                     this.props.resetElevation();
@@ -460,7 +562,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('length') ?
               <Form.Field>
-                <label>{t('borehole_form:length')}</label>
+                <label>
+                  <TranslationText
+                    id='totaldepth'
+                  />
+                </label>
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -468,10 +574,20 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('borehole_form:fromdepth')}
+                  placeholder={t('fromdepth')}
                   type='number'
                   value={search.filter.length_from}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                      }}
+                    >
+                      trans=fromdepth
+                    </div>: null
+                }
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -479,10 +595,20 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('borehole_form:todepth')}
+                  placeholder={t('todepth')}
                   type='number'
                   value={search.filter.length_to}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                      }}
+                    >
+                      trans=todepth
+                    </div>: null
+                }
                 <LabelReset
                   onClick={() => {
                     this.props.resetDepth();
@@ -493,18 +619,22 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('extended.groundwater') ?
               <Form.Field>
-                <label>{t('borehole_form:groundwater')}</label>
+                <label>
+                  <TranslationText
+                    id='groundwater'
+                  />
+                </label>
                 <Form.Group inline>
                   <Form.Radio
                     checked={search.filter.groundwater === true}
-                    label={t('common:yes')}
+                    label={t('yes')}
                     onChange={(e, d) => {
                       this.props.setFilter('groundwater', true);
                     }}
                   />
                   <Form.Radio
                     checked={search.filter.groundwater === false}
-                    label={t('common:no')}
+                    label={t('no')}
                     onChange={(e, d) => {
                       this.props.setFilter('groundwater', false);
                     }}
@@ -512,11 +642,37 @@ class SearchEditorComponent extends React.Component {
                 </Form.Group>
                 <Form.Radio
                   checked={search.filter.groundwater === null}
-                  label={t('common:np')}
+                  label={t('np')}
                   onChange={(e, d) => {
                     this.props.setFilter('groundwater', null);
                   }}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div>
+                      <div
+                        style={{
+                          color: 'red',
+                        }}
+                      >
+                        trans=yes
+                      </div>
+                      <div
+                        style={{
+                          color: 'red',
+                        }}
+                      >
+                        trans=no
+                      </div>
+                      <div
+                        style={{
+                          color: 'red',
+                        }}
+                      >
+                        trans=np
+                      </div>
+                    </div>: null
+                }
                 <LabelReset
                   onClick={() => {
                     this.props.setFilter('groundwater', -1);
@@ -527,7 +683,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('extended.top_bedrock') ?
               <Form.Field>
-                <label>{t('borehole_form:top_bedrock')}</label>
+                <label>
+                  <TranslationText
+                    id='top_bedrock'
+                  />
+                </label>
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -535,10 +695,20 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('borehole_form:fromdepth')}
+                  placeholder={t('fromdepth')}
                   type='number'
                   value={search.filter.top_bedrock_from}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                      }}
+                    >
+                      trans=fromdepth
+                    </div>: null
+                }
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -546,10 +716,20 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('borehole_form:todepth')}
+                  placeholder={t('todepth')}
                   type='number'
                   value={search.filter.top_bedrock_to}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                      }}
+                    >
+                      trans=todepth
+                    </div>: null
+                }
                 <LabelReset
                   onClick={() => {
                     this.props.resetTotBedrock();
@@ -560,7 +740,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('extended.status') ?
               <Form.Field>
-                <label>{t('borehole_form:status')}</label>
+                <label>
+                  <TranslationText
+                    id='boreholestatus'
+                  />
+                </label>
                 <DomainDropdown
                   onSelected={(selected) => {
                     this.props.setFilter(
@@ -583,7 +767,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('extended.purpose') ?
               <Form.Field>
-                <label>{t('borehole_form:purpose')}</label>
+                <label>
+                  <TranslationText
+                    id='purpose'
+                  />
+                </label>
                 <DomainDropdown
                   onSelected={(selected) => {
                     this.props.setFilter(
@@ -606,7 +794,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('custom.cuttings') ?
               <Form.Field>
-                <label>{t('borehole_form:cuttings')}</label>
+                <label>
+                  <TranslationText
+                    id='cuttings'
+                  />
+                </label>
                 <DomainDropdown
                   onSelected={(selected) => {
                     this.props.setFilter(
@@ -629,7 +821,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('drilling_date') ?
               <Form.Field>
-                <label>{t('borehole_form:drilling_date')}</label>
+                <label>
+                  <TranslationText
+                    id='drilling_date'
+                  />
+                </label>
                 <DateField
                   date={search.filter.drilling_date_from}
                   onChange={(selected) => {
@@ -637,8 +833,19 @@ class SearchEditorComponent extends React.Component {
                       'drilling_date_from', selected
                     );
                   }}
-                  placeholder={t('borehole_form:afterdate')}
+                  placeholder={t('afterdate')}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                        margin: '5px'
+                      }}
+                    >
+                      trans=afterdate
+                    </div>: null
+                }
                 <DateField
                   date={search.filter.drilling_date_to}
                   onChange={(selected) => {
@@ -646,8 +853,19 @@ class SearchEditorComponent extends React.Component {
                       'drilling_date_to', selected
                     );
                   }}
-                  placeholder={t('borehole_form:beforedate')}
+                  placeholder={t('beforedate')}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                        margin: '5px'
+                      }}
+                    >
+                      trans=beforedate
+                    </div>: null
+                }
                 <LabelReset
                   onClick={() => {
                     this.props.resetDrilling();
@@ -658,7 +876,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('custom.drill_diameter') ?
               <Form.Field>
-                <label>{t('borehole_form:drill_diameter')}</label>
+                <label>
+                  <TranslationText
+                    id='drilldiameter'
+                  />
+                </label>
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -666,10 +888,21 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('borehole_form:fromdiameter')}
+                  placeholder={t('fromdiameter')}
                   type='number'
                   value={search.filter.drill_diameter_from}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                        margin: '5px'
+                      }}
+                    >
+                      trans=fromdiameter
+                    </div>: null
+                }
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -677,10 +910,21 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('borehole_form:todiameter')}
+                  placeholder={t('todiameter')}
                   type='number'
                   value={search.filter.drill_diameter_to}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                        margin: '5px'
+                      }}
+                    >
+                      trans=todiameter
+                    </div>: null
+                }
                 <LabelReset
                   onClick={() => {
                     this.props.resetDrillDiameter();
@@ -691,7 +935,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('bore_inc') ?
               <Form.Field>
-                <label>{t('borehole_form:bore_inc')}</label>
+                <label>
+                  <TranslationText
+                    id='inclination'
+                  />
+                </label>
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -699,10 +947,21 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('common:from') + " " + t('common:degree')}
+                  placeholder={t('from') + " " + t('degree')}
                   type='number'
                   value={search.filter.bore_inc_from}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                        margin: '5px'
+                      }}
+                    >
+                      trans=from + degree
+                    </div>: null
+                }
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -710,10 +969,21 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('common:to') + " " + t('common:degree')}
+                  placeholder={t('to') + " " + t('degree')}
                   type='number'
                   value={search.filter.bore_inc_to}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                        margin: '5px'
+                      }}
+                    >
+                      trans=to + degree
+                    </div>: null
+                }
                 <LabelReset
                   onClick={() => {
                     this.props.resetBoreInc();
@@ -724,7 +994,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('bore_inc_dir') ?
               <Form.Field>
-                <label>{t('borehole_form:bore_inc_dir')}</label>
+                <label>
+                  <TranslationText
+                    id='inclinationdirection'
+                  />
+                </label>
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -732,10 +1006,21 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('common:from') + " " + t('common:degree')}
+                  placeholder={t('from') + " " + t('degree')}
                   type='number'
                   value={search.filter.bore_inc_dir_from}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                        margin: '5px'
+                      }}
+                    >
+                      trans=from + degree
+                    </div>: null
+                }
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -743,10 +1028,21 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('common:to') + " " + t('common:degree')}
+                  placeholder={t('to') + " " + t('degree')}
                   type='number'
                   value={search.filter.bore_inc_dir_to}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                        margin: '5px'
+                      }}
+                    >
+                      trans=to + degree
+                    </div>: null
+                }
                 <LabelReset
                   onClick={() => {
                     this.props.resetBoreIncDir();
@@ -757,7 +1053,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('custom.lit_pet_top_bedrock') ?
               <Form.Field>
-                <label>{t('borehole_form:lit_pet_top_bedrock')}</label>
+                <label>
+                  <TranslationText
+                    id='lit_pet_top_bedrock'
+                  />
+                </label>
                 <DomainDropdown
                   onSelected={(selected) => {
                     this.props.setFilter(
@@ -780,7 +1080,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('custom.lit_str_top_bedrock') ?
               <Form.Field>
-                <label>{t('borehole_form:lit_str_top_bedrock')}</label>
+                <label>
+                  <TranslationText
+                    id='lit_str_top_bedrock'
+                  />
+                </label>
                 <DomainDropdown
                   onSelected={(selected) => {
                     this.props.setFilter(
@@ -803,7 +1107,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('custom.chro_str_top_bedrock') ?
               <Form.Field>
-                <label>{t('borehole_form:chro_str_top_bedrock')}</label>
+                <label>
+                  <TranslationText
+                    id='chro_str_top_bedrock'
+                  />
+                </label>
                 <DomainDropdown
                   onSelected={(selected) => {
                     this.props.setFilter(
@@ -826,7 +1134,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('custom.canton') ?
               <Form.Field>
-                <label>{t('borehole_form:canton')}</label>
+                <label>
+                  <TranslationText
+                    id='canton'
+                  />
+                </label>
                 <CantonDropdown
                   onSelected={(selected) => {
                     if (search.filter.municipality !== null) {
@@ -852,7 +1164,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('custom.canton') ?
               <Form.Field>
-                <label>{t('borehole_form:municipality')}</label>
+                <label>
+                  <TranslationText
+                    id='municipality'
+                  />
+                </label>
                 <MunicipalityDropdown
                   canton={search.filter.canton}
                   disabled={search.filter.canton === null}
@@ -875,7 +1191,11 @@ class SearchEditorComponent extends React.Component {
           {
             this.isVisible('custom.canton') ?
               <Form.Field>
-                <label>{t('borehole_form:address')}</label>
+                <label>
+                  <TranslationText
+                    id='address'
+                  />
+                </label>
                 <Input
                   onChange={(eve) => {
                     this.props.setFilter(
@@ -883,9 +1203,20 @@ class SearchEditorComponent extends React.Component {
                       eve.target.value
                     );
                   }}
-                  placeholder={t('borehole_form:address')}
+                  placeholder={t('address')}
                   value={search.filter.address}
                 />
+                {
+                  this.props.developer.debug === true?
+                    <div
+                      style={{
+                        color: 'red',
+                        margin: '5px'
+                      }}
+                    >
+                      trans=address
+                    </div>: null
+                }
                 <LabelReset
                   onClick={() => {
                     this.props.setFilter(
@@ -917,6 +1248,7 @@ SearchEditorComponent.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    developer: state.developer,
     search: state.searchEditor,
     settings: state.setting,
     user: state.core_user
@@ -1004,4 +1336,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(['search', 'borehole_form', 'common'])(SearchEditorComponent));
+)(withTranslation(['common'])(SearchEditorComponent));

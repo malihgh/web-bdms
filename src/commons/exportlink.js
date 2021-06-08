@@ -92,6 +92,9 @@ class ExportLink extends React.Component {
 ExportLink.propTypes = {
   csv: PropTypes.bool,
   fullcsv: PropTypes.bool,
+  i18n: PropTypes.shape({
+    language: PropTypes.string
+  }),
   id: PropTypes.array,
   pdf: PropTypes.bool,
   shp: PropTypes.bool,
