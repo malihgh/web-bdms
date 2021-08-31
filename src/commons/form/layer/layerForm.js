@@ -22,7 +22,7 @@ import {
   Form,
   Input,
   TextArea,
-  Checkbox
+  Checkbox,
 } from 'semantic-ui-react';
 
 class LayerForm extends React.Component {
@@ -513,7 +513,6 @@ class LayerForm extends React.Component {
                     id='layer_lithostratigraphy'
                   />  
                 </label>
-                <label>{t('lithostratigraphy')}</label>
                 <DomainTree
                   levels={{
                     1: 'super',
