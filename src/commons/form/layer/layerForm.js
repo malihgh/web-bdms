@@ -1120,7 +1120,6 @@ class LayerForm extends React.Component {
                     id='layer_debris'
                   />  
                 </label>
-                <label>{t('debris')}</label>
                 <DomainDropdown
                   multiple
                   onSelected={(selected)=>{
