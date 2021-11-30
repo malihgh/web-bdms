@@ -42,19 +42,35 @@ To specify the path from where the app is served (https://example.com/bdms) you 
 PUBLIC_URL=/bdms npm run build
 ```
 
-## Build docker from source
+### Build docker image from source
 
-Clone server repository:
+Clone server repository, and run the build command.
 
 ```bash
 git clone https://github.com/geoadmin/web-bdms.git
-cd web-bdms
+cd service-bdms
+version=$(cat ./VERSION.txt)
+docker build -t swisstopo/service-bdms-nginx:$version .
 ```
 
-Build Docker image (x.x.x is the release number, start with 1.0.0):
+If you are preparing a beta just change the version:
 
 ```bash
- sudo docker build -t swisstopo/service-bdms-nginx:x.x.x .
+version=$(cat ./VERSION.txt)
+docker build -t ghcr.io/geoadmin/web-bdms/service-bdms-nginx:$version-beta.20210927 .
+
+docker push ghcr.io/geoadmin/web-bdms/service-bdms-nginx:$version-beta.20210927
+```
+
+### Build app served on a subpath url
+
+To specify the path from where the app is served (https://example.com/bdms) you can specify the environment variable as follows:
+
+```bash
+git clone https://github.com/geoadmin/web-bdms.git
+cd service-bdms
+version=$(cat ./VERSION.txt)
+docker build -e PUBLIC_URL=/subpath -t swisstopo/service-bdms-nginx:$version .
 ```
 
 Run Docker container:
