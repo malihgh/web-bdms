@@ -8,9 +8,8 @@ import {
   Divider,
   Header,
   Message,
-  // Input,
+  Icon,
   Segment,
-  // Dropdown,
   Form,
   Radio,
 } from 'semantic-ui-react';
@@ -19,9 +18,15 @@ import WorkgroupRadioGroup from '../../commons/form/workgroup/radio';
 import WorkgroupMultiselect from '../../commons/form/workgroup/multi';
 import SupplierRadioGroup from '../../commons/form/supplier/radio';
 import TranslationText from '../../commons/form/translationText';
+import DateText from '../../commons/form/dateText';
+
+import DownloadLink from '../../commons/files/downloadlink';
 
 import {
-  exportDatabase,
+  // exportDatabase,
+  exportDatabaseAsync,
+  exportDatabaseStatus,
+  exportDatabaseCancel,
   importDatabaseWorkgroup,
   importDatabaseSupplier,
   importDatabaseNewSupplier,
@@ -36,6 +41,7 @@ class DatabaseSettings extends React.Component {
     super(props);
     this.state = {
       export: false,
+      restore: false,
       exportWorkgroup: [],
       // enabledWorkgroups: props.user.data.workgroups.filter(
       //   w => w.disabled === null && w.supplier === false
@@ -51,42 +57,112 @@ class DatabaseSettings extends React.Component {
 
       exporting: false,
       importing: false,
+
+      fetchingStatus: true,
+      lastExport: null,
     };
+    this.checkStatus = this.checkStatus.bind(this);
     this.countExportableBoreholes = this.countExportableBoreholes.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   componentDidMount(){
     this.reset();
   }
+  
+  componentWillUnmount() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+  }
+
+  checkStatus() {
+    this.setState({
+      fetchingStatus: true,
+    }, () => {
+      exportDatabaseStatus().then(
+        r => {
+          if(r.data.success === true) {
+            const status = r.data.data.status;
+
+            console.log("STATUS: " + status);
+
+            // No exports have been done so far
+            if (status === 'empty') {
+              this.setState({
+                fetchingStatus: false,
+                lastExport: null,
+              }, () => {
+                if (this.timer) {
+                  clearInterval(this.timer);
+                  this.timer = null;
+                }
+              });
+
+            // an export is currently running  
+            } else if (status === 'running') {
+              this.setState({
+                fetchingStatus: true,
+                lastExport: null,
+              }, () => {
+                if (!this.timer) {
+                  this.timer = setInterval(() => {
+                    this.checkStatus();
+                  }, 2000);
+                }
+              });
+
+            // an export is finished and ready to be downloaded
+            } else if (status === 'done') {
+              this.setState({
+                fetchingStatus: false,
+                lastExport: r.data.data,
+              }, () => {
+                if (this.timer) {
+                  clearInterval(this.timer);
+                  this.timer = null;
+                }
+              });
+            }
+          }
+        }
+      );
+    });
+  }
 
   reset(){
-
     getWorkgroups().then(
       r => {
         if (r.data.success === true) {
+          const enabledWorkgroups =  r.data.data.filter(
+            w => w.disabled === null
+          );
+          const suppliers =  r.data.data.filter(
+            w => w.supplier === true
+          );
           this.setState({
-            export: false,
-            exportWorkgroup: [],
-            enabledWorkgroups: r.data.data.filter(
-              w => w.disabled === null
-            ),
+            // export: false,
+            // exportWorkgroup: [],
+            enabledWorkgroups: enabledWorkgroups,
             importWorkgroup: null,
             importSupplier: null,
             importType: 'existingWorkgroup',
             file: null,
             supplierName: '',
-            suppliers: r.data.data.filter(
-              w => w.supplier === true
-            ),
+            suppliers: suppliers,
             supplier: null,
 
             exporting: false,
             importing: false,
+
+            fetchingStatus: true,
+            lastExport: null,
+          }, () => {
+            this.checkStatus();
           });
         } else {
-
           this.setState({
-            export: false,
+            // export: false,
             exportWorkgroup: [],
             enabledWorkgroups: [],
             importWorkgroup: null,
@@ -99,54 +175,15 @@ class DatabaseSettings extends React.Component {
 
             exporting: false,
             importing: false,
+
+            fetchingStatus: true,
+            lastExport: null,
+          }, () => {
+            this.checkStatus();
           });
         }
       }
     );
-
-
-    // listSuppliers().then(
-    //   r => {
-    //     if (r.data.success === true) {
-    //       this.setState({
-    //         export: false,
-    //         exportWorkgroup: 'all',
-    //         enabledWorkgroups: this.props.user.data.workgroups.filter(
-    //           w => w.disabled === null
-    //         ),
-    //         importWorkgroup: null,
-    //         importSupplier: null,
-    //         importType: 'existingWorkgroup',
-    //         file: null,
-    //         supplierName: '',
-    //         suppliers: r.data.data,
-    //         supplier: null,
-
-    //         exporting: false,
-    //         importing: false,
-    //       });
-    //     } else {
-
-    //       this.setState({
-    //         export: false,
-    //         exportWorkgroup: 'all',
-    //         enabledWorkgroups: this.props.user.data.workgroups.filter(
-    //           w => w.disabled === null
-    //         ),
-    //         importWorkgroup: null,
-    //         importSupplier: null,
-    //         importType: 'existingWorkgroup',
-    //         file: null,
-    //         supplierName: '',
-    //         suppliers: [],
-    //         supplier: null,
-
-    //         exporting: false,
-    //         importing: false,
-    //       });
-    //     }
-    //   }
-    // );
   }
 
   countExportableBoreholes () {
@@ -225,6 +262,7 @@ class DatabaseSettings extends React.Component {
           this.state.export === true ?
             <Segment>
               <WorkgroupMultiselect
+                key='web-bdms-db-setting-1'
                 nameKey='name'
                 onChange={
                   workgroup => {
@@ -233,12 +271,11 @@ class DatabaseSettings extends React.Component {
                     });
                   }
                 }
-                // workgroups={this.props.user.data.workgroups}
                 workgroups={this.state.enabledWorkgroups}
               />
               <div
+                key='web-bdms-db-setting-2'
                 style={{
-                  // textAlign: 'center'
                   marginTop: '1.5em',
                 }}
               >
@@ -247,21 +284,35 @@ class DatabaseSettings extends React.Component {
                     this.state.exporting === true
                     || this.state.exportWorkgroup.length === 0
                   }
-                  loading={this.state.exporting === true}
+                  loading={
+                    this.state.fetchingStatus === true
+                    || this.state.exporting === true
+                  }
                   onClick={() => {
                     this.setState({
                       exporting: true,
                     }, () => {
-                      exportDatabase(
+                      exportDatabaseAsync(
                         this.state.exportWorkgroup
                       ).then(
                         response => {
-                          if (response.success === false) {
-                            alert(response.message);
-                          }
+                          console.log(response);
+                          if (response.data.success === false) {
+                            alert(response.data.message);
+                          } 
                           this.reset();
                         }
                       );
+                      // exportDatabase(
+                      //   this.state.exportWorkgroup
+                      // ).then(
+                      //   response => {
+                      //     if (response.success === false) {
+                      //       alert(response.message);
+                      //     }
+                      //     this.reset();
+                      //   }
+                      // );
                     });
                   }}
                   primary
@@ -275,6 +326,57 @@ class DatabaseSettings extends React.Component {
                   />)
                 </Button>
               </div>
+              {
+                this.state.fetchingStatus === true?
+                  <div>
+                    <Divider />
+                    <Icon
+                      loading name='spinner'
+                    />
+                    &nbsp;
+                    <TranslationText
+                      id='exportInProgress'
+                    />...
+                    &nbsp;
+                    (<span
+                      onClick={
+                        () => {
+                          exportDatabaseCancel();
+                        }
+                      }
+                      style={{
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                        color: "rgb(33, 133, 208)",
+                      }}
+                    >
+                      <TranslationText
+                        id='cancel'
+                      />
+                    </span>)
+                  </div>:
+                  this.state.lastExport !== null && <div>
+                    <Divider />
+                    <TranslationText
+                      id='lastExport'
+                    />:
+                    <br /> 
+                    <DateText
+                      date={this.state.lastExport.date}
+                      hours
+                    /> (
+                      <DateText
+                        date={this.state.lastExport.date}
+                        fromnow
+                      />
+                    )
+                    <br /> 
+                    <DownloadLink
+                      // caption={file.name}
+                      id={this.state.lastExport.id}
+                    />
+                  </div>
+              }
             </Segment>: <Divider />
         }
         <div
