@@ -5,6 +5,7 @@
 
 # production
 /build
+/.git
 
 # VS Code config
 /.vscode
