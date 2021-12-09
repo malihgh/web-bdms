@@ -1,6 +1,8 @@
 
 # Borhole Management System Frontend
 
+<img src="https://img.shields.io/github/license/geoadmin/web-bdms">
+
 ## Install nodejs and npm
 
 ```bash
@@ -56,10 +58,17 @@ docker build -t swisstopo/service-bdms-nginx:$version .
 If you are preparing a beta just change the version:
 
 ```bash
-version=$(cat ./VERSION.txt)
-docker build -t ghcr.io/geoadmin/web-bdms/service-bdms-nginx:$version-beta.20210927 .
+version=$(cat ./VERSION.txt)-beta.$(date +%Y%m%d)
+docker build -t ghcr.io/geoadmin/web-bdms/service-bdms-nginx:$version .
+docker push ghcr.io/geoadmin/web-bdms/service-bdms-nginx:$version
+```
 
-docker push ghcr.io/geoadmin/web-bdms/service-bdms-nginx:$version-beta.20210927
+Stable release:
+
+```bash
+version=$(cat ./VERSION.txt)
+docker build -t swisstopo/service-bdms-nginx:$version .
+docker push swisstopo/service-bdms-nginx:$version
 ```
 
 ### Build app served on a subpath url
