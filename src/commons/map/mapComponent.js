@@ -356,7 +356,7 @@ class MapComponent extends React.Component {
 
     this.map.on('singleclick', singleclick);
 
-    getGeojson().then(function (response) {
+    getGeojson(this.props.filter).then(function (response) {
       if (response.data.success) {
 
         this.points = new VectorSource();
@@ -448,22 +448,26 @@ class MapComponent extends React.Component {
             hover: feature
           }, () => {
             // this.popup.setPosition(feature.getGeometry().getCoordinates());
-            hover(feature.getId());
+            if (hover !== undefined) {
+              hover(feature.getId());
+            }
           });
         } else {
           this.setState({
             hover: null
           }, () => {
-            // this.popup.setPosition(undefined);
-            hover(null);
+            if (hover !== undefined) {
+              hover(null);
+            }
           });
         }
       } else {
         this.setState({
           hover: null
         }, () => {
-          // this.popup.setPosition(undefined);
-          hover(null);
+          if (hover !== undefined) {
+            hover(null);
+          }
         });
       }
       refresh = true;
@@ -762,7 +766,8 @@ class MapComponent extends React.Component {
           flex: '1 1 100%',
           position: 'relative',
           display: 'flex',
-          flexDirection: 'row'
+          flexDirection: 'row',
+          backgroundColor: '#F2F2EF'
           // border: 'thin solid #cccccc'
         }}
       >

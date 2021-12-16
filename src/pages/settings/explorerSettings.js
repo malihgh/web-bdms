@@ -48,7 +48,8 @@ class ExplorerSettings extends React.Component {
     register(proj4);
     this.state = {
       "appearance": false,
-      "search_filter": false,
+      "searchFiltersBoreholes": false,
+      "searchFiltersLayers": false,
       "map": false,
 
       "wmtsFetch": false,
@@ -859,6 +860,9 @@ class ExplorerSettings extends React.Component {
             </Segment.Group>
             : <Divider />
         }
+        {
+          // SEARCH FILTER BOREHOLE
+        }
         <div
           style={{
             flexDirection: 'row',
@@ -870,7 +874,7 @@ class ExplorerSettings extends React.Component {
             className='link'
             onClick={() => {
               this.setState({
-                "search_filter": !this.state.search_filter
+                "searchFiltersBoreholes": !this.state.searchFiltersBoreholes
               });
             }}
             style={{
@@ -878,7 +882,7 @@ class ExplorerSettings extends React.Component {
             }}
           >
             <TranslationText
-              id='searchfilters'
+              id='searchFiltersBoreholes'
             />
           </Header>
           <div
@@ -891,13 +895,13 @@ class ExplorerSettings extends React.Component {
               color='red'
               onClick={() => {
                 this.setState({
-                  "search_filter": !this.state.search_filter
+                  "searchFiltersBoreholes": !this.state.searchFiltersBoreholes
                 });
               }}
               size='small'
             >
               {
-                this.state.search_filter === true ?
+                this.state.searchFiltersBoreholes === true ?
                   <TranslationText
                     id='collapse'
                   />:
@@ -909,7 +913,7 @@ class ExplorerSettings extends React.Component {
           </div>
         </div>
         {
-          this.state.search_filter === true ?
+          this.state.searchFiltersBoreholes === true ?
             <Segment.Group>
               <Segment>
                 <Checkbox
@@ -1298,6 +1302,400 @@ class ExplorerSettings extends React.Component {
                 />
               </Segment>
 
+            </Segment.Group>
+            : <Divider />
+        }
+        {
+          // SEARCH FILTER LAYERS
+        }
+        <div
+          style={{
+            flexDirection: 'row',
+            display: 'flex'
+          }}
+        >
+          <Header
+            as='h3'
+            className='link'
+            onClick={() => {
+              this.setState({
+                "searchFiltersLayers": !this.state.searchFiltersLayers
+              });
+            }}
+            style={{
+              margin: '0px'
+            }}
+          >
+            <TranslationText
+              id='searchFiltersLayers'
+            />
+          </Header>
+          <div
+            style={{
+              flex: 1,
+              textAlign: 'right'
+            }}
+          >
+            <Button
+              color='red'
+              onClick={() => {
+                this.setState({
+                  "searchFiltersLayers": !this.state.searchFiltersLayers
+                });
+              }}
+              size='small'
+            >
+              {
+                this.state.searchFiltersLayers === true ?
+                  <TranslationText
+                    id='collapse'
+                  />:
+                  <TranslationText
+                    id='expand'
+                  />
+              }
+            </Button>
+          </div>
+        </div>
+        {
+          this.state.searchFiltersLayers === true ?
+            <Segment.Group>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.depth}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.depth', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_depth'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.depth_from}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.depth_from', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_depth_from'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.depth_to}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.depth_to', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_depth_to'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.description}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.description', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='description'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.geology}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.geology', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_geology'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.lithology}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.lithology', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_lithology'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.lithostratigraphy}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.lithostratigraphy', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_lithostratigraphy'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.chronostratigraphy}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.chronostratigraphy', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_chronostratigraphy'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.color}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.color', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_color'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.plasticity}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.plasticity', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_plasticity'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.humidity}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.humidity', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_humidity'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.consistance}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.consistance', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_consistance'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.alteration}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.alteration', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_alteration'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.compactness}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.compactness', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_compactness'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.organic_component}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.organic_component', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_organic_component'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.striae}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.striae', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_striae'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.grain_size_1}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.grain_size_1', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_grain_size_1'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.grain_size_2}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.grain_size_2', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_grain_size_2'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.grain_shape}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.grain_shape', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_grain_shape'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.grain_granularity}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.grain_granularity', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_grain_granularity'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.cohesion}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.cohesion', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_cohesion'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.further_properties}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.further_properties', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_further_properties'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.uscs_1}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.uscs_1', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_uscs_1'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.uscs_3}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.uscs_3', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_uscs_3'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.uscs_determination}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.uscs_determination', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_uscs_determination'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.debris}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.debris', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_debris'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.lit_pet_deb}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.lit_pet_deb', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_lit_pet_deb'
+                />
+              </Segment>
+              <Segment>
+                <Checkbox
+                  checked={setting.data.filter.layer.lit_pet_deb}
+                  label=''
+                  onChange={(e, d) => {
+                    toggleFilter('layer.lit_pet_deb', d.checked);
+                  }}
+                />
+                <TranslationText
+                  id='layer_lit_pet_deb'
+                />
+              </Segment>
             </Segment.Group>
             : <Divider />
         }

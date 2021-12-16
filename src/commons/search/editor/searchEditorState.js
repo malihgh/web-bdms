@@ -45,7 +45,45 @@ const initialState = {
     "project": null,
     "last_update": '',
     "creation": '',
-    "completness": 'all'
+    "completness": 'all',
+
+    // Layers filter
+    "layer_depth_from": '',
+    "layer_depth_to": '',
+
+    "layer_depth_from_from": '',
+    "layer_depth_from_to": '',
+
+    "layer_depth_to_from": '',
+    "layer_depth_to_to": '',
+
+    "layer_description": '',
+    "layer_geology": '',
+
+    "layer_lithology": null,
+    "layer_lithostratigraphy": null,
+    "layer_chronostratigraphy": null,
+
+    "layer_color": null,
+    "layer_plasticity": null,
+    "layer_humidity": null,
+    "layer_consistance": null,
+    "layer_alteration": null,
+    "layer_compactness": null,
+    "layer_organic_component": null,
+    "layer_striae": null,
+    "layer_grain_size_1": null,
+    "layer_grain_size_2": null,
+    "layer_grain_shape": null,
+    "layer_grain_granularity": null,
+    "layer_cohesion": null,
+    "layer_further_properties": null,
+    "layer_uscs_1": null,
+    "layer_uscs_2": null,
+    "layer_uscs_3": null,
+    "layer_uscs_determination": null,
+    "layer_debris": null,
+    "layer_lit_pet_deb": null,
   }
 };
 

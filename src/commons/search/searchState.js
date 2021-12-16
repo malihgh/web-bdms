@@ -44,7 +44,46 @@ const initialState = {
     bore_inc_dir_to: '',
     lit_pet_top_bedrock: null,
     lit_str_top_bedrock: null,
-    chro_str_top_bedrock: null
+    chro_str_top_bedrock: null,
+
+    // Layers filter
+    layer_depth_from: '',
+    layer_depth_to: '',
+
+    layer_depth_from_from: '',
+    layer_depth_from_to: '',
+
+    layer_depth_to_from: '',
+    layer_depth_to_to: '',
+
+    layer_description: '',
+    layer_geology: '',
+
+    layer_lithology: null,
+    layer_lithostratigraphy: null,
+    layer_chronostratigraphy: null,
+
+    layer_color: null,
+    layer_plasticity: null,
+    layer_humidity: null,
+    layer_consistance: null,
+    layer_alteration: null,
+    layer_compactness: null,
+    layer_organic_component: null,
+    layer_striae: null,
+    layer_grain_size_1: null,
+    layer_grain_size_2: null,
+    layer_grain_shape: null,
+    layer_grain_granularity: null,
+    layer_cohesion: null,
+    layer_further_properties: null,
+    layer_uscs_1: null,
+    layer_uscs_2: null,
+    layer_uscs_3: null,
+    layer_uscs_determination: null,
+    layer_debris: null,
+    layer_lit_pet_deb: null,
+    
   }
 };
 
@@ -53,6 +92,9 @@ const search = (
     ...initialState,
     filter: {
       ...initialState.filter
+    },
+    stratigraphyFilter: {
+      ...initialState.stratigraphyFilter
     }
   }, action) => {
   switch (action.type) {
@@ -102,18 +144,30 @@ const search = (
     }
     case 'SEARCH_FILTER_CHANGED': {
       const copy = { ...state };
-      const path = `filter.${action.key}`;
-      if (_.has(copy, path)) {
-        if (_.isNil(action.value) || action.value === '') {
-          if (_.isString(action.value)) {
-            _.set(copy, path, '');
+
+      let keys = [];
+
+      if (_.isArray(action.key)) {
+        keys = action.key;
+      } else {
+        keys = [action.key];
+      }
+
+      for (let index = 0; index < keys.length; index++) {
+        const path = `filter.${keys[index]}`;
+        if (_.has(copy, path)) {
+          if (_.isNil(action.value) || action.value === '') {
+            if (_.isString(action.value)) {
+              _.set(copy, path, '');
+            } else {
+              _.set(copy, path, null);
+            }
           } else {
-            _.set(copy, path, null);
+            _.set(copy, path, action.value);
           }
-        } else {
-          _.set(copy, path, action.value);
         }
       }
+
       return copy;
     }
     case 'SEARCH_FILTER_RESET_IDENTIFIER': {
@@ -199,6 +253,7 @@ const search = (
         extent: action.extent
       };
     }
+
     default:
       return state;
   }

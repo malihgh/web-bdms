@@ -13,6 +13,15 @@ import TranslationText from '../../form/translationText';
 // import FromNowText from '../../form/fromNowText';
 
 class MetaComponent extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state= {
+      pubexpanded: false,
+    };
+  }
+  
+
   getDomainRow(schema, id, i18n = undefined) {
     // const { t } = this.props;
     return this.getTextRow( 
@@ -40,9 +49,11 @@ class MetaComponent extends React.Component {
     );
   }
 
-  getTextRow(schema, text) {
+  getTextRow(schema, text, key = null) {
     return (
-      <div>
+      <div
+        key={key}
+      >
         <div
           style={{
             fontSize: '0.8em',
@@ -68,6 +79,128 @@ class MetaComponent extends React.Component {
       </div>
     );
   }
+
+  getStatusRow(){
+    const {
+      data
+    } = this.props;
+    return (
+      <div>
+        <div
+          style={{
+            fontSize: '0.8em',
+            color: '#787878',
+            lineHeight: '1em',
+          }}
+        >
+          <TranslationText
+            id='locked_status'
+          />
+        </div>
+        <div
+          style={{
+            marginBottom: '0.4em'
+          }}
+        >
+          <TranslationText
+            id={`status${data.role.toLowerCase()}`}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  getStatusDate(){
+    const {
+      data
+    } = this.props;
+    
+
+    if (data.workflow.finished) {
+      return this.getDateRow('date', data.workflow.finished);
+    } else {
+      return (
+        <div>
+          <div
+            style={{
+              fontSize: '0.8em',
+              color: '#787878',
+              lineHeight: '1em',
+            }}
+          >
+            <TranslationText
+              id='date'
+            />
+          </div>
+          <div
+            style={{
+              marginBottom: '0.4em'
+            }}
+          >
+            <TranslationText
+              id='inProgress'
+            />
+          </div>
+        </div>
+      );
+    }
+  }
+
+  getPublicationsRows(){
+    const {
+      data
+    } = this.props;
+    const ret = [];
+    for (let index = 0; index < data.pubblications.length; index++) {
+      const pubblication = data.pubblications[index];
+      if (pubblication.finished){
+        ret.push(
+          <div>
+            {
+              ret.length === 0?
+                <div
+                  style={{
+                    fontSize: '0.8em',
+                    color: '#787878',
+                    lineHeight: '1em',
+                  }}
+                >
+                  <TranslationText
+                    id='currentVersion'
+                  />
+                </div>: null
+            }
+            {
+              ret.length === 1?
+                <div
+                  style={{
+                    fontSize: '0.8em',
+                    color: '#787878',
+                    lineHeight: '1em',
+                  }}
+                >
+                  <TranslationText
+                    id='previousVersions'
+                  />
+                </div>: null
+            }
+            <div
+              style={{
+                marginBottom: '0.4em'
+              }}
+            >
+              <DateText
+                date={pubblication.finished}
+                hours
+              />
+            </div>
+          </div>
+        );
+      }
+    }
+    return ret;
+  }
+
   render() {
     const {
       data
@@ -154,6 +287,35 @@ class MetaComponent extends React.Component {
             {this.getDomainRow(
               'kind', data.kind
             )}
+          </div>
+        </div>
+        
+        <div
+          style={{
+            borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
+            display: 'flex',
+            flexDirection: 'row',
+            margin: margin,
+            padding: padding
+          }}
+        >
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {this.getStatusRow()}
+          </div>
+          <div
+            style={{
+              flex: '1 1 100%'
+            }}
+          >
+            {
+              data.role === 'PUBLIC' && data.pubblications !== null?
+                this.getPublicationsRows():
+                this.getStatusDate()
+            }
           </div>
         </div>
 

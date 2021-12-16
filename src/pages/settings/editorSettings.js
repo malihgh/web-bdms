@@ -21,6 +21,7 @@ import {
 
 import IdentifierSettings from './editor/identifierSettings';
 import TranslationText from '../../commons/form/translationText';
+import SearchFiltersLayers from './searchFiltersLayers';
 
 const fields = [
   {
@@ -125,8 +126,9 @@ class EditorSettings extends React.Component {
     super(props);
     this.state = {
       "fields": false,
-      "search": false,
-      "identifiers": false
+      "identifiers": false,
+      "searchFiltersBoreholes": false,
+      "searchFiltersLayers": false,
     };
   }
 
@@ -135,7 +137,7 @@ class EditorSettings extends React.Component {
       geocode,
       codes
     } = this.props;
-    if (
+    if(
       _.has(codes, 'data.layer_kind')
       && _.isArray(codes.data.layer_kind)
     ){
@@ -170,6 +172,9 @@ class EditorSettings extends React.Component {
           flex: 1
         }}
       >
+        {
+          // SEARCH FILTER BOREHOLE
+        }
         <div
           style={{
             flexDirection: 'row',
@@ -181,7 +186,7 @@ class EditorSettings extends React.Component {
             className='link'
             onClick={() => {
               this.setState({
-                "search": !this.state.search
+                "searchFiltersBoreholes": !this.state.searchFiltersBoreholes
               });
             }}
             style={{
@@ -189,7 +194,7 @@ class EditorSettings extends React.Component {
             }}
           >
             <TranslationText
-              id="searchfilters"
+              id="searchFiltersBoreholes"
             />
           </Header>
           <div
@@ -202,13 +207,13 @@ class EditorSettings extends React.Component {
               color='red'
               onClick={() => {
                 this.setState({
-                  "search": !this.state.search
+                  "searchFiltersBoreholes": !this.state.searchFiltersBoreholes
                 });
               }}
               size='small'
             >
               {
-                this.state.search === true ?
+                this.state.searchFiltersBoreholes === true ?
                   <TranslationText
                     id='collapse'
                   />:
@@ -220,7 +225,7 @@ class EditorSettings extends React.Component {
           </div>
         </div>
         {
-          this.state.search === true ?
+          this.state.searchFiltersBoreholes === true ?
             <Segment.Group>
               <Segment>
                 <Checkbox
@@ -596,6 +601,67 @@ class EditorSettings extends React.Component {
             : <Divider />
         }
         {
+          // SEARCH FILTER LAYERS
+        }
+        <div
+          style={{
+            flexDirection: 'row',
+            display: 'flex'
+          }}
+        >
+          <Header
+            as='h3'
+            className='link'
+            onClick={() => {
+              this.setState({
+                "searchFiltersLayers": !this.state.searchFiltersLayers
+              });
+            }}
+            style={{
+              margin: '0px'
+            }}
+          >
+            <TranslationText
+              id='searchFiltersLayers'
+            />
+          </Header>
+          <div
+            style={{
+              flex: 1,
+              textAlign: 'right'
+            }}
+          >
+            <Button
+              color='red'
+              onClick={() => {
+                this.setState({
+                  "searchFiltersLayers": !this.state.searchFiltersLayers
+                });
+              }}
+              size='small'
+            >
+              {
+                this.state.searchFiltersLayers === true ?
+                  <TranslationText
+                    id='collapse'
+                  />:
+                  <TranslationText
+                    id='expand'
+                  />
+              }
+            </Button>
+          </div>
+        </div>
+
+        {
+                this.state.searchFiltersLayers === true ?
+                  <SearchFiltersLayers
+                    layer={setting.data.efilter.layer}
+                    toggleFilter={this.props.toggleFilter}
+                  />: <Divider />
+
+        }
+        {
           this.props.user.data.admin === true?
             <div>
               <div
@@ -751,7 +817,7 @@ EditorSettings.propTypes = {
 };
 
 EditorSettings.defaultProps = {
-  geocode: "Or"
+  geocode: "Geol"
 };
 
 const mapStateToProps = (state) => {

@@ -210,5 +210,11 @@ docker build \
 Build image:
 
 ```bash
-docker build -t service-bdms-nginx:1.0.3 .
+docker build -t swisstopo/service-bdms-nginx:1.0.3 .
+```
+
+Tag latest:
+
+```bash
+docker image tag swisstopo/service-bdms-nginx:1.0.3 swisstopo/service-bdms-nginx:latest
 ```
