@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import * as Styled from "./styles";
 
 const TranslationKeys = (prop) => {
+  const { handleSelectedLanguage } = prop;
   const languages = [
     { id: 0, language: "de" },
     { id: 1, language: "fr" },
@@ -15,7 +16,10 @@ const TranslationKeys = (prop) => {
       {languages.map((item, key) => (
         <Styled.Keys
           key={key}
-          onClick={() => setSelectedLanguage(item)}
+          onClick={() => {
+            setSelectedLanguage(item);
+            handleSelectedLanguage(item.language);
+          }}
           style={{
             color:
               selectedLanguage.language === item.language ? "red" : "black",
