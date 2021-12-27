@@ -222,7 +222,10 @@ class LoginScreen extends React.Component {
               justifyContent: "flex-end",
             }}
           >
-            <TranslationKeys handleSelectedLanguage={this.changeLanguage} />
+            <TranslationKeys
+              handleSelectedLanguage={this.changeLanguage}
+              defaultLanguage={this.state.lang}
+            />
           </div>
 
           <Form>

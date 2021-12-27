@@ -207,7 +207,10 @@ class TermSettings extends React.Component {
               paddingBottom: "10px",
             }}
           >
-            <TranslationKeys handleSelectedLanguage={this.changeLanguage} />
+            <TranslationKeys
+              handleSelectedLanguage={this.changeLanguage}
+              defaultLanguage={this.state.lang}
+            />
           </div>
 
           <Form>
