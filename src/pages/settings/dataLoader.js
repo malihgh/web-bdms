@@ -49,6 +49,7 @@ class DataLoader extends React.Component {
     this.setState({
       lang: lang,
     });
+    this.props.i18n.changeLanguage(lang);
   }
   componentDidMount() {
     if (process.env.NODE_ENV === "development") {
@@ -86,7 +87,7 @@ class DataLoader extends React.Component {
   }
 
   render() {
-    // const { i18n } = this.props;
+    const { i18n } = this.props;
     return (
       <div
         style={{
@@ -313,7 +314,10 @@ class DataLoader extends React.Component {
               paddingBottom: "10px",
             }}
           >
-            <TranslationKeys handleSelectedLanguage={this.changeLanguage} />
+            <TranslationKeys
+              handleSelectedLanguage={this.changeLanguage}
+              defaultLanguage={this.state.lang}
+            />
           </div>
         </div>
       </div>
