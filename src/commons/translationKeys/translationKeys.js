@@ -29,6 +29,7 @@ const TranslationKeys = (prop) => {
         lang = languages[3];
     }
     setSelectedLanguage(lang);
+    // console.log("hey", selectedLanguage, defaultLanguage);
   }, []);
 
   return (
@@ -43,10 +44,10 @@ const TranslationKeys = (prop) => {
           style={{
             color:
               selectedLanguage?.language === item.language ? "red" : "black",
-            // textDecoration:
-            //   selectedLanguage?.language === item.language
-            //     ? "underline"
-            //     : "none",
+            textDecoration:
+              selectedLanguage?.language === item.language
+                ? "underline"
+                : "none",
           }}
         >
           {item.language.toUpperCase()}
