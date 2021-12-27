@@ -29,7 +29,6 @@ const TranslationKeys = (prop) => {
         lang = languages[3];
     }
     setSelectedLanguage(lang);
-    // console.log("hey", selectedLanguage, defaultLanguage);
   }, []);
 
   return (
