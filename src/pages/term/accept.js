@@ -21,16 +21,7 @@ class AcceptTerms extends React.Component {
       fr: "",
       it: "",
       ro: "",
-      lang: props.i18n.language ?? "en",
     };
-    this.changeLanguage = this.changeLanguage.bind(this);
-  }
-
-  changeLanguage(lang) {
-    this.setState({
-      lang: lang,
-    });
-    this.props.i18n.changeLanguage(lang);
   }
 
   componentDidMount() {
@@ -84,10 +75,7 @@ class AcceptTerms extends React.Component {
               margin: "10px",
             }}
           >
-            <TranslationKeys
-              handleSelectedLanguage={this.changeLanguage}
-              defaultLanguage={this.state.lang}
-            />
+            <TranslationKeys />
           </div>
 
           <div
@@ -103,7 +91,7 @@ class AcceptTerms extends React.Component {
                 marginBottom: "1em",
               }}
             >
-              {this.state.lang}
+              {this.props.i18n.language}
             </Markdown>
           </div>
           <div
