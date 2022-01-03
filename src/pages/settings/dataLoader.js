@@ -79,7 +79,6 @@ class DataLoader extends React.Component {
   }
 
   render() {
-    const { i18n } = this.props;
     return (
       <div
         style={{

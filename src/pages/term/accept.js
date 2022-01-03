@@ -41,7 +41,6 @@ class AcceptTerms extends React.Component {
   componentDidUpdate(prevProps) {}
 
   render() {
-    const { i18n } = this.props;
     return (
       <div
         style={{
