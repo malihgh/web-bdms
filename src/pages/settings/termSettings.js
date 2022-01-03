@@ -24,9 +24,8 @@ class TermSettings extends React.Component {
       fr: "",
       it: "",
       ro: "",
-      lang: props.i18n.language,
     };
-    this.changeLanguage = this.changeLanguage.bind(this);
+
     this.draftTerms = this.draftTerms.bind(this);
     this.publishTerms = this.publishTerms.bind(this);
   }
@@ -45,12 +44,6 @@ class TermSettings extends React.Component {
           ro: r.data.data.ro,
         });
       }
-    });
-  }
-
-  changeLanguage(lang) {
-    this.setState({
-      lang: lang,
     });
   }
 
@@ -207,10 +200,7 @@ class TermSettings extends React.Component {
               paddingBottom: "10px",
             }}
           >
-            <TranslationKeys
-              handleSelectedLanguage={this.changeLanguage}
-              defaultLanguage={this.state.lang}
-            />
+            <TranslationKeys />
           </div>
 
           <Form>
@@ -219,11 +209,11 @@ class TermSettings extends React.Component {
                 let text = {
                   dirty: true,
                 };
-                text[this.state.lang] = e.target.value;
+                text[this.props.i18n.language] = e.target.value;
                 this.setState(text);
               }}
               rows={20}
-              value={this.state[this.state.lang]}
+              value={this.state[this.props.i18n.language]}
             />
           </Form>
         </div>
@@ -252,7 +242,7 @@ class TermSettings extends React.Component {
               {t("preview")}
             </div>
           </div>
-          <Markdown>{this.state[this.state.lang]}</Markdown>
+          <Markdown>{this.state[this.props.i18n.language]}</Markdown>
         </div>
       </div>
     );
