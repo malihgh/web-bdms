@@ -27,9 +27,12 @@ const TranslationKeys = (prop) => {
         break;
       case "en":
         lang = languages[3];
+        break;
+      default:
+        lang = languages[0];
     }
     setSelectedLanguage(lang);
-  }, [prop.i18n.language]);
+  }, [prop.i18n.language, languages]);
 
   return (
     <Styled.Container>
