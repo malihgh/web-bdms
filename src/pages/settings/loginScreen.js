@@ -37,9 +37,8 @@ class LoginScreen extends React.Component {
         it: "",
         ro: "",
       },
-      lang: props.i18n.language,
     };
-    this.changeLanguage = this.changeLanguage.bind(this);
+
     this.draftContent = this.draftContent.bind(this);
     this.publishContent = this.publishContent.bind(this);
   }
@@ -55,13 +54,6 @@ class LoginScreen extends React.Component {
           body: r.data.data.body,
         });
       }
-    });
-  }
-
-  changeLanguage(lang) {
-    console.log("hey from change language");
-    this.setState({
-      lang: lang,
     });
   }
 
@@ -222,10 +214,7 @@ class LoginScreen extends React.Component {
               justifyContent: "flex-end",
             }}
           >
-            <TranslationKeys
-              handleSelectedLanguage={this.changeLanguage}
-              defaultLanguage={this.state.lang}
-            />
+            <TranslationKeys />
           </div>
 
           <Form>
@@ -236,12 +225,12 @@ class LoginScreen extends React.Component {
                   dirty: true,
                   title: {
                     ...this.state.title,
-                    [this.state.lang]: e.target.value,
+                    [this.props.i18.language]: e.target.value,
                   },
                 });
               }}
               type="text"
-              value={this.state.title[this.state.lang]}
+              value={this.state.title[this.props.i18.language]}
             />
             <TextArea
               onChange={(e, data) => {
@@ -249,12 +238,12 @@ class LoginScreen extends React.Component {
                   dirty: true,
                   body: {
                     ...this.state.body,
-                    [this.state.lang]: e.target.value,
+                    [this.props.i18.language]: e.target.value,
                   },
                 });
               }}
               rows={20}
-              value={this.state.body[this.state.lang]}
+              value={this.state.body[this.props.i18.language]}
             />
           </Form>
         </div>
@@ -299,8 +288,8 @@ class LoginScreen extends React.Component {
               }}
             >
               <Login
-                body={this.state.body[this.state.lang]}
-                title={this.state.title[this.state.lang]}
+                body={this.state.body[this.props.i18.language]}
+                title={this.state.title[this.props.i18.language]}
                 user={{
                   data: null,
                   authentication: {
