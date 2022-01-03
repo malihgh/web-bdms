@@ -32,7 +32,8 @@ const TranslationKeys = (prop) => {
         lang = languages[0];
     }
     setSelectedLanguage(lang);
-  }, [prop.i18n.language, languages]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prop.i18n.language]);
 
   return (
     <Styled.Container>
