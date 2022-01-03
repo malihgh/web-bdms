@@ -225,12 +225,12 @@ class LoginScreen extends React.Component {
                   dirty: true,
                   title: {
                     ...this.state.title,
-                    [this.props.i18.language]: e.target.value,
+                    [this.props.i18n.language]: e.target.value,
                   },
                 });
               }}
               type="text"
-              value={this.state.title[this.props.i18.language]}
+              value={this.state.title[this.props.i18n.language]}
             />
             <TextArea
               onChange={(e, data) => {
@@ -238,12 +238,12 @@ class LoginScreen extends React.Component {
                   dirty: true,
                   body: {
                     ...this.state.body,
-                    [this.props.i18.language]: e.target.value,
+                    [this.props.i18n.language]: e.target.value,
                   },
                 });
               }}
               rows={20}
-              value={this.state.body[this.props.i18.language]}
+              value={this.state.body[this.props.i18n.language]}
             />
           </Form>
         </div>
@@ -288,8 +288,8 @@ class LoginScreen extends React.Component {
               }}
             >
               <Login
-                body={this.state.body[this.props.i18.language]}
-                title={this.state.title[this.props.i18.language]}
+                body={this.state.body[this.props.i18n.language]}
+                title={this.state.title[this.props.i18n.language]}
                 user={{
                   data: null,
                   authentication: {
