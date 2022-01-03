@@ -1,1 +1,1 @@
-export { default } from "./TranslationKeys";
+export { default } from "./translationKeys";
