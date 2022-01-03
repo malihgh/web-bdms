@@ -38,7 +38,11 @@ const TranslationKeys = (prop) => {
           key={key}
           onClick={() => {
             setSelectedLanguage(item);
-            prop.i18n.changeLanguage(item.language);
+            if (prop?.ignori18n) {
+              prop.handleSelectedLanguage(item.language);
+            } else {
+              prop.i18n.changeLanguage(item.language);
+            }
           }}
           style={{
             color:
