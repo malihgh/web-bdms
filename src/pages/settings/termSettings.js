@@ -24,12 +24,18 @@ class TermSettings extends React.Component {
       fr: "",
       it: "",
       ro: "",
+      lang: props.i18n.language,
     };
-
+    this.changeLanguage = this.changeLanguage.bind(this);
     this.draftTerms = this.draftTerms.bind(this);
     this.publishTerms = this.publishTerms.bind(this);
   }
 
+  changeLanguage(lang) {
+    this.setState({
+      lang: lang,
+    });
+  }
   componentDidMount() {
     getTermsDraft(true).then((r) => {
       if (r.data.data !== null) {
@@ -200,7 +206,10 @@ class TermSettings extends React.Component {
               paddingBottom: "10px",
             }}
           >
-            <TranslationKeys />
+            <TranslationKeys
+              ignori18n
+              handleSelectedLanguage={this.changeLanguage}
+            />
           </div>
 
           <Form>
@@ -209,11 +218,11 @@ class TermSettings extends React.Component {
                 let text = {
                   dirty: true,
                 };
-                text[this.props.i18n.language] = e.target.value;
+                text[this.state.lang] = e.target.value;
                 this.setState(text);
               }}
               rows={20}
-              value={this.state[this.props.i18n.language]}
+              value={this.state[this.state.lang]}
             />
           </Form>
         </div>
@@ -242,7 +251,7 @@ class TermSettings extends React.Component {
               {t("preview")}
             </div>
           </div>
-          <Markdown>{this.state[this.props.i18n.language]}</Markdown>
+          <Markdown>{this.state[this.state.lang]}</Markdown>
         </div>
       </div>
     );
@@ -272,4 +281,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(["common", "messages"])(TermSettings));
+)(withTranslation(["common"])(TermSettings));

@@ -37,10 +37,17 @@ class LoginScreen extends React.Component {
         it: "",
         ro: "",
       },
+      lang: props.i18n.language,
     };
-
+    this.changeLanguage = this.changeLanguage.bind(this);
     this.draftContent = this.draftContent.bind(this);
     this.publishContent = this.publishContent.bind(this);
+  }
+
+  changeLanguage(lang) {
+    this.setState({
+      lang: lang,
+    });
   }
 
   componentDidMount() {
@@ -214,7 +221,10 @@ class LoginScreen extends React.Component {
               justifyContent: "flex-end",
             }}
           >
-            <TranslationKeys />
+            <TranslationKeys
+              ignori18n
+              handleSelectedLanguage={this.changeLanguage}
+            />
           </div>
 
           <Form>
@@ -225,12 +235,12 @@ class LoginScreen extends React.Component {
                   dirty: true,
                   title: {
                     ...this.state.title,
-                    [this.props.i18n.language]: e.target.value,
+                    [this.state.lang]: e.target.value,
                   },
                 });
               }}
               type="text"
-              value={this.state.title[this.props.i18n.language]}
+              value={this.state.title[this.state.lang]}
             />
             <TextArea
               onChange={(e, data) => {
@@ -238,12 +248,12 @@ class LoginScreen extends React.Component {
                   dirty: true,
                   body: {
                     ...this.state.body,
-                    [this.props.i18n.language]: e.target.value,
+                    [this.state.lang]: e.target.value,
                   },
                 });
               }}
               rows={20}
-              value={this.state.body[this.props.i18n.language]}
+              value={this.state.body[this.state.lang]}
             />
           </Form>
         </div>
@@ -288,8 +298,8 @@ class LoginScreen extends React.Component {
               }}
             >
               <Login
-                body={this.state.body[this.props.i18n.language]}
-                title={this.state.title[this.props.i18n.language]}
+                body={this.state.body[this.state.lang]}
+                title={this.state.title[this.state.lang]}
                 user={{
                   data: null,
                   authentication: {
