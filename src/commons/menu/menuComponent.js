@@ -20,7 +20,7 @@ class MenuComponent extends React.Component {
   }
 
   render() {
-    const { i18n, handleModeChange, mode } = this.props;
+    const { handleModeChange, mode } = this.props;
 
     return (
       <div
