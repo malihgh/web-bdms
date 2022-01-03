@@ -40,17 +40,9 @@ class DataLoader extends React.Component {
             it: "",
             ro: "",
           },
-      lang: props.i18n.language ?? "en",
     };
-    this.changeLanguage = this.changeLanguage.bind(this);
   }
 
-  changeLanguage(lang) {
-    this.setState({
-      lang: lang,
-    });
-    this.props.i18n.changeLanguage(lang);
-  }
   componentDidMount() {
     if (process.env.NODE_ENV === "development") {
       this.props.setAuthentication("admin", "swissforages");
@@ -146,7 +138,7 @@ class DataLoader extends React.Component {
                         fontSize: "1.2em",
                       }}
                     >
-                      {this.state.title[this.state.lang]}
+                      {this.state.title[this.props.i18n.language]}
                     </div>
                     <div
                       style={{
@@ -164,8 +156,10 @@ class DataLoader extends React.Component {
                   paddingTop: "2em",
                 }}
               >
-                {this.state.body.hasOwnProperty(this.state.lang) ? (
-                  <Markdown>{this.state.body[this.state.lang]}</Markdown>
+                {this.state.body.hasOwnProperty(this.props.i18n.language) ? (
+                  <Markdown>
+                    {this.state.body[this.props.i18n.language]}
+                  </Markdown>
                 ) : null}
               </div>
               {/* <div
@@ -314,10 +308,7 @@ class DataLoader extends React.Component {
               paddingBottom: "10px",
             }}
           >
-            <TranslationKeys
-              handleSelectedLanguage={this.changeLanguage}
-              defaultLanguage={this.state.lang}
-            />
+            <TranslationKeys />
           </div>
         </div>
       </div>
