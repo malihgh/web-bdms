@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { composeInitialProps } from "react-i18next";
 import * as Styled from "./styles";
+import { withTranslation } from "react-i18next";
 
 const TranslationKeys = (prop) => {
-  const { handleSelectedLanguage, defaultLanguage } = prop;
   const [selectedLanguage, setSelectedLanguage] = useState();
 
   const languages = [
@@ -15,7 +14,8 @@ const TranslationKeys = (prop) => {
 
   useEffect(() => {
     let lang;
-    switch (defaultLanguage) {
+
+    switch (prop.i18n.language) {
       case "de":
         lang = languages[0];
         break;
@@ -29,7 +29,7 @@ const TranslationKeys = (prop) => {
         lang = languages[3];
     }
     setSelectedLanguage(lang);
-  }, []);
+  }, [prop.i18n.language]);
 
   return (
     <Styled.Container>
@@ -38,7 +38,7 @@ const TranslationKeys = (prop) => {
           key={key}
           onClick={() => {
             setSelectedLanguage(item);
-            handleSelectedLanguage(item.language);
+            prop.i18n.changeLanguage(item.language);
           }}
           style={{
             color:
@@ -56,4 +56,4 @@ const TranslationKeys = (prop) => {
   );
 };
 
-export default TranslationKeys;
+export default withTranslation("common")(TranslationKeys);
