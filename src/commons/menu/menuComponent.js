@@ -16,16 +16,7 @@ class MenuComponent extends React.Component {
     super(props);
     this.state = {
       feedback: false,
-      lang: props.i18n.language ?? "en",
     };
-    this.changeLanguage = this.changeLanguage.bind(this);
-  }
-
-  changeLanguage(lang) {
-    this.setState({
-      lang: lang,
-    });
-    this.props.i18n.changeLanguage(lang);
   }
 
   render() {
@@ -300,10 +291,7 @@ class MenuComponent extends React.Component {
                 justifyContent: "center",
               }}
             >
-              <TranslationKeys
-                handleSelectedLanguage={this.changeLanguage}
-                defaultLanguage={this.state.lang}
-              />
+              <TranslationKeys />
             </div>
           </div>
         </Popup>
