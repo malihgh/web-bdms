@@ -3,7 +3,7 @@
   "version": "1.0.4",
   "description": "Bohrehole Data Management System",
   "private": true,
-  "proxy": "http://localhost:8888",
+  "proxy": "http://localhost:8888/",
   "author": "SUPSI <geoservice@supsi.ch> (https://github.com/ist-supsi)",
   "contributors": [
     "Milan P. Antonovic <milan.antonovic@supsi.ch> (https://github.com/mantonovic)"
@@ -36,7 +36,8 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.88.2"
+    "semantic-ui-react": "^0.88.2",
+    "styled-components": "^5.3.3"
   },
   "scripts": {
     "start": "react-scripts start",

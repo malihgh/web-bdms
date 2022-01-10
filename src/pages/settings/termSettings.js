@@ -1,23 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
-import Markdown from 'markdown-to-jsx';
-import {
-  Button,
-  Form,
-  Modal,
-  TextArea,
-} from 'semantic-ui-react';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { withTranslation } from "react-i18next";
+import Markdown from "markdown-to-jsx";
+import { Button, Form, Modal, TextArea } from "semantic-ui-react";
 
-import {
-  draftTerms,
-  getTermsDraft,
-  publishTerms
-} from '@ist-supsi/bmsjs';
+import TranslationKeys from "../../commons/translationKeys";
+
+import { draftTerms, getTermsDraft, publishTerms } from "@ist-supsi/bmsjs";
 
 class TermSettings extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -27,78 +19,71 @@ class TermSettings extends React.Component {
       dirty: false,
       draft: false,
       id: null,
-      en: '',
-      de: '',
-      fr: '',
-      it: '',
-      ro: '',
-      lang: props.i18n.language
+      en: "",
+      de: "",
+      fr: "",
+      it: "",
+      ro: "",
+      lang: props.i18n.language,
     };
     this.changeLanguage = this.changeLanguage.bind(this);
     this.draftTerms = this.draftTerms.bind(this);
     this.publishTerms = this.publishTerms.bind(this);
   }
 
-  componentDidMount(){
-    getTermsDraft(true)
-      .then(
-        r => {
-          if (r.data.data !== null) {
-            this.setState({
-              isFetching: false,
-              id: r.data.data.id,
-              draft: r.data.data.draft,
-              en: r.data.data.en,
-              fr: r.data.data.fr,
-              de: r.data.data.de,
-              it: r.data.data.it,
-              ro: r.data.data.ro,
-            });
-          }
-        }
-      );
-  }
-
-  changeLanguage (lang) {
+  changeLanguage(lang) {
     this.setState({
-      lang: lang
+      lang: lang,
+    });
+  }
+  componentDidMount() {
+    getTermsDraft(true).then((r) => {
+      if (r.data.data !== null) {
+        this.setState({
+          isFetching: false,
+          id: r.data.data.id,
+          draft: r.data.data.draft,
+          en: r.data.data.en,
+          fr: r.data.data.fr,
+          de: r.data.data.de,
+          it: r.data.data.it,
+          ro: r.data.data.ro,
+        });
+      }
     });
   }
 
   draftTerms() {
-    this.setState({
-      saving: true
-    }, () => {
-      draftTerms({
-        en: this.state.en,
-        de: this.state.de,
-        fr: this.state.fr,
-        it: this.state.it,
-        ro: this.state.ro
-      })
-        .then(
-          () => {
-            this.setState({
-              dirty: false,
-              draft: true,
-              saving: false
-            });
-          }
-        );
-    });
+    this.setState(
+      {
+        saving: true,
+      },
+      () => {
+        draftTerms({
+          en: this.state.en,
+          de: this.state.de,
+          fr: this.state.fr,
+          it: this.state.it,
+          ro: this.state.ro,
+        }).then(() => {
+          this.setState({
+            dirty: false,
+            draft: true,
+            saving: false,
+          });
+        });
+      }
+    );
   }
 
   publishTerms() {
-    publishTerms()
-      .then(
-        () => {
-          this.setState({
-            draft: false,
-            dirty: false,
-            confirmPublication: false,
-          });
-        }
-      );
+    publishTerms().then(() => {
+      this.setState({
+        draft: false,
+        dirty: false,
+        confirmPublication: false,
+      });
+    });
   }
 
   render() {
@@ -109,201 +94,129 @@ class TermSettings extends React.Component {
     return (
       <div
         style={{
-          padding: '2em',
+          padding: "2em",
           flex: 1,
-          display: 'flex',
-          flexDirection: 'row'
+          display: "flex",
+          flexDirection: "row",
         }}
       >
         <div
           style={{
-            flex: '1 1 100%',
-            padding: '1em',
-            margin: '1em'
+            flex: "1 1 100%",
+            padding: "1em",
+            margin: "1em",
           }}
         >
           <div
             style={{
               // alignItems: 'center',
-              display: 'flex',
-              flexDirection: 'row',
-              paddingBottom: '1em',
+              display: "flex",
+              flexDirection: "row",
+              paddingBottom: "1em",
             }}
           >
             <div
               style={{
-                color: 'rgb(237, 29, 36)',
-                fontStyle: 'italic',
-                textTransform: 'capitalize',
-                whiteSpace: 'nowrap',
+                color: "rgb(237, 29, 36)",
+                fontStyle: "italic",
+                textTransform: "capitalize",
+                whiteSpace: "nowrap",
               }}
             >
-              {
-                this.state.draft === true?
-                  t('draft'):
-                  t('terms')
-              }
+              {this.state.draft === true ? t("draft") : t("terms")}
             </div>
             <div
               style={{
-                flex: '1 1 100%',
-                textAlign: 'right'
+                flex: "1 1 100%",
+                textAlign: "right",
               }}
             >
               <Button
-                onClick={
-                  ()=>{
-                    this.setState({
-                      confirmPublication: true
-                    });
-                  }
-                }
+                onClick={() => {
+                  this.setState({
+                    confirmPublication: true,
+                  });
+                }}
                 primary
                 style={{
-                  display: (
-                    this.state.draft === true
-                    && this.state.dirty === false
-                  )? null: 'none',
-                  textTransform: 'capitalize',
+                  display:
+                    this.state.draft === true && this.state.dirty === false
+                      ? null
+                      : "none",
+                  textTransform: "capitalize",
                 }}
               >
-                {t('publish')}
+                {t("publish")}
               </Button>
-              <Modal
-                open={this.state.confirmPublication}
-                size='mini'
-              >
+              <Modal open={this.state.confirmPublication} size="mini">
                 <Modal.Header>
-                  {t('messages:disclaimer_publish_title')}
+                  {t("messages:disclaimer_publish_title")}
                 </Modal.Header>
                 <Modal.Content>
-                  <p>
-                    {t('messages:disclaimer_publish_message')}
-                  </p>
-                  <p>
-                    {t('messages:disclaimer_publish_note')}
-                  </p>
+                  <p>{t("messages:disclaimer_publish_message")}</p>
+                  <p>{t("messages:disclaimer_publish_note")}</p>
                 </Modal.Content>
                 <Modal.Actions>
                   <Button
                     negative
-                    onClick={
-                      () => {
-                        this.setState({
-                          confirmPublication: false
-                        });
-                      }
-                    }
+                    onClick={() => {
+                      this.setState({
+                        confirmPublication: false,
+                      });
+                    }}
                     style={{
-                      textTransform: 'capitalize'
+                      textTransform: "capitalize",
                     }}
                   >
-                    {t('cancel')}
+                    {t("cancel")}
                   </Button>
                   <Button
-                    onClick={
-                      () => this.publishTerms()
-                    }
+                    onClick={() => this.publishTerms()}
                     primary
                     style={{
-                      textTransform: 'capitalize'
+                      textTransform: "capitalize",
                     }}
                   >
-                    {t('publish')}
+                    {t("publish")}
                   </Button>
                 </Modal.Actions>
               </Modal>
               <Button
                 disabled={this.state.dirty === false}
                 loading={this.state.saving}
-                onClick={
-                  ()=>{
-                    this.draftTerms();
-                  }
-                }
+                onClick={() => {
+                  this.draftTerms();
+                }}
                 secondary
                 style={{
-                  marginLeft: '1em',
-                  textTransform: 'capitalize',
-                  display: this.state.dirty === true? null: 'none',
+                  marginLeft: "1em",
+                  textTransform: "capitalize",
+                  display: this.state.dirty === true ? null : "none",
                 }}
               >
-                {t('save')}
+                {t("save")}
               </Button>
             </div>
           </div>
+
           <div
             style={{
-              fontSize: '0.9em',
-              padding: '1em',
-              textAlign: 'right'
+              display: "flex",
+              justifyContent: "flex-end",
+              paddingBottom: "10px",
             }}
           >
-            <span
-              className='link'
-              onClick={() => {
-                this.changeLanguage('de');
-              }}
-              style={{
-                paddingRight: '0.5em',
-                color: this.state.lang === 'de' ?
-                  '#ed1d24' : null,
-                textDecoration: this.state.lang === 'de' ?
-                  'underline' : null
-              }}
-            >
-              DE
-            </span>
-            <span
-              className='link'
-              onClick={() => {
-                this.changeLanguage('fr');
-              }}
-              style={{
-                paddingRight: '0.5em',
-                color: this.state.lang === 'fr' ?
-                  '#ed1d24' : null,
-                textDecoration: this.state.lang === 'fr' ?
-                  'underline' : null
-              }}
-            >
-              FR
-            </span>
-            <span
-              className='link'
-              onClick={() => {
-                this.changeLanguage('it');
-              }}
-              style={{
-                paddingRight: '0.5em',
-                color: this.state.lang === 'it' ?
-                  '#ed1d24' : null,
-                textDecoration: this.state.lang === 'it' ?
-                  'underline' : null
-              }}
-            >
-              IT
-            </span>
-            <span
-              className='link'
-              onClick={() => {
-                this.changeLanguage('en');
-              }}
-              style={{
-                color: this.state.lang === 'en' ?
-                  '#ed1d24' : null,
-                textDecoration: this.state.lang === 'en' ?
-                  'underline' : null
-              }}
-            >
-              EN
-            </span>
+            <TranslationKeys
+              ignori18n
+              handleSelectedLanguage={this.changeLanguage}
+            />
           </div>
+
           <Form>
             <TextArea
               onChange={(e, data) => {
                 let text = {
-                  dirty: true
+                  dirty: true,
                 };
                 text[this.state.lang] = e.target.value;
                 this.setState(text);
@@ -315,37 +228,35 @@ class TermSettings extends React.Component {
         </div>
         <div
           style={{
-            flex: '1 1 100%',
-            padding: '1em',
-            margin: '1em'
+            flex: "1 1 100%",
+            padding: "1em",
+            margin: "1em",
           }}
         >
           <div
             style={{
-              alignItems: 'center',
-              display: 'flex',
-              flexDirection: 'row',
-              paddingBottom: '1em',
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "row",
+              paddingBottom: "1em",
             }}
           >
             <div
               style={{
-                color: 'rgb(237, 29, 36)',
-                fontStyle: 'italic',
-                textTransform: 'capitalize',
+                color: "rgb(237, 29, 36)",
+                fontStyle: "italic",
+                textTransform: "capitalize",
               }}
             >
-              {t('preview')}
+              {t("preview")}
             </div>
           </div>
-          <Markdown>
-            {this.state[this.state.lang]}
-          </Markdown>
+          <Markdown>{this.state[this.state.lang]}</Markdown>
         </div>
       </div>
     );
   }
-};
+}
 
 TermSettings.propTypes = {
   t: PropTypes.func,
@@ -370,4 +281,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(['common', 'messages'])(TermSettings));
+)(withTranslation(["common"])(TermSettings));
