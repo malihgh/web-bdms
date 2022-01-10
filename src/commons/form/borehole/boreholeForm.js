@@ -45,6 +45,7 @@ import {
   TextArea,
   Icon
 } from 'semantic-ui-react';
+import ProfileController from '../profile/profileController';
 
 class BoreholeForm extends React.Component {
 
@@ -2125,6 +2126,24 @@ class BoreholeForm extends React.Component {
             render={() => (
               <EditorBoreholeFilesTable
                 id={parseInt(this.props.match.params.id, 10)}
+                unlocked={
+                  !(
+                    this.props.borehole.data.role !== 'EDIT'
+                    || this.props.borehole.data.lock === null
+                    || this.props.borehole.data.lock.username !==
+                        this.props.user.data.username
+                  )
+                }
+              />
+            )}
+          />
+          <Route
+            exact
+            path={process.env.PUBLIC_URL + "/editor/:id/geotechnical"}
+            render={() => (
+              <ProfileController
+                id={parseInt(this.props.match.params.id, 10)}
+                kind='geotechnical'
                 unlocked={
                   !(
                     this.props.borehole.data.role !== 'EDIT'

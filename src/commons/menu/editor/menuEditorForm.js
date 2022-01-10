@@ -259,6 +259,43 @@ class MenuEditorForm extends React.Component {
                 </List.Header>
               </List.Content>
             </List.Item>
+
+            <List.Item
+              active={
+                location.pathname ===
+                process.env.PUBLIC_URL + "/editor/"
+                + match.params.id + "/geotechnical"
+              }
+              onClick={() => {
+                history.push(
+                  process.env.PUBLIC_URL + "/editor/"
+                  + match.params.id + "/geotechnical"
+                );
+              }}
+              style={{
+                padding: '1em',
+                borderLeft: location.pathname ===
+                  process.env.PUBLIC_URL + "/editor/"
+                  + match.params.id + "/geotechnical" ?
+                  '0.25em solid rgb(237, 29, 36)' : null
+              }}
+            >
+              <List.Icon
+                name='align justify'
+                size='large'
+                verticalAlign='middle'
+              />
+              <List.Content>
+                <List.Header as='h3'>
+                  {/* <TranslationText
+                    firstUpperCase
+                    id="stratigraphy"
+                  /> */}
+                  Geotec.
+                </List.Header>
+              </List.Content>
+            </List.Item>
+
           </List>
         </Scroller>,
         <div
