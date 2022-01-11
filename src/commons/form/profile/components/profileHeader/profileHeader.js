@@ -6,12 +6,15 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
+import _ from 'lodash';
+import DateText from '../../../dateText';
 
 const ProfileHeader = props => {
   const { data } = props.borehole;
+  const { t } = props;
 
   const [showStratigraphyButton, setShowStratigraphyButton] = useState(false);
-  const [isPrimary, setIsPrimary] = useState(true);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     if (
@@ -25,6 +28,9 @@ const ProfileHeader = props => {
     } else {
       setShowStratigraphyButton(false);
     }
+
+    if (data.stratigraphy && data.stratigraphy.length > 0)
+      setSelectedItem(data.stratigraphy[0].id);
   }, [props, setShowStratigraphyButton]);
 
   return (
@@ -38,18 +44,34 @@ const ProfileHeader = props => {
         />
       )}
 
-      <Styled.Item>
-        <Styled.ItemName>
-          {isPrimary && <Icon name="check" />}
-          Mali
-        </Styled.ItemName>
-        <Styled.ItemDate>1/02</Styled.ItemDate>
-      </Styled.Item>
+      {_.isArray(data.stratigraphy) &&
+        data.stratigraphy.map(item => (
+          <Styled.Item
+            key={item.id}
+            onClick={() => {
+              setSelectedItem(item.id);
+            }}
+            style={{
+              borderBottom: item.id === selectedItem && '2px solid black',
+            }}>
+            <Styled.ItemName>
+              {item.primary && <Icon name="check" />}
+              {item.name === null || item.name === ''
+                ? t('common:np')
+                : item.name}
+            </Styled.ItemName>
+            <Styled.ItemDate>
+              {' '}
+              <DateText date={item.date} />
+            </Styled.ItemDate>
+          </Styled.Item>
+        ))}
     </Styled.Container>
   );
 };
 ProfileHeader.propTypes = {
   borehole: PropTypes.object,
+  t: PropTypes.func,
 };
 
 ProfileHeader.defaultProps = {
