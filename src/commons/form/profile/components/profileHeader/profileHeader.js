@@ -1,11 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
 import { Button, Icon } from 'semantic-ui-react';
 import TranslationText from './../../../translationText';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
 
-const ProfileHeader = () => {
-  const [showStratigraphyButton, setShowStratigraphyButton] = useState(true);
+const ProfileHeader = props => {
+  const { data } = props.borehole;
+
+  const [showStratigraphyButton, setShowStratigraphyButton] = useState(false);
   const [isPrimary, setIsPrimary] = useState(true);
+
+  useEffect(() => {
+    if (
+      !(
+        data.lock === null ||
+        data.lock.username !== props.user.data.username ||
+        data.role !== 'EDIT'
+      )
+    ) {
+      setShowStratigraphyButton(true);
+    } else {
+      setShowStratigraphyButton(false);
+    }
+  }, [props, setShowStratigraphyButton]);
 
   return (
     <Styled.Container>
@@ -28,4 +48,30 @@ const ProfileHeader = () => {
     </Styled.Container>
   );
 };
-export default ProfileHeader;
+ProfileHeader.propTypes = {
+  borehole: PropTypes.object,
+};
+
+ProfileHeader.defaultProps = {
+  id: undefined,
+};
+
+const mapStateToProps = state => {
+  return {
+    borehole: state.core_borehole,
+    user: state.core_user,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch: dispatch,
+  };
+};
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(withTranslation(['common'])(ProfileHeader)),
+);
