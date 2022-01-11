@@ -61,7 +61,6 @@ const ProfileHeader = props => {
                 : item.name}
             </Styled.ItemName>
             <Styled.ItemDate>
-              {' '}
               <DateText date={item.date} />
             </Styled.ItemDate>
           </Styled.Item>
