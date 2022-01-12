@@ -49,16 +49,7 @@ const ProfileInfo = () => {
           style={{
             display: 'flex',
           }}>
-          <Checkbox
-            // checked={stratigraphy.primary}
-            // label=""
-            // onChange={(ev, data) => {
-            //   if (data.checked === true) {
-            //     this.updateChange('primary', data.checked, false);
-            //   }
-            // }}
-            toggle
-          />
+          <Checkbox label="" toggle />
           <TranslationText id="mainStratigraphy" />
         </Form>
 
@@ -88,16 +79,9 @@ const ProfileInfo = () => {
         </div>
       </Styled.CheckBoxContainer>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          marginBottom: '0.5em',
-        }}>
-        <Button fluid secondary size="tiny">
-          <TranslationText id="add" />
-        </Button>
-      </div>
+      <Button fluid secondary size="tiny">
+        <TranslationText id="add" />
+      </Button>
     </Styled.Container>
   );
 };
