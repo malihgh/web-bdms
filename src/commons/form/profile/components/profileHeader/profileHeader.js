@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import * as Styled from './styles';
-import { Button, Icon } from 'semantic-ui-react';
-import TranslationText from './../../../translationText';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import DateText from '../../../dateText';
+import React, { useState, useEffect } from "react";
+import * as Styled from "./styles";
+import { Button, Icon } from "semantic-ui-react";
+import TranslationText from "./../../../translationText";
+import PropTypes from "prop-types";
+import _ from "lodash";
+import DateText from "../../../dateText";
 
-const ProfileHeader = props => {
-  // const { data } = props.borehole;
-  const { t,data,user } = props;
-  console.log('hey',props,data.lock);
+const ProfileHeader = (props) => {
+  const { data, user } = props.data;
 
   const [showStratigraphyButton, setShowStratigraphyButton] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -19,7 +17,7 @@ const ProfileHeader = props => {
       !(
         data.lock === null ||
         data.lock.username !== user.username ||
-        data.role !== 'EDIT'
+        data.role !== "EDIT"
       )
     ) {
       setShowStratigraphyButton(true);
@@ -43,20 +41,19 @@ const ProfileHeader = props => {
       )}
 
       {_.isArray(data.stratigraphy) &&
-        data.stratigraphy.map(item => (
+        data.stratigraphy.map((item) => (
           <Styled.Item
             key={item.id}
             onClick={() => {
               setSelectedItem(item.id);
             }}
             style={{
-              borderBottom: item.id === selectedItem && '2px solid black',
-            }}>
+              borderBottom: item.id === selectedItem && "2px solid black",
+            }}
+          >
             <Styled.ItemName>
               {item.primary && <Icon name="check" />}
-              {item.name === null || item.name === ''
-                ? t('common:np')
-                : item.name}
+              {item.name === null || item.name === "" ? "translate" : item.name}
             </Styled.ItemName>
             <Styled.ItemDate>
               <DateText date={item.date} />
@@ -70,6 +67,4 @@ ProfileHeader.propTypes = {
   t: PropTypes.func,
 };
 
-
 export default ProfileHeader;
-
