@@ -4,6 +4,7 @@ import * as Styled from './styles';
 import { Checkbox, Input, TextArea, Form } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import DomainDropdown from '../../../domain/dropdown/domainDropdown';
+import DomainTree from '../../../domain/tree/domainTree';
 import { attributes } from './attributesItem';
 
 const ProfileAttributes = () => {
@@ -91,6 +92,27 @@ const ProfileAttributes = () => {
                   schema={item.schema}
                   selected={item.value}
                   search={item.search}
+                />
+              </Styled.AttributesItem>
+            </Styled.AttributesContainer>
+          )}
+
+          {item.type === 'DomainTree' && (item.isVisible || showAll) && (
+            <Styled.AttributesContainer required={item.require}>
+              <Styled.Label>
+                <TranslationText id={item.label} />
+              </Styled.Label>
+              <Styled.AttributesItem>
+                <DomainTree
+                  levels={item.levels}
+                  onSelected={()=>item.onChange()}
+                  schema={item.schema}
+                  selected={item.value}
+                  title={
+                    <TranslationText
+                      id={item.label}
+                    />  
+                  }
                 />
               </Styled.AttributesItem>
             </Styled.AttributesContainer>
