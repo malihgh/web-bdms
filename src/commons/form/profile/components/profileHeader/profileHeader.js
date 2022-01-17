@@ -2,16 +2,14 @@ import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
 import { Button, Icon } from 'semantic-ui-react';
 import TranslationText from './../../../translationText';
-import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import DateText from '../../../dateText';
 
 const ProfileHeader = props => {
-  const { data } = props.borehole;
-  const { t } = props;
+  // const { data } = props.borehole;
+  const { t,data,user } = props;
+  console.log('hey',props,data.lock);
 
   const [showStratigraphyButton, setShowStratigraphyButton] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -20,7 +18,7 @@ const ProfileHeader = props => {
     if (
       !(
         data.lock === null ||
-        data.lock.username !== props.user.data.username ||
+        data.lock.username !== user.username ||
         data.role !== 'EDIT'
       )
     ) {
@@ -69,30 +67,9 @@ const ProfileHeader = props => {
   );
 };
 ProfileHeader.propTypes = {
-  borehole: PropTypes.object,
   t: PropTypes.func,
 };
 
-ProfileHeader.defaultProps = {
-  id: undefined,
-};
 
-const mapStateToProps = state => {
-  return {
-    borehole: state.core_borehole,
-    user: state.core_user,
-  };
-};
+export default ProfileHeader;
 
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatch: dispatch,
-  };
-};
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(withTranslation(['common'])(ProfileHeader)),
-);
