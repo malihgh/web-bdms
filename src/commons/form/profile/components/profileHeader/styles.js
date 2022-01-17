@@ -4,8 +4,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 10px;
+  height: 45px;
 `;
-
 export const Item = styled.div`
   margin: 0px 10px;
   cursor: pointer;
