@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Style from './styles';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -12,25 +13,15 @@ import ProfileAttributes from './components/profileAttributes';
 // Take a look at the StratigraphyFormContainer
 
 const Profile = props => {
-  const { data } = props.borehole;
-  const { data: user } = props.user;
-
   const dataBorhole = {
     data: props.borehole.data,
     user: props.user.data,
   };
+
   return (
-    <div style={{ height: '100%' }}>
+    <Style.MainContainer>
       <ProfileHeader data={dataBorhole} />
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          padding: '10px',
-          paddingRight: '0px',
-          flex: 1,
-          height: '100%',
-        }}>
+      <Style.Container>
         <div style={{ width: '60%' }}>
           <ProfileInfo />
           <ProfileLayers />
@@ -38,8 +29,8 @@ const Profile = props => {
         <div style={{ width: '40%' }}>
           <ProfileAttributes />
         </div>
-      </div>
-    </div>
+      </Style.Container>
+    </Style.MainContainer>
   );
 };
 
