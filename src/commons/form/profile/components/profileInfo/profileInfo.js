@@ -5,7 +5,7 @@ import TranslationText from '../../../translationText';
 import DateField from '../../../dateField';
 
 const ProfileInfo = props => {
-  const { selectedStratigraphy } = props.data;
+  const { selectedStratigraphy, isEditable } = props.data;
 
   return (
     <Styled.Container>
@@ -60,36 +60,39 @@ const ProfileInfo = props => {
           />
           <TranslationText id="mainStratigraphy" />
         </Form>
-
-        <div style={{ display: 'flex' }}>
-          <Button
-            // disabled={!_.isEmpty(this.state.consistency)}
-            icon
-            size="tiny">
-            <Icon name="clone outline" />
-          </Button>
-          <Popup
-            flowing
-            hoverable
-            on="click"
-            position="right center"
-            trigger={
-              <Button icon size="tiny">
-                <Icon name="trash alternate" />
-              </Button>
-            }>
-            <TranslationText id="deleteForever" />?
-            <br />
-            <Button icon secondary size="tiny">
-              <TranslationText id="yes" />
+        {isEditable && (
+          <div style={{ display: 'flex' }}>
+            <Button
+              // disabled={!_.isEmpty(this.state.consistency)}
+              icon
+              size="tiny">
+              <Icon name="clone outline" />
             </Button>
-          </Popup>
-        </div>
+            <Popup
+              flowing
+              hoverable
+              on="click"
+              position="right center"
+              trigger={
+                <Button icon size="tiny">
+                  <Icon name="trash alternate" />
+                </Button>
+              }>
+              <TranslationText id="deleteForever" />?
+              <br />
+              <Button icon secondary size="tiny">
+                <TranslationText id="yes" />
+              </Button>
+            </Popup>
+          </div>
+        )}
       </Styled.CheckBoxContainer>
 
-      <Button fluid secondary size="tiny">
-        <TranslationText id="add" />
-      </Button>
+      {isEditable && (
+        <Button fluid secondary size="tiny">
+          <TranslationText id="add" />
+        </Button>
+      )}
     </Styled.Container>
   );
 };
