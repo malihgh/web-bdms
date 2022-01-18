@@ -7,28 +7,17 @@ import _ from 'lodash';
 import DateText from '../../../dateText';
 
 const ProfileHeader = props => {
-  const { data, user, selectedStratigraphyID, setSelectedStratigraphyID } =
-    props.data;
-
-  const [showStratigraphyButton, setShowStratigraphyButton] = useState(false);
-
-  useEffect(() => {
-    if (
-      !(
-        data.lock === null ||
-        data.lock.username !== user.username ||
-        data.role !== 'EDIT'
-      )
-    ) {
-      setShowStratigraphyButton(true);
-    } else {
-      setShowStratigraphyButton(false);
-    }
-  }, [props, setShowStratigraphyButton]);
+  const {
+    data,
+    user,
+    selectedStratigraphy,
+    setSelectedStratigraphy,
+    isEditable,
+  } = props.data;
 
   return (
     <Styled.Container>
-      {showStratigraphyButton && (
+      {isEditable && (
         <Button
           content={<TranslationText id="stratigraphy" />}
           icon="add"
@@ -42,11 +31,11 @@ const ProfileHeader = props => {
           <Styled.Item
             key={item.id}
             onClick={() => {
-              setSelectedStratigraphyID(item.id);
+              setSelectedStratigraphy(item);
             }}
             style={{
               borderBottom:
-                item.id === selectedStratigraphyID && '2px solid black',
+                item.id === selectedStratigraphy?.id && '2px solid black',
             }}>
             <Styled.ItemName>
               {item.primary && <Icon name="check" />}
