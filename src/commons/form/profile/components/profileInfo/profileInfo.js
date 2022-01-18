@@ -4,7 +4,9 @@ import { Input, Form, Checkbox, Popup, Button, Icon } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import DateField from '../../../dateField';
 
-const ProfileInfo = () => {
+const ProfileInfo = props => {
+  const { selectedStratigraphy } = props.data;
+
   return (
     <Styled.Container>
       <Styled.FormContainer>
@@ -23,9 +25,9 @@ const ProfileInfo = () => {
                 autoComplete="off"
                 autoCorrect="off"
                 spellCheck="false"
-                value={'Mali'}
-
-                // value={stratigraphy.name}
+                value={
+                  (selectedStratigraphy && selectedStratigraphy.name) || ''
+                }
               />
             </Form.Field>
 
@@ -37,7 +39,9 @@ const ProfileInfo = () => {
               <label>
                 <TranslationText id="date" />
               </label>
-              <DateField date={'12/09/2021'} />
+              <DateField
+                date={selectedStratigraphy && selectedStratigraphy.date}
+              />
             </Form.Field>
           </Form.Group>
         </Form>
@@ -49,7 +53,11 @@ const ProfileInfo = () => {
           style={{
             display: 'flex',
           }}>
-          <Checkbox label="" toggle />
+          <Checkbox
+            checked={selectedStratigraphy && selectedStratigraphy.primary}
+            label=""
+            toggle
+          />
           <TranslationText id="mainStratigraphy" />
         </Form>
 
