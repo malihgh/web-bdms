@@ -14,56 +14,45 @@ const ProfileAttributes = () => {
       <Styled.CheckboxContainer>
         <Checkbox
           checked={showAll}
-          onChange={data => {
-            console.log('profileAttributes', data);
-            setShowAll(!showAll);
-          }}
+          onChange={() => setShowAll(!showAll)}
           toggle
         />
         <TranslationText id="showallfields" />
       </Styled.CheckboxContainer>
 
       {attributes.map((item, key) => (
-        <Form key={key}>
-          {item.type === 'Input' && (item.isVisible || showAll) && (
-            <Styled.AttributesContainer required={item.require}>
+        <Form autoComplete="false" error key={key}>
+          <Styled.AttributesContainer required={item.require}>
+            {(item.isVisible || showAll) && (
               <Styled.Label>
                 <TranslationText id={item.label} />
               </Styled.Label>
+            )}
+            {item.type === 'Input' && (item.isVisible || showAll) && (
               <Styled.AttributesItem>
                 <Input
                   autoCapitalize="off"
                   autoComplete="off"
                   autoCorrect="off"
-                  onChange={() => item.onChange()}
+                  // onChange={(e) => setState((prevState)=>({ ...prevState,[item.value]:e.target.value}))}
                   spellCheck="false"
                   style={{ width: '100%' }}
-                  // value={item.value}
+                  // value={state[item.value]}
                 />
               </Styled.AttributesItem>
-            </Styled.AttributesContainer>
-          )}
+            )}
 
-          {item.type === 'TextArea' && (item.isVisible || showAll) && (
-            <Styled.AttributesContainer>
-              <Styled.Label>
-                <TranslationText id={item.label} />
-              </Styled.Label>
+            {item.type === 'TextArea' && (item.isVisible || showAll) && (
               <Styled.AttributesItem>
                 <TextArea
+                  // onChange={() => item.onChange()}
                   style={{ width: '100%' }}
-                  onChange={() => item.onChange()}
                   // value={item.value}
                 />
               </Styled.AttributesItem>
-            </Styled.AttributesContainer>
-          )}
+            )}
 
-          {item.type === 'Radio' && (item.isVisible || showAll) && (
-            <Styled.AttributesContainer>
-              <Styled.Label>
-                <TranslationText id={item.label} />
-              </Styled.Label>
+            {item.type === 'Radio' && (item.isVisible || showAll) && (
               <Form.Group style={{ display: 'flex', paddingTop: '5px' }}>
                 <Form.Radio
                   checked={!item.value}
@@ -77,46 +66,32 @@ const ProfileAttributes = () => {
                   onChange={() => item.onNoSelect()}
                 />
               </Form.Group>
-            </Styled.AttributesContainer>
-          )}
+            )}
 
-          {item.type === 'Dropdown' && (item.isVisible || showAll) && (
-            <Styled.AttributesContainer>
-              <Styled.Label>
-                <TranslationText id={item.label} />
-              </Styled.Label>
+            {item.type === 'Dropdown' && (item.isVisible || showAll) && (
               <Styled.AttributesItem>
                 <DomainDropdown
                   multiple={item.multiple}
-                  onSelected={() => item.onChange()}
+                  // onSelected={() => item.onChange()}
                   schema={item.schema}
-                  selected={item.value}
                   search={item.search}
+                  selected={item.value}
                 />
               </Styled.AttributesItem>
-            </Styled.AttributesContainer>
-          )}
+            )}
 
-          {item.type === 'DomainTree' && (item.isVisible || showAll) && (
-            <Styled.AttributesContainer required={item.require}>
-              <Styled.Label>
-                <TranslationText id={item.label} />
-              </Styled.Label>
+            {item.type === 'DomainTree' && (item.isVisible || showAll) && (
               <Styled.AttributesItem>
                 <DomainTree
                   levels={item.levels}
-                  onSelected={()=>item.onChange()}
+                  // onSelected={() => item.onChange()}
                   schema={item.schema}
                   selected={item.value}
-                  title={
-                    <TranslationText
-                      id={item.label}
-                    />  
-                  }
+                  title={<TranslationText id={item.label} />}
                 />
               </Styled.AttributesItem>
-            </Styled.AttributesContainer>
-          )}
+            )}
+          </Styled.AttributesContainer>
         </Form>
       ))}
     </Styled.Container>
