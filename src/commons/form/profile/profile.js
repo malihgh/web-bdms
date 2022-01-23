@@ -42,7 +42,7 @@ const Profile = props => {
   //     return borehole?.data?.stratigraphy?.[0] ?? null;
   // }, [borehole]);
 
-  const dataBorhole = {
+  const dataBorehole = {
     data: borehole.data,
     user: user.data,
     selectedStratigraphy: selectedStratigraphy,
@@ -55,10 +55,10 @@ const Profile = props => {
 
   return (
     <Style.MainContainer>
-      <ProfileHeader data={dataBorhole} />
+      <ProfileHeader data={dataBorehole} />
       <Style.Container>
         <div style={{ width: '60%' }}>
-          <ProfileInfo data={dataBorhole} />
+          <ProfileInfo data={dataBorehole} />
           <ProfileLayers />
         </div>
         <div style={{ width: '40%' }}>
@@ -70,7 +70,7 @@ const Profile = props => {
 };
 
 Profile.propTypes = {
-  borehole: PropTypes.object,
+  // borehole: PropTypes.object,
   // id: PropTypes.number,
   // kind: PropTypes.number,
   // unlocked: PropTypes.bool,
