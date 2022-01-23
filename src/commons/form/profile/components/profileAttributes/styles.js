@@ -4,9 +4,7 @@ import { Form } from 'semantic-ui-react';
 export const Container = styled.div`
   overflow-y: auto;
   height: 100%;
-  padding: 10px;
-  padding-top: 0px;
-  padding-bottom: 40px;
+  padding: 0px 10px 40px 15px;
 `;
 
 export const CheckboxContainer = styled.div`
@@ -16,7 +14,7 @@ export const CheckboxContainer = styled.div`
 `;
 
 export const AttributesContainer = styled(Form.Field)`
-  padding-bottom: 10px;
+  /* padding-bottom: 10px; */
 `;
 
 export const Label = styled.label`
@@ -26,4 +24,5 @@ export const Label = styled.label`
 export const AttributesItem = styled.div`
   width: 100%;
   margin-top: 5px;
+  padding-bottom: 10px;
 `;
