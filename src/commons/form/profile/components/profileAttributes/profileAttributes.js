@@ -1,14 +1,153 @@
 // @ts-nocheck
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
 import { Checkbox, Input, TextArea, Form } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import DomainDropdown from '../../../domain/dropdown/domainDropdown';
 import DomainTree from '../../../domain/tree/domainTree';
 import { attributes } from './attributesItem';
+import { getLayer, patchLayer } from '@ist-supsi/bmsjs';
+import _ from 'lodash';
 
-const ProfileAttributes = () => {
+const ProfileAttributes = props => {
+  const { id, isEditable, onUpdated } = props;
+  let updateAttributeDelay = {};
   const [showAll, setShowAll] = useState(false);
+  const [state, setState] = useState({
+    isFetching: false,
+    isPatching: false,
+    allfields: false,
+    layer: {
+      // id: id.hasOwnProperty('id') ? id : null,
+      kind: null,
+      depth_from: null,
+      depth_to: null,
+      description: '',
+      geology: '',
+      last: null,
+      qt_description: null,
+      lithology: null,
+      lithostratigraphy: null,
+      chronostratigraphy: null,
+      tectonic_unit: null,
+      // symbol: null,
+      color: [],
+      plasticity: null,
+      humidity: null,
+      consistance: null,
+      alteration: null,
+      compactness: null,
+      jointing: [], // hidden
+      soil_state: null, // hidden
+      organic_component: [],
+      striae: null,
+      grain_size_1: null,
+      grain_size_2: null,
+      grain_shape: [],
+      grain_granularity: [],
+      cohesion: null,
+      further_properties: [],
+      uscs_1: null,
+      uscs_2: null,
+      uscs_3: [],
+      uscs_original: '',
+      uscs_determination: [],
+      unconrocks: null,
+      debris: [],
+      lit_pet_deb: [],
+      lithok: null,
+      kirost: null,
+      notes: '',
+    },
+  });
+
+  useEffect(() => {
+    load(id);
+  }, [id]);
+
+  const load = id => {
+    if (_.isInteger(id)) {
+      console.log('%cprofileAttributes.js line:66 hey', 'color: #007acc;', id);
+      setState({ isFetching: true });
+      getLayer(id)
+        .then(function (response) {
+          if (response.data.success) {
+            console.log(
+              '%cprofileAttributes.js line:78 response.data.data',
+              'color: #007acc;',
+              response.data.data,
+            );
+            setState({ isFetching: false, layer: response.data.data });
+            // if (_.isNil(state.layer.depth_to)) {
+            //  this.depthToRef.current.focus();
+            // }
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  };
+
+  const updateChange = (attribute, value, to = true, isNumber = false) => {
+    if (!isEditable) {
+      return;
+    }
+    console.log(
+      '%cprofileAttributes.js line:125 attribute,value',
+      'color: #007acc;',
+      attribute,
+      value,
+    );
+    setState(prevState => ({ ...prevState, isPatching: true }));
+    _.set(state.layer, attribute, value);
+
+    if (isNumber) {
+      if (value === null) {
+        patch(attribute, value);
+      } else if (/^-?\d*[.,]?\d*$/.test(value)) {
+        patch(attribute, _.toNumber(value));
+      }
+    } else {
+      patch(attribute, value);
+    }
+  };
+
+  const patch = (attribute, value) => {
+    console.log(
+      '%cprofileAttributes.js line:152 attribute',
+      'color: #007acc;',
+      attribute,
+      updateAttributeDelay,
+    );
+    if (
+      updateAttributeDelay.hasOwnProperty(attribute) &&
+      updateAttributeDelay[attribute]
+    ) {
+      clearTimeout(updateAttributeDelay[attribute]);
+      updateAttributeDelay[attribute] = false;
+    }
+    updateAttributeDelay[attribute] = setTimeout(function () {
+      patchLayer(state?.layer?.id, attribute, value)
+        .then(function (response) {
+          if (response.data.success) {
+            setState({
+              isPatching: false,
+            });
+            if (_.isFunction(onUpdated)) {
+              onUpdated(state?.layer?.id, attribute, value);
+            }
+          } else {
+            alert(response.data.message);
+            window.location.reload();
+          }
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }, 500);
+  };
+
   return (
     <Styled.Container>
       <Styled.CheckboxContainer>
@@ -34,10 +173,21 @@ const ProfileAttributes = () => {
                   autoCapitalize="off"
                   autoComplete="off"
                   autoCorrect="off"
-                  // onChange={(e) => setState((prevState)=>({ ...prevState,[item.value]:e.target.value}))}
+                  onChange={e =>
+                    updateChange(
+                      item.value,
+                      e.target.value,
+                      item?.to,
+                      item?.isNumber,
+                    )
+                  }
                   spellCheck="false"
                   style={{ width: '100%' }}
-                  // value={state[item.value]}
+                  value={
+                    _.isNil(state?.layer?.[item.value])
+                      ? ''
+                      : state.layer[item.value]
+                  }
                 />
               </Styled.AttributesItem>
             )}
@@ -45,9 +195,13 @@ const ProfileAttributes = () => {
             {item.type === 'TextArea' && (item.isVisible || showAll) && (
               <Styled.AttributesItem>
                 <TextArea
-                  // onChange={() => item.onChange()}
+                  onChange={e => updateChange(item.value, e.target.value)}
                   style={{ width: '100%' }}
-                  // value={item.value}
+                  value={
+                    _.isNil(state?.layer?.[item.value])
+                      ? ''
+                      : state.layer[item.value]
+                  }
                 />
               </Styled.AttributesItem>
             )}
@@ -55,15 +209,23 @@ const ProfileAttributes = () => {
             {item.type === 'Radio' && (item.isVisible || showAll) && (
               <Form.Group style={{ display: 'flex', paddingTop: '5px' }}>
                 <Form.Radio
-                  checked={!item.value}
+                  checked={
+                    _.isNil(state?.layer?.[item.value])
+                      ? ''
+                      : state.layer[item.value]
+                  }
                   label={'Yes'}
-                  onChange={() => item.onYesSelect()}
+                  onChange={() => updateChange(item.value, true, item?.to)}
                   style={{ paddingRight: '20px' }}
                 />
                 <Form.Radio
-                  checked={item.value}
+                  checked={
+                    _.isNil(state?.layer?.[item.value])
+                      ? ''
+                      : !state.layer[item.value]
+                  }
                   label={'No'}
-                  onChange={() => item.onNoSelect()}
+                  onChange={() => updateChange(item.value, false, item?.to)}
                 />
               </Form.Group>
             )}
@@ -73,9 +235,20 @@ const ProfileAttributes = () => {
                 <DomainDropdown
                   multiple={item.multiple}
                   // onSelected={() => item.onChange()}
+                  onSelected={e =>
+                    updateChange(
+                      item.value,
+                      item?.multiple ? e.map(mlpr => mlpr.id) : e.id,
+                      false,
+                    )
+                  }
                   schema={item.schema}
                   search={item.search}
-                  selected={item.value}
+                  selected={
+                    _.isNil(state?.layer?.[item.value])
+                      ? ''
+                      : state.layer[item.value]
+                  }
                 />
               </Styled.AttributesItem>
             )}
@@ -84,9 +257,13 @@ const ProfileAttributes = () => {
               <Styled.AttributesItem>
                 <DomainTree
                   levels={item.levels}
-                  // onSelected={() => item.onChange()}
+                  onSelected={e => updateChange(item.value, e.id, false)}
                   schema={item.schema}
-                  selected={item.value}
+                  selected={
+                    _.isNil(state?.layer?.[item.value])
+                      ? ''
+                      : state.layer[item.value]
+                  }
                   title={<TranslationText id={item.label} />}
                 />
               </Styled.AttributesItem>
