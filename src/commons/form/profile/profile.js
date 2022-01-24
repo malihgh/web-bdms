@@ -103,11 +103,6 @@ const Profile = props => {
     getStratigraphy(id)
       .then(response => {
         if (response.data.success) {
-          console.log(
-            '%cprofile.js line:110 response.data.data',
-            'color: #007acc;',
-            response.data.data,
-          );
           const stratigraphy = response.data.data;
           setState({
             ...state,
@@ -124,7 +119,7 @@ const Profile = props => {
             .then(response => {
               if (response.data.success) {
                 setState({ ...state, layers: response.data.data });
-                CheckConsistency();
+                // CheckConsistency();
               }
             })
             .catch(error => {
@@ -146,7 +141,7 @@ const Profile = props => {
   const CheckConsistency = () => {
     const { layers } = state;
 
-    const borehole = borehole.data;
+    const borehole = dataBorehole.data;
 
     const consistency = {};
 
@@ -294,7 +289,6 @@ const Profile = props => {
     if (!isEditable) {
       return;
     }
-
     deleteLayer(layer.id, solution, value)
       .then(response => {
         if (response.data.success) {
@@ -306,7 +300,7 @@ const Profile = props => {
                   layers: response.data.data,
                   layer: null,
                 });
-                CheckConsistency();
+                // CheckConsistency();
               }
             })
             .catch(function (error) {
@@ -323,7 +317,6 @@ const Profile = props => {
     if (!isEditable) {
       return;
     }
-
     gapLayer(layer.id, solution)
       .then(function (response) {
         if (response.data.success) {
@@ -401,11 +394,7 @@ const Profile = props => {
       <Style.Container>
         <div style={{ width: '60%' }}>
           <ProfileInfo data={dataBorehole} />
-          {console.log(
-            '%cprofile.js line:350 state.layers',
-            'color: #a07acc;',
-            state.layers,
-          )}
+
           <ProfileLayers
             consistency={state.consistency}
             layers={state.layers}
