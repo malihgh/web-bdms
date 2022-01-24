@@ -18,7 +18,7 @@ const ProfileAttributes = props => {
     isPatching: false,
     allfields: false,
     layer: {
-      // id: id.hasOwnProperty('id') ? id : null,
+      id: id?.hasOwnProperty('id') ? id : null,
       kind: null,
       depth_from: null,
       depth_to: null,
@@ -68,7 +68,7 @@ const ProfileAttributes = props => {
   const load = id => {
     if (_.isInteger(id)) {
       console.log('%cprofileAttributes.js line:66 hey', 'color: #007acc;', id);
-      setState({ isFetching: true });
+      setState({ ...state, isFetching: true });
       getLayer(id)
         .then(function (response) {
           if (response.data.success) {
@@ -77,7 +77,11 @@ const ProfileAttributes = props => {
               'color: #007acc;',
               response.data.data,
             );
-            setState({ isFetching: false, layer: response.data.data });
+            setState({
+              ...state,
+              isFetching: false,
+              layer: response.data.data,
+            });
             // if (_.isNil(state.layer.depth_to)) {
             //  this.depthToRef.current.focus();
             // }
@@ -91,6 +95,7 @@ const ProfileAttributes = props => {
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     if (!isEditable) {
+      alert('You should press start editting button! ');
       return;
     }
     console.log(
@@ -131,9 +136,7 @@ const ProfileAttributes = props => {
       patchLayer(state?.layer?.id, attribute, value)
         .then(function (response) {
           if (response.data.success) {
-            setState({
-              isPatching: false,
-            });
+            setState({ ...state, isPatching: false });
             if (_.isFunction(onUpdated)) {
               onUpdated(state?.layer?.id, attribute, value);
             }
