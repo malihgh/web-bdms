@@ -97,11 +97,11 @@ class ProfileLayers extends React.Component {
 
   render() {
     const { borehole, consistency, layers, style, t } = this.props;
-    const length = layers.length;
+    const length = layers?.length;
     return (
       <Table basic selectable structured>
         <Table.Body>
-          {layers.map((item, idx) => {
+          {layers?.map((item, idx) => {
             const isBedrock =
               item.depth_from === borehole.data.extended.top_bedrock;
 
@@ -507,185 +507,178 @@ class ProfileLayers extends React.Component {
                 </Table.Row>,
               );
             } else {
-            }
-            ret.push(
-              <Table.Row
-                active={item.id === this.props.selected}
-                key={'ll-rw-' + idx}
-                onClick={() => {
-                  if (_.isFunction(this.props.onSelected)) {
-                    this.setState(
-                      {
+              ret.push(
+                <Table.Row
+                  active={item.id === this.props.selected}
+                  key={'ll-rw-' + idx}
+                  onClick={() => {
+                    if (_.isFunction(this.props.onSelected)) {
+                      this.setState({
                         resolving: null,
                         resolvingAction: null,
                         deleting: null,
                         deleteAction: 0,
                         value: null,
-                      },
-                      () => {
-                        this.props.onSelected(item);
-                      },
-                    );
-                  }
-                }}
-                style={{
-                  cursor: 'pointer',
-                  borderTop:
-                    isBedrock && (idx > 0 || item.depth_from === 0)
-                      ? '2px dashed #787878'
-                      : null,
-                }}>
-                <Table.Cell
-                  collapsing
-                  style={{
-                    maxWidth: '40px',
-                    width: '40px',
-                    minWidth: '40px',
-                    backgroundColor:
-                      item.unknown === true || style.color === null
-                        ? null
-                        : this.getColor(item[style.color]),
-                    backgroundImage:
-                      item.unknown === true || style.pattern === null
-                        ? null
-                        : this.getPattern(item[style.pattern]),
-                    backgroundSize: 'cover',
+                      });
+                      this.props.onSelected(item.id);
+                    }
                   }}
-                />
-                <Table.Cell
-                  collapsing
                   style={{
-                    width: '100%',
+                    cursor: 'pointer',
+                    borderTop:
+                      isBedrock && (idx > 0 || item.depth_from === 0)
+                        ? '2px dashed #787878'
+                        : null,
                   }}>
-                  <div
+                  <Table.Cell
+                    collapsing
                     style={{
-                      // '#787878'
-                      color:
-                        _.isNil(item.depth_from) ||
-                        (idx > 0 &&
-                          layers[idx - 1].depth_to !== item.depth_from)
-                          ? 'red'
-                          : null,
-                      // fontSize: '0.8em'
-                    }}>
-                    {_.isNil(item.depth_from) ||
-                    (idx > 0 &&
-                      layers[idx - 1].depth_to !== item.depth_from) ? (
-                      <Icon name="warning sign" />
-                    ) : null}{' '}
-                    {item.depth_from} m
-                  </div>
-                  <div
+                      maxWidth: '40px',
+                      width: '40px',
+                      minWidth: '40px',
+                      backgroundColor:
+                        item.unknown === true || style.color === null
+                          ? null
+                          : this.getColor(item[style.color]),
+                      backgroundImage:
+                        item.unknown === true || style.pattern === null
+                          ? null
+                          : this.getPattern(item[style.pattern]),
+                      backgroundSize: 'cover',
+                    }}
+                  />
+                  <Table.Cell
+                    collapsing
                     style={{
-                      fontSize: '1.1em',
-                      fontWeight: 'bold',
-                      color:
-                        isBedrock &&
-                        consistency.hasOwnProperty('bedrockLitStratiWrong')
-                          ? 'red'
-                          : null,
+                      width: '100%',
                     }}>
-                    {item[style.pattern] !== null ? (
-                      <DomainText
-                        id={item.lithostratigraphy}
-                        schema={'custom.lit_str_top_bedrock'}
-                      />
-                    ) : (
-                      '-'
-                    )}
-                  </div>
-                  <div
-                    style={{
-                      color:
-                        isBedrock &&
-                        consistency.hasOwnProperty('bedrockChronoWrong')
-                          ? 'red'
-                          : 'rgb(78, 78, 78)',
-                      fontSize: '0.9em',
-                    }}>
-                    {item.chronostratigraphy !== null ? (
-                      <DomainText
-                        id={item.chronostratigraphy}
-                        schema="custom.chro_str_top_bedrock"
-                      />
-                    ) : (
-                      '-'
-                    )}
-                  </div>
-                  <div
-                    style={{
-                      color:
-                        isBedrock &&
-                        consistency.hasOwnProperty('bedrockLitPetWrong')
-                          ? 'red'
-                          : '#787878',
-                      fontSize: '0.8em',
-                    }}>
-                    {item.lithology !== null ? (
-                      <DomainText
-                        id={item.lithology}
-                        schema="custom.lit_pet_top_bedrock"
-                      />
-                    ) : (
-                      '-'
-                    )}
-                  </div>
-                  <div
-                    style={{
-                      // '#787878'
-                      color:
-                        _.isNil(item.depth_to) ||
-                        (consistency.hasOwnProperty(item.id) &&
-                          consistency[item.id].errorInverted)
-                          ? 'red'
-                          : null,
-                    }}>
-                    {_.isNil(item.depth_to) ||
-                    (consistency.hasOwnProperty(item.id) &&
-                      consistency[item.id].errorInverted) ? (
-                      <Icon
-                        name="warning sign"
-                        title={
-                          consistency.hasOwnProperty(item.id) &&
-                          consistency[item.id].errorInverted ? (
-                            <TranslationText id="invertedDepth" />
-                          ) : null
-                        }
-                      />
-                    ) : null}{' '}
-                    {item.depth_to} m
-                  </div>
-                </Table.Cell>
-                {_.isFunction(this.props.onDelete) ? (
-                  <Table.Cell collapsing>
-                    {borehole.data.lock === null ||
-                    borehole.data.lock.username !==
-                      this.props.user.data.username ||
-                    this.props.borehole.data.role !== 'EDIT' ? null : (
-                      <Button
-                        basic
-                        color="red"
-                        icon
-                        onClick={e => {
-                          e.stopPropagation();
-                          this.setState({
-                            resolving: null,
-                            resolvingAction: null,
-                            deleting: item,
-                            deleteAction: 0,
-                            value: null,
-                          });
-                        }}
-                        size="mini">
-                        <Icon name="trash alternate outline" />
-                      </Button>
-                    )}
+                    <div
+                      style={{
+                        // '#787878'
+                        color:
+                          _.isNil(item.depth_from) ||
+                          (idx > 0 &&
+                            layers[idx - 1].depth_to !== item.depth_from)
+                            ? 'red'
+                            : null,
+                        // fontSize: '0.8em'
+                      }}>
+                      {_.isNil(item.depth_from) ||
+                      (idx > 0 &&
+                        layers[idx - 1].depth_to !== item.depth_from) ? (
+                        <Icon name="warning sign" />
+                      ) : null}{' '}
+                      {item.depth_from} m
+                    </div>
+                    <div
+                      style={{
+                        fontSize: '1.1em',
+                        fontWeight: 'bold',
+                        color:
+                          isBedrock &&
+                          consistency.hasOwnProperty('bedrockLitStratiWrong')
+                            ? 'red'
+                            : null,
+                      }}>
+                      {item[style.pattern] !== null ? (
+                        <DomainText
+                          id={item.lithostratigraphy}
+                          schema={'custom.lit_str_top_bedrock'}
+                        />
+                      ) : (
+                        '-'
+                      )}
+                    </div>
+                    <div
+                      style={{
+                        color:
+                          isBedrock &&
+                          consistency.hasOwnProperty('bedrockChronoWrong')
+                            ? 'red'
+                            : 'rgb(78, 78, 78)',
+                        fontSize: '0.9em',
+                      }}>
+                      {item.chronostratigraphy !== null ? (
+                        <DomainText
+                          id={item.chronostratigraphy}
+                          schema="custom.chro_str_top_bedrock"
+                        />
+                      ) : (
+                        '-'
+                      )}
+                    </div>
+                    <div
+                      style={{
+                        color:
+                          isBedrock &&
+                          consistency.hasOwnProperty('bedrockLitPetWrong')
+                            ? 'red'
+                            : '#787878',
+                        fontSize: '0.8em',
+                      }}>
+                      {item.lithology !== null ? (
+                        <DomainText
+                          id={item.lithology}
+                          schema="custom.lit_pet_top_bedrock"
+                        />
+                      ) : (
+                        '-'
+                      )}
+                    </div>
+                    <div
+                      style={{
+                        // '#787878'
+                        color:
+                          _.isNil(item.depth_to) ||
+                          (consistency.hasOwnProperty(item.id) &&
+                            consistency[item.id].errorInverted)
+                            ? 'red'
+                            : null,
+                      }}>
+                      {_.isNil(item.depth_to) ||
+                      (consistency.hasOwnProperty(item.id) &&
+                        consistency[item.id].errorInverted) ? (
+                        <Icon
+                          name="warning sign"
+                          title={
+                            consistency.hasOwnProperty(item.id) &&
+                            consistency[item.id].errorInverted ? (
+                              <TranslationText id="invertedDepth" />
+                            ) : null
+                          }
+                        />
+                      ) : null}{' '}
+                      {item.depth_to} m
+                    </div>
                   </Table.Cell>
-                ) : null}
-              </Table.Row>,
-            );
-            {
-              /* } */
+                  {_.isFunction(this.props.onDelete) ? (
+                    <Table.Cell collapsing>
+                      {borehole.data.lock === null ||
+                      borehole.data.lock.username !==
+                        this.props.user.data.username ||
+                      this.props.borehole.data.role !== 'EDIT' ? null : (
+                        <Button
+                          basic
+                          color="red"
+                          icon
+                          onClick={e => {
+                            e.stopPropagation();
+                            this.setState({
+                              resolving: null,
+                              resolvingAction: null,
+                              deleting: item,
+                              deleteAction: 0,
+                              value: null,
+                            });
+                          }}
+                          size="mini">
+                          <Icon name="trash alternate outline" />
+                        </Button>
+                      )}
+                    </Table.Cell>
+                  ) : null}
+                </Table.Row>,
+              );
             }
             return ret;
           })}
