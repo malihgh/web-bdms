@@ -21,7 +21,7 @@ import {
   deleteStratigraphy,
   cloneStratigraphy,
 } from '@ist-supsi/bmsjs';
-import { createGlobalStyle } from 'styled-components';
+
 // Take a look at the StratigraphyFormContainer
 
 const Profile = props => {
@@ -86,6 +86,7 @@ const Profile = props => {
   const Load = (id, keepselected = false) => {
     // Get Stratigraphy by borehole and stratigraphy kind
     setState({
+      ...state,
       consistency: {},
       stratigraphyEmpty: false,
       fetchingStratigraphy: true,
@@ -109,6 +110,7 @@ const Profile = props => {
           );
           const stratigraphy = response.data.data;
           setState({
+            ...state,
             stratigraphy: stratigraphy,
             viewas: stratigraphy.kinds[0],
             // viewas: stratigraphy.kinds.includes(
@@ -121,9 +123,7 @@ const Profile = props => {
           getLayers(stratigraphy.id)
             .then(response => {
               if (response.data.success) {
-                setState({
-                  layers: response.data.data,
-                });
+                setState({ ...state, layers: response.data.data });
                 CheckConsistency();
               }
             })
@@ -133,6 +133,7 @@ const Profile = props => {
         } else {
           // Stratigraphy not created yet
           setState({
+            ...state,
             stratigraphyEmpty: true,
           });
         }
@@ -263,9 +264,7 @@ const Profile = props => {
       consistency.bedrockChronoWrong = bedrockChronoWrong;
     }
 
-    setState({
-      consistency: consistency,
-    });
+    setState({ ...state, consistency: consistency });
 
     console.log(consistency);
   };
@@ -277,6 +276,7 @@ const Profile = props => {
           .then(function (response) {
             if (response.data.success) {
               setState({
+                ...state,
                 layers: response.data.data,
                 layer: null,
               });
@@ -302,6 +302,7 @@ const Profile = props => {
             .then(response => {
               if (response.data.success) {
                 setState({
+                  ...state,
                   layers: response.data.data,
                   layer: null,
                 });
@@ -330,6 +331,7 @@ const Profile = props => {
             .then(function (response) {
               if (response.data.success) {
                 setState({
+                  ...state,
                   consistency: {},
                   layers: response.data.data,
                   layer: null,
@@ -345,6 +347,52 @@ const Profile = props => {
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  const ConfigForm = () => {
+    if (domains.data.hasOwnProperty('layer_kind')) {
+      const filtered = domains.data.layer_kind.filter(kind =>
+        state?.stratigraphy?.kinds?.includes(kind.id),
+      );
+      let fields = { ...filtered[0].conf.fields };
+      if (filtered.length > 1) {
+        for (let index = 1; index < filtered.length; index++) {
+          const element = filtered[index];
+          fields = _.mergeWith(
+            fields,
+            element.conf.fields,
+            (objValue, srcValue) => {
+              return objValue || srcValue;
+            },
+          );
+        }
+      }
+      return {
+        fields: fields,
+      };
+    }
+  };
+
+  const OnUpdateForm = (id, attribute, value) => {
+    const layers = [...state.layers];
+    for (var i = 0; i < layers.length; i++) {
+      if (id === layers[i].id) {
+        layers[i][attribute] = value;
+        break;
+      }
+    }
+    setState({ ...state, layers: layers });
+
+    if (
+      attribute === 'depth_to' ||
+      attribute === 'depth_from' ||
+      attribute === 'lithostratigraphy' ||
+      attribute === 'lithology' ||
+      attribute === 'chronostratigraphy'
+    ) {
+      CheckConsistency();
+      Load(selectedStratigraphy.id, true);
+    }
   };
 
   return (
@@ -387,7 +435,14 @@ const Profile = props => {
           />
         </div>
         <div style={{ width: '40%' }}>
-          <ProfileAttributes />
+          <ProfileAttributes
+            conf={ConfigForm}
+            id={state.layer}
+            isEditable={isEditable}
+            onUpdated={(id, attribute, value) =>
+              OnUpdateForm(id, attribute, value)
+            }
+          />
         </div>
       </Style.Container>
     </Style.MainContainer>
