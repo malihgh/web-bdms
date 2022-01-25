@@ -29,45 +29,45 @@ class ProfileLayers extends React.Component {
   }
 
   getPattern(id) {
-    // const { domains, style } = this.props;
-    // let domain = domains.data[
-    //   // @todo Think something better!!
-    //   style.patternNS
-    // ].find(element => {
-    //   return element.id === id;
-    // });
-    // if (
-    //   domain !== undefined &&
-    //   domain.conf !== null &&
-    //   domain.conf.hasOwnProperty('image')
-    // ) {
-    //   return (
-    //     'url("' +
-    //     process.env.PUBLIC_URL +
-    //     '/img/lit/' +
-    //     domain.conf.image +
-    //     '")'
-    //   );
-    // } else {
-    //   return null;
-    // }
+    const { domains, style } = this.props;
+    let domain = domains.data[
+      // @todo Think something better!!
+      style.patternNS
+    ].find(element => {
+      return element.id === id;
+    });
+    if (
+      domain !== undefined &&
+      domain.conf !== null &&
+      domain.conf.hasOwnProperty('image')
+    ) {
+      return (
+        'url("' +
+        process.env.PUBLIC_URL +
+        '/img/lit/' +
+        domain.conf.image +
+        '")'
+      );
+    } else {
+      return null;
+    }
   }
 
   getColor(id) {
     const { domains, style } = this.props;
-    // let domain = domains.data[style.colorNS].find(element => {
-    //   return element.id === id;
-    // });
-    // if (
-    //   domain !== undefined &&
-    //   domain.conf !== null &&
-    //   domain.conf.hasOwnProperty('color')
-    // ) {
-    //   const color = domain.conf.color;
-    //   return 'rgb(' + color.join(',') + ')';
-    // } else {
-    //   return null;
-    // }
+    let domain = domains.data[style.colorNS].find(element => {
+      return element.id === id;
+    });
+    if (
+      domain !== undefined &&
+      domain.conf !== null &&
+      domain.conf.hasOwnProperty('color')
+    ) {
+      const color = domain.conf.color;
+      return 'rgb(' + color.join(',') + ')';
+    } else {
+      return null;
+    }
   }
 
   handleDeleteAction(e, { value }) {

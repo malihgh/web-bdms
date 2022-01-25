@@ -82,9 +82,9 @@ const ProfileAttributes = props => {
               isFetching: false,
               layer: response.data.data,
             });
-            // if (_.isNil(state.layer.depth_to)) {
-            //  this.depthToRef.current.focus();
-            // }
+            if (_.isNil(state.layer.depth_to)) {
+              //  this.depthToRef.current.focus();
+            }
           }
         })
         .catch(function (error) {

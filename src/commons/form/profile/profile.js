@@ -61,7 +61,6 @@ const Profile = props => {
     if (borehole.data.stratigraphy && borehole.data.stratigraphy.length > 0) {
       setSelectedStratigraphy(borehole.data.stratigraphy[0]);
     }
-    GetData();
   }, [setIsEditable, borehole, user]);
 
   useEffect(() => {
@@ -389,24 +388,7 @@ const Profile = props => {
       Load(selectedStratigraphy.id, true);
     }
   };
-  const GetData = () => {
-    getProfiles(1, 3000)
-      .then(response => {
-        if (response.data.success) {
-          console.log(
-            '%cprofile.js line:395 response.data from GetData',
-            'color: #887acc;',
-            response.data,
-          );
-        } else {
-          // show the error message
-          alert(response.data.message);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+
   return (
     <Style.MainContainer>
       <ProfileHeader data={dataBorehole} />
