@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 
 import ProfileHeader from './components/profileHeader';
 import ProfileLayers from './components/profileLayers';
-import ProfileInfo from './components/profileInfo';
 import ProfileAttributes from './components/profileAttributes';
 
 // Take a look at the StratigraphyFormContainer
@@ -54,17 +53,15 @@ const Profile = () => {
 
   return (
     <Style.MainContainer>
-      <ProfileHeader
-        data={{
-          boreholeID: borehole.data.id,
-          kind: 3000,
-          isEditable,
-        }}
-      />
       <Style.Container>
         <div style={{ width: '60%' }}>
-          <ProfileInfo data={dataBorehole} />
-
+          <ProfileHeader
+            data={{
+              boreholeID: borehole.data.id,
+              kind: 3000,
+              isEditable,
+            }}
+          />
           <ProfileLayers />
         </div>
         <div style={{ width: '40%' }}>

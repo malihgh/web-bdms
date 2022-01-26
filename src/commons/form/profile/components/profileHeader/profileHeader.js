@@ -5,6 +5,7 @@ import TranslationText from './../../../translationText';
 import PropTypes from 'prop-types';
 import DateText from '../../../dateText';
 import { getProfiles } from '@ist-supsi/bmsjs';
+import ProfileInfo from './components/profileInfo';
 
 const ProfileHeader = props => {
   const { boreholeID, kind, isEditable } = props.data;
@@ -59,6 +60,7 @@ const ProfileHeader = props => {
           </Styled.ItemDate>
         </Styled.Item>
       ))}
+      <ProfileInfo data={{ selectedStratigraphy: selectedItem, isEditable }} />
     </Styled.Container>
   );
 };
