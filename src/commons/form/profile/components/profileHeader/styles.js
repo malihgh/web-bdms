@@ -6,6 +6,7 @@ export const ButtonContainer = styled.div`
   flex-direction: row;
   margin-top: 10px;
   height: 45px;
+  overflow: auto;
 `;
 export const Item = styled.div`
   margin: 0px 10px;
