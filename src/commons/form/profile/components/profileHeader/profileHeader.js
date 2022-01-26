@@ -33,33 +33,35 @@ const ProfileHeader = props => {
 
   return (
     <Styled.Container>
-      {isEditable && (
-        <Button
-          content={<TranslationText id="stratigraphy" />}
-          icon="add"
-          secondary
-          size="small"
-        />
-      )}
+      <Styled.ButtonContainer>
+        {isEditable && (
+          <Button
+            content={<TranslationText id="stratigraphy" />}
+            icon="add"
+            secondary
+            size="small"
+          />
+        )}
 
-      {profiles?.map(item => (
-        <Styled.Item
-          key={item.id}
-          onClick={() => {
-            setSelectedItem(item);
-          }}
-          style={{
-            borderBottom: item.id === selectedItem?.id && '2px solid black',
-          }}>
-          <Styled.ItemName>
-            {item.primary && <Icon name="check" />}
-            {item.name === null || item.name === '' ? 'translate' : item.name}
-          </Styled.ItemName>
-          <Styled.ItemDate>
-            <DateText date={item.date} />
-          </Styled.ItemDate>
-        </Styled.Item>
-      ))}
+        {profiles?.map(item => (
+          <Styled.Item
+            key={item.id}
+            onClick={() => {
+              setSelectedItem(item);
+            }}
+            style={{
+              borderBottom: item.id === selectedItem?.id && '2px solid black',
+            }}>
+            <Styled.ItemName>
+              {item.primary && <Icon name="check" />}
+              {item.name === null || item.name === '' ? 'translate' : item.name}
+            </Styled.ItemName>
+            <Styled.ItemDate>
+              <DateText date={item.date} />
+            </Styled.ItemDate>
+          </Styled.Item>
+        ))}
+      </Styled.ButtonContainer>
       <ProfileInfo data={{ selectedStratigraphy: selectedItem, isEditable }} />
     </Styled.Container>
   );

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.div``;
+export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 10px;

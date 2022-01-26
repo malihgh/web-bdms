@@ -89,7 +89,7 @@ const ProfileInfo = props => {
       </Styled.CheckBoxContainer>
 
       {isEditable && (
-        <Button fluid secondary size="tiny">
+        <Button fluid secondary size="tiny" style={{ marginTop: '10px' }}>
           <TranslationText id="add" />
         </Button>
       )}
