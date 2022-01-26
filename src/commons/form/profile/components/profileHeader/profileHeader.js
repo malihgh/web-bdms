@@ -6,9 +6,11 @@ import PropTypes from 'prop-types';
 import DateText from '../../../dateText';
 import { getProfiles } from '@ist-supsi/bmsjs';
 import ProfileInfo from './components/profileInfo';
+import { withTranslation } from 'react-i18next';
 
 const ProfileHeader = props => {
   const { boreholeID, kind, isEditable } = props.data;
+  const { t } = props;
   const [profiles, setProfiles] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
 
@@ -54,7 +56,9 @@ const ProfileHeader = props => {
             }}>
             <Styled.ItemName>
               {item.primary && <Icon name="check" />}
-              {item.name === null || item.name === '' ? 'translate' : item.name}
+              {item.name === null || item.name === ''
+                ? t('common:np')
+                : item.name}
             </Styled.ItemName>
             <Styled.ItemDate>
               <DateText date={item.date} />
@@ -70,4 +74,4 @@ ProfileHeader.propTypes = {
   t: PropTypes.func,
 };
 
-export default ProfileHeader;
+export default withTranslation('common')(ProfileHeader);
