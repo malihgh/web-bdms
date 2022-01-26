@@ -54,7 +54,13 @@ const Profile = () => {
 
   return (
     <Style.MainContainer>
-      <ProfileHeader data={dataBorehole} />
+      <ProfileHeader
+        data={{
+          boreholeID: borehole.data.id,
+          kind: 3000,
+          isEditable,
+        }}
+      />
       <Style.Container>
         <div style={{ width: '60%' }}>
           <ProfileInfo data={dataBorehole} />
