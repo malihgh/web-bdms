@@ -3,17 +3,32 @@ import * as Styled from './styles';
 import { Button, Icon } from 'semantic-ui-react';
 import TranslationText from './../../../translationText';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import DateText from '../../../dateText';
+import { getProfiles } from '@ist-supsi/bmsjs';
 
 const ProfileHeader = props => {
-  const {
-    data,
-    user,
-    selectedStratigraphy,
-    setSelectedStratigraphy,
-    isEditable,
-  } = props.data;
+  const { boreholeID, kind, isEditable } = props.data;
+  const [profiles, setProfiles] = useState([]);
+  const [selectedItem, setSelectedItem] = useState([]);
+
+  useEffect(() => {
+    GetData();
+  }, [boreholeID]);
+
+  const GetData = () => {
+    getProfiles(boreholeID, kind)
+      .then(response => {
+        if (response.data.success) {
+          setProfiles(response.data.data);
+          setSelectedItem(response.data.data[0]);
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   return (
     <Styled.Container>
@@ -26,26 +41,24 @@ const ProfileHeader = props => {
         />
       )}
 
-      {_.isArray(data.stratigraphy) &&
-        data.stratigraphy.map(item => (
-          <Styled.Item
-            key={item.id}
-            onClick={() => {
-              setSelectedStratigraphy(item);
-            }}
-            style={{
-              borderBottom:
-                item.id === selectedStratigraphy?.id && '2px solid black',
-            }}>
-            <Styled.ItemName>
-              {item.primary && <Icon name="check" />}
-              {item.name === null || item.name === '' ? 'translate' : item.name}
-            </Styled.ItemName>
-            <Styled.ItemDate>
-              <DateText date={item.date} />
-            </Styled.ItemDate>
-          </Styled.Item>
-        ))}
+      {profiles?.map(item => (
+        <Styled.Item
+          key={item.id}
+          onClick={() => {
+            setSelectedItem(item);
+          }}
+          style={{
+            borderBottom: item.id === selectedItem?.id && '2px solid black',
+          }}>
+          <Styled.ItemName>
+            {item.primary && <Icon name="check" />}
+            {item.name === null || item.name === '' ? 'translate' : item.name}
+          </Styled.ItemName>
+          <Styled.ItemDate>
+            <DateText date={item.date} />
+          </Styled.ItemDate>
+        </Styled.Item>
+      ))}
     </Styled.Container>
   );
 };
