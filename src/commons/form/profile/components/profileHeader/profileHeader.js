@@ -62,7 +62,7 @@ const ProfileHeader = props => {
           </Styled.Item>
         ))}
       </Styled.ButtonContainer>
-      <ProfileInfo data={{ selectedStratigraphy: selectedItem, isEditable }} />
+      <ProfileInfo data={{ item: selectedItem, isEditable }} />
     </Styled.Container>
   );
 };

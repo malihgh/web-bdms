@@ -5,7 +5,7 @@ import TranslationText from '../../../../../translationText';
 import DateField from '../../../../../dateField';
 
 const ProfileInfo = props => {
-  const { selectedStratigraphy, isEditable } = props.data;
+  const { item, isEditable } = props.data;
 
   return (
     <Styled.Container>
@@ -25,9 +25,7 @@ const ProfileInfo = props => {
                 autoComplete="off"
                 autoCorrect="off"
                 spellCheck="false"
-                value={
-                  (selectedStratigraphy && selectedStratigraphy.name) || ''
-                }
+                value={(item && item.name) || ''}
               />
             </Form.Field>
 
@@ -39,9 +37,7 @@ const ProfileInfo = props => {
               <label>
                 <TranslationText id="date" />
               </label>
-              <DateField
-                date={selectedStratigraphy && selectedStratigraphy.date}
-              />
+              <DateField date={item && item.date} />
             </Form.Field>
           </Form.Group>
         </Form>
@@ -53,11 +49,7 @@ const ProfileInfo = props => {
           style={{
             display: 'flex',
           }}>
-          <Checkbox
-            checked={selectedStratigraphy && selectedStratigraphy.primary}
-            label=""
-            toggle
-          />
+          <Checkbox checked={item && item.primary} label="" toggle />
           <TranslationText id="mainStratigraphy" />
         </Form>
         {isEditable && (
