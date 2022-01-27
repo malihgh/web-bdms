@@ -15,7 +15,6 @@ const Profile = () => {
     user: state.core_user,
   }));
 
-  const [selectedStratigraphy, setSelectedStratigraphy] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
@@ -30,10 +29,6 @@ const Profile = () => {
     } else {
       setIsEditable(false);
     }
-
-    if (borehole.data.stratigraphy && borehole.data.stratigraphy.length > 0) {
-      setSelectedStratigraphy(borehole.data.stratigraphy[0]);
-    }
   }, [setIsEditable, borehole, user]);
 
   // let selectedStratigraphy = useMemo(
@@ -44,10 +39,6 @@ const Profile = () => {
   const dataBorehole = {
     data: borehole.data,
     user: user.data,
-    selectedStratigraphy: selectedStratigraphy,
-    setSelectedStratigraphy: e => {
-      setSelectedStratigraphy(e);
-    },
     isEditable: isEditable,
   };
 
