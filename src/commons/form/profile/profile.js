@@ -57,7 +57,12 @@ const Profile = () => {
               },
             }}
           />
-          <ProfileLayers />
+          <ProfileLayers
+            data={{
+              selectedStratigraphyID: selectedStratigraphyID,
+              isEditable,
+            }}
+          />
         </div>
         <div style={{ width: '40%' }}>
           <ProfileAttributes />
