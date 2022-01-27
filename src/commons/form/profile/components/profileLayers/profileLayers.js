@@ -16,28 +16,35 @@ const ProfileLayers = props => {
   const GetData = () => {
     getProfileLayers(selectedStratigraphyID)
       .then(response => {
-        setLayers([
-          {
-            id: 7666,
-            depth_from: 0,
-            depth_to: 2,
-            title: 15201080,
-            subtitle: 15001005,
-            description: 15201080,
-            rgb: [195, 220, 185],
-            pattern: '15101001.svg',
+        setLayers({
+          config: {
+            title: 'custom.lit_str_top_bedrock',
+            subtitle: 'custom.chro_str_top_bedrock',
+            description: 'custom.lit_pet_top_bedrock',
           },
-          {
-            id: 7662,
-            depth_from: 2,
-            depth_to: null,
-            title: null,
-            subtitle: null,
-            description: null,
-            rgb: null,
-            pattern: null,
-          },
-        ]);
+          data: [
+            {
+              id: 7666,
+              depth_from: 0,
+              depth_to: 2,
+              title: 15201080,
+              subtitle: 15001005,
+              description: 15201080,
+              rgb: [195, 220, 185],
+              pattern: '15101001.svg',
+            },
+            {
+              id: 7662,
+              depth_from: 2,
+              depth_to: null,
+              title: null,
+              subtitle: null,
+              description: null,
+              rgb: null,
+              pattern: null,
+            },
+          ],
+        });
         // if (response.data.success) {
         //   // setLayers(response.data.data);
         // } else {
@@ -51,7 +58,7 @@ const ProfileLayers = props => {
 
   return (
     <Styled.Container>
-      {layers?.map((item, index) => (
+      {layers?.data?.map((item, index) => (
         <Styled.MyCard
           key={item.id}
           isFirst={index === 0 ? true : false}
@@ -79,7 +86,7 @@ const ProfileLayers = props => {
               {item.title !== null ? (
                 <Styled.DomainTxt
                   id={item.title}
-                  schema={'custom.lit_str_top_bedrock'}
+                  schema={layers.config.title}
                 />
               ) : (
                 '-'
@@ -89,7 +96,7 @@ const ProfileLayers = props => {
               {item.subtitle !== null ? (
                 <Styled.DomainTxt
                   id={item.subtitle}
-                  schema={'custom.chro_str_top_bedrock'}
+                  schema={layers.config.subtitle}
                 />
               ) : (
                 '-'
@@ -99,7 +106,7 @@ const ProfileLayers = props => {
               {item.description !== null ? (
                 <Styled.DomainTxt
                   id={item.description}
-                  schema={'custom.lit_str_top_bedrock'}
+                  schema={layers.config.title}
                 />
               ) : (
                 '-'
