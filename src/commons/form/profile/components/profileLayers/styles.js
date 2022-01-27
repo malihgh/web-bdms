@@ -2,13 +2,16 @@ import styled from 'styled-components';
 import DomainText from '../../../domain/domainText';
 import { Button } from 'semantic-ui-react';
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+`;
 
 export const MyCard = styled.div`
   display: flex;
   flex-direction: row;
-  border: 1px solid lightgrey;
-  border-radius: 4px;
+  border-top: 1px solid lightgrey;
+  border-top: ${props => props.isFirst && '0px'};
   flex: 1;
   cursor: pointer;
   :hover {
@@ -17,16 +20,19 @@ export const MyCard = styled.div`
 `;
 
 export const CardPattern = styled.div`
-  background-color: ${props => `rgb(${props.r},${props.g},${props.b})`};
-  background-image: url('../../../../favicon-16x16.png');
+  background-color: ${props =>
+    props.transparent
+      ? 'transparent'
+      : `rgb(${props.r},${props.g},${props.b})`};
+  /* background-image: url('../../../../favicon-16x16.png'); */
   background-size: cover;
-  flex: 1;
+  flex: 0.7;
   width: 40px;
 `;
 
 export const CardInfo = styled.div`
   padding: 5px 0px;
-  padding-left: 15px;
+  padding-left: 12px;
   flex: 5;
 `;
 
