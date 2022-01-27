@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Styled from './styles';
+import { Icon } from 'semantic-ui-react';
 
 const ProfileLayers = () => {
   return (
@@ -11,27 +12,52 @@ const ProfileLayers = () => {
           pattern
         </Styled.CardPattern>
         <Styled.CardInfo>
-          <Styled.Text>0 m</Styled.Text>
+          <Styled.Text warning={0 === null}>
+            {0 !== null ? (
+              0
+            ) : (
+              <Icon name="warning sign" style={{ color: 'red' }} />
+            )}{' '}
+            m
+          </Styled.Text>
           <Styled.Text bold>
-            <Styled.DomainTxt
-              id={15201080}
-              schema={'custom.lit_str_top_bedrock'}
-            />
+            {15201080 !== null ? (
+              <Styled.DomainTxt
+                id={15201080}
+                schema={'custom.lit_str_top_bedrock'}
+              />
+            ) : (
+              '-'
+            )}
           </Styled.Text>
           <Styled.Text>
-            <Styled.DomainTxt
-              id={15001005}
-              schema={'custom.chro_str_top_bedrock'}
-            />
+            {15201080 !== null ? (
+              <Styled.DomainTxt
+                id={15001005}
+                schema={'custom.chro_str_top_bedrock'}
+              />
+            ) : (
+              '-'
+            )}
           </Styled.Text>
           <Styled.Text small>
-            <Styled.DomainTxt
-              id={15001005}
-              schema={'custom.chro_str_top_bedrock'}
-            />
+            {15201080 !== null ? (
+              <Styled.DomainTxt
+                id={15001005}
+                schema={'custom.chro_str_top_bedrock'}
+              />
+            ) : (
+              '-'
+            )}
           </Styled.Text>
-
-          <Styled.Text>2 m</Styled.Text>
+          <Styled.Text warning={0 === null}>
+            {0 !== null ? (
+              2
+            ) : (
+              <Icon name="warning sign" style={{ color: 'red' }} />
+            )}{' '}
+            m
+          </Styled.Text>
         </Styled.CardInfo>
         <Styled.CardDeleteButton>trash</Styled.CardDeleteButton>
       </Styled.MyCard>

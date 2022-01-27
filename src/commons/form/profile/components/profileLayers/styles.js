@@ -32,8 +32,8 @@ export const CardDeleteButton = styled.div`
 
 export const Text = styled.div`
   font-weight: ${props => (props.bold ? 'bold' : '100')};
-  font-size: ${props => (props.bold ? '15px' : props.small ? '11px' : '13px')};
-  color: ${props => props.small && 'grey'};
+  font-size: ${props => (props.bold ? '16px' : props.small ? '11px' : '14px')};
+  color: ${props => (props.small ? 'grey' : props.warning ? 'red' : 'black')};
   padding-top: 3px;
 `;
 
