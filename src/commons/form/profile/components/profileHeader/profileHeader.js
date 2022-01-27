@@ -9,7 +9,7 @@ import ProfileInfo from './components/profileInfo';
 import { withTranslation } from 'react-i18next';
 
 const ProfileHeader = props => {
-  const { boreholeID, kind, isEditable } = props.data;
+  const { boreholeID, kind, isEditable, selectedStratigraphyID } = props.data;
   const { t } = props;
   const [profiles, setProfiles] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
@@ -24,6 +24,7 @@ const ProfileHeader = props => {
         if (response.data.success) {
           setProfiles(response.data.data);
           setSelectedItem(response.data.data[0]);
+          selectedStratigraphyID(response.data.data[0].id);
         } else {
           alert(response.data.message);
         }
@@ -50,6 +51,7 @@ const ProfileHeader = props => {
             key={item.id}
             onClick={() => {
               setSelectedItem(item);
+              selectedStratigraphyID(item.id);
             }}
             style={{
               borderBottom: item.id === selectedItem?.id && '2px solid black',

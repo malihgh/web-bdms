@@ -16,6 +16,7 @@ const Profile = () => {
   }));
 
   const [isEditable, setIsEditable] = useState(false);
+  const [selectedStratigraphyID, setSelectedStratigraphyID] = useState(null);
 
   useEffect(() => {
     if (
@@ -51,6 +52,9 @@ const Profile = () => {
               boreholeID: borehole.data.id,
               kind: 3000,
               isEditable,
+              selectedStratigraphyID: e => {
+                setSelectedStratigraphyID(e);
+              },
             }}
           />
           <ProfileLayers />
