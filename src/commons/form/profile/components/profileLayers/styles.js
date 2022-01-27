@@ -7,10 +7,13 @@ export const Container = styled.div``;
 export const MyCard = styled.div`
   display: flex;
   flex-direction: row;
-
   border: 1px solid lightgrey;
   border-radius: 4px;
   flex: 1;
+  cursor: pointer;
+  :hover {
+    background-color: lightgray;
+  }
 `;
 
 export const CardPattern = styled.div`

@@ -5,7 +5,7 @@ import { Icon } from 'semantic-ui-react';
 const ProfileLayers = () => {
   return (
     <Styled.Container>
-      <Styled.MyCard>
+      <Styled.MyCard onClick={() => console.log('profileLayers')}>
         <Styled.CardPattern
           bg={'#ff77ff'}
           style={{ backgroundImage: `url('../../../../favicon-16x16.png')` }}>
@@ -61,7 +61,11 @@ const ProfileLayers = () => {
         </Styled.CardInfo>
         {true && (
           <Styled.CardDeleteContainer>
-            <Styled.CardDeleteButton basic color="red" icon>
+            <Styled.CardDeleteButton
+              basic
+              color="red"
+              icon
+              onClick={() => console.log('profileLayers')}>
               <Icon name="trash alternate outline" />
             </Styled.CardDeleteButton>
           </Styled.CardDeleteContainer>
