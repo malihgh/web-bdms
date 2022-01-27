@@ -6,11 +6,7 @@ const ProfileLayers = () => {
   return (
     <Styled.Container>
       <Styled.MyCard onClick={() => console.log('profileLayers')}>
-        <Styled.CardPattern
-          bg={'#ff77ff'}
-          style={{ backgroundImage: `url('../../../../favicon-16x16.png')` }}>
-          pattern
-        </Styled.CardPattern>
+        <Styled.CardPattern r={123} g={123} b={123}></Styled.CardPattern>
         <Styled.CardInfo>
           <Styled.Text warning={0 === null}>
             {0 !== null ? (

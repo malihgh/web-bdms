@@ -12,13 +12,13 @@ export const MyCard = styled.div`
   flex: 1;
   cursor: pointer;
   :hover {
-    background-color: lightgray;
+    background-color: lightgrey;
   }
 `;
 
 export const CardPattern = styled.div`
-  background-color: ${props => props.bg};
-  background-image: url('../../../../15102007.svg');
+  background-color: ${props => `rgb(${props.r},${props.g},${props.b})`};
+  background-image: url('../../../../favicon-16x16.png');
   background-size: cover;
   flex: 1;
   width: 40px;
@@ -26,8 +26,8 @@ export const CardPattern = styled.div`
 
 export const CardInfo = styled.div`
   padding: 5px 0px;
-  padding-left: 10px;
-  flex: 4;
+  padding-left: 15px;
+  flex: 5;
 `;
 
 export const CardDeleteContainer = styled.div`
