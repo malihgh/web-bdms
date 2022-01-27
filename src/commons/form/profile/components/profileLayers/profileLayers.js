@@ -59,7 +59,13 @@ const ProfileLayers = () => {
             m
           </Styled.Text>
         </Styled.CardInfo>
-        <Styled.CardDeleteButton>trash</Styled.CardDeleteButton>
+        {true && (
+          <Styled.CardDeleteContainer>
+            <Styled.CardDeleteButton basic color="red" icon>
+              <Icon name="trash alternate outline" />
+            </Styled.CardDeleteButton>
+          </Styled.CardDeleteContainer>
+        )}
       </Styled.MyCard>
     </Styled.Container>
   );

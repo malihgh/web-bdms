@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import DomainText from '../../../domain/domainText';
+import { Button } from 'semantic-ui-react';
+
 export const Container = styled.div``;
 
 export const MyCard = styled.div`
@@ -15,7 +17,6 @@ export const CardPattern = styled.div`
   background-color: ${props => props.bg};
   background-image: url('../../../../15102007.svg');
   background-size: cover;
-
   flex: 1;
   width: 40px;
 `;
@@ -23,11 +24,18 @@ export const CardPattern = styled.div`
 export const CardInfo = styled.div`
   padding: 5px 0px;
   padding-left: 10px;
-  flex: 5;
+  flex: 4;
 `;
 
-export const CardDeleteButton = styled.div`
+export const CardDeleteContainer = styled.div`
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const CardDeleteButton = styled(Button)`
+  color: red;
 `;
 
 export const Text = styled.div`
