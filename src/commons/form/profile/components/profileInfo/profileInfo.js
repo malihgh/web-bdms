@@ -1,8 +1,8 @@
 import React from 'react';
 import * as Styled from './styles';
 import { Input, Form, Checkbox, Popup, Button, Icon } from 'semantic-ui-react';
-import TranslationText from '../../../../../translationText';
-import DateField from '../../../../../dateField';
+import TranslationText from '../../../translationText';
+import DateField from '../../../dateField';
 
 const ProfileInfo = props => {
   const { item, isEditable } = props.data;

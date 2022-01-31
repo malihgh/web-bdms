@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import ProfileHeader from './components/profileHeader';
+import ProfileInfo from './components/profileInfo';
 import ProfileLayers from './components/profileLayers';
-import ProfileInfo from './components/profileHeader/components/profileInfo';
 import ProfileAttributes from './components/profileAttributes';
 
 // Take a look at the StratigraphyFormContainer
