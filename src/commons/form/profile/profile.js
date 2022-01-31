@@ -59,7 +59,6 @@ const Profile = () => {
       <Style.Container>
         <div
           style={{
-            width: '60%',
             display: 'flex',
             flexDirection: 'column',
             flex: '1 1 100%',
@@ -79,7 +78,13 @@ const Profile = () => {
             }}
           />
         </div>
-        <div style={{ width: '40%' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            flex: '1 1.5 100%',
+            overflow: 'hidden',
+          }}>
           <ProfileAttributes />
         </div>
       </Style.Container>

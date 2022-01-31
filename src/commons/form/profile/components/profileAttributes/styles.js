@@ -3,8 +3,8 @@ import { Form } from 'semantic-ui-react';
 
 export const Container = styled.div`
   overflow-y: auto;
-  height: 100%;
-  padding: 0px 10px 40px 15px;
+  flex: 1 1 100%;
+  padding: 0px 10px 0px 15px;
 `;
 
 export const CheckboxContainer = styled.div`
