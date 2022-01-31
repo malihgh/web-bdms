@@ -79,12 +79,6 @@ const ProfileInfo = props => {
           </div>
         )}
       </Styled.CheckBoxContainer>
-
-      {isEditable && (
-        <Button fluid secondary size="tiny" style={{ marginTop: '10px' }}>
-          <TranslationText id="add" />
-        </Button>
-      )}
     </Styled.Container>
   );
 };

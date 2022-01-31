@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import * as Styled from './styles';
 import { getProfileLayers } from '@ist-supsi/bmsjs';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Button } from 'semantic-ui-react';
+import TranslationText from '../../../translationText';
 
 const ProfileLayers = props => {
   const { isEditable, selectedStratigraphyID } = props.data;
@@ -29,6 +30,11 @@ const ProfileLayers = props => {
 
   return (
     <Styled.Container>
+      {isEditable && (
+        <Button fluid secondary size="tiny" style={{ marginBottom: '10px' }}>
+          <TranslationText id="add" />
+        </Button>
+      )}
       {layers?.data.length === 0 && (
         <Styled.Empty>Nothing to show</Styled.Empty>
       )}
