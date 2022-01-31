@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 import ProfileHeader from './components/profileHeader';
 import ProfileLayers from './components/profileLayers';
+import ProfileInfo from './components/profileHeader/components/profileInfo';
 import ProfileAttributes from './components/profileAttributes';
 
 // Take a look at the StratigraphyFormContainer
@@ -16,7 +17,7 @@ const Profile = () => {
   }));
 
   const [isEditable, setIsEditable] = useState(false);
-  const [selectedStratigraphyID, setSelectedStratigraphyID] = useState(null);
+  const [selectedStratigraphy, setSelectedStratigraphy] = useState(null);
 
   useEffect(() => {
     if (
@@ -45,21 +46,28 @@ const Profile = () => {
 
   return (
     <Style.MainContainer>
+      <ProfileHeader
+        data={{
+          boreholeID: borehole.data.id,
+          kind: 3000,
+          isEditable,
+          selectedStratigraphy: e => {
+            setSelectedStratigraphy(e);
+          },
+        }}
+      />
       <Style.Container>
         <div style={{ width: '60%' }}>
-          <ProfileHeader
+          <ProfileInfo
             data={{
-              boreholeID: borehole.data.id,
-              kind: 3000,
+              item: selectedStratigraphy !== null && selectedStratigraphy,
               isEditable,
-              selectedStratigraphyID: e => {
-                setSelectedStratigraphyID(e);
-              },
             }}
           />
+
           <ProfileLayers
             data={{
-              selectedStratigraphyID: selectedStratigraphyID,
+              selectedStratigraphyID: selectedStratigraphy?.id,
               isEditable,
             }}
           />

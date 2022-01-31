@@ -5,11 +5,10 @@ import TranslationText from './../../../translationText';
 import PropTypes from 'prop-types';
 import DateText from '../../../dateText';
 import { getProfiles } from '@ist-supsi/bmsjs';
-import ProfileInfo from './components/profileInfo';
 import { withTranslation } from 'react-i18next';
 
 const ProfileHeader = props => {
-  const { boreholeID, kind, isEditable, selectedStratigraphyID } = props.data;
+  const { boreholeID, kind, isEditable, selectedStratigraphy } = props.data;
   const { t } = props;
   const [profiles, setProfiles] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
@@ -24,7 +23,7 @@ const ProfileHeader = props => {
         if (response.data.success) {
           setProfiles(response.data.data);
           setSelectedItem(response.data.data[0]);
-          selectedStratigraphyID(response.data.data[0]?.id);
+          selectedStratigraphy(response.data.data[0]);
         } else {
           alert(response.data.message);
         }
@@ -51,7 +50,7 @@ const ProfileHeader = props => {
             key={item.id}
             onClick={() => {
               setSelectedItem(item);
-              selectedStratigraphyID(item.id);
+              selectedStratigraphy(item);
             }}
             style={{
               borderBottom: item.id === selectedItem?.id && '2px solid black',
@@ -68,7 +67,6 @@ const ProfileHeader = props => {
           </Styled.Item>
         ))}
       </Styled.ButtonContainer>
-      <ProfileInfo data={{ item: selectedItem, isEditable }} />
     </Styled.Container>
   );
 };
