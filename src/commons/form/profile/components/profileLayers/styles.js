@@ -3,18 +3,24 @@ import DomainText from '../../../domain/domainText';
 import { Button } from 'semantic-ui-react';
 
 export const Container = styled.div`
-  overflow-y: scroll;
-  height: 80%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 100%;
+  overflow: hidden;
+  margin-top: 10px;
 `;
+
 export const Empty = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 23px;
-  height: 100%;
 `;
 
-export const LayerContainer = styled.div``;
+export const LayerContainer = styled.div`
+  flex: 1 1 100%;
+  overflow-y: auto;
+`;
 
 export const MyCard = styled.div`
   display: flex;

@@ -57,7 +57,14 @@ const Profile = () => {
         }}
       />
       <Style.Container>
-        <div style={{ width: '60%' }}>
+        <div
+          style={{
+            width: '60%',
+            display: 'flex',
+            flexDirection: 'column',
+            flex: '1 1 100%',
+            overflow: 'hidden',
+          }}>
           <ProfileInfo
             data={{
               item: selectedStratigraphy !== null && selectedStratigraphy,

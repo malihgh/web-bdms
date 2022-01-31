@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
 export const MainContainer = styled.div`
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 100%;
+  overflow: hidden;
 `;
 
 export const Container = styled.div`
@@ -9,6 +12,6 @@ export const Container = styled.div`
   flex-direction: row;
   padding: 10px;
   padding-right: 0px;
-  flex: 1;
-  height: 100%;
+  flex: 1 1 100%;
+  overflow: hidden;
 `;
