@@ -2,6 +2,14 @@ import styled from 'styled-components';
 import DomainText from '../../../domain/domainText';
 import { Button } from 'semantic-ui-react';
 
+export const Empty = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 23px;
+  flex: 1;
+`;
+
 export const Container = styled.div`
   border: 1px solid lightgrey;
   border-radius: 5px;
@@ -20,11 +28,7 @@ export const MyCard = styled.div`
 `;
 
 export const CardPattern = styled.div`
-  background-color: ${props =>
-    props.transparent
-      ? 'transparent'
-      : `rgb(${props.r},${props.g},${props.b})`};
-  /* background-image: url('../../../../favicon-16x16.png'); */
+  background-color: ${props => `rgb(${props.r},${props.g},${props.b})`};
   background-size: cover;
   flex: 0.7;
   width: 40px;
