@@ -24,7 +24,7 @@ const ProfileHeader = props => {
         if (response.data.success) {
           setProfiles(response.data.data);
           setSelectedItem(response.data.data[0]);
-          selectedStratigraphyID(response.data.data[0].id);
+          selectedStratigraphyID(response.data.data[0]?.id);
         } else {
           alert(response.data.message);
         }
