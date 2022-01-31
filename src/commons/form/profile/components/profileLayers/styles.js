@@ -2,24 +2,25 @@ import styled from 'styled-components';
 import DomainText from '../../../domain/domainText';
 import { Button } from 'semantic-ui-react';
 
+export const Container = styled.div`
+  overflow-y: scroll;
+  height: 80%;
+`;
 export const Empty = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 23px;
-  flex: 1;
+  height: 100%;
 `;
 
-export const Container = styled.div`
-  border: 1px solid lightgrey;
-  border-radius: 5px;
-`;
+export const LayerContainer = styled.div``;
 
 export const MyCard = styled.div`
   display: flex;
   flex-direction: row;
-  border-top: 1px solid lightgrey;
-  border-top: ${props => props.isFirst && '0px'};
+  border: 1px solid lightgrey;
+  border-top: ${props => !props.isFirst && '0px'};
   flex: 1;
   cursor: pointer;
   :hover {

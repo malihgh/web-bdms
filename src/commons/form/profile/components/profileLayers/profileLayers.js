@@ -28,20 +28,21 @@ const ProfileLayers = props => {
   };
 
   return (
-    <div>
-      {layers === null && <Styled.Empty>select an stratigraphy</Styled.Empty>}
-      {layers !== null && (
-        <Styled.Container>
+    <Styled.Container>
+      {layers?.data.length === 0 && (
+        <Styled.Empty>Nothing to show</Styled.Empty>
+      )}
+      {layers !== null && layers?.data.length !== 0 && (
+        <Styled.LayerContainer>
           {layers.data.map((item, index) => (
             <Styled.MyCard
-              key={item.id}
               isFirst={index === 0 ? true : false}
+              key={item.id}
               onClick={() => console.log('profileLayers')}>
-              {console.log('hey', item.pattern)}
               <Styled.CardPattern
-                r={item.rgb?.[0]}
-                g={item.rgb?.[1]}
                 b={item.rgb?.[2]}
+                g={item.rgb?.[1]}
+                r={item.rgb?.[0]}
                 style={{
                   backgroundImage:
                     'url("' +
@@ -113,9 +114,9 @@ const ProfileLayers = props => {
               )}
             </Styled.MyCard>
           ))}
-        </Styled.Container>
+        </Styled.LayerContainer>
       )}
-    </div>
+    </Styled.Container>
   );
 };
 
