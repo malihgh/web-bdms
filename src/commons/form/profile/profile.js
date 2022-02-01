@@ -57,13 +57,7 @@ const Profile = () => {
         }}
       />
       <Style.Container>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            flex: '1 1 100%',
-            overflow: 'hidden',
-          }}>
+        <Style.FirstColumn>
           <ProfileInfo
             data={{
               item: selectedStratigraphy !== null && selectedStratigraphy,
@@ -77,16 +71,10 @@ const Profile = () => {
               isEditable,
             }}
           />
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            flex: '1 1.5 100%',
-            overflow: 'hidden',
-          }}>
+        </Style.FirstColumn>
+        <Style.SecondColumn>
           <ProfileAttributes />
-        </div>
+        </Style.SecondColumn>
       </Style.Container>
     </Style.MainContainer>
   );

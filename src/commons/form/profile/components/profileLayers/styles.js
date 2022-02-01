@@ -15,6 +15,7 @@ export const Empty = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 23px;
+  flex: 1 1 100%;
 `;
 
 export const LayerContainer = styled.div`
@@ -60,9 +61,9 @@ export const CardDeleteButton = styled(Button)`
 
 export const Text = styled.div`
   font-weight: ${props => (props.bold ? 'bold' : '100')};
-  font-size: ${props => (props.bold ? '16px' : props.small ? '11px' : '14px')};
+  font-size: ${props => (props.bold ? '15px' : props.small ? '10px' : '13px')};
   color: ${props => (props.small ? 'grey' : props.warning ? 'red' : 'black')};
-  padding-top: 3px;
+  padding-top: 2px;
 `;
 
 export const DomainTxt = styled(DomainText)``;

@@ -15,3 +15,17 @@ export const Container = styled.div`
   flex: 1 1 100%;
   overflow: hidden;
 `;
+
+export const FirstColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 100%;
+  overflow: hidden;
+`;
+
+export const SecondColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 100%;
+  overflow: hidden;
+`;
