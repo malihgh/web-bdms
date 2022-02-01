@@ -5,7 +5,12 @@ import { Icon, Button } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 
 const ProfileLayers = props => {
-  const { isEditable, selectedStratigraphyID } = props.data;
+  const {
+    isEditable,
+    selectedStratigraphyID,
+    selectedLayer,
+    setSelectedLayer,
+  } = props.data;
   const [layers, setLayers] = useState(null);
 
   useEffect(() => {
@@ -44,7 +49,10 @@ const ProfileLayers = props => {
             <Styled.MyCard
               isFirst={index === 0 ? true : false}
               key={item.id}
-              onClick={() => console.log('profileLayers')}>
+              onClick={() => setSelectedLayer(item)}
+              style={{
+                backgroundColor: item === selectedLayer && 'lightgrey',
+              }}>
               <Styled.CardPattern
                 b={item.rgb?.[2]}
                 g={item.rgb?.[1]}
@@ -113,6 +121,7 @@ const ProfileLayers = props => {
                     basic
                     color="red"
                     icon
+                    size="mini"
                     onClick={() => console.log('profileLayers')}>
                     <Icon name="trash alternate outline" />
                   </Styled.CardDeleteButton>

@@ -10,7 +10,7 @@ import { getLayer, patchLayer } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
 
 const ProfileAttributes = props => {
-  const { id, isEditable, onUpdated } = props;
+  const { id, isEditable, onUpdated } = props.data;
   let updateAttributeDelay = {};
   const [showAll, setShowAll] = useState(false);
   const [state, setState] = useState({

@@ -18,6 +18,7 @@ const Profile = () => {
 
   const [isEditable, setIsEditable] = useState(false);
   const [selectedStratigraphy, setSelectedStratigraphy] = useState(null);
+  const [selectedLayer, setSelectedLayer] = useState(null);
 
   useEffect(() => {
     if (
@@ -69,11 +70,15 @@ const Profile = () => {
             data={{
               selectedStratigraphyID: selectedStratigraphy?.id,
               isEditable,
+              selectedLayer,
+              setSelectedLayer: e => {
+                setSelectedLayer(e);
+              },
             }}
           />
         </Style.FirstColumn>
         <Style.SecondColumn>
-          <ProfileAttributes />
+          <ProfileAttributes data={{ id: selectedLayer?.id, isEditable }} />
         </Style.SecondColumn>
       </Style.Container>
     </Style.MainContainer>
