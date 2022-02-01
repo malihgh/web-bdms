@@ -15,9 +15,7 @@ export const CheckboxContainer = styled.div`
   padding-bottom: 15px;
 `;
 
-export const AttributesContainer = styled(Form.Field)`
-  /* padding-bottom: 10px; */
-`;
+export const AttributesContainer = styled(Form.Field)``;
 
 export const Label = styled.label`
   font-weight: bold;

@@ -68,7 +68,6 @@ const ProfileAttributes = props => {
   const load = id => {
     if (id === null) setState({ state: null });
     if (_.isInteger(id)) {
-      console.log('%cprofileAttributes.js line:66 hey', 'color: #007acc;', id);
       setState({ isFetching: true });
       getLayer(id)
         .then(function (response) {
@@ -94,12 +93,7 @@ const ProfileAttributes = props => {
       alert('You should press start editting button! ');
       return;
     }
-    console.log(
-      '%cprofileAttributes.js line:125 attribute,value',
-      'color: #007acc;',
-      attribute,
-      value,
-    );
+
     setState(prevState => ({ ...prevState, isPatching: true }));
     _.set(state.layer, attribute, value);
 
@@ -115,12 +109,6 @@ const ProfileAttributes = props => {
   };
 
   const patch = (attribute, value) => {
-    console.log(
-      '%cprofileAttributes.js line:152 attribute',
-      'color: #007acc;',
-      attribute,
-      updateAttributeDelay,
-    );
     if (
       updateAttributeDelay.hasOwnProperty(attribute) &&
       updateAttributeDelay[attribute]
