@@ -26,6 +26,6 @@ export const FirstColumn = styled.div`
 export const SecondColumn = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1 1 100%;
+  flex: 1 1.5 100%;
   overflow: hidden;
 `;
