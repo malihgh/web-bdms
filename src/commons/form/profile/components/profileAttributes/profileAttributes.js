@@ -66,22 +66,18 @@ const ProfileAttributes = props => {
   }, [id]);
 
   const load = id => {
+    if (id === null) setState({ state: null });
     if (_.isInteger(id)) {
       console.log('%cprofileAttributes.js line:66 hey', 'color: #007acc;', id);
-      setState({ ...state, isFetching: true });
+      setState({ isFetching: true });
       getLayer(id)
         .then(function (response) {
           if (response.data.success) {
-            console.log(
-              '%cprofileAttributes.js line:78 response.data.data',
-              'color: #007acc;',
-              response.data.data,
-            );
             setState({
-              ...state,
               isFetching: false,
               layer: response.data.data,
             });
+
             if (_.isNil(state.layer.depth_to)) {
               //  this.depthToRef.current.focus();
             }
@@ -152,7 +148,7 @@ const ProfileAttributes = props => {
   };
 
   return (
-    <Styled.Container>
+    <Styled.Container disable={!id}>
       <Styled.CheckboxContainer>
         <Checkbox
           checked={showAll}
@@ -237,7 +233,6 @@ const ProfileAttributes = props => {
               <Styled.AttributesItem>
                 <DomainDropdown
                   multiple={item.multiple}
-                  // onSelected={() => item.onChange()}
                   onSelected={e =>
                     updateChange(
                       item.value,
@@ -264,7 +259,7 @@ const ProfileAttributes = props => {
                   schema={item.schema}
                   selected={
                     _.isNil(state?.layer?.[item.value])
-                      ? ''
+                      ? null
                       : state.layer[item.value]
                   }
                   title={<TranslationText id={item.label} />}

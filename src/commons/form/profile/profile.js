@@ -54,6 +54,7 @@ const Profile = () => {
           isEditable,
           selectedStratigraphy: e => {
             setSelectedStratigraphy(e);
+            setSelectedLayer(null);
           },
         }}
       />
@@ -78,7 +79,9 @@ const Profile = () => {
           />
         </Style.FirstColumn>
         <Style.SecondColumn>
-          <ProfileAttributes data={{ id: selectedLayer?.id, isEditable }} />
+          <ProfileAttributes
+            data={{ id: selectedLayer ? selectedLayer.id : null, isEditable }}
+          />
         </Style.SecondColumn>
       </Style.Container>
     </Style.MainContainer>
