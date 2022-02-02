@@ -19,6 +19,7 @@ const Profile = () => {
   const [isEditable, setIsEditable] = useState(false);
   const [selectedStratigraphy, setSelectedStratigraphy] = useState(null);
   const [selectedLayer, setSelectedLayer] = useState(null);
+  const [reloadLayer, setReloadLayer] = useState(0);
 
   useEffect(() => {
     if (
@@ -43,6 +44,18 @@ const Profile = () => {
     data: borehole.data,
     user: user.data,
     isEditable: isEditable,
+  };
+
+  const OnUpdateForm = attribute => {
+    if (
+      attribute === 'depth_to' ||
+      attribute === 'depth_from' ||
+      attribute === 'lithostratigraphy' ||
+      attribute === 'lithology' ||
+      attribute === 'chronostratigraphy'
+    ) {
+      setReloadLayer(reloadLayer => reloadLayer + 1);
+    }
   };
 
   return (
@@ -75,12 +88,17 @@ const Profile = () => {
               setSelectedLayer: e => {
                 setSelectedLayer(e);
               },
+              reloadLayer,
             }}
           />
         </Style.FirstColumn>
         <Style.SecondColumn>
           <ProfileAttributes
-            data={{ id: selectedLayer ? selectedLayer.id : null, isEditable }}
+            data={{
+              id: selectedLayer ? selectedLayer.id : null,
+              isEditable,
+              onUpdated: OnUpdateForm,
+            }}
           />
         </Style.SecondColumn>
       </Style.Container>

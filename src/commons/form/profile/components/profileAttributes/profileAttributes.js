@@ -77,9 +77,9 @@ const ProfileAttributes = props => {
               layer: response.data.data,
             });
 
-            if (_.isNil(state.layer.depth_to)) {
-              //  this.depthToRef.current.focus();
-            }
+            // if (_.isNil(state.layer.depth_to)) {
+            //  this.depthToRef.current.focus();
+            // }
           }
         })
         .catch(function (error) {
@@ -90,7 +90,7 @@ const ProfileAttributes = props => {
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     if (!isEditable) {
-      alert('You should press start editting button! ');
+      alert('You should press start editing button! ');
       return;
     }
 
@@ -122,7 +122,7 @@ const ProfileAttributes = props => {
           if (response.data.success) {
             setState({ ...state, isPatching: false });
             if (_.isFunction(onUpdated)) {
-              onUpdated(state?.layer?.id, attribute, value);
+              onUpdated(attribute);
             }
           } else {
             alert(response.data.message);
