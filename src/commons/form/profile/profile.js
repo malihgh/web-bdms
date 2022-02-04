@@ -20,6 +20,7 @@ const Profile = () => {
   const [selectedStratigraphy, setSelectedStratigraphy] = useState(null);
   const [selectedLayer, setSelectedLayer] = useState(null);
   const [reloadLayer, setReloadLayer] = useState(0);
+  const [reloadHeader, setReloadHeader] = useState(0);
 
   useEffect(() => {
     if (
@@ -46,7 +47,7 @@ const Profile = () => {
     isEditable: isEditable,
   };
 
-  const OnUpdateForm = attribute => {
+  const OnUpdated = attribute => {
     if (
       attribute === 'depth_to' ||
       attribute === 'depth_from' ||
@@ -56,6 +57,8 @@ const Profile = () => {
     ) {
       setReloadLayer(reloadLayer => reloadLayer + 1);
     }
+    if (attribute === 'primary' || attribute === 'name' || attribute === 'date')
+      setReloadHeader(reloadHeader => reloadHeader + 1);
   };
 
   return (
@@ -65,10 +68,12 @@ const Profile = () => {
           boreholeID: borehole.data.id,
           kind: 3000,
           isEditable,
-          selectedStratigraphy: e => {
+          selectedStratigraphy,
+          setSelectedStratigraphy: e => {
             setSelectedStratigraphy(e);
             setSelectedLayer(null);
           },
+          reloadHeader,
         }}
       />
       <Style.Container>
@@ -77,6 +82,7 @@ const Profile = () => {
             data={{
               item: selectedStratigraphy !== null && selectedStratigraphy,
               isEditable,
+              onUpdated: OnUpdated,
             }}
           />
 
@@ -97,7 +103,7 @@ const Profile = () => {
             data={{
               id: selectedLayer ? selectedLayer.id : null,
               isEditable,
-              onUpdated: OnUpdateForm,
+              onUpdated: OnUpdated,
             }}
           />
         </Style.SecondColumn>

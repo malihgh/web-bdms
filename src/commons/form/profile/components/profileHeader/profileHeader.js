@@ -8,22 +8,31 @@ import { getProfiles } from '@ist-supsi/bmsjs';
 import { withTranslation } from 'react-i18next';
 
 const ProfileHeader = props => {
-  const { boreholeID, kind, isEditable, selectedStratigraphy } = props.data;
+  const {
+    boreholeID,
+    kind,
+    isEditable,
+    selectedStratigraphy,
+    setSelectedStratigraphy,
+    reloadHeader,
+  } = props.data;
   const { t } = props;
   const [profiles, setProfiles] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
 
   useEffect(() => {
     GetData();
-  }, [boreholeID]);
+  }, [boreholeID, reloadHeader]);
 
   const GetData = () => {
     getProfiles(boreholeID, kind)
       .then(response => {
         if (response.data.success) {
           setProfiles(response.data.data);
-          setSelectedItem(response.data.data[0]);
-          selectedStratigraphy(response.data.data[0]);
+          setSelectedItem(selectedStratigraphy ?? response.data.data[0]);
+          setSelectedStratigraphy(
+            selectedStratigraphy ?? response.data.data[0],
+          );
         } else {
           alert(response.data.message);
         }
@@ -50,7 +59,7 @@ const ProfileHeader = props => {
             key={item.id}
             onClick={() => {
               setSelectedItem(item);
-              selectedStratigraphy(item);
+              setSelectedStratigraphy(item);
             }}
             style={{
               borderBottom: item.id === selectedItem?.id && '2px solid black',
