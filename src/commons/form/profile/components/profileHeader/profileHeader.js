@@ -4,7 +4,7 @@ import { Button, Icon } from 'semantic-ui-react';
 import TranslationText from './../../../translationText';
 import PropTypes from 'prop-types';
 import DateText from '../../../dateText';
-import { getProfiles } from '@ist-supsi/bmsjs';
+import { getProfiles, createStratigraphy } from '@ist-supsi/bmsjs';
 import { withTranslation } from 'react-i18next';
 
 const ProfileHeader = props => {
@@ -51,6 +51,19 @@ const ProfileHeader = props => {
             icon="add"
             secondary
             size="small"
+            onClick={() => {
+              createStratigraphy(boreholeID)
+                .then(response => {
+                  console.log('response', response);
+                  if (response.data.success) {
+                  } else {
+                    alert(response.data.message);
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+            }}
           />
         )}
 
