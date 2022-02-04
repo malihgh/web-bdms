@@ -53,7 +53,7 @@ const ProfileLayers = props => {
                 key={item.id}
                 onClick={() => setSelectedLayer(item)}
                 style={{
-                  backgroundColor: item === selectedLayer && 'lightgrey',
+                  backgroundColor: selectedLayer?.id === item.id && 'lightgrey',
                 }}>
                 <Styled.CardPattern
                   b={item.rgb?.[2]}
