@@ -3,7 +3,7 @@ import * as Styled from './styles';
 import { Input, Form, Checkbox, Popup, Button, Icon } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import DateField from '../../../dateField';
-import { patchStratigraphy } from '@ist-supsi/bmsjs';
+import { patchStratigraphy, deleteStratigraphy } from '@ist-supsi/bmsjs';
 
 import _ from 'lodash';
 
@@ -138,7 +138,21 @@ const ProfileInfo = props => {
               }>
               <TranslationText id="deleteForever" />?
               <br />
-              <Button icon secondary size="tiny">
+              <Button
+                icon
+                secondary
+                size="tiny"
+                onClick={() => {
+                  // deleteStratigraphy(item.id).then(response => {
+                  //   onUpdated('deleteStratigraphy');
+                  // if (_.isFunction(onDeleted)){
+                  //   onDeleted(stratigraphy.id);
+                  // }
+                  // this.setState({
+                  //   stratigraphy: null
+                  // });
+                  // });
+                }}>
                 <TranslationText id="yes" />
               </Button>
             </Popup>

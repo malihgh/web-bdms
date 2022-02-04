@@ -41,12 +41,6 @@ const Profile = () => {
   //     return borehole?.data?.stratigraphy?.[0] ?? null;
   // }, [borehole]);
 
-  const dataBorehole = {
-    data: borehole.data,
-    user: user.data,
-    isEditable: isEditable,
-  };
-
   const OnUpdated = attribute => {
     if (
       attribute === 'depth_to' ||
@@ -59,6 +53,10 @@ const Profile = () => {
     }
     if (attribute === 'primary' || attribute === 'name' || attribute === 'date')
       setReloadHeader(reloadHeader => reloadHeader + 1);
+    if (attribute === 'deleteStratigraphy') {
+      setReloadHeader(reloadHeader => reloadHeader + 1);
+      setReloadLayer(reloadLayer => reloadLayer + 1);
+    }
   };
 
   return (
