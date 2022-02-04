@@ -47,7 +47,8 @@ const Profile = () => {
       attribute === 'depth_from' ||
       attribute === 'lithostratigraphy' ||
       attribute === 'lithology' ||
-      attribute === 'chronostratigraphy'
+      attribute === 'chronostratigraphy' ||
+      attribute === 'newLayer'
     ) {
       setReloadLayer(reloadLayer => reloadLayer + 1);
     }
@@ -93,6 +94,7 @@ const Profile = () => {
                 setSelectedLayer(e);
               },
               reloadLayer,
+              onUpdated: OnUpdated,
             }}
           />
         </Style.FirstColumn>

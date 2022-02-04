@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import * as Styled from './styles';
-import { getProfileLayers } from '@ist-supsi/bmsjs';
+import { getProfileLayers, createLayer } from '@ist-supsi/bmsjs';
 import { Icon, Button } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 
@@ -11,6 +11,7 @@ const ProfileLayers = props => {
     selectedLayer,
     setSelectedLayer,
     reloadLayer,
+    onUpdated,
   } = props.data;
   const [layers, setLayers] = useState(null);
 
@@ -37,7 +38,25 @@ const ProfileLayers = props => {
   return (
     <Styled.Container>
       {isEditable && (
-        <Button fluid secondary size="tiny" style={{ marginBottom: '10px' }}>
+        <Button
+          fluid
+          onClick={() => {
+            createLayer(selectedStratigraphyID)
+              .then(response => {
+                console.log('response create layer', response);
+                if (response.data.success) {
+                  onUpdated('newLayer');
+                } else {
+                  alert(response.data.message);
+                }
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          }}
+          secondary
+          size="tiny"
+          style={{ marginBottom: '10px' }}>
           <TranslationText id="add" />
         </Button>
       )}
