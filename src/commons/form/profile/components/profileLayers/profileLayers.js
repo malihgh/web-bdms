@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import * as Styled from './styles';
-import { getProfileLayers, createLayer } from '@ist-supsi/bmsjs';
+import { getProfileLayers, createLayer, deleteLayer } from '@ist-supsi/bmsjs';
 import { Icon, Button } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 
@@ -43,7 +43,6 @@ const ProfileLayers = props => {
           onClick={() => {
             createLayer(selectedStratigraphyID)
               .then(response => {
-                console.log('response create layer', response);
                 if (response.data.success) {
                   onUpdated('newLayer');
                 } else {
@@ -122,7 +121,7 @@ const ProfileLayers = props => {
                     {item.description !== null ? (
                       <Styled.DomainTxt
                         id={item.description}
-                        schema={layers.config.title}
+                        schema={layers.config.description}
                       />
                     ) : (
                       '-'
@@ -145,7 +144,17 @@ const ProfileLayers = props => {
                       icon
                       size="mini"
                       onClick={() => {
-                        console.log('profileLayers');
+                        deleteLayer(item.id)
+                          .then(response => {
+                            if (response.data.success) {
+                              onUpdated('deleteLayer');
+                            } else {
+                              alert(response.data.message);
+                            }
+                          })
+                          .catch(function (error) {
+                            console.log(error);
+                          });
                       }}>
                       <Icon name="trash alternate outline" />
                     </Styled.CardDeleteButton>
