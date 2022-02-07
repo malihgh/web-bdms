@@ -198,7 +198,7 @@ const ProfileAttributes = props => {
                 <Form.Radio
                   checked={
                     _.isNil(state?.layer?.[item.value])
-                      ? ''
+                      ? false
                       : state.layer[item.value]
                   }
                   label={'Yes'}
@@ -208,7 +208,7 @@ const ProfileAttributes = props => {
                 <Form.Radio
                   checked={
                     _.isNil(state?.layer?.[item.value])
-                      ? ''
+                      ? false
                       : !state.layer[item.value]
                   }
                   label={'No'}
@@ -232,7 +232,7 @@ const ProfileAttributes = props => {
                   search={item.search}
                   selected={
                     _.isNil(state?.layer?.[item.value])
-                      ? ''
+                      ? null
                       : state.layer[item.value]
                   }
                 />
