@@ -89,7 +89,7 @@ const ProfileInfo = props => {
                 <TranslationText id="date" />
               </label>
               <DateField
-                date={item && item.date}
+                date={item?.date}
                 onChange={selected => {
                   updateChange('date', selected, false);
                 }}
