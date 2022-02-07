@@ -79,12 +79,13 @@ const ProfileLayers = props => {
                   g={item.rgb?.[1]}
                   r={item.rgb?.[0]}
                   style={{
-                    backgroundImage:
-                      'url("' +
-                      process.env.PUBLIC_URL +
-                      '/img/lit/' +
-                      item.pattern +
-                      '")',
+                    backgroundImage: item.pattern
+                      ? 'url("' +
+                        process.env.PUBLIC_URL +
+                        '/img/lit/' +
+                        item.pattern +
+                        '")'
+                      : '',
                   }}
                 />
 
@@ -143,7 +144,9 @@ const ProfileLayers = props => {
                       color="red"
                       icon
                       size="mini"
-                      onClick={() => console.log('profileLayers')}>
+                      onClick={() => {
+                        console.log('profileLayers');
+                      }}>
                       <Icon name="trash alternate outline" />
                     </Styled.CardDeleteButton>
                   </Styled.CardDeleteContainer>
