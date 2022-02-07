@@ -117,7 +117,7 @@ export const attributes = [
     id: 11,
     type: 'Dropdown',
     label: 'layer_humidity',
-    value: 'layer_humidity',
+    value: 'humidity',
     schema: 'mlpr105',
     multiple: false,
     search: false,
@@ -243,7 +243,7 @@ export const attributes = [
     label: 'layer_uscs_3',
     value: 'uscs_3',
     schema: 'mlpr101',
-    multiple: false,
+    multiple: true,
     search: false,
   },
   {

@@ -224,7 +224,7 @@ const ProfileAttributes = props => {
                   onSelected={e =>
                     updateChange(
                       item.value,
-                      item?.multiple ? e.map(mlpr => mlpr.id) : e.id,
+                      item.multiple ? e.map(mlpr => mlpr.id) : e.id,
                       false,
                     )
                   }
