@@ -95,12 +95,7 @@ class StratigraphyFormContainer extends React.Component {
             const stratigraphy = response.data.data;
             this.setState({
               stratigraphy: stratigraphy,
-              viewas: stratigraphy.kinds[0]
-              // viewas: stratigraphy.kinds.includes(
-              //   this.props.setting.data.defaults.stratigraphy
-              // )?
-              //   this.props.setting.data.defaults.stratigraphy:
-              //   stratigraphy.kinds[0]
+              viewas: stratigraphy.kind
             }, () => {
               // Load Stratigraphy Layers
               getLayers(
@@ -661,50 +656,6 @@ class StratigraphyFormContainer extends React.Component {
                     }}
                   >
                     <div className='flex_fill' />
-                    {/* <div
-                      className='flex_row flex_fill'
-                    >
-                      <div
-                        style={{
-                          whiteSpace: 'nowrap',
-                          marginRight: '0.3em'
-                        }}
-                      >
-                        {t('common:viewas')}:
-                      </div>
-                      <div
-                        className='flex_fill'
-                      >
-                        {
-                          this.state.stratigraphy.kinds.length>0?
-                            <Dropdown
-                              defaultValue={
-                                this.state.stratigraphy.kinds.includes(
-                                  this.props.setting.data.defaults.stratigraphy
-                                )?
-                                  this.props.setting.data.defaults.stratigraphy:
-                                  this.state.stratigraphy.kinds[0]
-                              }
-                              inline
-                              onChange={(e, data)=>{
-                                this.setState({
-                                  viewas: data.value
-                                });
-                              }}
-                              options={
-                                domains.data['layer_kind'].filter(
-                                  kind => this.state.stratigraphy.kinds.includes(
-                                    kind.id
-                                  )
-                                ).map((domain) => ({
-                                  value: domain.id,
-                                  text: domain[this.props.i18n.language].text
-                                }))
-                              }
-                            />: null
-                        }
-                      </div>
-                    </div> */}
                     {
                       _.isEmpty(this.state.consistency)?
                         null:
@@ -891,7 +842,7 @@ class StratigraphyFormContainer extends React.Component {
                     domains.data.hasOwnProperty('layer_kind')?
                       (()=>{
                         const filtered = domains.data.layer_kind.filter(
-                          kind => stratigraphy.kinds.includes(kind.id)
+                          kind => stratigraphy.kind === kind.id
                         );
                         let fields = { ...filtered[0].conf.fields };
                         if (filtered.length > 1) {
