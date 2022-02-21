@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
-export const Container = styled.div``;
-export const ButtonContainer = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 10px;
-  height: 45px;
-  overflow: auto;
+`;
+export const ButtonContainer = styled.div`
+  overflow-x: auto;
+  display: flex;
+  flex-direction: row;
 `;
 export const Item = styled.div`
   margin: 0px 10px;
