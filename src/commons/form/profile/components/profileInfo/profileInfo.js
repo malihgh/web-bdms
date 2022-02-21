@@ -143,15 +143,9 @@ const ProfileInfo = props => {
                 secondary
                 size="tiny"
                 onClick={() => {
-                  // deleteStratigraphy(item.id).then(response => {
-                  //   onUpdated('deleteStratigraphy');
-                  // if (_.isFunction(onDeleted)){
-                  //   onDeleted(stratigraphy.id);
-                  // }
-                  // this.setState({
-                  //   stratigraphy: null
-                  // });
-                  // });
+                  deleteStratigraphy(item.id).then(response => {
+                    onUpdated('deleteStratigraphy');
+                  });
                 }}>
                 <TranslationText id="yes" />
               </Button>
