@@ -56,6 +56,7 @@ const Profile = () => {
     if (attribute === 'primary' || attribute === 'name' || attribute === 'date')
       setReloadHeader(reloadHeader => reloadHeader + 1);
     if (attribute === 'deleteStratigraphy') {
+      setSelectedStratigraphy(null);
       setReloadHeader(reloadHeader => reloadHeader + 1);
       setReloadLayer(reloadLayer => reloadLayer + 1);
     }
