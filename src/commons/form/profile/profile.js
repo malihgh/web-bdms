@@ -48,9 +48,12 @@ const Profile = () => {
       attribute === 'lithostratigraphy' ||
       attribute === 'lithology' ||
       attribute === 'chronostratigraphy' ||
-      attribute === 'newLayer' ||
-      attribute === 'deleteLayer'
+      attribute === 'newLayer'
     ) {
+      setReloadLayer(reloadLayer => reloadLayer + 1);
+    }
+    if (attribute === 'deleteLayer') {
+      setSelectedLayer(null);
       setReloadLayer(reloadLayer => reloadLayer + 1);
     }
     if (attribute === 'primary' || attribute === 'name' || attribute === 'date')
