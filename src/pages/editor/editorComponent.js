@@ -227,7 +227,7 @@ class EditorComponent extends React.Component {
               component={({ match }) => (
                 <div
                   style={{
-                    width: '400px',
+                    width: '300px',
                     boxShadow: 'rgba(0, 0, 0, 0.17) -2px 6px 6px 0px',
                     padding: '1em',
                   }}>
