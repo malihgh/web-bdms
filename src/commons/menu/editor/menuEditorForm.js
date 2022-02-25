@@ -197,40 +197,6 @@ class MenuEditorForm extends React.Component {
               </List.Header>
             </List.Content>
           </List.Item>
-          <List.Item
-            active={
-              location.pathname ===
-              process.env.PUBLIC_URL +
-                '/editor/' +
-                match.params.id +
-                '/attachments'
-            }
-            onClick={() => {
-              history.push(
-                process.env.PUBLIC_URL +
-                  '/editor/' +
-                  match.params.id +
-                  '/attachments',
-              );
-            }}
-            style={{
-              padding: '1em',
-              borderLeft:
-                location.pathname ===
-                process.env.PUBLIC_URL +
-                  '/editor/' +
-                  match.params.id +
-                  '/attachments'
-                  ? '0.25em solid rgb(237, 29, 36)'
-                  : null,
-            }}>
-            <List.Icon name="attach" size="large" verticalAlign="middle" />
-            <List.Content>
-              <List.Header as="h3">
-                <TranslationText firstUpperCase id="attachments" />
-              </List.Header>
-            </List.Content>
-          </List.Item>
 
           <List.Item
             active={
@@ -436,6 +402,40 @@ class MenuEditorForm extends React.Component {
               </List.Item>
             </>
           )}
+          <List.Item
+            active={
+              location.pathname ===
+              process.env.PUBLIC_URL +
+                '/editor/' +
+                match.params.id +
+                '/attachments'
+            }
+            onClick={() => {
+              history.push(
+                process.env.PUBLIC_URL +
+                  '/editor/' +
+                  match.params.id +
+                  '/attachments',
+              );
+            }}
+            style={{
+              padding: '1em',
+              borderLeft:
+                location.pathname ===
+                process.env.PUBLIC_URL +
+                  '/editor/' +
+                  match.params.id +
+                  '/attachments'
+                  ? '0.25em solid rgb(237, 29, 36)'
+                  : null,
+            }}>
+            <List.Icon name="attach" size="large" verticalAlign="middle" />
+            <List.Content>
+              <List.Header as="h3">
+                <TranslationText firstUpperCase id="attachments" />
+              </List.Header>
+            </List.Content>
+          </List.Item>
         </List>
       </Scroller>,
       <div
