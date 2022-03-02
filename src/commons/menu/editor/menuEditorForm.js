@@ -453,6 +453,7 @@ class MenuEditorForm extends React.Component {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            cursor: 'pointer',
           }}
           onClick={() =>
             this.setState({ detailsIsVisible: !this.state.detailsIsVisible })
