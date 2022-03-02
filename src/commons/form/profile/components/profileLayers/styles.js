@@ -23,11 +23,14 @@ export const LayerContainer = styled.div`
   overflow-y: auto;
 `;
 
+export const Layer = styled.div`
+  border: 1px solid lightgrey;
+  border-top: ${props => !props.isFirst && '0px'};
+`;
+
 export const MyCard = styled.div`
   display: flex;
   flex-direction: row;
-  border: 1px solid lightgrey;
-  border-top: ${props => !props.isFirst && '0px'};
   flex: 1;
   cursor: pointer;
   :hover {
@@ -66,3 +69,20 @@ export const Text = styled.div`
 `;
 
 export const DomainTxt = styled(DomainText)``;
+
+export const ErrorCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  background-color: #ff9999;
+  border-top: 1px solid lightgrey;
+  /* :hover {
+    background-color: red;
+  } */
+`;
+export const Row = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+`;
