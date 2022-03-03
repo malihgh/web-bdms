@@ -163,7 +163,7 @@ const ProfileAttributes = props => {
                   onChange={e =>
                     updateChange(
                       item.value,
-                      e.target.value,
+                      e.target.value === '' ? null : e.target.value,
                       item?.to,
                       item?.isNumber,
                     )
