@@ -3,6 +3,7 @@ import * as Styled from './styles';
 import { getProfileLayers, createLayer, deleteLayer } from '@ist-supsi/bmsjs';
 import { Icon, Button } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
+import ProfileLayersError from '../profileLayersError/profileLayersError';
 
 const ProfileLayers = props => {
   const {
@@ -27,7 +28,7 @@ const ProfileLayers = props => {
       .then(response => {
         if (response.data.success) {
           setLayers(response.data);
-          console.log('djfii', response.data);
+          console.log('data', response.data);
         } else {
           alert(response.data.message);
         }
@@ -66,6 +67,19 @@ const ProfileLayers = props => {
       )}
       {layers !== null && layers?.data?.length !== 0 && (
         <Styled.LayerContainer>
+          {layers.validation &&
+            Object.keys(layers.validation).map((key, index) => (
+              <div key={index}>
+                <ProfileLayersError
+                  key={index}
+                  data={{
+                    title: Object.keys(layers.validation)[index],
+                    isEditable,
+                    id: index,
+                  }}
+                />
+              </div>
+            ))}
           {layers.data &&
             layers.data.map((item, index) => (
               <Styled.Layer key={item.id} isFirst={index === 0 ? true : false}>
@@ -139,8 +153,8 @@ const ProfileLayers = props => {
                     </Styled.Text>
                   </Styled.CardInfo>
                   {isEditable && (
-                    <Styled.CardDeleteContainer>
-                      <Styled.CardDeleteButton
+                    <Styled.CardButtonContainer>
+                      <Styled.CardButton
                         basic
                         color="red"
                         icon
@@ -159,52 +173,21 @@ const ProfileLayers = props => {
                             });
                         }}>
                         <Icon name="trash alternate outline" />
-                      </Styled.CardDeleteButton>
-                    </Styled.CardDeleteContainer>
+                      </Styled.CardButton>
+                    </Styled.CardButtonContainer>
                   )}
                 </Styled.MyCard>
-                {item.validation && (
-                  <Styled.ErrorCard>
-                    {showSolutionItem?.id !== item.id && (
-                      <Styled.Row>
-                        <div>
-                          {item.validation.errorGap === true ? (
-                            <TranslationText id="errorGap" />
-                          ) : item.validation.errorStartWrong === true ? (
-                            <TranslationText id="errorStartWrong" />
-                          ) : (
-                            <TranslationText id="errorOverlap" />
-                          )}
-                        </div>
-                        <Styled.CardDeleteButton
-                          basic
-                          color="red"
-                          icon
-                          size="mini"
-                          onClick={() => {
-                            setShowSolutionItem(item);
-                          }}>
-                          <Icon name="wrench" />
-                        </Styled.CardDeleteButton>
-                      </Styled.Row>
-                    )}
-                    {showSolutionItem?.id === item.id && (
-                      <div>
-                        <div>Soulutions</div>
-                        <Styled.CardDeleteButton
-                          basic
-                          color="red"
-                          icon
-                          size="mini"
-                          onClick={() => {
-                            setShowSolutionItem();
-                          }}>
-                          <Icon name="cancel" />
-                        </Styled.CardDeleteButton>
-                      </div>
-                    )}
-                  </Styled.ErrorCard>
-                )}
+                {item.validation &&
+                  Object.keys(item.validation).map((key, index) => (
+                    <ProfileLayersError
+                      key={index}
+                      data={{
+                        title: Object.keys(item.validation)[index],
+                        isEditable,
+                        id: item.id,
+                      }}
+                    />
+                  ))}
               </Styled.Layer>
             ))}
         </Styled.LayerContainer>
