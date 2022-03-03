@@ -51,7 +51,6 @@ const ProfileHeader = props => {
             icon="add"
             secondary
             size="small"
-            style={{ margin: 3 }}
             onClick={() => {
               createStratigraphy(boreholeID)
                 .then(response => {
