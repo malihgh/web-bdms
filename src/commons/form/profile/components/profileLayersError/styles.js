@@ -3,7 +3,8 @@ import { Button } from 'semantic-ui-react';
 
 export const ErrorCard = styled.div`
   display: flex;
-  padding: 7px;
+  flex: 1;
+  padding: 7px 0px;
   flex-direction: column;
   background-color: #fff6f6;
   border: 1px solid lightgrey;
@@ -16,10 +17,7 @@ export const ErrorCard = styled.div`
     background-color: red;
   } */
 `;
-export const ErrorMessageContainer = styled.div`
-  color: #9f3a38;
-  font-weight: bold;
-`;
+
 export const HowToResolveContainer = styled.div`
   font-size: 0.8em;
   color: #9f3a38;
@@ -32,6 +30,15 @@ export const Row = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+export const ErrorMessageContainer = styled.div`
+  color: #9f3a38;
+  font-weight: bold;
+  flex: 5.7;
+  padding-left: 8px;
+`;
+export const SolutionContainer = styled.div`
+  padding-left: 8px;
+`;
 export const CardButtonContainer = styled.div`
   flex: 1;
   display: flex;
@@ -39,7 +46,14 @@ export const CardButtonContainer = styled.div`
   justify-content: flex-end;
   margin-top: 10px;
 `;
+export const WrenchButtonContainer = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export const CardButton = styled(Button)`
   /* color: red; */
+  /* flex: 1; */
 `;

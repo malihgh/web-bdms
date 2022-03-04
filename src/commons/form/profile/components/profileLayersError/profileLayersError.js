@@ -86,21 +86,23 @@ const ProfileLayersError = props => {
         </Styled.ErrorMessageContainer>
 
         {isEditable && showSolution !== id && (
-          <Styled.CardButton
-            basic
-            color="red"
-            icon
-            onClick={() => {
-              setShowSolution(id);
-            }}
-            size="mini">
-            <Icon name="wrench" />
-          </Styled.CardButton>
+          <Styled.WrenchButtonContainer>
+            <Styled.CardButton
+              basic
+              color="red"
+              icon
+              onClick={() => {
+                setShowSolution(id);
+              }}
+              size="mini">
+              <Icon name="wrench" />
+            </Styled.CardButton>
+          </Styled.WrenchButtonContainer>
         )}
       </Styled.Row>
 
       {showSolution === id && (
-        <div>
+        <Styled.SolutionContainer>
           <Styled.HowToResolveContainer>
             <TranslationText id="errorHowToResolve" />
           </Styled.HowToResolveContainer>
@@ -141,7 +143,7 @@ const ProfileLayersError = props => {
               <Icon name="check" /> Confirm
             </Styled.CardButton>
           </Styled.CardButtonContainer>
-        </div>
+        </Styled.SolutionContainer>
       )}
     </Styled.ErrorCard>
   );
