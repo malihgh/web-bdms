@@ -67,19 +67,22 @@ const ProfileLayers = props => {
       )}
       {layers !== null && layers?.data?.length !== 0 && (
         <Styled.LayerContainer>
-          {layers.validation &&
-            Object.keys(layers.validation).map((key, index) => (
-              <div key={index}>
-                <ProfileLayersError
-                  key={index}
-                  data={{
-                    title: Object.keys(layers.validation)[index],
-                    isEditable,
-                    id: index,
-                  }}
-                />
-              </div>
-            ))}
+          {layers.validation && layers?.validation?.missingLayers && (
+            <div
+              style={{
+                borderTop: '1px solid lightgrey',
+              }}>
+              <ProfileLayersError
+                data={{
+                  title: 'missingLayers',
+                  isEditable,
+                  id: selectedStratigraphyID,
+                  isInside: false,
+                }}
+              />
+              {/* {delete layers.validation.missingLayers} */}
+            </div>
+          )}
           {layers.data &&
             layers.data.map((item, index) => (
               <Styled.Layer key={item.id} isFirst={index === 0 ? true : false}>
@@ -182,14 +185,32 @@ const ProfileLayers = props => {
                     <ProfileLayersError
                       key={index}
                       data={{
-                        title: Object.keys(item.validation)[index],
+                        title: key,
                         isEditable,
                         id: item.id,
+                        isInside: true,
                       }}
                     />
                   ))}
               </Styled.Layer>
             ))}
+
+          {layers.validation &&
+            Object.keys(layers?.validation)
+              .filter(key => key !== 'missingLayers')
+              .map((key, index) => (
+                <div key={index}>
+                  <ProfileLayersError
+                    key={index}
+                    data={{
+                      title: key,
+                      isEditable,
+                      id: selectedStratigraphyID,
+                      isInside: false,
+                    }}
+                  />
+                </div>
+              ))}
         </Styled.LayerContainer>
       )}
     </Styled.Container>
