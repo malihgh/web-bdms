@@ -3,7 +3,11 @@ import * as Styled from './styles';
 import { Input, Form, Checkbox, Popup, Button, Icon } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import DateField from '../../../dateField';
-import { patchStratigraphy, deleteStratigraphy } from '@ist-supsi/bmsjs';
+import {
+  patchStratigraphy,
+  deleteStratigraphy,
+  cloneStratigraphy,
+} from '@ist-supsi/bmsjs';
 
 import _ from 'lodash';
 
@@ -123,7 +127,12 @@ const ProfileInfo = props => {
             <Button
               // disabled={!_.isEmpty(state.consistency)}
               icon
-              size="tiny">
+              size="tiny"
+              onClick={() => {
+                cloneStratigraphy(item.id).then(response => {
+                  onUpdated('cloneStratigraphy');
+                });
+              }}>
               <Icon name="clone outline" />
             </Button>
             <Popup
@@ -143,15 +152,9 @@ const ProfileInfo = props => {
                 secondary
                 size="tiny"
                 onClick={() => {
-                  // deleteStratigraphy(item.id).then(response => {
-                  //   onUpdated('deleteStratigraphy');
-                  // if (_.isFunction(onDeleted)){
-                  //   onDeleted(stratigraphy.id);
-                  // }
-                  // this.setState({
-                  //   stratigraphy: null
-                  // });
-                  // });
+                  deleteStratigraphy(item.id).then(response => {
+                    onUpdated('deleteStratigraphy');
+                  });
                 }}>
                 <TranslationText id="yes" />
               </Button>

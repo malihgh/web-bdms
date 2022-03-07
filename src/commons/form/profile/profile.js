@@ -49,13 +49,23 @@ const Profile = () => {
       attribute === 'lithology' ||
       attribute === 'chronostratigraphy' ||
       attribute === 'newLayer' ||
-      attribute === 'deleteLayer'
+      attribute === 'fixErrors'
     ) {
       setReloadLayer(reloadLayer => reloadLayer + 1);
     }
-    if (attribute === 'primary' || attribute === 'name' || attribute === 'date')
+    if (attribute === 'deleteLayer') {
+      setSelectedLayer(null);
+      setReloadLayer(reloadLayer => reloadLayer + 1);
+    }
+    if (
+      attribute === 'primary' ||
+      attribute === 'name' ||
+      attribute === 'date' ||
+      attribute === 'cloneStratigraphy'
+    )
       setReloadHeader(reloadHeader => reloadHeader + 1);
     if (attribute === 'deleteStratigraphy') {
+      setSelectedStratigraphy(null);
       setReloadHeader(reloadHeader => reloadHeader + 1);
       setReloadLayer(reloadLayer => reloadLayer + 1);
     }

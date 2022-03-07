@@ -56,6 +56,7 @@ const ProfileHeader = props => {
                 .then(response => {
                   console.log('response', response);
                   if (response.data.success) {
+                    GetData();
                   } else {
                     alert(response.data.message);
                   }

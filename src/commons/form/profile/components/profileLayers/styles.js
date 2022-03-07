@@ -23,11 +23,14 @@ export const LayerContainer = styled.div`
   overflow-y: auto;
 `;
 
+export const Layer = styled.div`
+  border: 1px solid lightgrey;
+  border-top: ${props => !props.isFirst && '0px'};
+`;
+
 export const MyCard = styled.div`
   display: flex;
   flex-direction: row;
-  border: 1px solid lightgrey;
-  border-top: ${props => !props.isFirst && '0px'};
   flex: 1;
   cursor: pointer;
   :hover {
@@ -48,18 +51,19 @@ export const CardInfo = styled.div`
   flex: 5;
 `;
 
-export const CardDeleteContainer = styled.div`
+export const CardButtonContainer = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-export const CardDeleteButton = styled(Button)`
+export const CardButton = styled(Button)`
   color: red;
 `;
 
 export const Text = styled.div`
+  display: flex;
   font-weight: ${props => (props.bold ? 'bold' : '100')};
   font-size: ${props => (props.bold ? '14px' : props.small ? '10px' : '13px')};
   color: ${props => (props.small ? 'grey' : props.warning ? 'red' : 'black')};
