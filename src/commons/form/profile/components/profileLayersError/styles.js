@@ -8,7 +8,7 @@ export const ErrorCard = styled.div`
   flex-direction: column;
   background-color: #fff6f6;
   border: 1px solid lightgrey;
-  border-bottom: ${props => props.isInside && '1px'};
+  border-top: ${props => props.isInside && '1px'};
   border-left: ${props => props.isInside && '0px'};
   border-right: ${props => props.isInside && '0px'};
   border-top: ${props => !props.isInside && '0px'};

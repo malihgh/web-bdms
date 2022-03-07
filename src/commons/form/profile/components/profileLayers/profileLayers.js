@@ -85,6 +85,28 @@ const ProfileLayers = props => {
           {layers.data &&
             layers.data.map((item, index) => (
               <Styled.Layer key={item.id} isFirst={index === 0 ? true : false}>
+                {item.validation &&
+                  Object.keys(item.validation)
+                    .filter(
+                      key =>
+                        key !== 'missingTo' &&
+                        key !== 'missingFrom' &&
+                        key !== 'invertedDepth' &&
+                        key !== 'bottomOverlap' &&
+                        key !== 'bottomDisjoint',
+                    )
+                    .map((key, index) => (
+                      <ProfileLayersError
+                        key={index}
+                        data={{
+                          title: key,
+                          isEditable,
+                          id: item.id,
+                          isInside: true,
+                          onUpdated: onUpdated,
+                        }}
+                      />
+                    ))}
                 <Styled.MyCard
                   onClick={() => setSelectedLayer(item)}
                   style={{
@@ -228,28 +250,6 @@ const ProfileLayers = props => {
                     </Styled.CardButtonContainer>
                   )}
                 </Styled.MyCard>
-                {item.validation &&
-                  Object.keys(item.validation)
-                    .filter(
-                      key =>
-                        key !== 'missingTo' &&
-                        key !== 'missingFrom' &&
-                        key !== 'invertedDepth' &&
-                        key !== 'topOverlap' &&
-                        key !== 'topDisjoint',
-                    )
-                    .map((key, index) => (
-                      <ProfileLayersError
-                        key={index}
-                        data={{
-                          title: key,
-                          isEditable,
-                          id: item.id,
-                          isInside: true,
-                          onUpdated: onUpdated,
-                        }}
-                      />
-                    ))}
               </Styled.Layer>
             ))}
 
