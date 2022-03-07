@@ -48,7 +48,8 @@ const Profile = () => {
       attribute === 'lithostratigraphy' ||
       attribute === 'lithology' ||
       attribute === 'chronostratigraphy' ||
-      attribute === 'newLayer'
+      attribute === 'newLayer' ||
+      attribute === 'fixErrors'
     ) {
       setReloadLayer(reloadLayer => reloadLayer + 1);
     }
