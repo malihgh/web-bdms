@@ -230,7 +230,14 @@ const ProfileLayers = props => {
                 </Styled.MyCard>
                 {item.validation &&
                   Object.keys(item.validation)
-                    .filter(key => key !== 'missingTo' && key !== 'missingFrom')
+                    .filter(
+                      key =>
+                        key !== 'missingTo' &&
+                        key !== 'missingFrom' &&
+                        key !== 'invertedDepth' &&
+                        key !== 'topOverlap' &&
+                        key !== 'topDisjoint',
+                    )
                     .map((key, index) => (
                       <ProfileLayersError
                         key={index}
