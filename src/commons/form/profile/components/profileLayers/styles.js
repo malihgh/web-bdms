@@ -63,6 +63,7 @@ export const CardButton = styled(Button)`
 `;
 
 export const Text = styled.div`
+  display: flex;
   font-weight: ${props => (props.bold ? 'bold' : '100')};
   font-size: ${props => (props.bold ? '14px' : props.small ? '10px' : '13px')};
   color: ${props => (props.small ? 'grey' : props.warning ? 'red' : 'black')};

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as Styled from './styles';
 import { getProfileLayers, createLayer, deleteLayer } from '@ist-supsi/bmsjs';
-import { Icon, Button } from 'semantic-ui-react';
+import { Icon, Button, Popup } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import ProfileLayersError from '../profileLayersError/profileLayersError';
 
@@ -15,7 +15,6 @@ const ProfileLayers = props => {
     onUpdated,
   } = props.data;
   const [layers, setLayers] = useState(null);
-  const [showSolutionItem, setShowSolutionItem] = useState();
 
   useEffect(() => {
     if (selectedStratigraphyID) {
@@ -108,13 +107,38 @@ const ProfileLayers = props => {
                   />
 
                   <Styled.CardInfo>
-                    <Styled.Text warning={item.depth_from === null}>
-                      {item.depth_from !== null ? (
-                        item.depth_from
-                      ) : (
+                    <Styled.Text
+                      warning={
+                        item.depth_from === null ||
+                        item?.validation?.topOverlap ||
+                        item?.validation?.topDisjoint ||
+                        item?.validation?.invertedDepth
+                      }>
+                      {(item?.validation?.topOverlap ||
+                        item?.validation?.topDisjoint ||
+                        item?.validation?.invertedDepth) && (
                         <Icon name="warning sign" style={{ color: 'red' }} />
-                      )}{' '}
-                      m
+                      )}
+                      {item.depth_from === null ||
+                      item?.validation?.missingFrom ? (
+                        <Popup
+                          basic
+                          content="You should add start point."
+                          hoverable
+                          position="bottom left"
+                          trigger={
+                            <div>
+                              <Icon
+                                name="warning sign"
+                                style={{ color: 'red' }}
+                              />
+                              m
+                            </div>
+                          }
+                        />
+                      ) : (
+                        item.depth_from + ' m'
+                      )}
                     </Styled.Text>
                     <Styled.Text bold>
                       {item.title !== null ? (
@@ -146,13 +170,37 @@ const ProfileLayers = props => {
                         '-'
                       )}
                     </Styled.Text>
-                    <Styled.Text warning={item.depth_to === null}>
-                      {item.depth_to !== null ? (
-                        item.depth_to
-                      ) : (
+                    <Styled.Text
+                      warning={
+                        item.depth_to === null ||
+                        item?.validation?.bottomOverlap ||
+                        item?.validation?.bottomDisjoint ||
+                        item?.validation?.invertedDepth
+                      }>
+                      {(item?.validation?.bottomOverlap ||
+                        item?.validation?.bottomDisjoint ||
+                        item?.validation?.invertedDepth) && (
                         <Icon name="warning sign" style={{ color: 'red' }} />
-                      )}{' '}
-                      m
+                      )}
+                      {item.depth_to === null || item?.validation?.missingTo ? (
+                        <Popup
+                          basic
+                          content="You should add end point."
+                          hoverable
+                          position="bottom left"
+                          trigger={
+                            <div>
+                              <Icon
+                                name="warning sign"
+                                style={{ color: 'red' }}
+                              />
+                              m
+                            </div>
+                          }
+                        />
+                      ) : (
+                        item.depth_to + ' m'
+                      )}
                     </Styled.Text>
                   </Styled.CardInfo>
                   {isEditable && (
@@ -181,17 +229,20 @@ const ProfileLayers = props => {
                   )}
                 </Styled.MyCard>
                 {item.validation &&
-                  Object.keys(item.validation).map((key, index) => (
-                    <ProfileLayersError
-                      key={index}
-                      data={{
-                        title: key,
-                        isEditable,
-                        id: item.id,
-                        isInside: true,
-                      }}
-                    />
-                  ))}
+                  Object.keys(item.validation)
+                    .filter(key => key !== 'missingTo' && key !== 'missingFrom')
+                    .map((key, index) => (
+                      <ProfileLayersError
+                        key={index}
+                        data={{
+                          title: key,
+                          isEditable,
+                          id: item.id,
+                          isInside: true,
+                          onUpdated: onUpdated,
+                        }}
+                      />
+                    ))}
               </Styled.Layer>
             ))}
 
