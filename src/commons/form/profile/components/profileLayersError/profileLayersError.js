@@ -23,15 +23,15 @@ const ProfileLayersError = props => {
       case 'invertedDepth':
         e = ErrorTypes[1];
         break;
-      case 'topOverlap':
-        e = ErrorTypes[2];
-        break;
+      // case 'topOverlap':
+      //   e = ErrorTypes[2];
+      //   break;
       case 'bottomOverlap':
         e = ErrorTypes[2];
         break;
-      case 'topDisjoint':
-        e = ErrorTypes[3];
-        break;
+      // case 'topDisjoint':
+      //   e = ErrorTypes[3];
+      //   break;
       case 'bottomDisjoint':
         e = ErrorTypes[3];
         break;
