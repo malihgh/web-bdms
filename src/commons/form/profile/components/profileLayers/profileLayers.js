@@ -164,7 +164,7 @@ const ProfileLayers = props => {
                       {item.description !== null ? (
                         <Styled.DomainTxt
                           id={item.description}
-                          schema={layers.config.title}
+                          schema={layers.config.description}
                         />
                       ) : (
                         '-'
