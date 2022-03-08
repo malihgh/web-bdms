@@ -5,12 +5,11 @@ import { Checkbox, Input, TextArea, Form } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import DomainDropdown from '../../../domain/dropdown/domainDropdown';
 import DomainTree from '../../../domain/tree/domainTree';
-import { attributes } from './attributesItem';
 import { getLayer, patchLayer } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
 
 const ProfileAttributes = props => {
-  const { id, isEditable, onUpdated } = props.data;
+  const { id, isEditable, onUpdated, attribute } = props.data;
   let updateAttributeDelay = {};
   const [showAll, setShowAll] = useState(false);
   const [state, setState] = useState({
@@ -146,7 +145,7 @@ const ProfileAttributes = props => {
         <TranslationText id="showallfields" />
       </Styled.CheckboxContainer>
 
-      {attributes.map((item, key) => (
+      {attribute.map((item, key) => (
         <Form autoComplete="false" error key={key}>
           <Styled.AttributesContainer required={item.require}>
             {(item.isVisible || showAll) && (
