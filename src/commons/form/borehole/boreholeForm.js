@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {withTranslation} from 'react-i18next';
+import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import moment from 'moment';
 
-import {Route, Switch, withRouter} from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 import {
   addIdentifier,
@@ -81,7 +81,7 @@ class BoreholeForm extends React.Component {
   }
 
   componentDidMount() {
-    const {match} = this.props;
+    const { match } = this.props;
     if (!_.isNil(match.params.id)) {
       this.loadOrCreate(parseInt(match.params.id, 10));
     }
@@ -365,7 +365,7 @@ class BoreholeForm extends React.Component {
   }
 
   render() {
-    const {t, workflow} = this.props;
+    const { t, workflow } = this.props;
 
     if (this.props.borehole.error !== null) {
       return (
@@ -1898,11 +1898,65 @@ class BoreholeForm extends React.Component {
           />
           <Route
             exact
-            path={process.env.PUBLIC_URL + '/editor/:id/geotechnical'}
+            path={process.env.PUBLIC_URL + '/editor/:id/hydrogeology'}
             render={() => (
               <Profile
                 id={parseInt(this.props.match.params.id, 10)}
-                kind="geotechnical"
+                kind="hydrogeology"
+                unlocked={
+                  !(
+                    this.props.borehole.data.role !== 'EDIT' ||
+                    this.props.borehole.data.lock === null ||
+                    this.props.borehole.data.lock.username !==
+                      this.props.user.data.username
+                  )
+                }
+              />
+            )}
+          />
+          <Route
+            exact
+            path={process.env.PUBLIC_URL + '/editor/:id/completion/casing'}
+            render={() => (
+              <Profile
+                id={parseInt(this.props.match.params.id, 10)}
+                kind="casing"
+                unlocked={
+                  !(
+                    this.props.borehole.data.role !== 'EDIT' ||
+                    this.props.borehole.data.lock === null ||
+                    this.props.borehole.data.lock.username !==
+                      this.props.user.data.username
+                  )
+                }
+              />
+            )}
+          />
+          <Route
+            exact
+            path={process.env.PUBLIC_URL + '/editor/:id/completion/instruments'}
+            render={() => (
+              <Profile
+                id={parseInt(this.props.match.params.id, 10)}
+                kind="instruments"
+                unlocked={
+                  !(
+                    this.props.borehole.data.role !== 'EDIT' ||
+                    this.props.borehole.data.lock === null ||
+                    this.props.borehole.data.lock.username !==
+                      this.props.user.data.username
+                  )
+                }
+              />
+            )}
+          />
+          <Route
+            exact
+            path={process.env.PUBLIC_URL + '/editor/:id/completion/filling'}
+            render={() => (
+              <Profile
+                id={parseInt(this.props.match.params.id, 10)}
+                kind="filling"
                 unlocked={
                   !(
                     this.props.borehole.data.role !== 'EDIT' ||

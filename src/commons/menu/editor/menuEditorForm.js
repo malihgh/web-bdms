@@ -197,50 +197,7 @@ class MenuEditorForm extends React.Component {
               </List.Header>
             </List.Content>
           </List.Item>
-
-          <List.Item
-            active={
-              location.pathname ===
-              process.env.PUBLIC_URL +
-                '/editor/' +
-                match.params.id +
-                '/geotechnical'
-            }
-            onClick={() => {
-              history.push(
-                process.env.PUBLIC_URL +
-                  '/editor/' +
-                  match.params.id +
-                  '/geotechnical',
-              );
-            }}
-            style={{
-              padding: '1em',
-              borderLeft:
-                location.pathname ===
-                process.env.PUBLIC_URL +
-                  '/editor/' +
-                  match.params.id +
-                  '/geotechnical'
-                  ? '0.25em solid rgb(237, 29, 36)'
-                  : null,
-            }}>
-            <List.Icon
-              name="align justify"
-              size="large"
-              verticalAlign="middle"
-            />
-            <List.Content>
-              <List.Header as="h3">
-                {/* <TranslationText
-                    firstUpperCase
-                    id="stratigraphy"
-                  /> */}
-                Geotechnical
-              </List.Header>
-            </List.Content>
-          </List.Item>
-
+          {/* Completion */}
           <List.Item
             onClick={() => {
               this.setState({
@@ -248,26 +205,39 @@ class MenuEditorForm extends React.Component {
               });
             }}
             style={{
-              padding: '1em',
-              borderLeft:
-                location.pathname ===
-                process.env.PUBLIC_URL +
-                  '/editor/' +
-                  match.params.id +
-                  '/hydrogeology'
-                  ? '0.25em solid rgb(237, 29, 36)'
-                  : null,
+              padding: '0.9em',
+              display: 'flex',
+              // backgroundColor: 'red',
             }}>
-            <List.Icon name="angle down" size="big" verticalAlign="middle" />
+            <img
+              src={process.env.PUBLIC_URL + '/img/Completion.png'}
+              style={{
+                height: '21px',
+                paddingRight: '1em',
+                opacity: this.state.hydrogeologyIsVisible ? 1 : 0.5,
+              }}
+            />
             <List.Content>
               <List.Header as="h3">
                 {/* <TranslationText
                     firstUpperCase
                     id="stratigraphy"
                   /> */}
-                Hydrogeology
+                Completion
               </List.Header>
             </List.Content>
+            <div style={{ marginLeft: '5em' }}>
+              {!this.state.hydrogeologyIsVisible && (
+                <List.Icon
+                  name="angle down"
+                  size="big"
+                  verticalAlign="middle"
+                />
+              )}
+              {this.state.hydrogeologyIsVisible && (
+                <List.Icon name="angle up" size="big" verticalAlign="middle" />
+              )}
+            </div>
           </List.Item>
           {this.state.hydrogeologyIsVisible && (
             <>
@@ -277,32 +247,43 @@ class MenuEditorForm extends React.Component {
                   process.env.PUBLIC_URL +
                     '/editor/' +
                     match.params.id +
-                    '/hydrogeology/soil'
+                    '/completion/casing'
                 }
                 onClick={() => {
                   history.push(
                     process.env.PUBLIC_URL +
                       '/editor/' +
                       match.params.id +
-                      '/hydrogeology/soil',
+                      '/completion/casing',
                   );
                 }}
                 style={{
                   padding: '1em',
                   paddingLeft: 40,
+                  display: 'flex',
                   borderLeft:
                     location.pathname ===
                     process.env.PUBLIC_URL +
                       '/editor/' +
                       match.params.id +
-                      '/hydrogeology/soil'
+                      '/completion/casing'
                       ? '0.25em solid rgb(237, 29, 36)'
                       : null,
                 }}>
-                <List.Icon
-                  name="align justify"
-                  size="large"
-                  verticalAlign="middle"
+                <img
+                  src={process.env.PUBLIC_URL + '/img/Casing.png'}
+                  style={{
+                    height: '19px',
+                    paddingRight: '1em',
+                    opacity:
+                      location.pathname ===
+                      process.env.PUBLIC_URL +
+                        '/editor/' +
+                        match.params.id +
+                        '/completion/casing'
+                        ? 1
+                        : 0.5,
+                  }}
                 />
                 <List.Content>
                   <List.Header as="h3">
@@ -310,7 +291,7 @@ class MenuEditorForm extends React.Component {
                     firstUpperCase
                     id="stratigraphy"
                   /> */}
-                    Soil
+                    Casing
                   </List.Header>
                 </List.Content>
               </List.Item>
@@ -320,32 +301,43 @@ class MenuEditorForm extends React.Component {
                   process.env.PUBLIC_URL +
                     '/editor/' +
                     match.params.id +
-                    '/hydrogeology/tube'
+                    '/completion/instruments'
                 }
                 onClick={() => {
                   history.push(
                     process.env.PUBLIC_URL +
                       '/editor/' +
                       match.params.id +
-                      '/hydrogeology/tube',
+                      '/completion/instruments',
                   );
                 }}
                 style={{
                   padding: '1em',
                   paddingLeft: 40,
+                  display: 'flex',
                   borderLeft:
                     location.pathname ===
                     process.env.PUBLIC_URL +
                       '/editor/' +
                       match.params.id +
-                      '/hydrogeology/tube'
+                      '/completion/instruments'
                       ? '0.25em solid rgb(237, 29, 36)'
                       : null,
                 }}>
-                <List.Icon
-                  name="align justify"
-                  size="large"
-                  verticalAlign="middle"
+                <img
+                  src={process.env.PUBLIC_URL + '/img/Instruments.png'}
+                  style={{
+                    height: '19px',
+                    paddingRight: '1em',
+                    opacity:
+                      location.pathname ===
+                      process.env.PUBLIC_URL +
+                        '/editor/' +
+                        match.params.id +
+                        '/completion/instruments'
+                        ? 1
+                        : 0.5,
+                  }}
                 />
                 <List.Content>
                   <List.Header as="h3">
@@ -353,7 +345,7 @@ class MenuEditorForm extends React.Component {
                     firstUpperCase
                     id="stratigraphy"
                   /> */}
-                    Tube
+                    Instruments
                   </List.Header>
                 </List.Content>
               </List.Item>
@@ -363,32 +355,43 @@ class MenuEditorForm extends React.Component {
                   process.env.PUBLIC_URL +
                     '/editor/' +
                     match.params.id +
-                    '/hydrogeology/filling'
+                    '/completion/filling'
                 }
                 onClick={() => {
                   history.push(
                     process.env.PUBLIC_URL +
                       '/editor/' +
                       match.params.id +
-                      '/hydrogeology/filling',
+                      '/completion/filling',
                   );
                 }}
                 style={{
                   padding: '1em',
                   paddingLeft: 40,
+                  display: 'flex',
                   borderLeft:
                     location.pathname ===
                     process.env.PUBLIC_URL +
                       '/editor/' +
                       match.params.id +
-                      '/hydrogeology/filling'
+                      '/completion/filling'
                       ? '0.25em solid rgb(237, 29, 36)'
                       : null,
                 }}>
-                <List.Icon
-                  name="align justify"
-                  size="large"
-                  verticalAlign="middle"
+                <img
+                  src={process.env.PUBLIC_URL + '/img/Filling.png'}
+                  style={{
+                    height: '19px',
+                    paddingRight: '1em',
+                    opacity:
+                      location.pathname ===
+                      process.env.PUBLIC_URL +
+                        '/editor/' +
+                        match.params.id +
+                        '/completion/filling'
+                        ? 1
+                        : 0.5,
+                  }}
                 />
                 <List.Content>
                   <List.Header as="h3">
@@ -402,6 +405,61 @@ class MenuEditorForm extends React.Component {
               </List.Item>
             </>
           )}
+          {/* hydrogeology */}
+          <List.Item
+            active={
+              location.pathname ===
+              process.env.PUBLIC_URL +
+                '/editor/' +
+                match.params.id +
+                '/hydrogeology'
+            }
+            onClick={() => {
+              history.push(
+                process.env.PUBLIC_URL +
+                  '/editor/' +
+                  match.params.id +
+                  '/hydrogeology',
+              );
+            }}
+            style={{
+              padding: '1em',
+              display: 'flex',
+              borderLeft:
+                location.pathname ===
+                process.env.PUBLIC_URL +
+                  '/editor/' +
+                  match.params.id +
+                  '/hydrogeology'
+                  ? '0.25em solid rgb(237, 29, 36)'
+                  : null,
+            }}>
+            <img
+              src={process.env.PUBLIC_URL + '/img/Hydrogeology.png'}
+              style={{
+                height: '20px',
+                paddingRight: '1em',
+                opacity:
+                  location.pathname ===
+                  process.env.PUBLIC_URL +
+                    '/editor/' +
+                    match.params.id +
+                    '/hydrogeology'
+                    ? 1
+                    : 0.5,
+              }}
+            />
+            <List.Content>
+              <List.Header as="h3">
+                {/* <TranslationText
+                    firstUpperCase
+                    id="stratigraphy"
+                  /> */}
+                Hydrogeology
+              </List.Header>
+            </List.Content>
+          </List.Item>
+
           <List.Item
             active={
               location.pathname ===
