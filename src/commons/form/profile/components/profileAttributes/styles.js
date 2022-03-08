@@ -7,6 +7,7 @@ export const Container = styled.div`
   padding: 0px 10px 0px 15px;
   opacity: ${props => props.disable && '0.5'};
   pointer-events: ${props => props.disable && 'none'};
+  background-color: ${props => !props.disable && 'lightgray'};
 `;
 
 export const CheckboxContainer = styled.div`

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import * as Style from './styles';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-
 import ProfileHeader from './components/profileHeader';
 import ProfileInfo from './components/profileInfo';
 import ProfileLayers from './components/profileLayers';
@@ -109,15 +108,17 @@ const Profile = () => {
             }}
           />
         </Style.FirstColumn>
-        <Style.SecondColumn>
-          <ProfileAttributes
-            data={{
-              id: selectedLayer ? selectedLayer.id : null,
-              isEditable,
-              onUpdated: OnUpdated,
-            }}
-          />
-        </Style.SecondColumn>
+        {selectedLayer !== null && (
+          <Style.SecondColumn>
+            <ProfileAttributes
+              data={{
+                id: selectedLayer ? selectedLayer.id : null,
+                isEditable,
+                onUpdated: OnUpdated,
+              }}
+            />
+          </Style.SecondColumn>
+        )}
       </Style.Container>
     </Style.MainContainer>
   );
