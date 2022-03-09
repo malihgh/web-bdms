@@ -79,7 +79,6 @@ const ProfileLayers = props => {
                   isInside: false,
                 }}
               />
-              {/* {delete layers.validation.missingLayers} */}
             </div>
           )}
           {layers.data &&
@@ -137,16 +136,19 @@ const ProfileLayers = props => {
                         item?.validation?.invertedDepth
                       }>
                       {(item?.validation?.topOverlap ||
-                        item?.validation?.topDisjoint ||
-                        item?.validation?.invertedDepth) && (
+                        item?.validation?.topDisjoint) && (
                         <Icon name="warning sign" style={{ color: 'red' }} />
                       )}
                       {item.depth_from === null ||
-                      item?.validation?.missingFrom ? (
+                      item?.validation?.missingFrom ||
+                      item?.validation?.invertedDepth ? (
                         <Popup
                           basic
-                          content="You should add start point."
-                          hoverable
+                          content={
+                            item?.validation?.invertedDepth
+                              ? 'envertedDepth'
+                              : 'You should add start point.'
+                          }
                           position="bottom left"
                           trigger={
                             <div>
@@ -154,6 +156,8 @@ const ProfileLayers = props => {
                                 name="warning sign"
                                 style={{ color: 'red' }}
                               />
+                              {item?.validation?.invertedDepth &&
+                                item.depth_from}
                               m
                             </div>
                           }
@@ -200,14 +204,19 @@ const ProfileLayers = props => {
                         item?.validation?.invertedDepth
                       }>
                       {(item?.validation?.bottomOverlap ||
-                        item?.validation?.bottomDisjoint ||
-                        item?.validation?.invertedDepth) && (
+                        item?.validation?.bottomDisjoint) && (
                         <Icon name="warning sign" style={{ color: 'red' }} />
                       )}
-                      {item.depth_to === null || item?.validation?.missingTo ? (
+                      {item.depth_to === null ||
+                      item?.validation?.missingTo ||
+                      item?.validation?.invertedDepth ? (
                         <Popup
                           basic
-                          content="You should add end point."
+                          content={
+                            item?.validation?.invertedDepth
+                              ? 'envertedDepth'
+                              : 'You should add end point.'
+                          }
                           hoverable
                           position="bottom left"
                           trigger={
@@ -216,6 +225,7 @@ const ProfileLayers = props => {
                                 name="warning sign"
                                 style={{ color: 'red' }}
                               />
+                              {item?.validation?.invertedDepth && item.depth_to}
                               m
                             </div>
                           }
