@@ -4,7 +4,7 @@ import { Form } from 'semantic-ui-react';
 export const Container = styled.div`
   overflow-y: auto;
   flex: 1 1 100%;
-  padding: 0px 10px 0px 15px;
+  padding: 10px 10px 0px 15px;
   opacity: ${props => props.disable && '0.5'};
   pointer-events: ${props => props.disable && 'none'};
   background-color: ${props => !props.disable && 'lightgray'};
