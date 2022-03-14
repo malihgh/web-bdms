@@ -44,7 +44,7 @@ export const fillingData = {
       label: 'Material',
       value: '',
       require: true,
-      schema: null,
+      schema: 'fill200',
       multiple: false,
       search: false,
     },
