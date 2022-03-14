@@ -89,7 +89,7 @@ const ProfileLayersError = props => {
     setShowSolution();
     setResolvingAction();
 
-    if (isInside) {
+    if (isInside || title === 'missingLayers') {
       gapLayer(id, resolvingAction)
         .then(response => {
           if (response.data.success) {

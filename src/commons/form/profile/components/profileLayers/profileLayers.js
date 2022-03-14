@@ -75,8 +75,9 @@ const ProfileLayers = props => {
                 data={{
                   title: 'missingLayers',
                   isEditable,
-                  id: selectedStratigraphyID,
+                  id: layers?.data?.[0].id,
                   isInside: false,
+                  onUpdated: onUpdated,
                 }}
               />
             </div>
