@@ -42,6 +42,21 @@ const ProfileHeader = props => {
       });
   };
 
+  const CreateStratigraphy = () => {
+    createStratigraphy(boreholeID)
+      .then(response => {
+        console.log('response', response);
+        if (response.data.success) {
+          GetData();
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <Styled.Container>
       <Styled.ButtonContainer>
@@ -51,20 +66,7 @@ const ProfileHeader = props => {
             icon="add"
             secondary
             size="small"
-            onClick={() => {
-              createStratigraphy(boreholeID)
-                .then(response => {
-                  console.log('response', response);
-                  if (response.data.success) {
-                    GetData();
-                  } else {
-                    alert(response.data.message);
-                  }
-                })
-                .catch(function (error) {
-                  console.log(error);
-                });
-            }}
+            onClick={CreateStratigraphy}
           />
         )}
 
