@@ -137,9 +137,10 @@ const ProfileLayers = props => {
                         item?.validation?.invertedDepth
                       }>
                       {(item?.validation?.topOverlap ||
-                        item?.validation?.topDisjoint) && (
-                        <Icon name="warning sign" style={{ color: 'red' }} />
-                      )}
+                        item?.validation?.topDisjoint) &&
+                        !item?.validation?.invertedDepth && (
+                          <Icon name="warning sign" style={{ color: 'red' }} />
+                        )}
                       {item.depth_from === null ||
                       item?.validation?.missingFrom ||
                       item?.validation?.invertedDepth ? (
@@ -205,9 +206,10 @@ const ProfileLayers = props => {
                         item?.validation?.invertedDepth
                       }>
                       {(item?.validation?.bottomOverlap ||
-                        item?.validation?.bottomDisjoint) && (
-                        <Icon name="warning sign" style={{ color: 'red' }} />
-                      )}
+                        item?.validation?.bottomDisjoint) &&
+                        !item?.validation?.invertedDepth && (
+                          <Icon name="warning sign" style={{ color: 'red' }} />
+                        )}
                       {item.depth_to === null ||
                       item?.validation?.missingTo ||
                       item?.validation?.invertedDepth ? (
