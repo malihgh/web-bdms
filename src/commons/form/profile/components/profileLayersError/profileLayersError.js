@@ -23,18 +23,18 @@ const ProfileLayersError = props => {
       case 'invertedDepth':
         e = ErrorTypes[1];
         break;
-      // case 'topOverlap':
-      //   e = ErrorTypes[2];
-      //   break;
-      case 'bottomOverlap':
+      case 'topOverlap':
         e = ErrorTypes[2];
         break;
-      // case 'topDisjoint':
-      //   e = ErrorTypes[3];
+      // case 'bottomOverlap':
+      //   e = ErrorTypes[2];
       //   break;
-      case 'bottomDisjoint':
+      case 'topDisjoint':
         e = ErrorTypes[3];
         break;
+      // case 'bottomDisjoint':
+      //   e = ErrorTypes[3];
+      //   break;
       case 'missingLayers':
         e = ErrorTypes[4];
         break;
@@ -89,7 +89,7 @@ const ProfileLayersError = props => {
     setShowSolution();
     setResolvingAction();
 
-    if (isInside) {
+    if (isInside || title === 'missingLayers') {
       gapLayer(id, resolvingAction)
         .then(response => {
           if (response.data.success) {
