@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import * as Style from './styles';
+import * as Styled from './styles';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import ProfileHeader from './components/profileHeader';
@@ -93,7 +93,7 @@ const Profile = props => {
   // }, [borehole]);
 
   return (
-    <Style.MainContainer>
+    <Styled.MainContainer>
       <ProfileHeader
         data={{
           boreholeID: borehole.data.id,
@@ -107,8 +107,8 @@ const Profile = props => {
           reloadHeader,
         }}
       />
-      <Style.Container>
-        <Style.FirstColumn>
+      <Styled.Container>
+        <Styled.FirstColumn>
           {attributesBasedKind && (
             <ProfileInfo
               data={{
@@ -132,22 +132,22 @@ const Profile = props => {
               onUpdated: OnUpdated,
             }}
           />
-        </Style.FirstColumn>
-        {/* {selectedLayer !== null && ( */}
-        <Style.SecondColumn>
-          <ProfileAttributes
-            data={{
-              id: selectedLayer ? selectedLayer.id : null,
-              isEditable,
-              onUpdated: OnUpdated,
-              reloadAttribute,
-              attribute: attributesBasedKind?.profileAttribute,
-            }}
-          />
-        </Style.SecondColumn>
-        {/* )} */}
-      </Style.Container>
-    </Style.MainContainer>
+        </Styled.FirstColumn>
+        {selectedLayer !== null && (
+          <Styled.SecondColumn>
+            <ProfileAttributes
+              data={{
+                id: selectedLayer ? selectedLayer.id : null,
+                isEditable,
+                onUpdated: OnUpdated,
+                reloadAttribute,
+                attribute: attributesBasedKind?.profileAttribute,
+              }}
+            />
+          </Styled.SecondColumn>
+        )}
+      </Styled.Container>
+    </Styled.MainContainer>
   );
 };
 
