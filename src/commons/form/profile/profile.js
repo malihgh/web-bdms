@@ -9,6 +9,7 @@ import ProfileAttributes from './components/profileAttributes';
 import { casingData } from './data/casingdata';
 import { fillingData } from './data/fillingdata';
 import { stratigraphyData } from './data/stratigraphydata';
+import ProfileInstrument from './components/profileInstrument/profileInstrument';
 
 // Take a look at the StratigraphyFormContainer
 
@@ -107,46 +108,49 @@ const Profile = props => {
           reloadHeader,
         }}
       />
-      <Styled.Container>
-        <Styled.FirstColumn>
-          {attributesBasedKind && (
-            <ProfileInfo
-              data={{
-                item: selectedStratigraphy !== null && selectedStratigraphy,
-                isEditable,
-                onUpdated: OnUpdated,
-                attribute: attributesBasedKind?.profileInfo,
-              }}
-            />
-          )}
+      {kind !== 'instruments' && (
+        <Styled.Container>
+          <Styled.FirstColumn>
+            {attributesBasedKind && (
+              <ProfileInfo
+                data={{
+                  item: selectedStratigraphy !== null && selectedStratigraphy,
+                  isEditable,
+                  onUpdated: OnUpdated,
+                  attribute: attributesBasedKind?.profileInfo,
+                }}
+              />
+            )}
 
-          <ProfileLayers
-            data={{
-              selectedStratigraphyID: selectedStratigraphy?.id,
-              isEditable,
-              selectedLayer,
-              setSelectedLayer: e => {
-                setSelectedLayer(e);
-              },
-              reloadLayer,
-              onUpdated: OnUpdated,
-            }}
-          />
-        </Styled.FirstColumn>
-        {selectedLayer !== null && (
-          <Styled.SecondColumn>
-            <ProfileAttributes
+            <ProfileLayers
               data={{
-                id: selectedLayer ? selectedLayer.id : null,
+                selectedStratigraphyID: selectedStratigraphy?.id,
                 isEditable,
+                selectedLayer,
+                setSelectedLayer: e => {
+                  setSelectedLayer(e);
+                },
+                reloadLayer,
                 onUpdated: OnUpdated,
-                reloadAttribute,
-                attribute: attributesBasedKind?.profileAttribute,
               }}
             />
-          </Styled.SecondColumn>
-        )}
-      </Styled.Container>
+          </Styled.FirstColumn>
+          {selectedLayer !== null && (
+            <Styled.SecondColumn>
+              <ProfileAttributes
+                data={{
+                  id: selectedLayer ? selectedLayer.id : null,
+                  isEditable,
+                  onUpdated: OnUpdated,
+                  reloadAttribute,
+                  attribute: attributesBasedKind?.profileAttribute,
+                }}
+              />
+            </Styled.SecondColumn>
+          )}
+        </Styled.Container>
+      )}
+      {kind === 'instruments' && <ProfileInstrument />}
     </Styled.MainContainer>
   );
 };
