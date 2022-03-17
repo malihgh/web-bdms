@@ -60,13 +60,22 @@ const ProfileHeader = props => {
   return (
     <Styled.Container>
       <Styled.ButtonContainer>
-        {isEditable && (
+        {isEditable && kind !== 'instrument' && (
           <Button
             content={<TranslationText id="stratigraphy" />}
             icon="add"
+            onClick={CreateStratigraphy}
             secondary
             size="small"
-            onClick={CreateStratigraphy}
+          />
+        )}
+        {kind === 3000 && (
+          <Button
+            content={<TranslationText id="showAll" />}
+            // icon="add"
+            // onClick={CreateStratigraphy}
+            secondary
+            size="small"
           />
         )}
 

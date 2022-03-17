@@ -152,7 +152,17 @@ const Profile = props => {
           )}
         </Styled.Container>
       )}
-      {kind === 'instruments' && <ProfileInstrument />}
+      {kind === 'instruments' && (
+        <ProfileInstrument
+          data={{
+            selectedStratigraphyID: selectedStratigraphy?.id,
+            isEditable,
+            selectedLayer,
+            reloadLayer,
+            onUpdated: OnUpdated,
+          }}
+        />
+      )}
     </Styled.MainContainer>
   );
 };
