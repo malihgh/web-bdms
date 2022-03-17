@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as Styled from './styles';
 import InstrumentList from './components/infoList/InstrumentList';
 import { attributes } from './data/attributes';
@@ -15,6 +15,28 @@ const ProfileInstrument = props => {
     reloadLayer,
     onUpdated,
   } = props.data;
+
+  useEffect(() => {
+    if (selectedStratigraphyID) {
+      GetData();
+    }
+    // else setLayers(null);
+  }, [selectedStratigraphyID, reloadLayer]);
+
+  const GetData = () => {
+    getProfileLayers(selectedStratigraphyID, true)
+      .then(response => {
+        if (response.data.success) {
+          //   setLayers(response.data);
+          console.log('dataaa in instrument', response.data);
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   const CreateLayer = () => {
     createLayer(selectedStratigraphyID)
