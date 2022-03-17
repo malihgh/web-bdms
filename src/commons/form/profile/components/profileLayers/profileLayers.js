@@ -37,24 +37,25 @@ const ProfileLayers = props => {
       });
   };
 
+  const CreateLayer = () => {
+    createLayer(selectedStratigraphyID)
+      .then(response => {
+        if (response.data.success) {
+          onUpdated('newLayer');
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   return (
     <Styled.Container>
       {isEditable && (
         <Button
           fluid
-          onClick={() => {
-            createLayer(selectedStratigraphyID)
-              .then(response => {
-                if (response.data.success) {
-                  onUpdated('newLayer');
-                } else {
-                  alert(response.data.message);
-                }
-              })
-              .catch(function (error) {
-                console.log(error);
-              });
-          }}
+          onClick={CreateLayer}
           secondary
           size="tiny"
           style={{ marginBottom: '10px' }}>
