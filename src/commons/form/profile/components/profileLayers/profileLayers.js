@@ -52,9 +52,8 @@ const ProfileLayers = props => {
   };
   return (
     <Styled.Container>
-      {isEditable && (
+      {isEditable && selectedStratigraphyID !== null && (
         <Button
-          disabled={selectedStratigraphyID === null}
           fluid
           onClick={CreateLayer}
           secondary

@@ -16,6 +16,14 @@ export const Container = styled.div`
   overflow: hidden;
 `;
 
+export const Empty = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 23px;
+  flex: 1 1 100%;
+`;
+
 export const FirstColumn = styled.div`
   display: flex;
   flex-direction: column;

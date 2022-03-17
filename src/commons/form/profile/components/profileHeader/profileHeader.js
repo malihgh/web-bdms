@@ -69,7 +69,7 @@ const ProfileHeader = props => {
             size="small"
           />
         )}
-        {kind === 3000 && (
+        {kind !== 3000 && (
           <Button
             content={<TranslationText id="showAll" />}
             // icon="add"

@@ -29,6 +29,7 @@ const Profile = props => {
   const [attributesBasedKind, setAttributesBasedKind] = useState(null);
 
   useEffect(() => {
+    console.log('kkkk', selectedStratigraphy);
     if (
       !(
         borehole?.data?.lock === null ||
@@ -108,19 +109,23 @@ const Profile = props => {
           reloadHeader,
         }}
       />
-      {kind !== 'instruments' && (
+      {!selectedStratigraphy && (
+        <Styled.Empty>
+          Please Add new Stratigraphy with pressing Editing!
+        </Styled.Empty>
+      )}
+
+      {kind !== 'instruments' && selectedStratigraphy && (
         <Styled.Container>
           <Styled.FirstColumn>
-            {attributesBasedKind && (
-              <ProfileInfo
-                data={{
-                  item: selectedStratigraphy !== null && selectedStratigraphy,
-                  isEditable,
-                  onUpdated: OnUpdated,
-                  attribute: attributesBasedKind?.profileInfo,
-                }}
-              />
-            )}
+            <ProfileInfo
+              data={{
+                item: selectedStratigraphy,
+                isEditable,
+                onUpdated: OnUpdated,
+                attribute: attributesBasedKind?.profileInfo,
+              }}
+            />
 
             <ProfileLayers
               data={{
@@ -152,7 +157,7 @@ const Profile = props => {
           )}
         </Styled.Container>
       )}
-      {kind === 'instruments' && (
+      {kind === 'instruments' && selectedStratigraphy && (
         <ProfileInstrument
           data={{
             selectedStratigraphyID: selectedStratigraphy?.id,
