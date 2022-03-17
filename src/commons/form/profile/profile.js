@@ -24,6 +24,7 @@ const Profile = props => {
   const [selectedLayer, setSelectedLayer] = useState(null);
   const [reloadLayer, setReloadLayer] = useState(0);
   const [reloadHeader, setReloadHeader] = useState(0);
+  const [reloadAttribute, setReloadAttribute] = useState(0);
   const [attributesBasedKind, setAttributesBasedKind] = useState(null);
 
   useEffect(() => {
@@ -38,15 +39,20 @@ const Profile = props => {
     } else {
       setIsEditable(false);
     }
-    if (kind === 'hydrogeology') setAttributesBasedKind(stratigraphyData);
-    if (kind === 'casing') setAttributesBasedKind(casingData);
-    if (kind === 'filling') setAttributesBasedKind(fillingData);
+    if (kind === 'hydrogeology' || kind === 'stratigraphy') {
+      setAttributesBasedKind(stratigraphyData);
+      OnUpdated('newAttribute');
+    }
+    if (kind === 'casing') {
+      setAttributesBasedKind(casingData);
+      OnUpdated('newAttribute');
+    }
+    if (kind === 'filling') {
+      setAttributesBasedKind(fillingData);
+      OnUpdated('newAttribute');
+    }
+    console.log('lkdjfls', kind, attributesBasedKind);
   }, [setIsEditable, borehole, user, kind]);
-
-  // let selectedStratigraphy = useMemo(
-  //   () => {
-  //     return borehole?.data?.stratigraphy?.[0] ?? null;
-  // }, [borehole]);
 
   const OnUpdated = attribute => {
     if (
@@ -59,6 +65,7 @@ const Profile = props => {
       attribute === 'fixErrors'
     ) {
       setReloadLayer(reloadLayer => reloadLayer + 1);
+      console.log('hey', attribute);
     }
     if (attribute === 'deleteLayer') {
       setSelectedLayer(null);
@@ -71,12 +78,19 @@ const Profile = props => {
       attribute === 'cloneStratigraphy'
     )
       setReloadHeader(reloadHeader => reloadHeader + 1);
-    if (attribute === 'deleteStratigraphy') {
+    if (attribute === 'deleteStratigraphy' || attribute === 'newAttribute') {
       setSelectedStratigraphy(null);
       setReloadHeader(reloadHeader => reloadHeader + 1);
       setReloadLayer(reloadLayer => reloadLayer + 1);
     }
+
+    if (attribute === 'newAttribute')
+      setReloadAttribute(reloadAttribute => reloadAttribute + 1);
   };
+  // let selectedStratigraphy = useMemo(
+  //   () => {
+  //     return borehole?.data?.stratigraphy?.[0] ?? null;
+  // }, [borehole]);
 
   return (
     <Style.MainContainer>
@@ -119,18 +133,19 @@ const Profile = props => {
             }}
           />
         </Style.FirstColumn>
-        {selectedLayer !== null && (
-          <Style.SecondColumn>
-            <ProfileAttributes
-              data={{
-                id: selectedLayer ? selectedLayer.id : null,
-                isEditable,
-                onUpdated: OnUpdated,
-                attribute: attributesBasedKind?.profileAttribute,
-              }}
-            />
-          </Style.SecondColumn>
-        )}
+        {/* {selectedLayer !== null && ( */}
+        <Style.SecondColumn>
+          <ProfileAttributes
+            data={{
+              id: selectedLayer ? selectedLayer.id : null,
+              isEditable,
+              onUpdated: OnUpdated,
+              reloadAttribute,
+              attribute: attributesBasedKind?.profileAttribute,
+            }}
+          />
+        </Style.SecondColumn>
+        {/* )} */}
       </Style.Container>
     </Style.MainContainer>
   );

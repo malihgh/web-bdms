@@ -9,7 +9,8 @@ import { getLayer, patchLayer } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
 
 const ProfileAttributes = props => {
-  const { id, isEditable, onUpdated, attribute } = props.data;
+  const { id, isEditable, onUpdated, attribute, reloadAttribute } = props.data;
+
   let updateAttributeDelay = {};
   const [showAll, setShowAll] = useState(false);
   const [state, setState] = useState({
@@ -62,7 +63,8 @@ const ProfileAttributes = props => {
 
   useEffect(() => {
     load(id);
-  }, [id]);
+    setShowAll(false);
+  }, [id, reloadAttribute]);
 
   const load = id => {
     if (id === null) setState({ state: null });
@@ -145,117 +147,118 @@ const ProfileAttributes = props => {
         <TranslationText id="showallfields" />
       </Styled.CheckboxContainer>
 
-      {attribute.map((item, key) => (
-        <Form autoComplete="false" error key={key}>
-          <Styled.AttributesContainer required={item.require}>
-            {(item.isVisible || showAll) && (
-              <Styled.Label>
-                <TranslationText id={item.label} />
-              </Styled.Label>
-            )}
-            {item.type === 'Input' && (item.isVisible || showAll) && (
-              <Styled.AttributesItem>
-                <Input
-                  autoCapitalize="off"
-                  autoComplete="off"
-                  autoCorrect="off"
-                  onChange={e =>
-                    updateChange(
-                      item.value,
-                      e.target.value === '' ? null : e.target.value,
-                      item?.to,
-                      item?.isNumber,
-                    )
-                  }
-                  spellCheck="false"
-                  style={{ width: '100%' }}
-                  value={
-                    _.isNil(state?.layer?.[item.value])
-                      ? ''
-                      : state.layer[item.value]
-                  }
-                />
-              </Styled.AttributesItem>
-            )}
+      {attribute &&
+        attribute.map((item, key) => (
+          <Form autoComplete="false" error key={key}>
+            <Styled.AttributesContainer required={item.require}>
+              {(item.isVisible || showAll) && (
+                <Styled.Label>
+                  <TranslationText id={item.label} />
+                </Styled.Label>
+              )}
+              {item.type === 'Input' && (item.isVisible || showAll) && (
+                <Styled.AttributesItem>
+                  <Input
+                    autoCapitalize="off"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    onChange={e =>
+                      updateChange(
+                        item.value,
+                        e.target.value === '' ? null : e.target.value,
+                        item?.to,
+                        item?.isNumber,
+                      )
+                    }
+                    spellCheck="false"
+                    style={{ width: '100%' }}
+                    value={
+                      _.isNil(state?.layer?.[item.value])
+                        ? ''
+                        : state.layer[item.value]
+                    }
+                  />
+                </Styled.AttributesItem>
+              )}
 
-            {item.type === 'TextArea' && (item.isVisible || showAll) && (
-              <Styled.AttributesItem>
-                <TextArea
-                  onChange={e => updateChange(item.value, e.target.value)}
-                  style={{ width: '100%' }}
-                  value={
-                    _.isNil(state?.layer?.[item.value])
-                      ? ''
-                      : state.layer[item.value]
-                  }
-                />
-              </Styled.AttributesItem>
-            )}
+              {item.type === 'TextArea' && (item.isVisible || showAll) && (
+                <Styled.AttributesItem>
+                  <TextArea
+                    onChange={e => updateChange(item.value, e.target.value)}
+                    style={{ width: '100%' }}
+                    value={
+                      _.isNil(state?.layer?.[item.value])
+                        ? ''
+                        : state.layer[item.value]
+                    }
+                  />
+                </Styled.AttributesItem>
+              )}
 
-            {item.type === 'Radio' && (item.isVisible || showAll) && (
-              <Form.Group style={{ display: 'flex', paddingTop: '5px' }}>
-                <Form.Radio
-                  checked={
-                    _.isNil(state?.layer?.[item.value])
-                      ? false
-                      : state.layer[item.value]
-                  }
-                  label={'Yes'}
-                  onChange={() => updateChange(item.value, true, item?.to)}
-                  style={{ paddingRight: '20px' }}
-                />
-                <Form.Radio
-                  checked={
-                    _.isNil(state?.layer?.[item.value])
-                      ? false
-                      : !state.layer[item.value]
-                  }
-                  label={'No'}
-                  onChange={() => updateChange(item.value, false, item?.to)}
-                />
-              </Form.Group>
-            )}
+              {item.type === 'Radio' && (item.isVisible || showAll) && (
+                <Form.Group style={{ display: 'flex', paddingTop: '5px' }}>
+                  <Form.Radio
+                    checked={
+                      _.isNil(state?.layer?.[item.value])
+                        ? false
+                        : state.layer[item.value]
+                    }
+                    label={'Yes'}
+                    onChange={() => updateChange(item.value, true, item?.to)}
+                    style={{ paddingRight: '20px' }}
+                  />
+                  <Form.Radio
+                    checked={
+                      _.isNil(state?.layer?.[item.value])
+                        ? false
+                        : !state.layer[item.value]
+                    }
+                    label={'No'}
+                    onChange={() => updateChange(item.value, false, item?.to)}
+                  />
+                </Form.Group>
+              )}
 
-            {item.type === 'Dropdown' && (item.isVisible || showAll) && (
-              <Styled.AttributesItem>
-                <DomainDropdown
-                  multiple={item.multiple}
-                  onSelected={e =>
-                    updateChange(
-                      item.value,
-                      item.multiple ? e.map(mlpr => mlpr.id) : e.id,
-                      false,
-                    )
-                  }
-                  schema={item.schema}
-                  search={item.search}
-                  selected={
-                    _.isNil(state?.layer?.[item.value])
-                      ? null
-                      : state.layer[item.value]
-                  }
-                />
-              </Styled.AttributesItem>
-            )}
+              {item.type === 'Dropdown' && (item.isVisible || showAll) && (
+                <Styled.AttributesItem>
+                  <DomainDropdown
+                    multiple={item.multiple}
+                    onSelected={e =>
+                      updateChange(
+                        item.value,
+                        item.multiple ? e.map(mlpr => mlpr.id) : e.id,
+                        false,
+                      )
+                    }
+                    schema={item.schema}
+                    search={item.search}
+                    selected={
+                      _.isNil(state?.layer?.[item.value])
+                        ? null
+                        : state.layer[item.value]
+                    }
+                  />
+                </Styled.AttributesItem>
+              )}
 
-            {item.type === 'DomainTree' && (item.isVisible || showAll) && (
-              <Styled.AttributesItem>
-                <DomainTree
-                  levels={item.levels}
-                  onSelected={e => updateChange(item.value, e.id, false)}
-                  schema={item.schema}
-                  selected={
-                    _.isNil(state?.layer?.[item.value])
-                      ? null
-                      : state.layer[item.value]
-                  }
-                  title={<TranslationText id={item.label} />}
-                />
-              </Styled.AttributesItem>
-            )}
-          </Styled.AttributesContainer>
-        </Form>
-      ))}
+              {item.type === 'DomainTree' && (item.isVisible || showAll) && (
+                <Styled.AttributesItem>
+                  <DomainTree
+                    levels={item.levels}
+                    onSelected={e => updateChange(item.value, e.id, false)}
+                    schema={item.schema}
+                    selected={
+                      _.isNil(state?.layer?.[item.value])
+                        ? null
+                        : state.layer[item.value]
+                    }
+                    title={<TranslationText id={item.label} />}
+                  />
+                </Styled.AttributesItem>
+              )}
+            </Styled.AttributesContainer>
+          </Form>
+        ))}
     </Styled.Container>
   );
 };
