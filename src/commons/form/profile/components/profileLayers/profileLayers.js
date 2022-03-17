@@ -19,7 +19,7 @@ const ProfileLayers = props => {
   useEffect(() => {
     if (selectedStratigraphyID) {
       GetData();
-    }
+    } else setLayers(null);
   }, [selectedStratigraphyID, reloadLayer]);
 
   const GetData = () => {
@@ -54,6 +54,7 @@ const ProfileLayers = props => {
     <Styled.Container>
       {isEditable && (
         <Button
+          disabled={selectedStratigraphyID === null}
           fluid
           onClick={CreateLayer}
           secondary

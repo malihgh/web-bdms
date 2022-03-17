@@ -124,7 +124,9 @@ const Profile = props => {
 
             <ProfileLayers
               data={{
-                selectedStratigraphyID: selectedStratigraphy?.id,
+                selectedStratigraphyID: selectedStratigraphy
+                  ? selectedStratigraphy.id
+                  : null,
                 isEditable,
                 selectedLayer,
                 setSelectedLayer: e => {
