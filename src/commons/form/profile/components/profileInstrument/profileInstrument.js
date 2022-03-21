@@ -54,13 +54,8 @@ const ProfileInstrument = props => {
                 },
               ];
             });
-            // setInstruments([{
-            //   id: e.id,
-            //   depth_from: e.depth_from,
-            //   depth_to: e.depth_to,
-            // }]);
           }
-          console.log('dataaa in instrument', instruments, response.data.data);
+          // console.log('dataaa in instrument', instruments, response.data.data);
         } else {
           alert(response.data.message);
         }
@@ -104,7 +99,7 @@ const ProfileInstrument = props => {
           content={<TranslationText id="addInstrument" />}
           disabled={!isEditable}
           icon="add"
-          //   onClick={CreateLayer}
+          onClick={CreateLayer}
           secondary
           size="tiny"
         />
