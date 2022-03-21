@@ -19,7 +19,7 @@ const InstrumentList = props => {
               </Styled.Label>
             )}
 
-            {item.type === 'Input' && index !== 0 && (
+            {item.type === 'Input' && (
               <Styled.AttributesItem>
                 <Input
                   autoCapitalize="off"
@@ -48,7 +48,7 @@ const InstrumentList = props => {
                 />
               </Styled.AttributesItem>
             )}
-            {item.type === 'Dropdown' && index !== 0 && (
+            {item.type === 'Dropdown' && (
               <Styled.AttributesItem>
                 <DomainDropdown
                   multiple={item.multiple}
@@ -68,7 +68,7 @@ const InstrumentList = props => {
               </Styled.AttributesItem>
             )}
 
-            {item.type === 'Button' && index !== 0 && (
+            {item.type === 'Button' && (
               <Button
                 icon="close"
                 onClick={() => {

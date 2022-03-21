@@ -41,7 +41,7 @@ const ProfileInstrument = props => {
     getProfileLayers(selectedStratigraphyID, false)
       .then(response => {
         if (response.data.success) {
-          setInstruments([null]);
+          setInstruments([]);
           for (const e of response.data.data) {
             setInstruments(instruments => {
               return [
