@@ -3,21 +3,23 @@ import * as Styled from './styles';
 import { Input, Form, Button } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
 import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
+import _ from 'lodash';
 
 const InstrumentList = props => {
-  const { attributes, id } = props.data;
+  const { attributes, index, info } = props.data;
+  console.log('jjj', info);
   return (
     <Styled.FormContainer>
       {attributes.map((item, key) => (
         <Form autoComplete="false" error key={key} size="small">
           <Styled.AttributesContainer required={item.require}>
-            {id === 0 && (
+            {index === 0 && (
               <Styled.Label>
                 <TranslationText id={item.label} />
               </Styled.Label>
             )}
 
-            {item.type === 'Input' && (
+            {item.type === 'Input' && index !== 0 && (
               <Styled.AttributesItem>
                 <Input
                   autoCapitalize="off"
@@ -33,7 +35,7 @@ const InstrumentList = props => {
                   // }
                   spellCheck="false"
                   style={{ width: '100%' }}
-                  //     value={item?.name ?? ''}
+                  // value={info?[item.value] ?? 'm'}
                   // onChange={e => {
                   //   updateChange('name', e.target.value);
                   // }}
@@ -42,10 +44,11 @@ const InstrumentList = props => {
                   //     ? ''
                   //     : state.layer[item.value]
                   // }
+                  value={_.isNil(info?.[item.value]) ? '' : info[item.value]}
                 />
               </Styled.AttributesItem>
             )}
-            {item.type === 'Dropdown' && (
+            {item.type === 'Dropdown' && index !== 0 && (
               <Styled.AttributesItem>
                 <DomainDropdown
                   multiple={item.multiple}
@@ -58,16 +61,14 @@ const InstrumentList = props => {
                   // }
                   schema={item.schema}
                   search={item.search}
-                  // selected={
-                  //   _.isNil(state?.layer?.[item.value])
-                  //     ? null
-                  //     : state.layer[item.value]
-                  // }
+                  selected={
+                    _.isNil(info?.[item.value]) ? null : info?.[item.value]
+                  }
                 />
               </Styled.AttributesItem>
             )}
 
-            {item.type === 'Button' && (
+            {item.type === 'Button' && index !== 0 && (
               <Button
                 icon="close"
                 size="small"

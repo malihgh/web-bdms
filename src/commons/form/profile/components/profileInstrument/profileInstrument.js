@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Styled from './styles';
 import InstrumentList from './components/infoList/InstrumentList';
 import { attributes } from './data/attributes';
@@ -15,7 +15,21 @@ const ProfileInstrument = props => {
     reloadLayer,
     onUpdated,
   } = props.data;
+  const [instruments, setInstruments] = useState([]);
+  // {
+  //   id: id?.hasOwnProperty('id') ? id : null,
+  // id: null,
+  // kind: null,
+  // depth_from: null,
+  // depth_to: null,
+  // notes: '',
+  // },
 
+  const [state, setState] = useState({
+    isFetching: false,
+    isPatching: false,
+    allfields: false,
+  });
   useEffect(() => {
     if (selectedStratigraphyID) {
       GetData();
@@ -24,11 +38,29 @@ const ProfileInstrument = props => {
   }, [selectedStratigraphyID, reloadLayer]);
 
   const GetData = () => {
-    getProfileLayers(selectedStratigraphyID, true)
+    getProfileLayers(selectedStratigraphyID, false)
       .then(response => {
         if (response.data.success) {
-          //   setLayers(response.data);
-          console.log('dataaa in instrument', response.data);
+          setInstruments([null]);
+          for (const e of response.data.data) {
+            setInstruments(instruments => {
+              return [
+                ...instruments,
+                {
+                  id: e.id,
+                  depth_from: e.depth_from,
+                  depth_to: e.depth_to,
+                  notes: e.description,
+                },
+              ];
+            });
+            // setInstruments([{
+            //   id: e.id,
+            //   depth_from: e.depth_from,
+            //   depth_to: e.depth_to,
+            // }]);
+          }
+          console.log('dataaa in instrument', instruments, response.data.data);
         } else {
           alert(response.data.message);
         }
@@ -78,10 +110,14 @@ const ProfileInstrument = props => {
         />
       </Styled.ButtonContainer>
       <Styled.ListContainer>
-        <InstrumentList data={{ attributes, id: 0 }} />
-        <InstrumentList data={{ attributes, id: 1 }} />
-        <InstrumentList data={{ attributes, id: 1 }} />
-        <InstrumentList data={{ attributes, id: 1 }} />
+        {console.log('oooo', instruments)}
+        {instruments &&
+          instruments.map((item, index) => (
+            <InstrumentList
+              data={{ attributes, info: item, index }}
+              key={index}
+            />
+          ))}
       </Styled.ListContainer>
     </Styled.Container>
   );
