@@ -6,7 +6,7 @@ import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
 import _ from 'lodash';
 
 const InstrumentList = props => {
-  const { attributes, index, info } = props.data;
+  const { attributes, index, info, deleting } = props.data;
   console.log('jjj', info);
   return (
     <Styled.FormContainer>
@@ -71,9 +71,11 @@ const InstrumentList = props => {
             {item.type === 'Button' && index !== 0 && (
               <Button
                 icon="close"
+                onClick={() => {
+                  deleting(info?.id);
+                }}
                 size="small"
                 style={{ marginTop: 5 }}
-                // onClick={CreateStratigraphy}
               />
             )}
           </Styled.AttributesContainer>

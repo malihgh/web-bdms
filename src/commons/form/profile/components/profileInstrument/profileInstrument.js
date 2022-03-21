@@ -105,14 +105,12 @@ const ProfileInstrument = props => {
         />
       </Styled.ButtonContainer>
       <Styled.ListContainer>
-        {console.log('oooo', instruments)}
-        {instruments &&
-          instruments.map((item, index) => (
-            <InstrumentList
-              data={{ attributes, info: item, index }}
-              key={index}
-            />
-          ))}
+        {instruments?.map((item, index) => (
+          <InstrumentList
+            data={{ attributes, info: item, index, deleting: DeleteLayer }}
+            key={index}
+          />
+        ))}
       </Styled.ListContainer>
     </Styled.Container>
   );
