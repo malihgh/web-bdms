@@ -91,6 +91,7 @@ export const casingData = {
       schema: 'casi200',
       multiple: false,
       search: false,
+      isVisible: true,
     },
     {
       id: 3,
@@ -101,6 +102,7 @@ export const casingData = {
       schema: 'casi201',
       multiple: false,
       search: false,
+      isVisible: true,
     },
     {
       id: 4,
@@ -111,6 +113,7 @@ export const casingData = {
       schema: 'extended.method',
       multiple: false,
       search: false,
+      isVisible: true,
     },
     {
       id: 5,
@@ -119,6 +122,7 @@ export const casingData = {
       value: '',
       require: true,
       isNumber: true,
+      isVisible: true,
     },
   ],
 };

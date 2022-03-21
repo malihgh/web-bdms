@@ -47,6 +47,7 @@ export const fillingData = {
       schema: 'fill200',
       multiple: false,
       search: false,
+      isVisible: true,
     },
     {
       id: 3,
@@ -54,7 +55,7 @@ export const fillingData = {
       label: 'Notes',
       value: '',
       require: true,
-      isNumber: true,
+      isVisible: true,
     },
   ],
 };
