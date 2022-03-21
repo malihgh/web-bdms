@@ -43,7 +43,7 @@ const ProfileHeader = props => {
   };
 
   const CreateStratigraphy = () => {
-    createStratigraphy(boreholeID)
+    createStratigraphy(boreholeID, kind)
       .then(response => {
         console.log('response', response);
         if (response.data.success) {
@@ -60,7 +60,7 @@ const ProfileHeader = props => {
   return (
     <Styled.Container>
       <Styled.ButtonContainer>
-        {isEditable && kind !== 'instrument' && (
+        {isEditable && kind !== 3003 && (
           <Button
             content={<TranslationText id="stratigraphy" />}
             icon="add"
@@ -69,7 +69,7 @@ const ProfileHeader = props => {
             size="small"
           />
         )}
-        {kind !== 3000 && (
+        {kind === 3003 && (
           <Button
             content={<TranslationText id="showAll" />}
             // icon="add"
