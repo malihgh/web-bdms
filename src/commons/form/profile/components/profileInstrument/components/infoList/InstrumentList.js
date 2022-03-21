@@ -1,13 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as Styled from './styles';
 import { Input, Form, Button } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
 import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
+import { patchLayer } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
 
 const InstrumentList = props => {
-  const { attributes, index, info, deleting } = props.data;
-  console.log('jjj', info);
+  const { attributes, index, info, deleting, isEditable } = props.data;
+
+  let updateAttributeDelay = {};
+  const [state, setState] = useState({
+    isFetching: false,
+    isPatching: false,
+    instrument: {
+      id: info.id ? info.id : null,
+      kind: info.kind ? info.kind : null,
+      depth_from: info.depth_from ? info.depth_from : null,
+      depth_to: info.depth_to ? info.depth_to : null,
+      notes: info.notes ? info.notes : '',
+    },
+  });
+
+  const updateChange = (attribute, value, to = true, isNumber = false) => {
+    if (!isEditable) {
+      alert('You should press start editing button! ');
+      return;
+    }
+
+    setState(prevState => ({ ...prevState, isPatching: true }));
+    _.set(state.instrument, attribute, value);
+
+    if (isNumber) {
+      if (value === null) {
+        patch(attribute, value);
+      } else if (/^-?\d*[.,]?\d*$/.test(value)) {
+        patch(attribute, _.toNumber(value));
+      }
+    } else {
+      patch(attribute, value);
+    }
+  };
+
+  const patch = (attribute, value) => {
+    if (
+      updateAttributeDelay.hasOwnProperty(attribute) &&
+      updateAttributeDelay[attribute]
+    ) {
+      clearTimeout(updateAttributeDelay[attribute]);
+      updateAttributeDelay[attribute] = false;
+    }
+    updateAttributeDelay[attribute] = setTimeout(function () {
+      patchLayer(info?.id, attribute, value)
+        .then(function (response) {
+          if (response.data.success) {
+            setState({ ...state, isPatching: false });
+          } else {
+            alert(response.data.message);
+            window.location.reload();
+          }
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }, 500);
+  };
   return (
     <Styled.FormContainer>
       {attributes.map((item, key) => (
@@ -25,26 +82,22 @@ const InstrumentList = props => {
                   autoCapitalize="off"
                   autoComplete="off"
                   autoCorrect="off"
-                  // onChange={e =>
-                  //   updateChange(
-                  //     item.value,
-                  //     e.target.value === '' ? null : e.target.value,
-                  //     item?.to,
-                  //     item?.isNumber,
-                  //   )
-                  // }
+                  onChange={e => {
+                    console.log('ooo', e.target.value);
+                    updateChange(
+                      item.value,
+                      e.target.value === '' ? null : e.target.value,
+                      item?.to,
+                      item?.isNumber,
+                    );
+                  }}
                   spellCheck="false"
                   style={{ width: '100%' }}
-                  // value={info?[item.value] ?? 'm'}
-                  // onChange={e => {
-                  //   updateChange('name', e.target.value);
-                  // }}
-                  // value={
-                  //   _.isNil(state?.layer?.[item.value])
-                  //     ? ''
-                  //     : state.layer[item.value]
-                  // }
-                  value={_.isNil(info?.[item.value]) ? '' : info[item.value]}
+                  value={
+                    _.isNil(state?.instrument?.[item.value])
+                      ? ''
+                      : state.instrument[item.value]
+                  }
                 />
               </Styled.AttributesItem>
             )}
@@ -62,7 +115,9 @@ const InstrumentList = props => {
                   schema={item.schema}
                   search={item.search}
                   selected={
-                    _.isNil(info?.[item.value]) ? null : info?.[item.value]
+                    _.isNil(state?.instrument?.[item.value])
+                      ? null
+                      : state.instrument[item.value]
                   }
                 />
               </Styled.AttributesItem>

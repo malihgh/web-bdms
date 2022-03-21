@@ -16,15 +16,6 @@ const ProfileInstrument = props => {
     onUpdated,
   } = props.data;
   const [instruments, setInstruments] = useState([]);
-  // {
-  //   id: id?.hasOwnProperty('id') ? id : null,
-  // id: null,
-  // kind: null,
-  // depth_from: null,
-  // depth_to: null,
-  // notes: '',
-  // },
-
   const [state, setState] = useState({
     isFetching: false,
     isPatching: false,
@@ -48,6 +39,7 @@ const ProfileInstrument = props => {
                 ...instruments,
                 {
                   id: e.id,
+                  kind: null,
                   depth_from: e.depth_from,
                   depth_to: e.depth_to,
                   notes: e.description,
@@ -92,6 +84,7 @@ const ProfileInstrument = props => {
         console.log(error);
       });
   };
+
   return (
     <Styled.Container>
       <Styled.ButtonContainer>
@@ -107,7 +100,13 @@ const ProfileInstrument = props => {
       <Styled.ListContainer>
         {instruments?.map((item, index) => (
           <InstrumentList
-            data={{ attributes, info: item, index, deleting: DeleteLayer }}
+            data={{
+              attributes,
+              info: item,
+              index,
+              deleting: DeleteLayer,
+              isEditable,
+            }}
             key={index}
           />
         ))}
