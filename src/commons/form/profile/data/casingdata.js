@@ -108,7 +108,7 @@ export const casingData = {
       label: 'DrilingMethods',
       value: '',
       require: true,
-      schema: 'casi202',
+      schema: 'extended.method',
       multiple: false,
       search: false,
     },

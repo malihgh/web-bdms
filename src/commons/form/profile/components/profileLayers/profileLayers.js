@@ -19,7 +19,7 @@ const ProfileLayers = props => {
   useEffect(() => {
     if (selectedStratigraphyID) {
       GetData();
-    }
+    } else setLayers(null);
   }, [selectedStratigraphyID, reloadLayer]);
 
   const GetData = () => {
@@ -37,24 +37,25 @@ const ProfileLayers = props => {
       });
   };
 
+  const CreateLayer = () => {
+    createLayer(selectedStratigraphyID)
+      .then(response => {
+        if (response.data.success) {
+          onUpdated('newLayer');
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   return (
     <Styled.Container>
-      {isEditable && (
+      {isEditable && selectedStratigraphyID !== null && (
         <Button
           fluid
-          onClick={() => {
-            createLayer(selectedStratigraphyID)
-              .then(response => {
-                if (response.data.success) {
-                  onUpdated('newLayer');
-                } else {
-                  alert(response.data.message);
-                }
-              })
-              .catch(function (error) {
-                console.log(error);
-              });
-          }}
+          onClick={CreateLayer}
           secondary
           size="tiny"
           style={{ marginBottom: '10px' }}>
@@ -137,9 +138,10 @@ const ProfileLayers = props => {
                         item?.validation?.invertedDepth
                       }>
                       {(item?.validation?.topOverlap ||
-                        item?.validation?.topDisjoint) && (
-                        <Icon name="warning sign" style={{ color: 'red' }} />
-                      )}
+                        item?.validation?.topDisjoint) &&
+                        !item?.validation?.invertedDepth && (
+                          <Icon name="warning sign" style={{ color: 'red' }} />
+                        )}
                       {item.depth_from === null ||
                       item?.validation?.missingFrom ||
                       item?.validation?.invertedDepth ? (
@@ -205,9 +207,10 @@ const ProfileLayers = props => {
                         item?.validation?.invertedDepth
                       }>
                       {(item?.validation?.bottomOverlap ||
-                        item?.validation?.bottomDisjoint) && (
-                        <Icon name="warning sign" style={{ color: 'red' }} />
-                      )}
+                        item?.validation?.bottomDisjoint) &&
+                        !item?.validation?.invertedDepth && (
+                          <Icon name="warning sign" style={{ color: 'red' }} />
+                        )}
                       {item.depth_to === null ||
                       item?.validation?.missingTo ||
                       item?.validation?.invertedDepth ? (

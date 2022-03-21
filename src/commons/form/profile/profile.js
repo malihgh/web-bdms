@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import * as Style from './styles';
+import * as Styled from './styles';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import ProfileHeader from './components/profileHeader';
@@ -9,6 +9,7 @@ import ProfileAttributes from './components/profileAttributes';
 import { casingData } from './data/casingdata';
 import { fillingData } from './data/fillingdata';
 import { stratigraphyData } from './data/stratigraphydata';
+import ProfileInstrument from './components/profileInstrument/profileInstrument';
 
 // Take a look at the StratigraphyFormContainer
 
@@ -24,9 +25,11 @@ const Profile = props => {
   const [selectedLayer, setSelectedLayer] = useState(null);
   const [reloadLayer, setReloadLayer] = useState(0);
   const [reloadHeader, setReloadHeader] = useState(0);
+  const [reloadAttribute, setReloadAttribute] = useState(0);
   const [attributesBasedKind, setAttributesBasedKind] = useState(null);
 
   useEffect(() => {
+    console.log('kkkk', selectedStratigraphy);
     if (
       !(
         borehole?.data?.lock === null ||
@@ -38,15 +41,20 @@ const Profile = props => {
     } else {
       setIsEditable(false);
     }
-    if (kind === 'hydrogeology') setAttributesBasedKind(stratigraphyData);
-    if (kind === 'casing') setAttributesBasedKind(casingData);
-    if (kind === 'filling') setAttributesBasedKind(fillingData);
+    if (kind === 'hydrogeology' || kind === 'stratigraphy') {
+      setAttributesBasedKind(stratigraphyData);
+      OnUpdated('newAttribute');
+    }
+    if (kind === 'casing') {
+      setAttributesBasedKind(casingData);
+      OnUpdated('newAttribute');
+    }
+    if (kind === 'filling') {
+      setAttributesBasedKind(fillingData);
+      OnUpdated('newAttribute');
+    }
+    console.log('lkdjfls', kind, attributesBasedKind);
   }, [setIsEditable, borehole, user, kind]);
-
-  // let selectedStratigraphy = useMemo(
-  //   () => {
-  //     return borehole?.data?.stratigraphy?.[0] ?? null;
-  // }, [borehole]);
 
   const OnUpdated = attribute => {
     if (
@@ -59,6 +67,7 @@ const Profile = props => {
       attribute === 'fixErrors'
     ) {
       setReloadLayer(reloadLayer => reloadLayer + 1);
+      console.log('hey', attribute);
     }
     if (attribute === 'deleteLayer') {
       setSelectedLayer(null);
@@ -71,15 +80,22 @@ const Profile = props => {
       attribute === 'cloneStratigraphy'
     )
       setReloadHeader(reloadHeader => reloadHeader + 1);
-    if (attribute === 'deleteStratigraphy') {
+    if (attribute === 'deleteStratigraphy' || attribute === 'newAttribute') {
       setSelectedStratigraphy(null);
       setReloadHeader(reloadHeader => reloadHeader + 1);
       setReloadLayer(reloadLayer => reloadLayer + 1);
     }
+
+    if (attribute === 'newAttribute')
+      setReloadAttribute(reloadAttribute => reloadAttribute + 1);
   };
+  // let selectedStratigraphy = useMemo(
+  //   () => {
+  //     return borehole?.data?.stratigraphy?.[0] ?? null;
+  // }, [borehole]);
 
   return (
-    <Style.MainContainer>
+    <Styled.MainContainer>
       <ProfileHeader
         data={{
           boreholeID: borehole.data.id,
@@ -93,46 +109,66 @@ const Profile = props => {
           reloadHeader,
         }}
       />
-      <Style.Container>
-        <Style.FirstColumn>
-          {attributesBasedKind && (
+      {!selectedStratigraphy && (
+        <Styled.Empty>
+          Please Add new Stratigraphy with pressing Editing!
+        </Styled.Empty>
+      )}
+
+      {kind !== 'instruments' && selectedStratigraphy && (
+        <Styled.Container>
+          <Styled.FirstColumn>
             <ProfileInfo
               data={{
-                item: selectedStratigraphy !== null && selectedStratigraphy,
+                item: selectedStratigraphy,
                 isEditable,
                 onUpdated: OnUpdated,
                 attribute: attributesBasedKind?.profileInfo,
               }}
             />
-          )}
 
-          <ProfileLayers
-            data={{
-              selectedStratigraphyID: selectedStratigraphy?.id,
-              isEditable,
-              selectedLayer,
-              setSelectedLayer: e => {
-                setSelectedLayer(e);
-              },
-              reloadLayer,
-              onUpdated: OnUpdated,
-            }}
-          />
-        </Style.FirstColumn>
-        {selectedLayer !== null && (
-          <Style.SecondColumn>
-            <ProfileAttributes
+            <ProfileLayers
               data={{
-                id: selectedLayer ? selectedLayer.id : null,
+                selectedStratigraphyID: selectedStratigraphy
+                  ? selectedStratigraphy.id
+                  : null,
                 isEditable,
+                selectedLayer,
+                setSelectedLayer: e => {
+                  setSelectedLayer(e);
+                },
+                reloadLayer,
                 onUpdated: OnUpdated,
-                attribute: attributesBasedKind?.profileAttribute,
               }}
             />
-          </Style.SecondColumn>
-        )}
-      </Style.Container>
-    </Style.MainContainer>
+          </Styled.FirstColumn>
+          {selectedLayer !== null && (
+            <Styled.SecondColumn>
+              <ProfileAttributes
+                data={{
+                  id: selectedLayer ? selectedLayer.id : null,
+                  isEditable,
+                  onUpdated: OnUpdated,
+                  reloadAttribute,
+                  attribute: attributesBasedKind?.profileAttribute,
+                }}
+              />
+            </Styled.SecondColumn>
+          )}
+        </Styled.Container>
+      )}
+      {kind === 'instruments' && selectedStratigraphy && (
+        <ProfileInstrument
+          data={{
+            selectedStratigraphyID: selectedStratigraphy?.id,
+            isEditable,
+            selectedLayer,
+            reloadLayer,
+            onUpdated: OnUpdated,
+          }}
+        />
+      )}
+    </Styled.MainContainer>
   );
 };
 
