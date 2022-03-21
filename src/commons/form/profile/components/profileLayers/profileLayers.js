@@ -170,7 +170,7 @@ const ProfileLayers = props => {
                       )}
                     </Styled.Text>
                     <Styled.Text bold>
-                      {item.title !== null ? (
+                      {item.title ? (
                         <Styled.DomainTxt
                           id={item.title}
                           schema={layers.config.title}
@@ -180,7 +180,7 @@ const ProfileLayers = props => {
                       )}
                     </Styled.Text>
                     <Styled.Text>
-                      {item.subtitle !== null ? (
+                      {item.subtitle ? (
                         <Styled.DomainTxt
                           id={item.subtitle}
                           schema={layers.config.subtitle}
@@ -190,7 +190,7 @@ const ProfileLayers = props => {
                       )}
                     </Styled.Text>
                     <Styled.Text small>
-                      {item.description !== null ? (
+                      {item.description ? (
                         <Styled.DomainTxt
                           id={item.description}
                           schema={layers.config.description}

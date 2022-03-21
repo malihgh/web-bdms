@@ -16,15 +16,6 @@ const ProfileInstrument = props => {
     onUpdated,
   } = props.data;
   const [instruments, setInstruments] = useState([]);
-  // {
-  //   id: id?.hasOwnProperty('id') ? id : null,
-  // id: null,
-  // kind: null,
-  // depth_from: null,
-  // depth_to: null,
-  // notes: '',
-  // },
-
   const [state, setState] = useState({
     isFetching: false,
     isPatching: false,
@@ -41,26 +32,22 @@ const ProfileInstrument = props => {
     getProfileLayers(selectedStratigraphyID, false)
       .then(response => {
         if (response.data.success) {
-          setInstruments([null]);
+          setInstruments([]);
           for (const e of response.data.data) {
             setInstruments(instruments => {
               return [
                 ...instruments,
                 {
                   id: e.id,
+                  kind: null,
                   depth_from: e.depth_from,
                   depth_to: e.depth_to,
                   notes: e.description,
                 },
               ];
             });
-            // setInstruments([{
-            //   id: e.id,
-            //   depth_from: e.depth_from,
-            //   depth_to: e.depth_to,
-            // }]);
           }
-          console.log('dataaa in instrument', instruments, response.data.data);
+          // console.log('dataaa in instrument', instruments, response.data.data);
         } else {
           alert(response.data.message);
         }
@@ -97,6 +84,7 @@ const ProfileInstrument = props => {
         console.log(error);
       });
   };
+
   return (
     <Styled.Container>
       <Styled.ButtonContainer>
@@ -104,20 +92,24 @@ const ProfileInstrument = props => {
           content={<TranslationText id="addInstrument" />}
           disabled={!isEditable}
           icon="add"
-          //   onClick={CreateLayer}
+          onClick={CreateLayer}
           secondary
           size="tiny"
         />
       </Styled.ButtonContainer>
       <Styled.ListContainer>
-        {console.log('oooo', instruments)}
-        {instruments &&
-          instruments.map((item, index) => (
-            <InstrumentList
-              data={{ attributes, info: item, index }}
-              key={index}
-            />
-          ))}
+        {instruments?.map((item, index) => (
+          <InstrumentList
+            data={{
+              attributes,
+              info: item,
+              index,
+              deleting: DeleteLayer,
+              isEditable,
+            }}
+            key={index}
+          />
+        ))}
       </Styled.ListContainer>
     </Styled.Container>
   );

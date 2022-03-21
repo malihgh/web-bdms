@@ -19,7 +19,14 @@ const Profile = props => {
     user: state.core_user,
   }));
   const { kind } = props;
-
+  const kinds = [
+    { id: 0, kind: 'stratigraphy', kindNumber: 3000 },
+    { id: 1, kind: 'geotechnical', kindNumber: 3001 },
+    { id: 2, kind: 'casing', kindNumber: 3002 },
+    { id: 3, kind: 'instruments', kindNumber: 3003 },
+    { id: 4, kind: 'filling', kindNumber: 3004 },
+    { id: 5, kind: 'hydrogeology', kindNumber: 3005 },
+  ];
   const [isEditable, setIsEditable] = useState(false);
   const [selectedStratigraphy, setSelectedStratigraphy] = useState(null);
   const [selectedLayer, setSelectedLayer] = useState(null);
@@ -27,9 +34,9 @@ const Profile = props => {
   const [reloadHeader, setReloadHeader] = useState(0);
   const [reloadAttribute, setReloadAttribute] = useState(0);
   const [attributesBasedKind, setAttributesBasedKind] = useState(null);
+  const [stratigraphyKind, setStratigraphyKind] = useState(null);
 
   useEffect(() => {
-    console.log('kkkk', selectedStratigraphy);
     if (
       !(
         borehole?.data?.lock === null ||
@@ -41,19 +48,30 @@ const Profile = props => {
     } else {
       setIsEditable(false);
     }
-    if (kind === 'hydrogeology' || kind === 'stratigraphy') {
+    if (kind === 'instruments') {
+      setStratigraphyKind(kinds[3]);
+      // OnUpdated('newAttribute');
+    }
+    if (kind === 'stratigraphy') {
       setAttributesBasedKind(stratigraphyData);
+      setStratigraphyKind(kinds[0]);
+      OnUpdated('newAttribute');
+    }
+    if (kind === 'hydrogeology') {
+      setAttributesBasedKind(stratigraphyData);
+      setStratigraphyKind(kinds[5]);
       OnUpdated('newAttribute');
     }
     if (kind === 'casing') {
       setAttributesBasedKind(casingData);
+      setStratigraphyKind(kinds[2]);
       OnUpdated('newAttribute');
     }
     if (kind === 'filling') {
       setAttributesBasedKind(fillingData);
+      setStratigraphyKind(kinds[4]);
       OnUpdated('newAttribute');
     }
-    console.log('lkdjfls', kind, attributesBasedKind);
   }, [setIsEditable, borehole, user, kind]);
 
   const OnUpdated = attribute => {
@@ -96,26 +114,28 @@ const Profile = props => {
 
   return (
     <Styled.MainContainer>
-      <ProfileHeader
-        data={{
-          boreholeID: borehole.data.id,
-          kind: 3000,
-          isEditable,
-          selectedStratigraphy,
-          setSelectedStratigraphy: e => {
-            setSelectedStratigraphy(e);
-            setSelectedLayer(null);
-          },
-          reloadHeader,
-        }}
-      />
+      {stratigraphyKind && (
+        <ProfileHeader
+          data={{
+            boreholeID: borehole.data.id,
+            kind: stratigraphyKind.kindNumber,
+            isEditable,
+            selectedStratigraphy,
+            setSelectedStratigraphy: e => {
+              setSelectedStratigraphy(e);
+              setSelectedLayer(null);
+            },
+            reloadHeader,
+          }}
+        />
+      )}
       {!selectedStratigraphy && (
         <Styled.Empty>
           Please Add new Stratigraphy with pressing Editing!
         </Styled.Empty>
       )}
 
-      {kind !== 'instruments' && selectedStratigraphy && (
+      {stratigraphyKind?.kind !== 'instruments' && selectedStratigraphy && (
         <Styled.Container>
           <Styled.FirstColumn>
             <ProfileInfo
@@ -157,7 +177,7 @@ const Profile = props => {
           )}
         </Styled.Container>
       )}
-      {kind === 'instruments' && selectedStratigraphy && (
+      {stratigraphyKind?.kind === 'instruments' && selectedStratigraphy && (
         <ProfileInstrument
           data={{
             selectedStratigraphyID: selectedStratigraphy?.id,
