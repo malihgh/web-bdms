@@ -207,7 +207,24 @@ class MenuEditorForm extends React.Component {
             style={{
               padding: '0.9em',
               display: 'flex',
-              // backgroundColor: 'red',
+              borderLeft:
+                location.pathname ===
+                  process.env.PUBLIC_URL +
+                    '/editor/' +
+                    match.params.id +
+                    '/completion/casing' ||
+                location.pathname ===
+                  process.env.PUBLIC_URL +
+                    '/editor/' +
+                    match.params.id +
+                    '/completion/instruments' ||
+                location.pathname ===
+                  process.env.PUBLIC_URL +
+                    '/editor/' +
+                    match.params.id +
+                    '/completion/filling'
+                  ? '0.25em solid rgb(237, 29, 36)'
+                  : null,
             }}>
             <img
               src={process.env.PUBLIC_URL + '/img/Completion.png'}
