@@ -406,7 +406,7 @@ class MenuEditorForm extends React.Component {
             </>
           )}
           {/* hydrogeology */}
-          <List.Item
+          {/* <List.Item
             active={
               location.pathname ===
               process.env.PUBLIC_URL +
@@ -451,14 +451,10 @@ class MenuEditorForm extends React.Component {
             />
             <List.Content>
               <List.Header as="h3">
-                {/* <TranslationText
-                    firstUpperCase
-                    id="stratigraphy"
-                  /> */}
                 Hydrogeology
               </List.Header>
             </List.Content>
-          </List.Item>
+          </List.Item> */}
 
           <List.Item
             active={
