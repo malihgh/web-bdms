@@ -62,7 +62,17 @@ const ProfileHeader = props => {
       <Styled.ButtonContainer>
         {isEditable && kind !== 3003 && (
           <Button
-            content={<TranslationText id="stratigraphy" />}
+            content={
+              kind === 3000 ? (
+                <TranslationText id="stratigraphy" />
+              ) : kind === 3002 ? (
+                'Casing'
+              ) : kind === 3004 ? (
+                'Create Filling'
+              ) : (
+                ''
+              )
+            }
             icon="add"
             onClick={CreateStratigraphy}
             secondary
