@@ -73,6 +73,7 @@ const ProfileHeader = props => {
                 ''
               )
             }
+            disabled={kind === 3004 && profiles.length > 0}
             icon="add"
             onClick={CreateStratigraphy}
             secondary
