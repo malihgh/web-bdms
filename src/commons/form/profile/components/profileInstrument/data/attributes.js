@@ -39,7 +39,7 @@ export const attributes = [
     id: 4,
     type: 'Dropdown',
     label: 'Casing',
-    value: '',
+    value: 'casing_id',
     require: true,
     schema: 'casi100',
     multiple: false,
