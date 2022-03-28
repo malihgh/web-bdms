@@ -50,7 +50,7 @@ const Profile = props => {
     }
     if (kind === 'instruments') {
       setStratigraphyKind(kinds[3]);
-      // OnUpdated('newAttribute');
+      OnUpdated('newAttribute');
     }
     if (kind === 'stratigraphy') {
       setAttributesBasedKind(stratigraphyData);
@@ -183,6 +183,7 @@ const Profile = props => {
       {stratigraphyKind?.kind === 'instruments' && selectedStratigraphy && (
         <ProfileInstrument
           data={{
+            boreholeID: borehole.data.id,
             selectedStratigraphyID: selectedStratigraphy?.id,
             isEditable,
             selectedLayer,

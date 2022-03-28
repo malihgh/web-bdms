@@ -25,7 +25,8 @@ const ProfileHeader = props => {
   }, [boreholeID, reloadHeader]);
 
   const GetData = () => {
-    getProfiles(boreholeID, kind)
+    const myKind = kind !== 3003 ? kind : 3002;
+    getProfiles(boreholeID, myKind)
       .then(response => {
         if (response.data.success) {
           setProfiles(response.data.data);
