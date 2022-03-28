@@ -25,7 +25,8 @@ const ProfileHeader = props => {
   }, [boreholeID, reloadHeader]);
 
   const GetData = () => {
-    getProfiles(boreholeID, kind)
+    const myKind = kind !== 3003 ? kind : 3002;
+    getProfiles(boreholeID, myKind)
       .then(response => {
         if (response.data.success) {
           setProfiles(response.data.data);
@@ -62,7 +63,18 @@ const ProfileHeader = props => {
       <Styled.ButtonContainer>
         {isEditable && kind !== 3003 && (
           <Button
-            content={<TranslationText id="stratigraphy" />}
+            content={
+              kind === 3000 ? (
+                <TranslationText id="stratigraphy" />
+              ) : kind === 3002 ? (
+                'Casing'
+              ) : kind === 3004 ? (
+                'Create Filling'
+              ) : (
+                ''
+              )
+            }
+            disabled={kind === 3004 && profiles.length > 0}
             icon="add"
             onClick={CreateStratigraphy}
             secondary

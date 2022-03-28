@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
 import { Icon, Radio } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
-import { gapLayer } from '@ist-supsi/bmsjs';
+import { gapLayer, addBedrock } from '@ist-supsi/bmsjs';
+import _ from 'lodash';
 
 const ProfileLayersError = props => {
   const { title, isEditable, id, isInside, onUpdated } = props.data;
@@ -85,7 +86,7 @@ const ProfileLayersError = props => {
     setResolvingAction(value);
   };
   const sendDataToServer = () => {
-    // console.log('ffffff', id, resolvingAction);
+    console.log('ffffff', id, resolvingAction);
     setShowSolution();
     setResolvingAction();
 
@@ -95,7 +96,24 @@ const ProfileLayersError = props => {
           if (response.data.success) {
             onUpdated('fixErrors');
 
-            console.log('dataaaaaa', response.data, id, resolvingAction);
+            // console.log('dataaaaaa', response.data, id, resolvingAction);
+          } else {
+            alert(response.data.message);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else if (title === 'missingBedrock') {
+      addBedrock(id)
+        .then(response => {
+          if (response.data.success) {
+            if (_.isFunction(onUpdated)) {
+              onUpdated('fixErrors');
+            } else {
+              console.log('dataaaaaa', response.data, id);
+              onUpdated('fixErrors');
+            }
           } else {
             alert(response.data.message);
           }
@@ -139,7 +157,6 @@ const ProfileLayersError = props => {
           </Styled.HowToResolveContainer>
           {error?.solutions?.map((e, index) => (
             <div key={index} style={{ marginTop: 2 }}>
-              {console.log('ddddd', resolving(e))}
               {error.solutions.length > 1 && (
                 <Radio
                   //   checked={resolving(e)}
@@ -165,14 +182,25 @@ const ProfileLayersError = props => {
               }}>
               <Icon name="cancel" /> Cancel
             </Styled.CardButton>
-            <Styled.CardButton
-              disable={resolvingAction === null}
-              icon
-              onClick={sendDataToServer}
-              secondary
-              size="mini">
-              <Icon name="check" /> Confirm
-            </Styled.CardButton>
+            {error?.id !== 5 && (
+              <Styled.CardButton
+                // disable={error?.id !== 0 && resolvingAction === null}
+                icon
+                onClick={sendDataToServer}
+                secondary
+                size="mini">
+                {error?.id !== 0 && (
+                  <>
+                    <Icon name="check" /> Confirm
+                  </>
+                )}
+                {error?.id === 0 && (
+                  <>
+                    <Icon name="add" /> Add
+                  </>
+                )}
+              </Styled.CardButton>
+            )}
           </Styled.CardButtonContainer>
         </Styled.SolutionContainer>
       )}

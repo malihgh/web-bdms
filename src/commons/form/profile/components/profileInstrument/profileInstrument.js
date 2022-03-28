@@ -4,12 +4,19 @@ import InstrumentList from './components/infoList/InstrumentList';
 import { attributes } from './data/attributes';
 import { Button } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
-import { getProfileLayers, createLayer, deleteLayer } from '@ist-supsi/bmsjs';
+import {
+  getProfileLayers,
+  createLayer,
+  deleteLayer,
+  getProfiles,
+  createStratigraphy,
+} from '@ist-supsi/bmsjs';
 
 const ProfileInstrument = props => {
   const {
     isEditable,
-    selectedStratigraphyID,
+    boreholeID,
+    // selectedStratigraphyID,
     selectedLayer,
     setSelectedLayer,
     reloadLayer,
@@ -19,17 +26,57 @@ const ProfileInstrument = props => {
   const [state, setState] = useState({
     isFetching: false,
     isPatching: false,
+    instrumentID: null,
     allfields: false,
   });
   useEffect(() => {
-    if (selectedStratigraphyID) {
+    CreateInstrumentProfile();
+    if (state.instrumentID) {
       GetData();
     }
     // else setLayers(null);
-  }, [selectedStratigraphyID, reloadLayer]);
+  }, [state.instrumentID, reloadLayer]);
 
+  const CreateInstrumentProfile = () => {
+    getProfiles(boreholeID, 3003)
+      .then(response => {
+        if (response.data.success) {
+          if (response.data.data.length > 0) {
+            console.log('hhhh', response.data.data);
+            setState({ ...state, instrumentID: response.data.data[0].id });
+          } else if (response.data.data.length === 0) {
+            CreateStratigraphy();
+          }
+
+          // setProfiles(response.data.data);
+          // setSelectedItem(selectedStratigraphy ?? response.data.data[0]);
+          // setSelectedStratigraphy(
+          //   selectedStratigraphy ?? response.data.data[0],
+          // );
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  const CreateStratigraphy = () => {
+    createStratigraphy(boreholeID, 3003)
+      .then(response => {
+        console.log('response', response);
+        // if (response.data.success) {
+        //   setState({ ...state, instrumentID: response.data.id });
+        // } else {
+        //   alert(response.data.message);
+        // }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   const GetData = () => {
-    getProfileLayers(selectedStratigraphyID, false)
+    getProfileLayers(state.instrumentID, false)
       .then(response => {
         if (response.data.success) {
           setInstruments([]);
@@ -58,7 +105,7 @@ const ProfileInstrument = props => {
   };
 
   const CreateLayer = () => {
-    createLayer(selectedStratigraphyID)
+    createLayer(state.instrumentID)
       .then(response => {
         if (response.data.success) {
           onUpdated('newLayer');

@@ -207,7 +207,22 @@ class MenuEditorForm extends React.Component {
             style={{
               padding: '0.9em',
               display: 'flex',
-              // backgroundColor: 'red',
+              borderLeft: [
+                process.env.PUBLIC_URL +
+                  '/editor/' +
+                  match.params.id +
+                  '/completion/casing',
+                process.env.PUBLIC_URL +
+                  '/editor/' +
+                  match.params.id +
+                  '/completion/filling',
+                process.env.PUBLIC_URL +
+                  '/editor/' +
+                  match.params.id +
+                  '/completion/instruments',
+              ].includes(location.pathname)
+                ? '0.25em solid rgb(237, 29, 36)'
+                : null,
             }}>
             <img
               src={process.env.PUBLIC_URL + '/img/Completion.png'}
@@ -406,7 +421,7 @@ class MenuEditorForm extends React.Component {
             </>
           )}
           {/* hydrogeology */}
-          <List.Item
+          {/* <List.Item
             active={
               location.pathname ===
               process.env.PUBLIC_URL +
@@ -451,14 +466,10 @@ class MenuEditorForm extends React.Component {
             />
             <List.Content>
               <List.Header as="h3">
-                {/* <TranslationText
-                    firstUpperCase
-                    id="stratigraphy"
-                  /> */}
                 Hydrogeology
               </List.Header>
             </List.Content>
-          </List.Item>
+          </List.Item> */}
 
           <List.Item
             active={

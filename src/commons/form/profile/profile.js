@@ -50,7 +50,7 @@ const Profile = props => {
     }
     if (kind === 'instruments') {
       setStratigraphyKind(kinds[3]);
-      // OnUpdated('newAttribute');
+      OnUpdated('newAttribute');
     }
     if (kind === 'stratigraphy') {
       setAttributesBasedKind(stratigraphyData);
@@ -82,7 +82,10 @@ const Profile = props => {
       attribute === 'lithology' ||
       attribute === 'chronostratigraphy' ||
       attribute === 'newLayer' ||
-      attribute === 'fixErrors'
+      attribute === 'fixErrors' ||
+      attribute === 'casing_kind' ||
+      attribute === 'casing_material' ||
+      attribute === 'casing_drilling'
     ) {
       setReloadLayer(reloadLayer => reloadLayer + 1);
       console.log('hey', attribute);
@@ -180,6 +183,7 @@ const Profile = props => {
       {stratigraphyKind?.kind === 'instruments' && selectedStratigraphy && (
         <ProfileInstrument
           data={{
+            boreholeID: borehole.data.id,
             selectedStratigraphyID: selectedStratigraphy?.id,
             isEditable,
             selectedLayer,

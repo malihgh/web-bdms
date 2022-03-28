@@ -4,15 +4,14 @@ export const stratigraphyData = {
       id: 0,
       type: 'Input',
       label: 'stratigraphy_name',
-      value: '',
+      value: 'name',
       require: true,
-      isNumber: true,
     },
     {
       id: 1,
       type: 'Date',
       label: 'date',
-      value: '',
+      value: 'date',
     },
   ],
   profileAttribute: [

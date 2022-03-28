@@ -1722,163 +1722,21 @@ class BoreholeForm extends React.Component {
             exact
             path={process.env.PUBLIC_URL + '/editor/:id/stratigraphy'}
             render={() => (
-              <div
-                style={{
-                  flex: '1 1 0%',
-                  padding: '1em',
-                  overflowY: 'hidden',
-                }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%',
-                  }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                    }}>
-                    {this.props.borehole.data.lock === null ||
+              <Profile
+                id={parseInt(this.props.match.params.id, 10)}
+                kind="stratigraphy"
+                unlocked={
+                  !(
+                    this.props.borehole.data.role !== 'EDIT' ||
+                    this.props.borehole.data.lock === null ||
                     this.props.borehole.data.lock.username !==
-                      this.props.user.data.username ||
-                    this.props.borehole.data.role !== 'EDIT' ? null : (
-                      <Button
-                        content={<TranslationText id="stratigraphy" />}
-                        icon="add"
-                        onClick={() => {
-                          // this.setState({
-                          //   newStartModal: true
-                          // });
-                          createStratigraphy(borehole.id)
-                            .then(response => {
-                              if (response.data.success) {
-                                this.setState(
-                                  {
-                                    stratigraphy_id: response.data.id,
-                                  },
-                                  () => {
-                                    this.loadOrCreate(borehole.id);
-                                  },
-                                );
-                              }
-                            })
-                            .catch(function (error) {
-                              console.log(error);
-                            });
-                        }}
-                        secondary
-                        size="small"
-                      />
-                    )}
-                    {/* <NewStratigraphy
-                      close={()=>{
-                        this.setState({
-                          newStartModal: false
-                        });
-                      }}
-                      onSelected={(kinds)=>{
-                        this.setState({
-                          newStartModal: false
-                        }, ()=>{
-                          createStratigraphy(
-                            borehole.id,
-                            kinds
-                          ).then(
-                            (response) => {
-                              if (response.data.success) {
-                                this.setState({
-                                  "stratigraphy_id": response.data.id
-                                }, () => {
-                                  this.loadOrCreate(borehole.id);
-                                });
-                              }
-                            }
-                          ).catch(function (error) {
-                            console.log(error);
-                          });
-                        });
-                      }}
-                      open={this.state.newStartModal}
-                    /> */}
-                    {_.isArray(borehole.stratigraphy)
-                      ? borehole.stratigraphy.map((stratigraphy, sx) => (
-                          <div
-                            key={'str-tab-' + sx}
-                            onClick={() => {
-                              this.setState({
-                                stratigraphy_id: stratigraphy.id,
-                              });
-                            }}
-                            style={{
-                              margin: '0px 1em',
-                              cursor: 'pointer',
-                              borderBottom:
-                                this.state.stratigraphy_id === stratigraphy.id
-                                  ? '2px solid black'
-                                  : '2px solid transparent',
-                              padding: '0px 0.5em 3px 0.5em',
-                            }}>
-                            <span
-                              style={{
-                                fontWeight: 'bold',
-                              }}>
-                              {stratigraphy.primary === true ? (
-                                <Icon name="check" />
-                              ) : null}
-                              {stratigraphy.name === null ||
-                              stratigraphy.name === ''
-                                ? t('common:np')
-                                : stratigraphy.name}
-                            </span>
-                            <br />
-                            <span
-                              style={{
-                                color: '#787878',
-                                fontSize: '0.8em',
-                              }}>
-                              <DateText date={stratigraphy.date} />
-                            </span>
-                          </div>
-                        ))
-                      : null}
-                  </div>
-                  <StratigraphyFormContainer
-                    id={this.state.stratigraphy_id}
-                    onClone={id => {
-                      this.loadOrCreate(borehole.id);
-                    }}
-                    onDeleted={id => {
-                      const bh = _.cloneDeep(borehole);
-                      const strt = [];
-                      for (var i = 0; i < bh.stratigraphy.length; i++) {
-                        if (id !== bh.stratigraphy[i].id) {
-                          strt.push(bh.stratigraphy[i]);
-                        }
-                      }
-                      bh.stratigraphy = strt;
-                      this.props.updateBorehole(bh);
-                    }}
-                    onUpdated={(id, attribute, value) => {
-                      const bh = _.cloneDeep(borehole);
-                      for (var i = 0; i < bh.stratigraphy.length; i++) {
-                        if (id === bh.stratigraphy[i].id) {
-                          bh.stratigraphy[i][attribute] = value;
-                          if (attribute !== 'primary') {
-                            break;
-                          }
-                        } else if (attribute === 'primary') {
-                          bh.stratigraphy[i][attribute] = false;
-                        }
-                      }
-                      this.props.updateBorehole(bh);
-                    }}
-                    refresh={this.props.borehole.fcnt}
-                  />
-                </div>
-              </div>
+                      this.props.user.data.username
+                  )
+                }
+              />
             )}
           />
+
           <Route
             exact
             path={process.env.PUBLIC_URL + '/editor/:id/attachments'}

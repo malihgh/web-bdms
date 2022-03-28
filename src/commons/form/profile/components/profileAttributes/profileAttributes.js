@@ -5,7 +5,7 @@ import { Checkbox, Input, TextArea, Form } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import DomainDropdown from '../../../domain/dropdown/domainDropdown';
 import DomainTree from '../../../domain/tree/domainTree';
-import { getLayer, patchLayer } from '@ist-supsi/bmsjs';
+import { getLayerAttributes, patchLayer } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
 
 const ProfileAttributes = props => {
@@ -58,6 +58,10 @@ const ProfileAttributes = props => {
       lithok: null,
       kirost: null,
       notes: '',
+      fill_material: null,
+      casing_kind: null,
+      casing_material: null,
+      casing_drilling: null,
     },
   });
 
@@ -70,7 +74,7 @@ const ProfileAttributes = props => {
     if (id === null) setState({ state: null });
     if (_.isInteger(id)) {
       setState({ isFetching: true });
-      getLayer(id)
+      getLayerAttributes(id)
         .then(function (response) {
           if (response.data.success) {
             setState({
