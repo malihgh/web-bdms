@@ -31,6 +31,9 @@ const ProfileInstrument = props => {
   });
   useEffect(() => {
     CreateInstrumentProfile();
+  }, []);
+
+  useEffect(() => {
     if (state.instrumentID) {
       GetData();
     }
@@ -47,12 +50,6 @@ const ProfileInstrument = props => {
           } else if (response.data.data.length === 0) {
             CreateStratigraphy();
           }
-
-          // setProfiles(response.data.data);
-          // setSelectedItem(selectedStratigraphy ?? response.data.data[0]);
-          // setSelectedStratigraphy(
-          //   selectedStratigraphy ?? response.data.data[0],
-          // );
         } else {
           alert(response.data.message);
         }
@@ -64,12 +61,12 @@ const ProfileInstrument = props => {
   const CreateStratigraphy = () => {
     createStratigraphy(boreholeID, 3003)
       .then(response => {
-        console.log('response', response);
-        // if (response.data.success) {
-        //   setState({ ...state, instrumentID: response.data.id });
-        // } else {
-        //   alert(response.data.message);
-        // }
+        // console.log('response', response);
+        if (response.data.success) {
+          setState({ ...state, instrumentID: response.data.id });
+        } else {
+          alert(response.data.message);
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -105,17 +102,19 @@ const ProfileInstrument = props => {
   };
 
   const CreateLayer = () => {
-    createLayer(state.instrumentID)
-      .then(response => {
-        if (response.data.success) {
-          onUpdated('newLayer');
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    if (state.instrumentID) {
+      createLayer(state.instrumentID)
+        .then(response => {
+          if (response.data.success) {
+            onUpdated('newLayer');
+          } else {
+            alert(response.data.message);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
   };
 
   const DeleteLayer = id => {
