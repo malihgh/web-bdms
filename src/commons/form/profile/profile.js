@@ -82,7 +82,10 @@ const Profile = props => {
       attribute === 'lithology' ||
       attribute === 'chronostratigraphy' ||
       attribute === 'newLayer' ||
-      attribute === 'fixErrors'
+      attribute === 'fixErrors' ||
+      attribute === 'casing_kind' ||
+      attribute === 'casing_material' ||
+      attribute === 'casing_drilling'
     ) {
       setReloadLayer(reloadLayer => reloadLayer + 1);
       console.log('hey', attribute);
