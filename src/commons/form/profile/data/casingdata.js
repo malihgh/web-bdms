@@ -13,7 +13,7 @@ export const casingData = {
       label: 'Kind',
       value: 'casng_kind',
       require: true,
-      schema: 'casi200',
+      schema: 'casi100',
       multiple: false,
       search: false,
     },
