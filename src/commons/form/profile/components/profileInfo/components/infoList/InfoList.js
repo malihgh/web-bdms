@@ -10,11 +10,12 @@ import {
   deleteStratigraphy,
   cloneStratigraphy,
   patchStratigraphy,
+  getProfile,
 } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
 
 const InfoList = props => {
-  const { attribute, info, isEditable, onUpdated } = props.data;
+  const { attribute, id, isEditable, onUpdated } = props.data;
 
   let updateAttributeDelay = {};
   const [state, setState] = useState({
@@ -23,46 +24,50 @@ const InfoList = props => {
     profileInfo: {
       id: null,
       kind: null,
+      casng_kind: null,
+      fill_kind: null,
       name: null,
       primary: false,
       date: null,
-      elevationCasing: null,
-      refElevationCasing: null,
-      dateSpud: null,
-      dateFinish: null,
-      dateAbandonment: null,
-      remarks: '',
+      elevation: null,
+      elevation_ref: null,
+      date_spud: null,
+      date_fin: null,
+      date_abd: null,
+      notes: null,
       // depth_from: info.depth_from ? info.depth_from : null,
       // depth_to: info.depth_to ? info.depth_to : null,
       // notes: info.notes ? info.notes : '',
     },
   });
   useEffect(() => {
-    setState({
-      profileInfo: {
-        id: info.id ? info.id : null,
-        kind: info.kind ? info.kind : null,
-        name: info.name ? info.name : null,
-        primary: info.primary ? info.primary : false,
-        date: info.date ? info.date : null,
-        elevationCasing: info.elevationCasing ? info.elevationCasing : null,
-        refElevationCasing: info.refElevationCasing
-          ? info.refElevationCasing
-          : null,
-        dateSpud: info.dateSpud ? info.dateSpud : null,
-        dateFinish: info.dateFinish ? info.dateFinish : null,
-        dateAbandonment: info.dateAbandonment ? info.dateAbandonment : null,
-        remarks: info.remarks ? info.remarks : null,
-      },
-    });
-  }, [info]);
+    GetData();
+  }, [id]);
+
+  const GetData = () => {
+    getProfile(id)
+      .then(response => {
+        if (response.data.success) {
+          if (response.data.success) {
+            setState({
+              isFetching: false,
+              profileInfo: response.data.data,
+            });
+          }
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     if (!isEditable) {
       alert('You should press start editing button! ');
       return;
     }
-    console.log('kkkkk', info?.id, attribute, value);
     setState(prevState => ({ ...prevState, isPatching: true }));
     _.set(state.profileInfo, attribute, value);
 
@@ -86,7 +91,7 @@ const InfoList = props => {
       updateAttributeDelay[attribute] = false;
     }
     updateAttributeDelay[attribute] = setTimeout(function () {
-      patchStratigraphy(info?.id, attribute, value)
+      patchProfile(id, attribute, value)
         .then(function (response) {
           console.log('lll', response);
           if (response.data.success) {
@@ -142,20 +147,20 @@ const InfoList = props => {
                 <Styled.AttributesItem>
                   <DomainDropdown
                     multiple={item.multiple}
-                    // onSelected={e =>
-                    //   updateChange(
-                    //     item.value,
-                    //     item.multiple ? e.map(mlpr => mlpr.id) : e.id,
-                    //     false,
-                    //   )
-                    // }
+                    onSelected={e =>
+                      updateChange(
+                        item.value,
+                        item.multiple ? e.map(mlpr => mlpr.id) : e.id,
+                        false,
+                      )
+                    }
                     schema={item.schema}
                     search={item.search}
-                    // selected={
-                    //   _.isNil(state?.layer?.[item.value])
-                    //     ? null
-                    //     : state.layer[item.value]
-                    // }
+                    selected={
+                      _.isNil(state?.profileInfo?.[item.value])
+                        ? null
+                        : state.profileInfo[item.value]
+                    }
                   />
                 </Styled.AttributesItem>
               )}
