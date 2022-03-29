@@ -15,11 +15,13 @@ const ProfileLayers = props => {
     onUpdated,
   } = props.data;
   const [layers, setLayers] = useState(null);
-
+  const [showDelete, setShowDelete] = useState();
   useEffect(() => {
     if (selectedStratigraphyID) {
       GetData();
-    } else setLayers(null);
+    } else {
+      setLayers(null);
+    }
   }, [selectedStratigraphyID, reloadLayer]);
 
   const GetData = () => {
@@ -85,7 +87,7 @@ const ProfileLayers = props => {
           )}
           {layers.data &&
             layers.data.map((item, index) => (
-              <Styled.Layer key={item.id} isFirst={index === 0 ? true : false}>
+              <Styled.Layer isFirst={index === 0 ? true : false} key={item.id}>
                 {item.validation &&
                   Object.keys(item.validation)
                     .filter(
@@ -245,25 +247,28 @@ const ProfileLayers = props => {
                         basic
                         color="red"
                         icon
-                        size="mini"
                         onClick={() => {
-                          deleteLayer(item.id)
-                            .then(response => {
-                              if (response.data.success) {
-                                onUpdated('deleteLayer');
-                              } else {
-                                alert(response.data.message);
-                              }
-                            })
-                            .catch(function (error) {
-                              console.log(error);
-                            });
-                        }}>
+                          setShowDelete(item.id);
+                        }}
+                        size="mini">
                         <Icon name="trash alternate outline" />
                       </Styled.CardButton>
                     </Styled.CardButtonContainer>
                   )}
                 </Styled.MyCard>
+                {showDelete === item.id && (
+                  <ProfileLayersError
+                    data={{
+                      title: 'delete',
+                      isEditable,
+                      id: item.id,
+                      isInside: true,
+                      onUpdated: onUpdated,
+                      layerIndex: index,
+                      layerLength: layers.data.length,
+                    }}
+                  />
+                )}
               </Styled.Layer>
             ))}
 

@@ -6,7 +6,15 @@ import { gapLayer, addBedrock } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
 
 const ProfileLayersError = props => {
-  const { title, isEditable, id, isInside, onUpdated } = props.data;
+  const {
+    title,
+    isEditable,
+    id,
+    isInside,
+    onUpdated,
+    layerIndex,
+    layerLength,
+  } = props.data;
   const [showSolution, setShowSolution] = useState();
   const [error, setError] = useState();
   const [resolvingAction, setResolvingAction] = useState();
@@ -39,10 +47,14 @@ const ProfileLayersError = props => {
       case 'missingLayers':
         e = ErrorTypes[4];
         break;
+      case 'delete':
+        e = ErrorTypes[6];
+        break;
       default:
         e = null;
     }
     setError(e);
+    if (e === ErrorTypes[6]) setShowSolution(id);
   }, [title]);
   const ErrorTypes = [
     {
@@ -75,18 +87,28 @@ const ProfileLayersError = props => {
       solutions: ['errorGapSolution1', 'errorGapSolution3'],
     },
     { id: 5, messageId: 'errorWrongDepth', solutions: ['errorWrongDepth'] },
+    {
+      id: 6,
+      messageId: 'errorAttention',
+      solutions: ['deletelayer', 'extendupper', 'extendlower', 'setmanually'],
+    },
   ];
 
   const resolving = title => {
-    if (title === 'errorGapSolution1') return 0;
-    if (title === 'errorGapSolution2') return 1;
-    if (title === 'errorGapSolution3' || 'errorGapSolution3') return 2;
+    if (title === 'errorGapSolution1' || title === 'deletelayer') return 0;
+    if (title === 'errorGapSolution2' || title === 'extendupper') return 1;
+    if (
+      title === 'errorGapSolution3' ||
+      title === 'errorGapSolution3' ||
+      title === 'extendlower'
+    )
+      return 2;
+    if (title === 'setmanually') return 3;
   };
   const handleResolvingAction = (e, { value }) => {
     setResolvingAction(value);
   };
   const sendDataToServer = () => {
-    console.log('ffffff', id, resolvingAction);
     setShowSolution();
     setResolvingAction();
 
@@ -95,8 +117,6 @@ const ProfileLayersError = props => {
         .then(response => {
           if (response.data.success) {
             onUpdated('fixErrors');
-
-            // console.log('dataaaaaa', response.data, id, resolvingAction);
           } else {
             alert(response.data.message);
           }
@@ -108,12 +128,7 @@ const ProfileLayersError = props => {
       addBedrock(id)
         .then(response => {
           if (response.data.success) {
-            if (_.isFunction(onUpdated)) {
-              onUpdated('fixErrors');
-            } else {
-              console.log('dataaaaaa', response.data, id);
-              onUpdated('fixErrors');
-            }
+            onUpdated('fixErrors');
           } else {
             alert(response.data.message);
           }
@@ -125,32 +140,35 @@ const ProfileLayersError = props => {
   };
   return (
     <Styled.ErrorCard
+      isDelete={error?.id === 6}
       isFirstInList={error?.messageId === 'errorStartWrong'}
       isInside={isInside}>
-      <Styled.Row>
-        <Styled.ErrorMessageContainer>
-          <Icon name="warning sign" />
-          {/* {title === 'missingTo' && <>Add end of the layer</>} */}
-          <TranslationText id={error?.messageId} />
-        </Styled.ErrorMessageContainer>
+      {error?.id !== 6 && (
+        <Styled.Row>
+          <Styled.ErrorMessageContainer>
+            <Icon name="warning sign" />
+            {/* {title === 'missingTo' && <>Add end of the layer</>} */}
+            <TranslationText id={error?.messageId} />
+          </Styled.ErrorMessageContainer>
 
-        {isEditable && showSolution !== id && (
-          <Styled.WrenchButtonContainer>
-            <Styled.CardButton
-              basic
-              color="red"
-              icon
-              onClick={() => {
-                setShowSolution(id);
-              }}
-              size="mini">
-              <Icon name="wrench" />
-            </Styled.CardButton>
-          </Styled.WrenchButtonContainer>
-        )}
-      </Styled.Row>
+          {isEditable && showSolution !== id && (
+            <Styled.WrenchButtonContainer>
+              <Styled.CardButton
+                basic
+                color="red"
+                icon
+                onClick={() => {
+                  setShowSolution(id);
+                }}
+                size="mini">
+                <Icon name="wrench" />
+              </Styled.CardButton>
+            </Styled.WrenchButtonContainer>
+          )}
+        </Styled.Row>
+      )}
 
-      {showSolution === id && (
+      {showSolution === id && error?.id !== 6 && (
         <Styled.SolutionContainer>
           <Styled.HowToResolveContainer>
             <TranslationText id="errorHowToResolve" />
@@ -201,6 +219,60 @@ const ProfileLayersError = props => {
                 )}
               </Styled.CardButton>
             )}
+          </Styled.CardButtonContainer>
+        </Styled.SolutionContainer>
+      )}
+
+      {showSolution === id && error?.id === 6 && (
+        <Styled.SolutionContainer>
+          <Styled.ErrorMessageContainer>
+            <Icon name="warning sign" />
+            {/* {title === 'missingTo' && <>Add end of the layer</>} */}
+            <TranslationText id={error?.messageId} />
+          </Styled.ErrorMessageContainer>
+
+          <Styled.HowToResolveContainer>
+            <TranslationText id="deletelayerconfirmation" />
+          </Styled.HowToResolveContainer>
+          {error?.solutions?.map((e, index) => (
+            <div key={index} style={{ marginTop: 2 }}>
+              {(index === 0 ||
+                (layerIndex > 0 && (index === 1 || index === 3)) ||
+                (layerIndex + 1 < layerLength && index === 2)) && (
+                <>
+                  <Radio
+                    //   checked={resolving(e)}
+                    // label={e}
+                    name="radioGroup"
+                    onChange={handleResolvingAction}
+                    style={{ marginRight: 4 }}
+                    value={resolving(e)}
+                  />
+                  <TranslationText id={e} />
+                </>
+              )}
+            </div>
+          ))}
+          <Styled.CardButtonContainer>
+            <Styled.CardButton
+              basic
+              // color="red"
+              icon
+              onClick={() => {
+                setShowSolution();
+                setResolvingAction();
+              }}
+              size="mini">
+              <Icon name="cancel" /> Cancel
+            </Styled.CardButton>
+            <Styled.CardButton
+              // disable={error?.id !== 0 && resolvingAction === null}
+              icon
+              negative
+              onClick={sendDataToServer}
+              size="mini">
+              <Icon name="trash" /> Confirm
+            </Styled.CardButton>
           </Styled.CardButtonContainer>
         </Styled.SolutionContainer>
       )}
