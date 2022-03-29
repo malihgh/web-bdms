@@ -190,6 +190,7 @@ const InfoList = props => {
           style={{
             display: 'flex',
             paddingLeft: '5px',
+            zIndex: 0,
           }}>
           <Checkbox
             checked={state.profileInfo && state.profileInfo.primary}
