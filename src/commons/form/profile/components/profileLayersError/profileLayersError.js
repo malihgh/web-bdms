@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
 import { Icon, Radio } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
-import { gapLayer, addBedrock } from '@ist-supsi/bmsjs';
+import { gapLayer, addBedrock, deleteLayer } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
 
 const ProfileLayersError = props => {
@@ -14,10 +14,12 @@ const ProfileLayersError = props => {
     onUpdated,
     layerIndex,
     layerLength,
+    closeDelete,
   } = props.data;
   const [showSolution, setShowSolution] = useState();
   const [error, setError] = useState();
   const [resolvingAction, setResolvingAction] = useState();
+  const [isDelete, setIsDelete] = useState(false);
 
   useEffect(() => {
     let e;
@@ -54,7 +56,10 @@ const ProfileLayersError = props => {
         e = null;
     }
     setError(e);
-    if (e === ErrorTypes[6]) setShowSolution(id);
+    if (e === ErrorTypes[6]) {
+      setIsDelete(true);
+      setShowSolution(id);
+    } else setIsDelete(false);
   }, [title]);
   const ErrorTypes = [
     {
@@ -108,11 +113,16 @@ const ProfileLayersError = props => {
   const handleResolvingAction = (e, { value }) => {
     setResolvingAction(value);
   };
-  const sendDataToServer = () => {
+
+  const onCancelClicked = () => {
     setShowSolution();
     setResolvingAction();
+    if (isDelete) closeDelete();
+  };
+  const sendDataToServer = () => {
+    onCancelClicked();
 
-    if (isInside || title === 'missingLayers') {
+    if ((isInside && !isDelete) || title === 'missingLayers') {
       gapLayer(id, resolvingAction)
         .then(response => {
           if (response.data.success) {
@@ -136,14 +146,26 @@ const ProfileLayersError = props => {
         .catch(error => {
           console.log(error);
         });
+    } else if (isDelete) {
+      deleteLayer(id, resolvingAction, '')
+        .then(response => {
+          if (response.data.success) {
+            onUpdated('deleteLayer');
+          } else {
+            alert(response.data.message);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   };
   return (
     <Styled.ErrorCard
-      isDelete={error?.id === 6}
+      isDelete={isDelete}
       isFirstInList={error?.messageId === 'errorStartWrong'}
       isInside={isInside}>
-      {error?.id !== 6 && (
+      {!isDelete && (
         <Styled.Row>
           <Styled.ErrorMessageContainer>
             <Icon name="warning sign" />
@@ -168,7 +190,7 @@ const ProfileLayersError = props => {
         </Styled.Row>
       )}
 
-      {showSolution === id && error?.id !== 6 && (
+      {showSolution === id && !isDelete && (
         <Styled.SolutionContainer>
           <Styled.HowToResolveContainer>
             <TranslationText id="errorHowToResolve" />
@@ -195,8 +217,7 @@ const ProfileLayersError = props => {
               icon
               size="mini"
               onClick={() => {
-                setShowSolution();
-                setResolvingAction();
+                onCancelClicked();
               }}>
               <Icon name="cancel" /> Cancel
             </Styled.CardButton>
@@ -223,7 +244,7 @@ const ProfileLayersError = props => {
         </Styled.SolutionContainer>
       )}
 
-      {showSolution === id && error?.id === 6 && (
+      {showSolution === id && isDelete && (
         <Styled.SolutionContainer>
           <Styled.ErrorMessageContainer>
             <Icon name="warning sign" />
@@ -259,8 +280,7 @@ const ProfileLayersError = props => {
               // color="red"
               icon
               onClick={() => {
-                setShowSolution();
-                setResolvingAction();
+                onCancelClicked();
               }}
               size="mini">
               <Icon name="cancel" /> Cancel

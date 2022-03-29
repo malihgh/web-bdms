@@ -266,6 +266,7 @@ const ProfileLayers = props => {
                       onUpdated: onUpdated,
                       layerIndex: index,
                       layerLength: layers.data.length,
+                      closeDelete: () => setShowDelete(),
                     }}
                   />
                 )}
