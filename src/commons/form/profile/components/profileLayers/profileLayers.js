@@ -279,6 +279,7 @@ const ProfileLayers = props => {
                       isEditable,
                       id: selectedStratigraphyID,
                       isInside: false,
+                      onUpdated: onUpdated,
                     }}
                   />
                 </div>
