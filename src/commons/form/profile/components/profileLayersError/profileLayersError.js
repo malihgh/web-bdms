@@ -147,7 +147,7 @@ const ProfileLayersError = props => {
           console.log(error);
         });
     } else if (isDelete) {
-      deleteLayer(id, resolvingAction, '')
+      deleteLayer(id, resolvingAction, null)
         .then(response => {
           if (response.data.success) {
             onUpdated('deleteLayer');
