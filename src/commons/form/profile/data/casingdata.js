@@ -105,7 +105,7 @@ export const casingData = {
     {
       id: 4,
       type: 'Dropdown',
-      label: 'DrilingMethods',
+      label: 'drillingmethod',
       value: 'casing_drilling',
       require: true,
       schema: 'extended.method',

@@ -51,7 +51,7 @@ export const fillingData = {
     {
       id: 3,
       type: 'TextArea',
-      label: 'Notes',
+      label: 'layer_notes',
       value: 'notes',
       require: true,
       isVisible: true,

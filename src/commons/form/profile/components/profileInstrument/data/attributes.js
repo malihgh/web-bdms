@@ -2,7 +2,7 @@ export const attributes = [
   {
     id: 0,
     type: 'Input',
-    label: 'From',
+    label: 'from',
     value: 'depth_from',
     require: true,
     isNumber: true,
@@ -10,7 +10,7 @@ export const attributes = [
   {
     id: 1,
     type: 'Input',
-    label: 'To',
+    label: 'to',
     value: 'depth_to',
     require: true,
     isNumber: true,
@@ -28,7 +28,7 @@ export const attributes = [
   {
     id: 3,
     type: 'Dropdown',
-    label: 'Status',
+    label: 'status',
     value: '',
     require: true,
     schema: 'casi100',
@@ -48,7 +48,7 @@ export const attributes = [
   {
     id: 5,
     type: 'Input',
-    label: 'Note',
+    label: 'layer_notes',
     value: 'notes',
   },
   {

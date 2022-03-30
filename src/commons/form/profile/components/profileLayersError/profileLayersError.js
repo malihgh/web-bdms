@@ -222,7 +222,8 @@ const ProfileLayersError = props => {
               onClick={() => {
                 onCancelClicked();
               }}>
-              <Icon name="cancel" /> Cancel
+              <Icon name="cancel" />
+              <TranslationText id="cancel" />
             </Styled.CardButton>
             {error?.id !== 5 && (
               <Styled.CardButton
@@ -233,12 +234,14 @@ const ProfileLayersError = props => {
                 size="mini">
                 {error?.id !== 0 && (
                   <>
-                    <Icon name="check" /> Confirm
+                    <Icon name="check" />
+                    <TranslationText id="confirm" />
                   </>
                 )}
                 {error?.id === 0 && (
                   <>
-                    <Icon name="add" /> Add
+                    <Icon name="add" />
+                    <TranslationText id="add" />
                   </>
                 )}
               </Styled.CardButton>
@@ -290,7 +293,8 @@ const ProfileLayersError = props => {
                 onCancelClicked();
               }}
               size="mini">
-              <Icon name="cancel" /> Cancel
+              <Icon name="cancel" />
+              <TranslationText id="cancel" />
             </Styled.CardButton>
             <Styled.CardButton
               disabled={resolvingAction === null}
@@ -298,7 +302,8 @@ const ProfileLayersError = props => {
               negative
               onClick={sendDataToServer}
               size="mini">
-              <Icon name="trash" /> Confirm
+              <Icon name="trash" />
+              <TranslationText id="confirm" />
             </Styled.CardButton>
           </Styled.CardButtonContainer>
         </Styled.SolutionContainer>
