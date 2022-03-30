@@ -104,7 +104,7 @@ const ProfileLayersError = props => {
     if (title === 'errorGapSolution2' || title === 'extendupper') return 1;
     if (
       title === 'errorGapSolution3' ||
-      title === 'errorGapSolution3' ||
+      title === 'errorGapSolution4' ||
       title === 'extendlower'
     )
       return 2;
@@ -199,7 +199,7 @@ const ProfileLayersError = props => {
             <div key={index} style={{ marginTop: 2 }}>
               {error.solutions.length > 1 && (
                 <Radio
-                  //   checked={resolving(e)}
+                  checked={resolvingAction === resolving(e)}
                   // label={e}
                   name="radioGroup"
                   onChange={handleResolvingAction}
@@ -262,7 +262,7 @@ const ProfileLayersError = props => {
                 (layerIndex + 1 < layerLength && index === 2)) && (
                 <>
                   <Radio
-                    //   checked={resolving(e)}
+                    checked={resolvingAction === resolving(e)}
                     // label={e}
                     name="radioGroup"
                     onChange={handleResolvingAction}
@@ -274,6 +274,7 @@ const ProfileLayersError = props => {
               )}
             </div>
           ))}
+          {resolvingAction === 3 && <div>h</div>}
           <Styled.CardButtonContainer>
             <Styled.CardButton
               basic
