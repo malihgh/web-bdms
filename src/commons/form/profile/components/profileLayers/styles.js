@@ -40,9 +40,10 @@ export const MyCard = styled.div`
 
 export const CardPattern = styled.div`
   background-color: ${props => `rgb(${props.r},${props.g},${props.b})`};
-  background-size: cover;
+  background-size: auto;
   flex: 0.7;
   width: 40px;
+  background-repeat: repeat;
 `;
 
 export const CardInfo = styled.div`
@@ -56,10 +57,12 @@ export const CardButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  isolation: isolate;
 `;
 
 export const CardButton = styled(Button)`
   color: red;
+  isolation: isolate;
 `;
 
 export const Text = styled.div`

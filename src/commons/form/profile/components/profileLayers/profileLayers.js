@@ -130,147 +130,157 @@ const ProfileLayers = props => {
                         : '',
                     }}
                   />
-
-                  <Styled.CardInfo>
-                    <Styled.Text
-                      warning={
-                        item.depth_from === null ||
-                        item?.validation?.topOverlap ||
-                        item?.validation?.topDisjoint ||
-                        item?.validation?.invertedDepth
-                      }>
-                      {(item?.validation?.topOverlap ||
-                        item?.validation?.topDisjoint) &&
-                        !item?.validation?.invertedDepth && (
-                          <Icon name="warning sign" style={{ color: 'red' }} />
-                        )}
-                      {item.depth_from === null ||
-                      item?.validation?.missingFrom ||
-                      item?.validation?.invertedDepth ? (
-                        <Popup
-                          basic
-                          content={
+                  {showDelete !== item.id && (
+                    <>
+                      <Styled.CardInfo>
+                        <Styled.Text
+                          warning={
+                            item.depth_from === null ||
+                            item?.validation?.topOverlap ||
+                            item?.validation?.topDisjoint ||
                             item?.validation?.invertedDepth
-                              ? 'envertedDepth'
-                              : 'You should add start point.'
-                          }
-                          position="bottom left"
-                          trigger={
-                            <div>
+                          }>
+                          {(item?.validation?.topOverlap ||
+                            item?.validation?.topDisjoint) &&
+                            !item?.validation?.invertedDepth && (
                               <Icon
                                 name="warning sign"
                                 style={{ color: 'red' }}
                               />
-                              {item?.validation?.invertedDepth &&
-                                item.depth_from}
-                              m
-                            </div>
-                          }
-                        />
-                      ) : (
-                        item.depth_from + ' m'
-                      )}
-                    </Styled.Text>
-                    <Styled.Text bold>
-                      {item.title ? (
-                        <Styled.DomainTxt
-                          id={item.title}
-                          schema={layers.config.title}
-                        />
-                      ) : (
-                        '-'
-                      )}
-                    </Styled.Text>
-                    <Styled.Text>
-                      {item.subtitle ? (
-                        <Styled.DomainTxt
-                          id={item.subtitle}
-                          schema={layers.config.subtitle}
-                        />
-                      ) : (
-                        '-'
-                      )}
-                    </Styled.Text>
-                    <Styled.Text small>
-                      {item.description ? (
-                        <Styled.DomainTxt
-                          id={item.description}
-                          schema={layers.config.description}
-                        />
-                      ) : (
-                        '-'
-                      )}
-                    </Styled.Text>
-                    <Styled.Text
-                      warning={
-                        item.depth_to === null ||
-                        item?.validation?.bottomOverlap ||
-                        item?.validation?.bottomDisjoint ||
-                        item?.validation?.invertedDepth
-                      }>
-                      {(item?.validation?.bottomOverlap ||
-                        item?.validation?.bottomDisjoint) &&
-                        !item?.validation?.invertedDepth && (
-                          <Icon name="warning sign" style={{ color: 'red' }} />
-                        )}
-                      {item.depth_to === null ||
-                      item?.validation?.missingTo ||
-                      item?.validation?.invertedDepth ? (
-                        <Popup
-                          basic
-                          content={
+                            )}
+                          {item.depth_from === null ||
+                          item?.validation?.missingFrom ||
+                          item?.validation?.invertedDepth ? (
+                            <Popup
+                              basic
+                              content={
+                                item?.validation?.invertedDepth
+                                  ? 'envertedDepth'
+                                  : 'You should add start point.'
+                              }
+                              position="bottom left"
+                              trigger={
+                                <div>
+                                  <Icon
+                                    name="warning sign"
+                                    style={{ color: 'red' }}
+                                  />
+                                  {item?.validation?.invertedDepth &&
+                                    item.depth_from}
+                                  m
+                                </div>
+                              }
+                            />
+                          ) : (
+                            item.depth_from + ' m'
+                          )}
+                        </Styled.Text>
+                        <Styled.Text bold>
+                          {item.title ? (
+                            <Styled.DomainTxt
+                              id={item.title}
+                              schema={layers.config.title}
+                            />
+                          ) : (
+                            '-'
+                          )}
+                        </Styled.Text>
+                        <Styled.Text>
+                          {item.subtitle ? (
+                            <Styled.DomainTxt
+                              id={item.subtitle}
+                              schema={layers.config.subtitle}
+                            />
+                          ) : (
+                            '-'
+                          )}
+                        </Styled.Text>
+                        <Styled.Text small>
+                          {item.description ? (
+                            <Styled.DomainTxt
+                              id={item.description}
+                              schema={layers.config.description}
+                            />
+                          ) : (
+                            '-'
+                          )}
+                        </Styled.Text>
+                        <Styled.Text
+                          warning={
+                            item.depth_to === null ||
+                            item?.validation?.bottomOverlap ||
+                            item?.validation?.bottomDisjoint ||
                             item?.validation?.invertedDepth
-                              ? 'envertedDepth'
-                              : 'You should add end point.'
-                          }
-                          hoverable
-                          position="bottom left"
-                          trigger={
-                            <div>
+                          }>
+                          {(item?.validation?.bottomOverlap ||
+                            item?.validation?.bottomDisjoint) &&
+                            !item?.validation?.invertedDepth && (
                               <Icon
                                 name="warning sign"
                                 style={{ color: 'red' }}
                               />
-                              {item?.validation?.invertedDepth && item.depth_to}
-                              m
-                            </div>
-                          }
-                        />
-                      ) : (
-                        item.depth_to + ' m'
+                            )}
+                          {item.depth_to === null ||
+                          item?.validation?.missingTo ||
+                          item?.validation?.invertedDepth ? (
+                            <Popup
+                              basic
+                              content={
+                                item?.validation?.invertedDepth
+                                  ? 'envertedDepth'
+                                  : 'You should add end point.'
+                              }
+                              hoverable
+                              position="bottom left"
+                              trigger={
+                                <div>
+                                  <Icon
+                                    name="warning sign"
+                                    style={{ color: 'red' }}
+                                  />
+                                  {item?.validation?.invertedDepth &&
+                                    item.depth_to}
+                                  m
+                                </div>
+                              }
+                            />
+                          ) : (
+                            item.depth_to + ' m'
+                          )}
+                        </Styled.Text>
+                      </Styled.CardInfo>
+                      {isEditable && (
+                        <Styled.CardButtonContainer>
+                          <Styled.CardButton
+                            basic
+                            color="red"
+                            icon
+                            onClick={e => {
+                              e.stopPropagation();
+                              setShowDelete(item.id);
+                            }}
+                            size="mini">
+                            <Icon name="trash alternate outline" />
+                          </Styled.CardButton>
+                        </Styled.CardButtonContainer>
                       )}
-                    </Styled.Text>
-                  </Styled.CardInfo>
-                  {isEditable && (
-                    <Styled.CardButtonContainer>
-                      <Styled.CardButton
-                        basic
-                        color="red"
-                        icon
-                        onClick={e => {
-                          e.stopPropagation();
-                          setShowDelete(item.id);
-                        }}
-                        size="mini">
-                        <Icon name="trash alternate outline" />
-                      </Styled.CardButton>
-                    </Styled.CardButtonContainer>
+                    </>
+                  )}
+                  {showDelete === item.id && (
+                    <ProfileLayersError
+                      data={{
+                        title: 'delete',
+                        isEditable,
+                        id: item.id,
+                        isInside: true,
+                        onUpdated: onUpdated,
+                        layerIndex: index,
+                        layerLength: layers.data.length,
+                        closeDelete: () => setShowDelete(),
+                      }}
+                    />
                   )}
                 </Styled.MyCard>
-                {showDelete === item.id && (
-                  <ProfileLayersError
-                    data={{
-                      title: 'delete',
-                      isEditable,
-                      id: item.id,
-                      isInside: true,
-                      onUpdated: onUpdated,
-                      layerIndex: index,
-                      layerLength: layers.data.length,
-                      closeDelete: () => setShowDelete(),
-                    }}
-                  />
-                )}
               </Styled.Layer>
             ))}
 

@@ -112,9 +112,11 @@ const ProfileLayersError = props => {
     if (title === 'setmanually') return 3;
   };
   const handleResolvingAction = (e, { value }) => {
+    e.stopPropagation();
     setResolvingAction(value);
   };
   const handleValue = (e, { value }) => {
+    e.stopPropagation();
     setValue(value);
   };
   const onCancelClicked = () => {
@@ -282,9 +284,9 @@ const ProfileLayersError = props => {
           <Styled.CardButtonContainer>
             <Styled.CardButton
               basic
-              // color="red"
               icon
-              onClick={() => {
+              onClick={e => {
+                e.stopPropagation();
                 onCancelClicked();
               }}
               size="mini">
