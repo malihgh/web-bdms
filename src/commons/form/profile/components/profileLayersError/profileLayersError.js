@@ -18,7 +18,7 @@ const ProfileLayersError = props => {
   } = props.data;
   const [showSolution, setShowSolution] = useState();
   const [error, setError] = useState();
-  const [resolvingAction, setResolvingAction] = useState();
+  const [resolvingAction, setResolvingAction] = useState(null);
   const [isDelete, setIsDelete] = useState(false);
 
   useEffect(() => {
@@ -116,7 +116,7 @@ const ProfileLayersError = props => {
 
   const onCancelClicked = () => {
     setShowSolution();
-    setResolvingAction();
+    setResolvingAction(null);
     if (isDelete) closeDelete();
   };
   const sendDataToServer = () => {
@@ -223,7 +223,7 @@ const ProfileLayersError = props => {
             </Styled.CardButton>
             {error?.id !== 5 && (
               <Styled.CardButton
-                // disable={error?.id !== 0 && resolvingAction === null}
+                disabled={resolvingAction === null && error?.id !== 0}
                 icon
                 onClick={sendDataToServer}
                 secondary
@@ -287,7 +287,7 @@ const ProfileLayersError = props => {
               <Icon name="cancel" /> Cancel
             </Styled.CardButton>
             <Styled.CardButton
-              // disable={error?.id !== 0 && resolvingAction === null}
+              disabled={resolvingAction === null}
               icon
               negative
               onClick={sendDataToServer}
