@@ -247,7 +247,8 @@ const ProfileLayers = props => {
                         basic
                         color="red"
                         icon
-                        onClick={() => {
+                        onClick={e => {
+                          e.stopPropagation();
                           setShowDelete(item.id);
                         }}
                         size="mini">
