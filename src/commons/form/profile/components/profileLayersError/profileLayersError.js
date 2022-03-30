@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
-import { Icon, Radio } from 'semantic-ui-react';
+import { Icon, Radio, Form, Input } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import { gapLayer, addBedrock, deleteLayer } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
@@ -20,6 +20,7 @@ const ProfileLayersError = props => {
   const [error, setError] = useState();
   const [resolvingAction, setResolvingAction] = useState(null);
   const [isDelete, setIsDelete] = useState(false);
+  const [value, setValue] = useState(null);
 
   useEffect(() => {
     let e;
@@ -113,7 +114,9 @@ const ProfileLayersError = props => {
   const handleResolvingAction = (e, { value }) => {
     setResolvingAction(value);
   };
-
+  const handleValue = (e, { value }) => {
+    setValue(value);
+  };
   const onCancelClicked = () => {
     setShowSolution();
     setResolvingAction(null);
@@ -147,7 +150,7 @@ const ProfileLayersError = props => {
           console.log(error);
         });
     } else if (isDelete) {
-      deleteLayer(id, resolvingAction, null)
+      deleteLayer(id, resolvingAction, +value)
         .then(response => {
           if (response.data.success) {
             onUpdated('deleteLayer');
@@ -200,7 +203,6 @@ const ProfileLayersError = props => {
               {error.solutions.length > 1 && (
                 <Radio
                   checked={resolvingAction === resolving(e)}
-                  // label={e}
                   name="radioGroup"
                   onChange={handleResolvingAction}
                   style={{ marginRight: 4 }}
@@ -213,7 +215,6 @@ const ProfileLayersError = props => {
           <Styled.CardButtonContainer>
             <Styled.CardButton
               basic
-              // color="red"
               icon
               size="mini"
               onClick={() => {
@@ -263,7 +264,6 @@ const ProfileLayersError = props => {
                 <>
                   <Radio
                     checked={resolvingAction === resolving(e)}
-                    // label={e}
                     name="radioGroup"
                     onChange={handleResolvingAction}
                     style={{ marginRight: 4 }}
@@ -274,7 +274,11 @@ const ProfileLayersError = props => {
               )}
             </div>
           ))}
-          {resolvingAction === 3 && <div>h</div>}
+          {resolvingAction === 3 && (
+            <Form.Field>
+              <Input onChange={handleValue} type="number" />
+            </Form.Field>
+          )}
           <Styled.CardButtonContainer>
             <Styled.CardButton
               basic
