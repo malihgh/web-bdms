@@ -21,15 +21,12 @@ const ProfileHeader = props => {
   const [selectedItem, setSelectedItem] = useState([]);
 
   const GetData = useCallback(
-    id => {
-      const myKind = kind !== 3003 ? kind : 3002;
-      getProfiles(id, myKind)
+    (id, kind) => {
+      getProfiles(id, kind)
         .then(response => {
           if (response.data.success) {
             setProfiles(response.data.data);
-            setSelectedItem(selectedStratigraphy ?? response.data.data[0]);
-            if (!selectedStratigraphy)
-              setSelectedStratigraphy(response.data.data[0]);
+            if (!selectedStratigraphy) setSelectedItem(response.data.data[0]);
           } else {
             alert(response.data.message);
           }
@@ -38,12 +35,21 @@ const ProfileHeader = props => {
           console.error(error);
         });
     },
-    [kind, selectedStratigraphy, setSelectedStratigraphy],
+    [selectedStratigraphy],
   );
 
   useEffect(() => {
-    GetData(boreholeID);
-  }, [boreholeID, reloadHeader, GetData]);
+    if (selectedItem) {
+      setSelectedStratigraphy(selectedItem);
+    } else if (profiles.length > 0) {
+      setSelectedStratigraphy(profiles[0]);
+    }
+  }, [selectedItem, setSelectedStratigraphy]);
+
+  useEffect(() => {
+    const myKind = kind !== 3003 ? kind : 3002;
+    if (boreholeID) GetData(boreholeID, myKind);
+  }, [boreholeID, reloadHeader, GetData, kind]);
 
   const CreateStratigraphy = () => {
     createStratigraphy(boreholeID, kind)
@@ -96,7 +102,6 @@ const ProfileHeader = props => {
             key={item.id}
             onClick={() => {
               setSelectedItem(item);
-              setSelectedStratigraphy(item);
             }}
             style={{
               borderBottom: item.id === selectedItem?.id && '2px solid black',

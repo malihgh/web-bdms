@@ -103,7 +103,7 @@ const Profile = props => {
 
   return (
     <Styled.MainContainer>
-      {stratigraphyKind && (
+      {stratigraphyKind && borehole.data.id && (
         <ProfileHeader
           data={{
             boreholeID: borehole.data.id,
