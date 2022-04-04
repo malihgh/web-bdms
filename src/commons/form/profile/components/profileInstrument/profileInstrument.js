@@ -30,7 +30,7 @@ const ProfileInstrument = props => {
     allfields: false,
   });
   useEffect(() => {
-    CreateInstrumentProfile();
+    GetInstrumentProfile();
   }, []);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const ProfileInstrument = props => {
     // else setLayers(null);
   }, [state.instrumentID, reloadLayer]);
 
-  const CreateInstrumentProfile = () => {
+  const GetInstrumentProfile = () => {
     getProfiles(boreholeID, 3003)
       .then(response => {
         if (response.data.success) {
@@ -76,6 +76,7 @@ const ProfileInstrument = props => {
     getProfileLayers(state.instrumentID, false)
       .then(response => {
         if (response.data.success) {
+          console.log('tttttt', response.data);
           setInstruments([]);
           for (const e of response.data.data) {
             setInstruments(instruments => {
@@ -106,6 +107,7 @@ const ProfileInstrument = props => {
       createLayer(state.instrumentID)
         .then(response => {
           if (response.data.success) {
+            console.log('lllll', response.data);
             onUpdated('newLayer');
           } else {
             alert(response.data.message);

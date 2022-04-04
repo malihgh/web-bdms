@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
-import { Icon, Radio } from 'semantic-ui-react';
+import { Icon, Radio, Form, Input } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
-import { gapLayer, addBedrock } from '@ist-supsi/bmsjs';
+import { gapLayer, addBedrock, deleteLayer } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
 
 const ProfileLayersError = props => {
-  const { title, isEditable, id, isInside, onUpdated } = props.data;
+  const {
+    title,
+    isEditable,
+    id,
+    isInside,
+    onUpdated,
+    layerIndex,
+    layerLength,
+    closeDelete,
+  } = props.data;
   const [showSolution, setShowSolution] = useState();
   const [error, setError] = useState();
-  const [resolvingAction, setResolvingAction] = useState();
+  const [resolvingAction, setResolvingAction] = useState(null);
+  const [isDelete, setIsDelete] = useState(false);
+  const [value, setValue] = useState(null);
 
   useEffect(() => {
     let e;
@@ -39,10 +50,17 @@ const ProfileLayersError = props => {
       case 'missingLayers':
         e = ErrorTypes[4];
         break;
+      case 'delete':
+        e = ErrorTypes[6];
+        break;
       default:
         e = null;
     }
     setError(e);
+    if (e === ErrorTypes[6]) {
+      setIsDelete(true);
+      setShowSolution(id);
+    } else setIsDelete(false);
   }, [title]);
   const ErrorTypes = [
     {
@@ -75,28 +93,45 @@ const ProfileLayersError = props => {
       solutions: ['errorGapSolution1', 'errorGapSolution3'],
     },
     { id: 5, messageId: 'errorWrongDepth', solutions: ['errorWrongDepth'] },
+    {
+      id: 6,
+      messageId: 'errorAttention',
+      solutions: ['deletelayer', 'extendupper', 'extendlower', 'setmanually'],
+    },
   ];
 
   const resolving = title => {
-    if (title === 'errorGapSolution1') return 0;
-    if (title === 'errorGapSolution2') return 1;
-    if (title === 'errorGapSolution3' || 'errorGapSolution3') return 2;
+    if (title === 'errorGapSolution1' || title === 'deletelayer') return 0;
+    if (title === 'errorGapSolution2' || title === 'extendupper') return 1;
+    if (
+      title === 'errorGapSolution3' ||
+      title === 'errorGapSolution4' ||
+      title === 'extendlower'
+    )
+      return 2;
+    if (title === 'setmanually') return 3;
   };
   const handleResolvingAction = (e, { value }) => {
+    e.stopPropagation();
     setResolvingAction(value);
   };
-  const sendDataToServer = () => {
-    console.log('ffffff', id, resolvingAction);
+  const handleValue = (e, { value }) => {
+    e.stopPropagation();
+    setValue(value);
+  };
+  const onCancelClicked = () => {
     setShowSolution();
-    setResolvingAction();
+    setResolvingAction(null);
+    if (isDelete) closeDelete();
+  };
+  const sendDataToServer = () => {
+    onCancelClicked();
 
-    if (isInside || title === 'missingLayers') {
+    if ((isInside && !isDelete) || title === 'missingLayers') {
       gapLayer(id, resolvingAction)
         .then(response => {
           if (response.data.success) {
             onUpdated('fixErrors');
-
-            // console.log('dataaaaaa', response.data, id, resolvingAction);
           } else {
             alert(response.data.message);
           }
@@ -108,12 +143,7 @@ const ProfileLayersError = props => {
       addBedrock(id)
         .then(response => {
           if (response.data.success) {
-            if (_.isFunction(onUpdated)) {
-              onUpdated('fixErrors');
-            } else {
-              console.log('dataaaaaa', response.data, id);
-              onUpdated('fixErrors');
-            }
+            onUpdated('fixErrors');
           } else {
             alert(response.data.message);
           }
@@ -121,36 +151,51 @@ const ProfileLayersError = props => {
         .catch(error => {
           console.log(error);
         });
+    } else if (isDelete) {
+      deleteLayer(id, resolvingAction, +value)
+        .then(response => {
+          if (response.data.success) {
+            onUpdated('deleteLayer');
+          } else {
+            alert(response.data.message);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   };
   return (
     <Styled.ErrorCard
+      isDelete={isDelete}
       isFirstInList={error?.messageId === 'errorStartWrong'}
       isInside={isInside}>
-      <Styled.Row>
-        <Styled.ErrorMessageContainer>
-          <Icon name="warning sign" />
-          {/* {title === 'missingTo' && <>Add end of the layer</>} */}
-          <TranslationText id={error?.messageId} />
-        </Styled.ErrorMessageContainer>
+      {!isDelete && (
+        <Styled.Row>
+          <Styled.ErrorMessageContainer>
+            <Icon name="warning sign" />
+            {/* {title === 'missingTo' && <>Add end of the layer</>} */}
+            <TranslationText id={error?.messageId} />
+          </Styled.ErrorMessageContainer>
 
-        {isEditable && showSolution !== id && (
-          <Styled.WrenchButtonContainer>
-            <Styled.CardButton
-              basic
-              color="red"
-              icon
-              onClick={() => {
-                setShowSolution(id);
-              }}
-              size="mini">
-              <Icon name="wrench" />
-            </Styled.CardButton>
-          </Styled.WrenchButtonContainer>
-        )}
-      </Styled.Row>
+          {isEditable && showSolution !== id && (
+            <Styled.WrenchButtonContainer>
+              <Styled.CardButton
+                basic
+                color="red"
+                icon
+                onClick={() => {
+                  setShowSolution(id);
+                }}
+                size="mini">
+                <Icon name="wrench" />
+              </Styled.CardButton>
+            </Styled.WrenchButtonContainer>
+          )}
+        </Styled.Row>
+      )}
 
-      {showSolution === id && (
+      {showSolution === id && !isDelete && (
         <Styled.SolutionContainer>
           <Styled.HowToResolveContainer>
             <TranslationText id="errorHowToResolve" />
@@ -159,8 +204,7 @@ const ProfileLayersError = props => {
             <div key={index} style={{ marginTop: 2 }}>
               {error.solutions.length > 1 && (
                 <Radio
-                  //   checked={resolving(e)}
-                  // label={e}
+                  checked={resolvingAction === resolving(e)}
                   name="radioGroup"
                   onChange={handleResolvingAction}
                   style={{ marginRight: 4 }}
@@ -173,34 +217,94 @@ const ProfileLayersError = props => {
           <Styled.CardButtonContainer>
             <Styled.CardButton
               basic
-              // color="red"
               icon
               size="mini"
               onClick={() => {
-                setShowSolution();
-                setResolvingAction();
+                onCancelClicked();
               }}>
-              <Icon name="cancel" /> Cancel
+              <Icon name="cancel" />
+              <TranslationText id="cancel" />
             </Styled.CardButton>
             {error?.id !== 5 && (
               <Styled.CardButton
-                // disable={error?.id !== 0 && resolvingAction === null}
+                disabled={resolvingAction === null && error?.id !== 0}
                 icon
                 onClick={sendDataToServer}
                 secondary
                 size="mini">
                 {error?.id !== 0 && (
                   <>
-                    <Icon name="check" /> Confirm
+                    <Icon name="check" />
+                    <TranslationText id="confirm" />
                   </>
                 )}
                 {error?.id === 0 && (
                   <>
-                    <Icon name="add" /> Add
+                    <Icon name="add" />
+                    <TranslationText id="add" />
                   </>
                 )}
               </Styled.CardButton>
             )}
+          </Styled.CardButtonContainer>
+        </Styled.SolutionContainer>
+      )}
+
+      {showSolution === id && isDelete && (
+        <Styled.SolutionContainer>
+          <Styled.ErrorMessageContainer>
+            <Icon name="warning sign" />
+            {/* {title === 'missingTo' && <>Add end of the layer</>} */}
+            <TranslationText id={error?.messageId} />
+          </Styled.ErrorMessageContainer>
+
+          <Styled.HowToResolveContainer>
+            <TranslationText id="deletelayerconfirmation" />
+          </Styled.HowToResolveContainer>
+          {error?.solutions?.map((e, index) => (
+            <div key={index} style={{ marginTop: 2 }}>
+              {(index === 0 ||
+                (layerIndex > 0 && (index === 1 || index === 3)) ||
+                (layerIndex + 1 < layerLength && index === 2)) && (
+                <>
+                  <Radio
+                    checked={resolvingAction === resolving(e)}
+                    name="radioGroup"
+                    onChange={handleResolvingAction}
+                    style={{ marginRight: 4 }}
+                    value={resolving(e)}
+                  />
+                  <TranslationText id={e} />
+                </>
+              )}
+            </div>
+          ))}
+          {resolvingAction === 3 && (
+            <Form.Field>
+              <Input onChange={handleValue} type="number" />
+            </Form.Field>
+          )}
+          <Styled.CardButtonContainer>
+            <Styled.CardButton
+              basic
+              icon
+              onClick={e => {
+                e.stopPropagation();
+                onCancelClicked();
+              }}
+              size="mini">
+              <Icon name="cancel" />
+              <TranslationText id="cancel" />
+            </Styled.CardButton>
+            <Styled.CardButton
+              disabled={resolvingAction === null}
+              icon
+              negative
+              onClick={sendDataToServer}
+              size="mini">
+              <Icon name="trash" />
+              <TranslationText id="confirm" />
+            </Styled.CardButton>
           </Styled.CardButtonContainer>
         </Styled.SolutionContainer>
       )}

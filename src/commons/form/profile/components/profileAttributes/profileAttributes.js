@@ -11,12 +11,12 @@ import _ from 'lodash';
 const ProfileAttributes = props => {
   const { id, isEditable, onUpdated, attribute, reloadAttribute } = props.data;
 
-  let updateAttributeDelay = {};
   const [showAll, setShowAll] = useState(false);
   const [state, setState] = useState({
     isFetching: false,
     isPatching: false,
     allfields: false,
+    updateAttributeDelay: {},
     layer: {
       id: id?.hasOwnProperty('id') ? id : null,
       kind: null,
@@ -114,30 +114,34 @@ const ProfileAttributes = props => {
   };
 
   const patch = (attribute, value) => {
-    if (
-      updateAttributeDelay.hasOwnProperty(attribute) &&
-      updateAttributeDelay[attribute]
-    ) {
-      clearTimeout(updateAttributeDelay[attribute]);
-      updateAttributeDelay[attribute] = false;
-    }
-    updateAttributeDelay[attribute] = setTimeout(function () {
-      patchLayer(state?.layer?.id, attribute, value)
-        .then(function (response) {
-          if (response.data.success) {
-            setState({ ...state, isPatching: false });
-            if (_.isFunction(onUpdated)) {
-              onUpdated(attribute);
+    clearTimeout(state.updateAttributeDelay?.[attribute]);
+
+    let setDelay = {
+      [attribute]: setTimeout(() => {
+        patchLayer(state?.layer?.id, attribute, value)
+          .then(function (response) {
+            if (response.data.success) {
+              setState({ ...state, isPatching: false });
+              if (_.isFunction(onUpdated)) {
+                onUpdated(attribute);
+              }
+            } else {
+              alert(response.data.message);
+              window.location.reload();
             }
-          } else {
-            alert(response.data.message);
-            window.location.reload();
-          }
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
-    }, 500);
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      }, 500),
+    };
+
+    Promise.resolve().then(() => {
+      setState(prevState => ({
+        ...prevState,
+        updateAttributeDelay: setDelay,
+      }));
+    });
   };
 
   return (

@@ -9,10 +9,10 @@ import _ from 'lodash';
 const InstrumentList = props => {
   const { attributes, index, info, deleting, isEditable } = props.data;
 
-  let updateAttributeDelay = {};
   const [state, setState] = useState({
     isFetching: false,
     isPatching: false,
+    updateAttributeDelay: {},
     instrument: {
       id: info.id ? info.id : null,
       kind: info.kind ? info.kind : null,
@@ -43,27 +43,31 @@ const InstrumentList = props => {
   };
 
   const patch = (attribute, value) => {
-    if (
-      updateAttributeDelay.hasOwnProperty(attribute) &&
-      updateAttributeDelay[attribute]
-    ) {
-      clearTimeout(updateAttributeDelay[attribute]);
-      updateAttributeDelay[attribute] = false;
-    }
-    updateAttributeDelay[attribute] = setTimeout(function () {
-      patchLayer(info?.id, attribute, value)
-        .then(function (response) {
-          if (response.data.success) {
-            setState({ ...state, isPatching: false });
-          } else {
-            alert(response.data.message);
-            window.location.reload();
-          }
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
-    }, 500);
+    clearTimeout(state.updateAttributeDelay?.[attribute]);
+
+    let setDelay = {
+      [attribute]: setTimeout(() => {
+        patchLayer(info?.id, attribute, value)
+          .then(response => {
+            if (response.data.success) {
+              setState({ ...state, isPatching: false });
+            } else {
+              alert(response.data.message);
+              window.location.reload();
+            }
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      }, 500),
+    };
+
+    Promise.resolve().then(() => {
+      setState(prevState => ({
+        ...prevState,
+        updateAttributeDelay: setDelay,
+      }));
+    });
   };
   return (
     <Styled.FormContainer>
@@ -83,7 +87,6 @@ const InstrumentList = props => {
                   autoComplete="off"
                   autoCorrect="off"
                   onChange={e => {
-                    console.log('ooo', e.target.value);
                     updateChange(
                       item.value,
                       e.target.value === '' ? null : e.target.value,

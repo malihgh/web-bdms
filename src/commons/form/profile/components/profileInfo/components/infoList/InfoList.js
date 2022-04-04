@@ -14,13 +14,14 @@ import {
 } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
 
+// let updateAttributeDelay = {};
 const InfoList = props => {
   const { attribute, id, isEditable, onUpdated } = props.data;
 
-  let updateAttributeDelay = {};
   const [state, setState] = useState({
     isFetching: false,
     isPatching: false,
+    updateAttributeDelay: {},
     profileInfo: {
       id: null,
       kind: null,
@@ -83,32 +84,37 @@ const InfoList = props => {
   };
 
   const patch = (attribute, value) => {
-    if (
-      updateAttributeDelay.hasOwnProperty(attribute) &&
-      updateAttributeDelay[attribute]
-    ) {
-      clearTimeout(updateAttributeDelay[attribute]);
-      updateAttributeDelay[attribute] = false;
-    }
-    updateAttributeDelay[attribute] = setTimeout(function () {
-      patchProfile(id, attribute, value)
-        .then(function (response) {
-          console.log('lll', response);
-          if (response.data.success) {
-            setState({ ...state, isPatching: false });
-            if (_.isFunction(onUpdated)) {
-              onUpdated(attribute);
+    clearTimeout(state.updateAttributeDelay?.[attribute]);
+
+    let setDelay = {
+      [attribute]: setTimeout(() => {
+        patchProfile(id, attribute, value)
+          .then(response => {
+            console.log('lll', response);
+            if (response.data.success) {
+              setState({ ...state, isPatching: false });
+              if (_.isFunction(onUpdated)) {
+                onUpdated(attribute);
+              }
+            } else {
+              alert(response.data.message);
+              window.location.reload();
             }
-          } else {
-            alert(response.data.message);
-            window.location.reload();
-          }
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
-    }, 500);
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      }, 500),
+    };
+
+    Promise.resolve().then(() => {
+      setState(prevState => ({
+        ...prevState,
+        updateAttributeDelay: setDelay,
+      }));
+    });
   };
+
   return (
     <>
       <Styled.FormContainer>
@@ -190,6 +196,7 @@ const InfoList = props => {
           style={{
             display: 'flex',
             paddingLeft: '5px',
+            zIndex: 0,
           }}>
           <Checkbox
             checked={state.profileInfo && state.profileInfo.primary}
