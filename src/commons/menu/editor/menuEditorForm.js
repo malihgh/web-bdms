@@ -225,6 +225,7 @@ class MenuEditorForm extends React.Component {
                 : null,
             }}>
             <img
+              alt="Completion"
               src={process.env.PUBLIC_URL + '/img/Completion.png'}
               style={{
                 height: '21px',
@@ -286,6 +287,7 @@ class MenuEditorForm extends React.Component {
                       : null,
                 }}>
                 <img
+                  alt="casing"
                   src={process.env.PUBLIC_URL + '/img/Casing.png'}
                   style={{
                     height: '19px',
@@ -340,6 +342,7 @@ class MenuEditorForm extends React.Component {
                       : null,
                 }}>
                 <img
+                  alt="Instruments"
                   src={process.env.PUBLIC_URL + '/img/Instruments.png'}
                   style={{
                     height: '19px',
@@ -394,6 +397,7 @@ class MenuEditorForm extends React.Component {
                       : null,
                 }}>
                 <img
+                  alt="Filling"
                   src={process.env.PUBLIC_URL + '/img/Filling.png'}
                   style={{
                     height: '19px',
