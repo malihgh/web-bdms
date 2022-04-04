@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import ProfileHeader from './components/profileHeader';
 import ProfileInfo from './components/profileInfo';
@@ -10,8 +9,7 @@ import { casingData } from './data/casingdata';
 import { fillingData } from './data/fillingdata';
 import { stratigraphyData } from './data/stratigraphydata';
 import ProfileInstrument from './components/profileInstrument/profileInstrument';
-
-// Take a look at the StratigraphyFormContainer
+import { profileKinds } from './data/profileKinds';
 
 const Profile = props => {
   const { user, borehole } = useSelector(state => ({
@@ -19,14 +17,7 @@ const Profile = props => {
     user: state.core_user,
   }));
   const { kind } = props;
-  const kinds = [
-    { id: 0, kind: 'stratigraphy', kindNumber: 3000 },
-    { id: 1, kind: 'geotechnical', kindNumber: 3001 },
-    { id: 2, kind: 'casing', kindNumber: 3002 },
-    { id: 3, kind: 'instruments', kindNumber: 3003 },
-    { id: 4, kind: 'filling', kindNumber: 3004 },
-    { id: 5, kind: 'hydrogeology', kindNumber: 3005 },
-  ];
+
   const [isEditable, setIsEditable] = useState(false);
   const [selectedStratigraphy, setSelectedStratigraphy] = useState(null);
   const [selectedLayer, setSelectedLayer] = useState(null);
@@ -49,27 +40,27 @@ const Profile = props => {
       setIsEditable(false);
     }
     if (kind === 'instruments') {
-      setStratigraphyKind(kinds[3]);
+      setStratigraphyKind(profileKinds[3]);
       OnUpdated('newAttribute');
     }
     if (kind === 'stratigraphy') {
       setAttributesBasedKind(stratigraphyData);
-      setStratigraphyKind(kinds[0]);
+      setStratigraphyKind(profileKinds[0]);
       OnUpdated('newAttribute');
     }
     if (kind === 'hydrogeology') {
       setAttributesBasedKind(stratigraphyData);
-      setStratigraphyKind(kinds[5]);
+      setStratigraphyKind(profileKinds[5]);
       OnUpdated('newAttribute');
     }
     if (kind === 'casing') {
       setAttributesBasedKind(casingData);
-      setStratigraphyKind(kinds[2]);
+      setStratigraphyKind(profileKinds[2]);
       OnUpdated('newAttribute');
     }
     if (kind === 'filling') {
       setAttributesBasedKind(fillingData);
-      setStratigraphyKind(kinds[4]);
+      setStratigraphyKind(profileKinds[4]);
       OnUpdated('newAttribute');
     }
   }, [setIsEditable, borehole, user, kind]);
@@ -88,7 +79,6 @@ const Profile = props => {
       attribute === 'casing_drilling'
     ) {
       setReloadLayer(reloadLayer => reloadLayer + 1);
-      console.log('hey', attribute);
     }
     if (attribute === 'deleteLayer') {
       setSelectedLayer(null);
@@ -110,10 +100,6 @@ const Profile = props => {
     if (attribute === 'newAttribute')
       setReloadAttribute(reloadAttribute => reloadAttribute + 1);
   };
-  // let selectedStratigraphy = useMemo(
-  //   () => {
-  //     return borehole?.data?.stratigraphy?.[0] ?? null;
-  // }, [borehole]);
 
   return (
     <Styled.MainContainer>
@@ -194,13 +180,6 @@ const Profile = props => {
       )}
     </Styled.MainContainer>
   );
-};
-
-Profile.propTypes = {
-  // borehole: PropTypes.object,
-  // id: PropTypes.number,
-  // kind: PropTypes.number,
-  // unlocked: PropTypes.bool,
 };
 
 Profile.defaultProps = {
