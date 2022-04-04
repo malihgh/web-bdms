@@ -3,8 +3,7 @@ import * as Styled from './styles';
 import { Icon, Radio, Form, Input } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import { gapLayer, addBedrock, deleteLayer } from '@ist-supsi/bmsjs';
-import _ from 'lodash';
-
+import ErrorTypes from './errorTypes';
 const ProfileLayersError = props => {
   const {
     title,
@@ -61,44 +60,7 @@ const ProfileLayersError = props => {
       setIsDelete(true);
       setShowSolution(id);
     } else setIsDelete(false);
-  }, [title]);
-  const ErrorTypes = [
-    {
-      id: 0,
-      messageId: 'errorMissingBedrock',
-      solutions: ['errorMissingBedrockSolution'],
-    },
-    {
-      id: 1,
-      messageId: 'invertedDepth',
-      solutions: [],
-    },
-    {
-      id: 2,
-      messageId: 'errorOverlap',
-      solutions: ['errorGapSolution2', 'errorGapSolution4'],
-    },
-    {
-      id: 3,
-      messageId: 'errorGap',
-      solutions: [
-        'errorGapSolution1',
-        'errorGapSolution2',
-        'errorGapSolution4',
-      ],
-    },
-    {
-      id: 4,
-      messageId: 'errorStartWrong',
-      solutions: ['errorGapSolution1', 'errorGapSolution3'],
-    },
-    { id: 5, messageId: 'errorWrongDepth', solutions: ['errorWrongDepth'] },
-    {
-      id: 6,
-      messageId: 'errorAttention',
-      solutions: ['deletelayer', 'extendupper', 'extendlower', 'setmanually'],
-    },
-  ];
+  }, [title, id]);
 
   const resolving = title => {
     if (title === 'errorGapSolution1' || title === 'deletelayer') return 0;
@@ -137,7 +99,7 @@ const ProfileLayersError = props => {
           }
         })
         .catch(error => {
-          console.log(error);
+          console.error(error);
         });
     } else if (title === 'missingBedrock') {
       addBedrock(id)
@@ -149,7 +111,7 @@ const ProfileLayersError = props => {
           }
         })
         .catch(error => {
-          console.log(error);
+          console.error(error);
         });
     } else if (isDelete) {
       deleteLayer(id, resolvingAction, +value)
@@ -161,7 +123,7 @@ const ProfileLayersError = props => {
           }
         })
         .catch(function (error) {
-          console.log(error);
+          console.error(error);
         });
     }
   };
