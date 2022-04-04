@@ -69,16 +69,19 @@ const ProfileInstrument = props => {
       .then(response => {
         if (response.data.success) {
           setInstruments([]);
+          console.log('pppppp', response.data.data);
           for (const e of response.data.data) {
             setInstruments(instruments => {
               return [
                 ...instruments,
                 {
-                  id: e.id,
-                  kind: null,
-                  depth_from: e.depth_from,
-                  depth_to: e.depth_to,
-                  notes: e.description,
+                  id: e.id ? e.id : null,
+                  kind: e.kind ? e.kind : null,
+                  depth_from: e.depth_from ? e.depth_from : null,
+                  depth_to: e.depth_to ? e.depth_to : null,
+                  notes: e.notes ? e.notes : '',
+                  status: e.status ? e.status : null,
+                  casing: e.casing ? e.casing : null,
                 },
               ];
             });
