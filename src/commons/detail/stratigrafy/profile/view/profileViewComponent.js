@@ -28,7 +28,8 @@ class ProfileView extends React.Component {
     this.isVisible = this.isVisible.bind(this);
     this.state = {
       allfields: false,
-      viewas: props.kinds && props.kinds.length > 0? props.kinds[0]: null
+      viewas: props.kind
+      // viewas: props.kinds && props.kinds.length > 0? props.kinds[0]: null
     };
   }
 
@@ -223,7 +224,7 @@ class ProfileView extends React.Component {
 
   render() {
     const {
-      data, domains, kinds, t, handleSelected, layer
+      data, domains, t, handleSelected, layer
     } = this.props;
     return (
       <div
@@ -234,21 +235,6 @@ class ProfileView extends React.Component {
           overflowY: 'hidden',
         }}
       >
-        {
-          // Not yet implemented (multi-profile stratigraphies)
-          kinds.length > 1?
-            <ViewAs
-              kinds={kinds}
-              onChange={(kind)=>{
-                this.setState({
-                  viewas: kind
-                });
-              }}
-              style={{
-                padding: '0px 1em 1em 0px'
-              }}
-            />: null
-        }
         <div
           style={{
             display: 'flex',
@@ -580,7 +566,8 @@ ProfileView.propTypes = {
   i18n: PropTypes.shape({
     language: PropTypes.string
   }),
-  kinds: PropTypes.array,
+  kind: PropTypes.number,
+  // kinds: PropTypes.array,
   // isFetchingLayer: PropTypes.bool,
   layer: PropTypes.object,
   setting: PropTypes.shape({
