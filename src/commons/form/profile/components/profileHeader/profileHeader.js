@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import * as Styled from './styles';
 import { Button, Icon } from 'semantic-ui-react';
 import TranslationText from './../../../translationText';
@@ -20,33 +20,34 @@ const ProfileHeader = props => {
   const [profiles, setProfiles] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
 
-  useEffect(() => {
-    GetData();
-  }, [boreholeID, reloadHeader]);
+  const GetData = useCallback(
+    id => {
+      const myKind = kind !== 3003 ? kind : 3002;
+      getProfiles(id, myKind)
+        .then(response => {
+          if (response.data.success) {
+            setProfiles(response.data.data);
+            setSelectedItem(selectedStratigraphy ?? response.data.data[0]);
+            if (!selectedStratigraphy)
+              setSelectedStratigraphy(response.data.data[0]);
+          } else {
+            alert(response.data.message);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    [kind, selectedStratigraphy, setSelectedStratigraphy],
+  );
 
-  const GetData = () => {
-    const myKind = kind !== 3003 ? kind : 3002;
-    getProfiles(boreholeID, myKind)
-      .then(response => {
-        if (response.data.success) {
-          setProfiles(response.data.data);
-          setSelectedItem(selectedStratigraphy ?? response.data.data[0]);
-          setSelectedStratigraphy(
-            selectedStratigraphy ?? response.data.data[0],
-          );
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+  useEffect(() => {
+    GetData(boreholeID);
+  }, [boreholeID, reloadHeader, GetData]);
 
   const CreateStratigraphy = () => {
     createStratigraphy(boreholeID, kind)
       .then(response => {
-        console.log('response', response);
         if (response.data.success) {
           GetData();
         } else {
@@ -54,7 +55,7 @@ const ProfileHeader = props => {
         }
       })
       .catch(function (error) {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -84,7 +85,6 @@ const ProfileHeader = props => {
         {kind === 3003 && (
           <Button
             content={<TranslationText id="showAll" />}
-            // icon="add"
             // onClick={CreateStratigraphy}
             secondary
             size="small"
