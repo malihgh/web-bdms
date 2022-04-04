@@ -13,7 +13,6 @@ import {
   updateBorehole,
   loadBorehole,
   checkBorehole,
-  createStratigraphy,
   patchBorehole,
 } from '@ist-supsi/bmsjs';
 
@@ -23,14 +22,11 @@ import DomainTree from '../domain/tree/domainTree';
 import MunicipalityDropdown from '../municipality/dropdown/municipalityDropdown';
 import CantonDropdown from '../cantons/dropdown/cantonDropdown';
 import DateField from '../dateField';
-import DateText from '../dateText';
-import StratigraphyFormContainer from '../stratigraphy/stratigraphyFormContainer';
 import DomainText from '../domain/domainText';
 import EditorBoreholeFilesTable from '../../files/table/editorBoreholeFilesTable';
 import TranslationText from '../translationText';
 
 import {
-  Button,
   Form,
   Input,
   Segment,

@@ -14,11 +14,13 @@ const InstrumentList = props => {
     isPatching: false,
     updateAttributeDelay: {},
     instrument: {
-      id: info.id ? info.id : null,
-      kind: info.kind ? info.kind : null,
-      depth_from: info.depth_from ? info.depth_from : null,
-      depth_to: info.depth_to ? info.depth_to : null,
-      notes: info.notes ? info.notes : '',
+      id: info.id,
+      kind: info.kind,
+      depth_from: info.depth_from,
+      depth_to: info.depth_to,
+      notes: info.notes,
+      status: info.status ? info.status : null,
+      casing: info.casing ? info.casing : null,
     },
   });
 
@@ -50,7 +52,7 @@ const InstrumentList = props => {
         patchLayer(info?.id, attribute, value)
           .then(response => {
             if (response.data.success) {
-              setState({ ...state, isPatching: false });
+              setState(prevState => ({ ...prevState, isPatching: false }));
             } else {
               alert(response.data.message);
               window.location.reload();
@@ -108,13 +110,13 @@ const InstrumentList = props => {
               <Styled.AttributesItem>
                 <DomainDropdown
                   multiple={item.multiple}
-                  // onSelected={e =>
-                  //   updateChange(
-                  //     item.value,
-                  //     item.multiple ? e.map(mlpr => mlpr.id) : e.id,
-                  //     false,
-                  //   )
-                  // }
+                  onSelected={e =>
+                    updateChange(
+                      item.value,
+                      item.multiple ? e.map(mlpr => mlpr.id) : e.id,
+                      false,
+                    )
+                  }
                   schema={item.schema}
                   search={item.search}
                   selected={
@@ -133,7 +135,6 @@ const InstrumentList = props => {
                   deleting(info?.id);
                 }}
                 size="small"
-                style={{ marginTop: 5 }}
               />
             )}
           </Styled.AttributesContainer>

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
 import { Checkbox, Input, TextArea, Form } from 'semantic-ui-react';
@@ -37,8 +36,8 @@ const ProfileAttributes = props => {
       consistance: null,
       alteration: null,
       compactness: null,
-      jointing: [], // hidden
-      soil_state: null, // hidden
+      jointing: [],
+      soil_state: null,
       organic_component: [],
       striae: null,
       grain_size_1: null,
@@ -81,14 +80,10 @@ const ProfileAttributes = props => {
               isFetching: false,
               layer: response.data.data,
             });
-
-            // if (_.isNil(state.layer.depth_to)) {
-            //  this.depthToRef.current.focus();
-            // }
           }
         })
         .catch(function (error) {
-          console.log(error);
+          console.error(error);
         });
     }
   };
@@ -121,7 +116,6 @@ const ProfileAttributes = props => {
         patchLayer(state?.layer?.id, attribute, value)
           .then(function (response) {
             if (response.data.success) {
-              setState({ ...state, isPatching: false });
               if (_.isFunction(onUpdated)) {
                 onUpdated(attribute);
               }
@@ -139,6 +133,7 @@ const ProfileAttributes = props => {
     Promise.resolve().then(() => {
       setState(prevState => ({
         ...prevState,
+        isPatching: false,
         updateAttributeDelay: setDelay,
       }));
     });

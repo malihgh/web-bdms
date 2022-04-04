@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import * as Styled from './styles';
-import { getProfileLayers, createLayer, deleteLayer } from '@ist-supsi/bmsjs';
+import { getProfileLayers, createLayer } from '@ist-supsi/bmsjs';
 import { Icon, Button, Popup } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import ProfileLayersError from '../profileLayersError/profileLayersError';
@@ -16,28 +16,28 @@ const ProfileLayers = props => {
   } = props.data;
   const [layers, setLayers] = useState(null);
   const [showDelete, setShowDelete] = useState();
-  useEffect(() => {
-    if (selectedStratigraphyID) {
-      GetData();
-    } else {
-      setLayers(null);
-    }
-  }, [selectedStratigraphyID, reloadLayer]);
 
-  const GetData = () => {
-    getProfileLayers(selectedStratigraphyID, true)
+  const GetData = useCallback(stratigraphyID => {
+    getProfileLayers(stratigraphyID, true)
       .then(response => {
         if (response.data.success) {
           setLayers(response.data);
-          console.log('data', response.data);
         } else {
           alert(response.data.message);
         }
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
-  };
+  }, []);
+
+  useEffect(() => {
+    if (selectedStratigraphyID) {
+      GetData(selectedStratigraphyID);
+    } else {
+      setLayers(null);
+    }
+  }, [selectedStratigraphyID, reloadLayer, GetData]);
 
   const CreateLayer = () => {
     createLayer(selectedStratigraphyID)
@@ -49,7 +49,7 @@ const ProfileLayers = props => {
         }
       })
       .catch(function (error) {
-        console.log(error);
+        console.error(error);
       });
   };
   return (

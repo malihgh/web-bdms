@@ -7,8 +7,8 @@ const ProfileInfo = props => {
 
   return (
     <Styled.Container>
-      {attribute && (
-        <InfoList data={{ attribute, id: item?.id, isEditable, onUpdated }} />
+      {attribute && item?.id && (
+        <InfoList data={{ attribute, id: item.id, isEditable, onUpdated }} />
       )}
     </Styled.Container>
   );

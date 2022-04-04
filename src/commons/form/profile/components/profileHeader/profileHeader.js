@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import * as Styled from './styles';
 import { Button, Icon } from 'semantic-ui-react';
 import TranslationText from './../../../translationText';
@@ -20,33 +20,40 @@ const ProfileHeader = props => {
   const [profiles, setProfiles] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
 
-  useEffect(() => {
-    GetData();
-  }, [boreholeID, reloadHeader]);
+  const GetData = useCallback(
+    (id, kind) => {
+      getProfiles(id, kind)
+        .then(response => {
+          if (response.data.success) {
+            setProfiles(response.data.data);
+            if (!selectedStratigraphy) setSelectedItem(response.data.data[0]);
+          } else {
+            alert(response.data.message);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    [selectedStratigraphy],
+  );
 
-  const GetData = () => {
+  useEffect(() => {
+    if (selectedItem) {
+      setSelectedStratigraphy(selectedItem);
+    } else if (profiles.length > 0) {
+      setSelectedStratigraphy(profiles[0]);
+    }
+  }, [selectedItem, setSelectedStratigraphy]);
+
+  useEffect(() => {
     const myKind = kind !== 3003 ? kind : 3002;
-    getProfiles(boreholeID, myKind)
-      .then(response => {
-        if (response.data.success) {
-          setProfiles(response.data.data);
-          setSelectedItem(selectedStratigraphy ?? response.data.data[0]);
-          setSelectedStratigraphy(
-            selectedStratigraphy ?? response.data.data[0],
-          );
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+    if (boreholeID) GetData(boreholeID, myKind);
+  }, [boreholeID, reloadHeader, GetData, kind]);
 
   const CreateStratigraphy = () => {
     createStratigraphy(boreholeID, kind)
       .then(response => {
-        console.log('response', response);
         if (response.data.success) {
           GetData();
         } else {
@@ -54,7 +61,7 @@ const ProfileHeader = props => {
         }
       })
       .catch(function (error) {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -84,7 +91,6 @@ const ProfileHeader = props => {
         {kind === 3003 && (
           <Button
             content={<TranslationText id="showAll" />}
-            // icon="add"
             // onClick={CreateStratigraphy}
             secondary
             size="small"
@@ -96,7 +102,6 @@ const ProfileHeader = props => {
             key={item.id}
             onClick={() => {
               setSelectedItem(item);
-              setSelectedStratigraphy(item);
             }}
             style={{
               borderBottom: item.id === selectedItem?.id && '2px solid black',

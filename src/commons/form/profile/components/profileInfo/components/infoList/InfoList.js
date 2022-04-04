@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import * as Styled from './styles';
 import { Input, Form } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
@@ -9,12 +9,10 @@ import {
   patchProfile,
   deleteStratigraphy,
   cloneStratigraphy,
-  patchStratigraphy,
   getProfile,
 } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
 
-// let updateAttributeDelay = {};
 const InfoList = props => {
   const { attribute, id, isEditable, onUpdated } = props.data;
 
@@ -36,16 +34,10 @@ const InfoList = props => {
       date_fin: null,
       date_abd: null,
       notes: null,
-      // depth_from: info.depth_from ? info.depth_from : null,
-      // depth_to: info.depth_to ? info.depth_to : null,
-      // notes: info.notes ? info.notes : '',
     },
   });
-  useEffect(() => {
-    GetData();
-  }, [id]);
 
-  const GetData = () => {
+  const GetData = useCallback(id => {
     getProfile(id)
       .then(response => {
         if (response.data.success) {
@@ -60,9 +52,13 @@ const InfoList = props => {
         }
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
-  };
+  }, []);
+
+  useEffect(() => {
+    GetData(id);
+  }, [id, GetData]);
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     if (!isEditable) {
@@ -90,9 +86,8 @@ const InfoList = props => {
       [attribute]: setTimeout(() => {
         patchProfile(id, attribute, value)
           .then(response => {
-            console.log('lll', response);
             if (response.data.success) {
-              setState({ ...state, isPatching: false });
+              setState(prevState => ({ ...prevState, isPatching: false }));
               if (_.isFunction(onUpdated)) {
                 onUpdated(attribute);
               }
@@ -215,12 +210,12 @@ const InfoList = props => {
             <Button
               // disabled={!_.isEmpty(state.consistency)}
               icon
-              size="tiny"
               onClick={() => {
                 cloneStratigraphy(state.profileInfo.id).then(response => {
                   onUpdated('cloneStratigraphy');
                 });
-              }}>
+              }}
+              size="tiny">
               <Icon name="clone outline" />
             </Button>
             <Popup
