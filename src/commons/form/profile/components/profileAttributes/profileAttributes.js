@@ -116,7 +116,6 @@ const ProfileAttributes = props => {
         patchLayer(state?.layer?.id, attribute, value)
           .then(function (response) {
             if (response.data.success) {
-              setState({ ...state, isPatching: false });
               if (_.isFunction(onUpdated)) {
                 onUpdated(attribute);
               }
@@ -134,6 +133,7 @@ const ProfileAttributes = props => {
     Promise.resolve().then(() => {
       setState(prevState => ({
         ...prevState,
+        isPatching: false,
         updateAttributeDelay: setDelay,
       }));
     });

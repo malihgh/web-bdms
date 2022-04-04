@@ -87,7 +87,7 @@ const InfoList = props => {
         patchProfile(id, attribute, value)
           .then(response => {
             if (response.data.success) {
-              setState({ ...state, isPatching: false });
+              setState(prevState => ({ ...prevState, isPatching: false }));
               if (_.isFunction(onUpdated)) {
                 onUpdated(attribute);
               }
