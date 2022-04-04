@@ -133,7 +133,6 @@ const InstrumentList = props => {
                   deleting(info?.id);
                 }}
                 size="small"
-                style={{ marginTop: 5 }}
               />
             )}
           </Styled.AttributesContainer>
