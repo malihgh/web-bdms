@@ -20,13 +20,16 @@ const ProfileHeader = props => {
   const [profiles, setProfiles] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
 
-  const GetData = useCallback(
+  const getData = useCallback(
     (id, kind) => {
       getProfiles(id, kind)
         .then(response => {
           if (response.data.success) {
             setProfiles(response.data.data);
-            if (!selectedStratigraphy) setSelectedItem(response.data.data[0]);
+            if (!selectedStratigraphy) {
+              setSelectedItem(response.data.data[0]);
+              setSelectedStratigraphy(response.data.data[0]);
+            }
           } else {
             alert(response.data.message);
           }
@@ -35,27 +38,19 @@ const ProfileHeader = props => {
           console.error(error);
         });
     },
-    [selectedStratigraphy],
+    [selectedStratigraphy, setSelectedStratigraphy],
   );
 
   useEffect(() => {
-    if (selectedItem) {
-      setSelectedStratigraphy(selectedItem);
-    } else if (profiles.length > 0) {
-      setSelectedStratigraphy(profiles[0]);
-    }
-  }, [selectedItem, setSelectedStratigraphy]);
-
-  useEffect(() => {
     const myKind = kind !== 3003 ? kind : 3002;
-    if (boreholeID) GetData(boreholeID, myKind);
-  }, [boreholeID, reloadHeader, GetData, kind]);
+    if (boreholeID) getData(boreholeID, myKind);
+  }, [boreholeID, reloadHeader, getData, kind]);
 
-  const CreateStratigraphy = () => {
+  const createStratigraphy = () => {
     createStratigraphy(boreholeID, kind)
       .then(response => {
         if (response.data.success) {
-          GetData();
+          getData();
         } else {
           alert(response.data.message);
         }
@@ -83,7 +78,7 @@ const ProfileHeader = props => {
             }
             disabled={kind === 3004 && profiles.length > 0}
             icon="add"
-            onClick={CreateStratigraphy}
+            onClick={createStratigraphy}
             secondary
             size="small"
           />
@@ -102,6 +97,7 @@ const ProfileHeader = props => {
             key={item.id}
             onClick={() => {
               setSelectedItem(item);
+              setSelectedStratigraphy(item);
             }}
             style={{
               borderBottom: item.id === selectedItem?.id && '2px solid black',
