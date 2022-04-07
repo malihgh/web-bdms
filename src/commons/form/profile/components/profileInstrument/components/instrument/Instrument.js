@@ -1,28 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import * as Styled from './styles';
 import { Input, Form, Button } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
 import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
-import { patchLayer } from '@ist-supsi/bmsjs';
+import { patchLayer, getProfiles } from '@ist-supsi/bmsjs';
+import { attributes } from '../../data/attributes';
+
 import _ from 'lodash';
 
-const InstrumentList = props => {
-  const { attributes, index, info, deleting, isEditable } = props.data;
+const Instrument = props => {
+  const { index, info, deleting, isEditable, boreholeID } = props.data;
 
   const [state, setState] = useState({
     isFetching: false,
     isPatching: false,
     updateAttributeDelay: {},
+    casing: [],
     instrument: {
       id: info.id,
-      kind: info.kind,
+      instrument_kind: info.instrument_kind,
       depth_from: info.depth_from,
       depth_to: info.depth_to,
       notes: info.notes,
-      status: info.status ? info.status : null,
-      casing: info.casing ? info.casing : null,
+      instrument_status: info.instrument_status ? info.instrument_status : null,
+      casing_id: info.casing_id ? info.casing_id : null,
     },
   });
+
+  const getData = useCallback((id, kind) => {
+    getProfiles(id, kind)
+      .then(response => {
+        if (response.data.success) {
+          console.log('response', response.data.data, state.casing);
+          setState(prevState => ({ ...prevState, casing: response.data.data }));
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (boreholeID) getData(boreholeID, 3002);
+  }, [boreholeID, getData]);
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     if (!isEditable) {
@@ -113,7 +135,8 @@ const InstrumentList = props => {
                   onSelected={e =>
                     updateChange(
                       item.value,
-                      item.multiple ? e.map(mlpr => mlpr.id) : e.id,
+                      e.id,
+                      // item.multiple ? e.map(mlpr => mlpr.id) : e.id,
                       false,
                     )
                   }
@@ -130,6 +153,7 @@ const InstrumentList = props => {
 
             {item.type === 'Button' && (
               <Button
+                disabled={!isEditable}
                 icon="close"
                 onClick={() => {
                   deleting(info?.id);
@@ -144,4 +168,4 @@ const InstrumentList = props => {
   );
 };
 
-export default InstrumentList;
+export default Instrument;

@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import * as Styled from './styles';
-import InstrumentList from './components/infoList/InstrumentList';
-import { attributes } from './data/attributes';
+import Instrument from './components/instrument';
 import { Button } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import {
@@ -66,26 +65,10 @@ const ProfileInstrument = props => {
 
   const GetData = useCallback(instrumentID => {
     getProfileLayers(instrumentID, false)
-      .then(response => {
+      .then(function (response) {
         if (response.data.success) {
-          setInstruments([]);
-          console.log('pppppp', response.data.data);
-          for (const e of response.data.data) {
-            setInstruments(instruments => {
-              return [
-                ...instruments,
-                {
-                  id: e.id ? e.id : null,
-                  kind: e.kind ? e.kind : null,
-                  depth_from: e.depth_from ? e.depth_from : null,
-                  depth_to: e.depth_to ? e.depth_to : null,
-                  notes: e.notes ? e.notes : '',
-                  status: e.status ? e.status : null,
-                  casing: e.casing ? e.casing : null,
-                },
-              ];
-            });
-          }
+          // setInstruments(response.data.data);
+          setInstruments(response.data.data);
         } else {
           alert(response.data.message);
         }
@@ -144,10 +127,11 @@ const ProfileInstrument = props => {
         />
       </Styled.ButtonContainer>
       <Styled.ListContainer>
+        {/* {console.log('instruments', instruments)} */}
         {instruments?.map((item, index) => (
-          <InstrumentList
+          <Instrument
             data={{
-              attributes,
+              boreholeID,
               info: item,
               index,
               deleting: DeleteLayer,
