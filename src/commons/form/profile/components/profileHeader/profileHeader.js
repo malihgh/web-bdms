@@ -18,39 +18,48 @@ const ProfileHeader = props => {
   } = props.data;
   const { t } = props;
   const [profiles, setProfiles] = useState([]);
-  const [selectedItem, setSelectedItem] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  const getData = useCallback(
-    (id, kind) => {
-      getProfiles(id, kind)
-        .then(response => {
-          if (response.data.success) {
-            setProfiles(response.data.data);
-            if (!selectedStratigraphy) {
-              setSelectedItem(response.data.data[0]);
-              setSelectedStratigraphy(response.data.data[0]);
-            }
-          } else {
-            alert(response.data.message);
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
-    [selectedStratigraphy, setSelectedStratigraphy],
-  );
+  const getData = useCallback((id, kind) => {
+    getProfiles(id, kind)
+      .then(response => {
+        if (response.data.success) {
+          setProfiles(response.data.data);
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  const myKind = kind !== 3003 ? kind : 3002;
 
   useEffect(() => {
-    const myKind = kind !== 3003 ? kind : 3002;
     if (boreholeID) getData(boreholeID, myKind);
-  }, [boreholeID, reloadHeader, getData, kind]);
+  }, [boreholeID, reloadHeader, myKind, getData]);
 
-  const createStratigraphy = () => {
+  useEffect(() => {
+    setSelectedItem(null);
+    setProfiles([]);
+  }, [kind]);
+
+  useEffect(() => {
+    if (!selectedItem) {
+      setSelectedItem(profiles[0]);
+      setSelectedStratigraphy(profiles[0]);
+    }
+    if (!selectedStratigraphy) {
+      setSelectedStratigraphy(selectedItem);
+    }
+  }, [selectedItem, profiles, setSelectedStratigraphy, selectedStratigraphy]);
+
+  const createNewStratigraphy = () => {
     createStratigraphy(boreholeID, kind)
       .then(response => {
         if (response.data.success) {
-          getData();
+          getData(boreholeID, kind);
         } else {
           alert(response.data.message);
         }
@@ -78,7 +87,7 @@ const ProfileHeader = props => {
             }
             disabled={kind === 3004 && profiles.length > 0}
             icon="add"
-            onClick={createStratigraphy}
+            onClick={createNewStratigraphy}
             secondary
             size="small"
           />
