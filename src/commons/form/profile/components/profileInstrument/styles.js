@@ -5,6 +5,7 @@ export const Container = styled.div`
   padding: 15px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 export const ButtonContainer = styled.div`
@@ -12,8 +13,11 @@ export const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 `;
 
 export const ListContainer = styled.div`
   flex: 5;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
