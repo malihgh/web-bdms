@@ -31,7 +31,6 @@ const Instrument = props => {
     getProfiles(id, kind)
       .then(response => {
         if (response.data.success) {
-          console.log('response', response.data.data, state.casing);
           setState(prevState => ({ ...prevState, casing: response.data.data }));
         } else {
           alert(response.data.message);
@@ -41,6 +40,7 @@ const Instrument = props => {
         console.error(error);
       });
   }, []);
+  console.log('response', state.casing);
 
   useEffect(() => {
     if (boreholeID) getData(boreholeID, 3002);
