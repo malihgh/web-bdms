@@ -67,7 +67,6 @@ const ProfileInstrument = props => {
     getProfileLayers(instrumentID, false)
       .then(function (response) {
         if (response.data.success) {
-          // setInstruments(response.data.data);
           setInstruments(response.data.data);
         } else {
           alert(response.data.message);
@@ -134,6 +133,7 @@ const ProfileInstrument = props => {
               info: item,
               index,
               deleting: deletingLayer,
+              onUpdated,
               isEditable,
             }}
             key={index}

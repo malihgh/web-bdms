@@ -17,15 +17,18 @@ const Instrument = props => {
     updateAttributeDelay: {},
     casing: [],
     instrument: {
-      id: info.id,
-      instrument_kind: info.instrument_kind,
-      depth_from: info.depth_from,
-      depth_to: info.depth_to,
-      notes: info.notes,
-      instrument_status: info.instrument_status ? info.instrument_status : null,
-      casing_id: info.casing_id ? info.casing_id : null,
+      id: null,
+      instrument_kind: null,
+      depth_from: null,
+      depth_to: null,
+      notes: null,
+      instrument_status: null,
+      casing_id: null,
     },
   });
+  useEffect(() => {
+    setState(prevState => ({ ...prevState, instrument: info }));
+  }, [info]);
 
   const getData = useCallback((id, kind) => {
     getProfiles(id, kind)
@@ -40,7 +43,7 @@ const Instrument = props => {
         console.error(error);
       });
   }, []);
-  console.log('response', state.casing);
+  // console.log('response', state.casing);
 
   useEffect(() => {
     if (boreholeID) getData(boreholeID, 3002);
@@ -53,7 +56,8 @@ const Instrument = props => {
     }
 
     setState(prevState => ({ ...prevState, isPatching: true }));
-    _.set(state.instrument, attribute, value);
+    if (!isNumber) _.set(state.instrument, attribute, value);
+    else _.set(state.instrument, attribute, _.toNumber(value));
 
     if (isNumber) {
       if (value === null) {

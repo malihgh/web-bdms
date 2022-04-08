@@ -163,13 +163,12 @@ const Profile = props => {
           )}
         </Styled.Container>
       )}
-      {stratigraphyKind?.kind === 'instruments' && selectedStratigraphy && (
+      {stratigraphyKind?.kind === 'instruments' && borehole.data.id && (
         <ProfileInstrument
           data={{
             boreholeID: borehole.data.id,
             selectedStratigraphyID: selectedStratigraphy?.id,
             isEditable,
-            selectedLayer,
             reloadLayer,
             onUpdated: OnUpdated,
           }}
