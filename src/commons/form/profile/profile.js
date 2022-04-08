@@ -26,6 +26,7 @@ const Profile = props => {
   const [reloadAttribute, setReloadAttribute] = useState(0);
   const [attributesBasedKind, setAttributesBasedKind] = useState(null);
   const [stratigraphyKind, setStratigraphyKind] = useState(null);
+  const [showAllInstrument, setShowAllInstrument] = useState(false);
 
   useEffect(() => {
     if (
@@ -113,13 +114,22 @@ const Profile = props => {
             setSelectedStratigraphy: e => {
               setSelectedStratigraphy(e);
               setSelectedLayer(null);
+              setShowAllInstrument(false);
+            },
+            showAllInstrument,
+            setShowAllInstrument: () => {
+              setSelectedStratigraphy(null);
+
+              setShowAllInstrument(!showAllInstrument);
             },
             reloadHeader,
           }}
         />
       )}
 
-      {!selectedStratigraphy && <Styled.Empty>Nothing to show</Styled.Empty>}
+      {!selectedStratigraphy && !showAllInstrument && (
+        <Styled.Empty>Nothing to show</Styled.Empty>
+      )}
 
       {stratigraphyKind?.kind !== 'instruments' && selectedStratigraphy && (
         <Styled.Container>
@@ -167,6 +177,7 @@ const Profile = props => {
         <ProfileInstrument
           data={{
             boreholeID: borehole.data.id,
+            showAllInstrument,
             selectedStratigraphyID: selectedStratigraphy?.id,
             isEditable,
             reloadLayer,

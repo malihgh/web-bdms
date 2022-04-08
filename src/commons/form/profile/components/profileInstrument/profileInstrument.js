@@ -12,7 +12,14 @@ import {
 } from '@ist-supsi/bmsjs';
 
 const ProfileInstrument = props => {
-  const { isEditable, boreholeID, reloadLayer, onUpdated } = props.data;
+  const {
+    isEditable,
+    boreholeID,
+    reloadLayer,
+    onUpdated,
+    selectedStratigraphyID,
+    showAllInstrument,
+  } = props.data;
   const [instruments, setInstruments] = useState([]);
   const [state, setState] = useState({
     isFetching: false,
@@ -63,25 +70,34 @@ const ProfileInstrument = props => {
     getInstrumentProfile();
   }, [getInstrumentProfile]);
 
-  const getData = useCallback(instrumentID => {
-    getProfileLayers(instrumentID, false)
-      .then(function (response) {
-        if (response.data.success) {
-          setInstruments(response.data.data);
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
+  const getData = useCallback(
+    (instrumentID, isAll) => {
+      getProfileLayers(instrumentID, false)
+        .then(function (response) {
+          if (response.data.success) {
+            if (isAll) setInstruments(response.data.data);
+            else if (selectedStratigraphyID) {
+              const selected = response.data.data.find(
+                e => e.casing_id === selectedStratigraphyID,
+              );
+              setInstruments(selected);
+            }
+          } else {
+            alert(response.data.message);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    [selectedStratigraphyID],
+  );
 
   useEffect(() => {
     if (state.instrumentID) {
-      getData(state.instrumentID);
+      getData(state.instrumentID, showAllInstrument);
     }
-  }, [state.instrumentID, reloadLayer, getData]);
+  }, [state.instrumentID, reloadLayer, getData, showAllInstrument]);
 
   const createNewLayer = () => {
     if (state.instrumentID) {

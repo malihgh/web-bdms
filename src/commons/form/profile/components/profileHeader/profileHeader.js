@@ -15,6 +15,8 @@ const ProfileHeader = props => {
     selectedStratigraphy,
     setSelectedStratigraphy,
     reloadHeader,
+    showAllInstrument,
+    setShowAllInstrument,
   } = props.data;
   const { t } = props;
   const [profiles, setProfiles] = useState([]);
@@ -91,8 +93,9 @@ const ProfileHeader = props => {
         )}
         {kind === 3003 && (
           <Button
+            disabled={showAllInstrument}
             content={<TranslationText id="showAll" />}
-            // onClick={CreateStratigraphy}
+            onClick={setShowAllInstrument}
             secondary
             size="small"
           />
