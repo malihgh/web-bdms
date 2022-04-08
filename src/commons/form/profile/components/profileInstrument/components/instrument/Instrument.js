@@ -5,11 +5,13 @@ import TranslationText from '../../../../../translationText';
 import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
 import { patchLayer, getProfiles } from '@ist-supsi/bmsjs';
 import { attributes } from '../../data/attributes';
-
+import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 const Instrument = props => {
   const { index, info, deleting, isEditable, boreholeID } = props.data;
+
+  const { t } = useTranslation();
 
   const [state, setState] = useState({
     isFetching: false,
@@ -51,7 +53,7 @@ const Instrument = props => {
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     if (!isEditable) {
-      alert('You should press start editing button! ');
+      alert(t('common:errorStartEditing'));
       return;
     }
 

@@ -6,9 +6,12 @@ import DomainDropdown from '../../../domain/dropdown/domainDropdown';
 import DomainTree from '../../../domain/tree/domainTree';
 import { getLayerAttributes, patchLayer } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 const ProfileAttributes = props => {
   const { id, isEditable, onUpdated, attribute, reloadAttribute } = props.data;
+
+  const { t } = useTranslation();
 
   const [showAll, setShowAll] = useState(false);
   const [state, setState] = useState({
@@ -90,7 +93,7 @@ const ProfileAttributes = props => {
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     if (!isEditable) {
-      alert('You should press start editing button! ');
+      alert(t('common:errorStartEditing'));
       return;
     }
 

@@ -3,7 +3,7 @@ export const fillingData = {
     {
       id: 0,
       type: 'Dropdown',
-      label: 'Kind',
+      label: 'kindFilling',
       value: 'fill_kind',
       require: true,
       schema: 'fill100',
@@ -40,7 +40,7 @@ export const fillingData = {
     {
       id: 2,
       type: 'Dropdown',
-      label: 'Material',
+      label: 'materialFilling',
       value: 'fill_material',
       require: true,
       schema: 'fill200',

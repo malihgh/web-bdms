@@ -12,9 +12,12 @@ import {
   getProfile,
 } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 const InfoList = props => {
   const { attribute, id, isEditable, onUpdated } = props.data;
+
+  const { t } = useTranslation();
 
   const [state, setState] = useState({
     isFetching: false,
@@ -61,7 +64,7 @@ const InfoList = props => {
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     if (!isEditable) {
-      alert('You should press start editing button! ');
+      alert(t('common:errorStartEditing'));
       return;
     }
     setState(prevState => ({ ...prevState, isPatching: true }));

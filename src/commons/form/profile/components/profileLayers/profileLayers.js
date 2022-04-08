@@ -65,7 +65,9 @@ const ProfileLayers = props => {
         </Button>
       )}
       {layers?.data?.length === 0 && (
-        <Styled.Empty>Nothing to show</Styled.Empty>
+        <Styled.Empty>
+          <TranslationText id="nothingToShow" />
+        </Styled.Empty>
       )}
       {layers !== null && layers?.data?.length !== 0 && (
         <Styled.LayerContainer>
@@ -154,9 +156,11 @@ const ProfileLayers = props => {
                             <Popup
                               basic
                               content={
-                                item?.validation?.invertedDepth
-                                  ? 'envertedDepth'
-                                  : 'You should add start point.'
+                                item?.validation?.invertedDepth ? (
+                                  <TranslationText id="envertedDepth" />
+                                ) : (
+                                  <TranslationText id="errrorStartPoint" />
+                                )
                               }
                               position="bottom left"
                               trigger={
@@ -226,9 +230,11 @@ const ProfileLayers = props => {
                             <Popup
                               basic
                               content={
-                                item?.validation?.invertedDepth
-                                  ? 'envertedDepth'
-                                  : 'You should add end point.'
+                                item?.validation?.invertedDepth ? (
+                                  <TranslationText id="envertedDepth" />
+                                ) : (
+                                  <TranslationText id="errorEndPoint" />
+                                )
                               }
                               hoverable
                               position="bottom left"

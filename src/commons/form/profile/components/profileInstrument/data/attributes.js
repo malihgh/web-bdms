@@ -18,7 +18,7 @@ export const attributes = [
   {
     id: 2,
     type: 'Dropdown',
-    label: 'Kind',
+    label: 'kindCasing',
     value: 'instrument_kind',
     require: true,
     schema: 'inst100',
@@ -38,7 +38,7 @@ export const attributes = [
   {
     id: 4,
     type: 'Dropdown',
-    label: 'Casing',
+    label: 'casing',
     value: 'casing_id',
     require: true,
     schema: 'inst100',

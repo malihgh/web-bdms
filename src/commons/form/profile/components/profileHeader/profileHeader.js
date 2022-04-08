@@ -5,7 +5,7 @@ import TranslationText from './../../../translationText';
 import PropTypes from 'prop-types';
 import DateText from '../../../dateText';
 import { getProfiles, createStratigraphy } from '@ist-supsi/bmsjs';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const ProfileHeader = props => {
   const {
@@ -18,7 +18,7 @@ const ProfileHeader = props => {
     showAllInstrument,
     setShowAllInstrument,
   } = props.data;
-  const { t } = props;
+  const { t } = useTranslation();
   const [profiles, setProfiles] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -77,9 +77,9 @@ const ProfileHeader = props => {
               kind === 3000 ? (
                 <TranslationText id="stratigraphy" />
               ) : kind === 3002 ? (
-                'Casing'
+                <TranslationText id="casing" />
               ) : kind === 3004 ? (
-                'Create Filling'
+                <TranslationText id="filling" />
               ) : (
                 ''
               )
@@ -133,4 +133,4 @@ ProfileHeader.propTypes = {
   t: PropTypes.func,
 };
 
-export default withTranslation('common')(ProfileHeader);
+export default ProfileHeader;

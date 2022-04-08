@@ -235,14 +235,10 @@ class MenuEditorForm extends React.Component {
             />
             <List.Content>
               <List.Header as="h3">
-                {/* <TranslationText
-                    firstUpperCase
-                    id="stratigraphy"
-                  /> */}
-                Completion
+                <TranslationText firstUpperCase id="completion" />
               </List.Header>
             </List.Content>
-            <div style={{ marginLeft: '5em' }}>
+            <div style={{ marginLeft: '2em' }}>
               {!this.state.hydrogeologyIsVisible && (
                 <List.Icon
                   name="angle down"
@@ -304,11 +300,7 @@ class MenuEditorForm extends React.Component {
                 />
                 <List.Content>
                   <List.Header as="h3">
-                    {/* <TranslationText
-                    firstUpperCase
-                    id="stratigraphy"
-                  /> */}
-                    Casing
+                    <TranslationText firstUpperCase id="casing" />
                   </List.Header>
                 </List.Content>
               </List.Item>
@@ -359,11 +351,7 @@ class MenuEditorForm extends React.Component {
                 />
                 <List.Content>
                   <List.Header as="h3">
-                    {/* <TranslationText
-                    firstUpperCase
-                    id="stratigraphy"
-                  /> */}
-                    Instruments
+                    <TranslationText firstUpperCase id="instrument" />
                   </List.Header>
                 </List.Content>
               </List.Item>
@@ -414,11 +402,7 @@ class MenuEditorForm extends React.Component {
                 />
                 <List.Content>
                   <List.Header as="h3">
-                    {/* <TranslationText
-                    firstUpperCase
-                    id="stratigraphy"
-                  /> */}
-                    Filling
+                    <TranslationText firstUpperCase id="filling" />
                   </List.Header>
                 </List.Content>
               </List.Item>

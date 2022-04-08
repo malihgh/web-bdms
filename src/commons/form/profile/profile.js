@@ -10,6 +10,7 @@ import { fillingData } from './data/fillingdata';
 import { stratigraphyData } from './data/stratigraphydata';
 import ProfileInstrument from './components/profileInstrument/profileInstrument';
 import { profileKinds } from './data/profileKinds';
+import TranslationText from '../translationText';
 
 const Profile = props => {
   const { user, borehole } = useSelector(state => ({
@@ -128,7 +129,9 @@ const Profile = props => {
       )}
 
       {!selectedStratigraphy && !showAllInstrument && (
-        <Styled.Empty>Nothing to show</Styled.Empty>
+        <Styled.Empty>
+          <TranslationText id="nothingToShow" />
+        </Styled.Empty>
       )}
 
       {stratigraphyKind?.kind !== 'instruments' && selectedStratigraphy && (
