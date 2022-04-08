@@ -50,10 +50,7 @@ const ProfileHeader = props => {
       setSelectedItem(profiles[0]);
       setSelectedStratigraphy(profiles[0]);
     }
-    if (!selectedStratigraphy) {
-      setSelectedStratigraphy(selectedItem);
-    }
-  }, [selectedItem, profiles, setSelectedStratigraphy, selectedStratigraphy]);
+  }, [selectedItem, profiles, setSelectedStratigraphy]);
 
   const createNewStratigraphy = () => {
     createStratigraphy(boreholeID, kind)
@@ -109,7 +106,10 @@ const ProfileHeader = props => {
               setSelectedStratigraphy(item);
             }}
             style={{
-              borderBottom: item.id === selectedItem?.id && '2px solid black',
+              borderBottom:
+                selectedStratigraphy &&
+                item.id === selectedItem?.id &&
+                '2px solid black',
             }}>
             <Styled.ItemName>
               {item.primary && <Icon name="check" />}

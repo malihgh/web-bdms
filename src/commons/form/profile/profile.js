@@ -118,11 +118,8 @@ const Profile = props => {
           }}
         />
       )}
-      {!selectedStratigraphy && (
-        <Styled.Empty>
-          Please Add new Stratigraphy with pressing Editing!
-        </Styled.Empty>
-      )}
+
+      {!selectedStratigraphy && <Styled.Empty>Nothing to show</Styled.Empty>}
 
       {stratigraphyKind?.kind !== 'instruments' && selectedStratigraphy && (
         <Styled.Container>
