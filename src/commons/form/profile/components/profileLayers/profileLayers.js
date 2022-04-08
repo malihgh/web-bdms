@@ -17,7 +17,7 @@ const ProfileLayers = props => {
   const [layers, setLayers] = useState(null);
   const [showDelete, setShowDelete] = useState();
 
-  const GetData = useCallback(stratigraphyID => {
+  const getData = useCallback(stratigraphyID => {
     getProfileLayers(stratigraphyID, true)
       .then(response => {
         if (response.data.success) {
@@ -33,13 +33,13 @@ const ProfileLayers = props => {
 
   useEffect(() => {
     if (selectedStratigraphyID) {
-      GetData(selectedStratigraphyID);
+      getData(selectedStratigraphyID);
     } else {
       setLayers(null);
     }
-  }, [selectedStratigraphyID, reloadLayer, GetData]);
+  }, [selectedStratigraphyID, reloadLayer, getData]);
 
-  const CreateLayer = () => {
+  const createNewLayer = () => {
     createLayer(selectedStratigraphyID)
       .then(response => {
         if (response.data.success) {
@@ -57,7 +57,7 @@ const ProfileLayers = props => {
       {isEditable && selectedStratigraphyID !== null && (
         <Button
           fluid
-          onClick={CreateLayer}
+          onClick={createNewLayer}
           secondary
           size="tiny"
           style={{ marginBottom: '10px' }}>

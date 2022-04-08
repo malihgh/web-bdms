@@ -38,7 +38,7 @@ const ProfileInstrument = props => {
       });
   }, []);
 
-  const GetInstrumentProfile = useCallback(() => {
+  const getInstrumentProfile = useCallback(() => {
     getProfiles(boreholeID, 3003)
       .then(response => {
         if (response.data.success) {
@@ -60,10 +60,10 @@ const ProfileInstrument = props => {
   }, [boreholeID, CreateStratigraphy]);
 
   useEffect(() => {
-    GetInstrumentProfile();
-  }, [GetInstrumentProfile]);
+    getInstrumentProfile();
+  }, [getInstrumentProfile]);
 
-  const GetData = useCallback(instrumentID => {
+  const getData = useCallback(instrumentID => {
     getProfileLayers(instrumentID, false)
       .then(function (response) {
         if (response.data.success) {
@@ -80,11 +80,11 @@ const ProfileInstrument = props => {
 
   useEffect(() => {
     if (state.instrumentID) {
-      GetData(state.instrumentID);
+      getData(state.instrumentID);
     }
-  }, [state.instrumentID, reloadLayer, GetData]);
+  }, [state.instrumentID, reloadLayer, getData]);
 
-  const CreateLayer = () => {
+  const createNewLayer = () => {
     if (state.instrumentID) {
       createLayer(state.instrumentID)
         .then(response => {
@@ -100,7 +100,7 @@ const ProfileInstrument = props => {
     }
   };
 
-  const DeleteLayer = id => {
+  const deletingLayer = id => {
     deleteLayer(id)
       .then(response => {
         if (response.data.success) {
@@ -121,20 +121,19 @@ const ProfileInstrument = props => {
           content={<TranslationText id="addInstrument" />}
           disabled={!isEditable}
           icon="add"
-          onClick={CreateLayer}
+          onClick={createNewLayer}
           secondary
           size="tiny"
         />
       </Styled.ButtonContainer>
       <Styled.ListContainer>
-        {/* {console.log('instruments', instruments)} */}
         {instruments?.map((item, index) => (
           <Instrument
             data={{
               boreholeID,
               info: item,
               index,
-              deleting: DeleteLayer,
+              deleting: deletingLayer,
               isEditable,
             }}
             key={index}

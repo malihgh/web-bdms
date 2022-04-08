@@ -37,16 +37,15 @@ const InfoList = props => {
     },
   });
 
-  const GetData = useCallback(id => {
+  const getData = useCallback(id => {
     getProfile(id)
       .then(response => {
         if (response.data.success) {
-          if (response.data.success) {
-            setState({
-              isFetching: false,
-              profileInfo: response.data.data,
-            });
-          }
+          setState(prevState => ({
+            ...prevState,
+            isFetching: false,
+            profileInfo: response.data.data,
+          }));
         } else {
           alert(response.data.message);
         }
@@ -57,8 +56,8 @@ const InfoList = props => {
   }, []);
 
   useEffect(() => {
-    GetData(id);
-  }, [id, GetData]);
+    getData(id);
+  }, [id, getData]);
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     if (!isEditable) {
