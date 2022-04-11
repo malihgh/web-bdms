@@ -157,7 +157,7 @@ const ProfileLayers = props => {
                               basic
                               content={
                                 item?.validation?.invertedDepth ? (
-                                  <TranslationText id="envertedDepth" />
+                                  <TranslationText id="invertedDepth" />
                                 ) : (
                                   <TranslationText id="errrorStartPoint" />
                                 )
@@ -231,7 +231,7 @@ const ProfileLayers = props => {
                               basic
                               content={
                                 item?.validation?.invertedDepth ? (
-                                  <TranslationText id="envertedDepth" />
+                                  <TranslationText id="invertedDepth" />
                                 ) : (
                                   <TranslationText id="errorEndPoint" />
                                 )
