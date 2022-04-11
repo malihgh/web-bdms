@@ -96,7 +96,8 @@ class ProfileView extends React.Component {
       layer !== null && domains.data.hasOwnProperty('layer_kind')
         ? (() => {
             const filtered = domains.data.layer_kind.filter(kind =>
-              layer.kinds.includes(kind.id),
+              layer.kind === kind.id
+              //layer.kinds.includes(kind.id),
             );
             let fields = { ...filtered[0].conf.fields };
             if (filtered.length > 1) {
@@ -123,7 +124,7 @@ class ProfileView extends React.Component {
 
     const ns = domains.data.layer_kind.find(
       element => element.id === this.state.viewas,
-    ).conf.patternNS;
+    )?.conf.patternNS;
 
     if (!domains.data.hasOwnProperty(ns)) {
       return null;
@@ -154,7 +155,7 @@ class ProfileView extends React.Component {
 
     const ns = domains.data.layer_kind.find(
       element => element.id === this.state.viewas,
-    ).conf.colorNS;
+    )?.conf.colorNS;
 
     if (!domains.data.hasOwnProperty(ns)) {
       return null;
@@ -242,10 +243,10 @@ class ProfileView extends React.Component {
               to: 'depth_to',
               color: domains.data.layer_kind.find(
                 element => element.id === this.state.viewas,
-              ).conf.color,
+              )?.conf.color,
               pattern: domains.data.layer_kind.find(
                 element => element.id === this.state.viewas,
-              ).conf.pattern,
+              )?.conf.pattern,
               // color: 'lithostratigraphy',
               // pattern: 'lithology'
             }}
