@@ -9,7 +9,9 @@ import {
   deleteLayer,
   getProfiles,
   createStratigraphy,
+  createInstrument,
 } from '@ist-supsi/bmsjs';
+import { useTranslation } from 'react-i18next';
 
 const ProfileInstrument = props => {
   const {
@@ -20,7 +22,12 @@ const ProfileInstrument = props => {
     selectedStratigraphyID,
     showAllInstrument,
   } = props.data;
+
+  const { t } = useTranslation();
+
   const [instruments, setInstruments] = useState([]);
+  const [casing, setCasing] = useState([]);
+  const [reload, setReload] = useState(0);
   const [state, setState] = useState({
     isFetching: false,
     isPatching: false,
@@ -66,9 +73,36 @@ const ProfileInstrument = props => {
       });
   }, [boreholeID, CreateStratigraphy]);
 
+  const getCasingProfile = useCallback(() => {
+    getProfiles(boreholeID, 3002)
+      .then(response => {
+        if (response.data.success) {
+          for (const e of response.data.data) {
+            setCasing(prevState => {
+              return [
+                ...prevState,
+                {
+                  key: e.id,
+                  value: e.id,
+                  text:
+                    e.name === null || e.name === '' ? t('common:np') : e.name,
+                },
+              ];
+            });
+          }
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, [boreholeID, t]);
+
   useEffect(() => {
     getInstrumentProfile();
-  }, [getInstrumentProfile]);
+    getCasingProfile();
+  }, [getInstrumentProfile, getCasingProfile]);
 
   const getData = useCallback(
     (instrumentID, isAll) => {
@@ -77,7 +111,7 @@ const ProfileInstrument = props => {
           if (response.data.success) {
             if (isAll) setInstruments(response.data.data);
             else if (selectedStratigraphyID) {
-              const selected = response.data.data.find(
+              const selected = response.data.data.filter(
                 e => e.casing_id === selectedStratigraphyID,
               );
               setInstruments(selected);
@@ -97,21 +131,35 @@ const ProfileInstrument = props => {
     if (state.instrumentID) {
       getData(state.instrumentID, showAllInstrument);
     }
-  }, [state.instrumentID, reloadLayer, getData, showAllInstrument]);
+  }, [state.instrumentID, reloadLayer, getData, showAllInstrument, reload]);
 
   const createNewLayer = () => {
     if (state.instrumentID) {
-      createLayer(state.instrumentID)
-        .then(response => {
-          if (response.data.success) {
-            onUpdated('newLayer');
-          } else {
-            alert(response.data.message);
-          }
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
+      if (selectedStratigraphyID) {
+        createInstrument(state.instrumentID, selectedStratigraphyID)
+          .then(response => {
+            if (response.data.success) {
+              onUpdated('newLayer');
+            } else {
+              alert(response.data.message);
+            }
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      } else {
+        createLayer(state.instrumentID)
+          .then(response => {
+            if (response.data.success) {
+              onUpdated('newLayer');
+            } else {
+              alert(response.data.message);
+            }
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      }
     }
   };
 
@@ -130,7 +178,7 @@ const ProfileInstrument = props => {
   };
 
   return (
-    <Styled.Container>
+    <Styled.Container disable={casing.length === 0}>
       <Styled.ButtonContainer>
         <Button
           content={<TranslationText id="addInstrument" />}
@@ -141,23 +189,26 @@ const ProfileInstrument = props => {
           size="tiny"
         />
       </Styled.ButtonContainer>
-      {!instruments && (
+      {instruments.length === 0 && (
         <Styled.Empty>
           <TranslationText id="nothingToShow" />
         </Styled.Empty>
       )}
 
-      {instruments && (
+      {instruments.length > 0 && (
         <Styled.ListContainer>
-          {instruments?.map((item, index) => (
+          {instruments.map((item, index) => (
             <Instrument
               data={{
-                boreholeID,
                 info: item,
                 index,
                 deleting: deletingLayer,
                 onUpdated,
                 isEditable,
+                update: () => {
+                  setReload(prevState => prevState + 1);
+                },
+                casing,
               }}
               key={index}
             />

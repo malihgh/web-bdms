@@ -6,6 +6,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  opacity: ${props => props.disable && '0.5'};
+  pointer-events: ${props => props.disable && 'none'};
 `;
 
 export const ButtonContainer = styled.div`
