@@ -15,7 +15,7 @@ import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 const InfoList = props => {
-  const { attribute, id, isEditable, onUpdated } = props.data;
+  const { attribute, id, isEditable, onUpdated, kind } = props.data;
 
   const { t } = useTranslation();
 
@@ -209,17 +209,19 @@ const InfoList = props => {
         </Form>
         {isEditable && (
           <div style={{ display: 'flex' }}>
-            <Button
-              // disabled={!_.isEmpty(state.consistency)}
-              icon
-              onClick={() => {
-                cloneStratigraphy(state.profileInfo.id).then(response => {
-                  onUpdated('cloneStratigraphy');
-                });
-              }}
-              size="tiny">
-              <Icon name="clone outline" />
-            </Button>
+            {kind !== 3004 && (
+              <Button
+                // disabled={!_.isEmpty(state.consistency)}
+                icon
+                onClick={() => {
+                  cloneStratigraphy(state.profileInfo.id).then(response => {
+                    onUpdated('cloneStratigraphy');
+                  });
+                }}
+                size="tiny">
+                <Icon name="clone outline" />
+              </Button>
+            )}
             <Popup
               flowing
               hoverable
