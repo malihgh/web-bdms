@@ -142,6 +142,7 @@ const Profile = props => {
           <Styled.FirstColumn>
             <ProfileInfo
               data={{
+                kind: stratigraphyKind.kindNumber,
                 item: selectedStratigraphy,
                 isEditable,
                 onUpdated: OnUpdated,
