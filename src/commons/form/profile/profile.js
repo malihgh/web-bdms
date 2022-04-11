@@ -128,11 +128,13 @@ const Profile = props => {
         />
       )}
 
-      {!selectedStratigraphy && !showAllInstrument && (
-        <Styled.Empty>
-          <TranslationText id="nothingToShow" />
-        </Styled.Empty>
-      )}
+      {!selectedStratigraphy &&
+        !showAllInstrument &&
+        stratigraphyKind?.kind !== 'instruments' && (
+          <Styled.Empty>
+            <TranslationText id="nothingToShow" />
+          </Styled.Empty>
+        )}
 
       {stratigraphyKind?.kind !== 'instruments' && selectedStratigraphy && (
         <Styled.Container>

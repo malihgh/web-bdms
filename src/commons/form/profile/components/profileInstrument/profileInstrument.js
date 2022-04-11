@@ -9,6 +9,7 @@ import {
   deleteLayer,
   getProfiles,
   createStratigraphy,
+  createInstrument,
 } from '@ist-supsi/bmsjs';
 
 const ProfileInstrument = props => {
@@ -21,6 +22,7 @@ const ProfileInstrument = props => {
     showAllInstrument,
   } = props.data;
   const [instruments, setInstruments] = useState([]);
+  const [isCasingNull, setIsCasingNull] = useState(true);
   const [state, setState] = useState({
     isFetching: false,
     isPatching: false,
@@ -66,8 +68,31 @@ const ProfileInstrument = props => {
       });
   }, [boreholeID, CreateStratigraphy]);
 
+  const getCasingProfile = useCallback(() => {
+    getProfiles(boreholeID, 3002)
+      .then(response => {
+        if (response.data.success) {
+          if (response.data.data.length > 0) {
+            setIsCasingNull(false);
+          } else {
+            setIsCasingNull(true);
+          }
+          // setState(prevState => ({
+          //   ...prevState,
+          //   instrumentID: response.data.data[0].id,
+          // }));
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, [boreholeID, CreateStratigraphy]);
+
   useEffect(() => {
     getInstrumentProfile();
+    getCasingProfile();
   }, [getInstrumentProfile]);
 
   const getData = useCallback(
@@ -77,7 +102,7 @@ const ProfileInstrument = props => {
           if (response.data.success) {
             if (isAll) setInstruments(response.data.data);
             else if (selectedStratigraphyID) {
-              const selected = response.data.data.find(
+              const selected = response.data.data.filter(
                 e => e.casing_id === selectedStratigraphyID,
               );
               setInstruments(selected);
@@ -101,17 +126,31 @@ const ProfileInstrument = props => {
 
   const createNewLayer = () => {
     if (state.instrumentID) {
-      createLayer(state.instrumentID)
-        .then(response => {
-          if (response.data.success) {
-            onUpdated('newLayer');
-          } else {
-            alert(response.data.message);
-          }
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
+      if (selectedStratigraphyID) {
+        createInstrument(state.instrumentID, selectedStratigraphyID)
+          .then(response => {
+            if (response.data.success) {
+              onUpdated('newLayer');
+            } else {
+              alert(response.data.message);
+            }
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      } else {
+        createLayer(state.instrumentID)
+          .then(response => {
+            if (response.data.success) {
+              onUpdated('newLayer');
+            } else {
+              alert(response.data.message);
+            }
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      }
     }
   };
 
@@ -130,7 +169,7 @@ const ProfileInstrument = props => {
   };
 
   return (
-    <Styled.Container>
+    <Styled.Container disable={isCasingNull}>
       <Styled.ButtonContainer>
         <Button
           content={<TranslationText id="addInstrument" />}
@@ -141,15 +180,15 @@ const ProfileInstrument = props => {
           size="tiny"
         />
       </Styled.ButtonContainer>
-      {!instruments && (
+      {instruments.length === 0 && (
         <Styled.Empty>
           <TranslationText id="nothingToShow" />
         </Styled.Empty>
       )}
-
-      {instruments && (
+      {console.log('instruments', instruments, !instruments)}
+      {instruments.length > 0 && (
         <Styled.ListContainer>
-          {instruments?.map((item, index) => (
+          {instruments.map((item, index) => (
             <Instrument
               data={{
                 boreholeID,

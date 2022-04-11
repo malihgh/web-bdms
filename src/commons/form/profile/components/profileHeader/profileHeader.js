@@ -21,12 +21,20 @@ const ProfileHeader = props => {
   const { t } = useTranslation();
   const [profiles, setProfiles] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isCasingNull, setIsCasingNull] = useState(true);
 
   const getData = useCallback((id, kind) => {
     getProfiles(id, kind)
       .then(response => {
         if (response.data.success) {
           setProfiles(response.data.data);
+          if (kind === 3002) {
+            if (response.data.data.length > 0) {
+              setIsCasingNull(false);
+            } else {
+              setIsCasingNull(true);
+            }
+          }
         } else {
           alert(response.data.message);
         }
@@ -52,7 +60,16 @@ const ProfileHeader = props => {
       setSelectedItem(profiles[0]);
       setSelectedStratigraphy(profiles[0]);
     }
-  }, [selectedItem, profiles, setSelectedStratigraphy]);
+    // if (selectedStratigraphy)
+    console.log(
+      'selectedStratigraphy',
+      selectedStratigraphy,
+      !selectedStratigraphy,
+    );
+    // else if (selectedItem && !selectedStratigraphy) {
+    // setSelectedStratigraphy(selectedItem);
+    // }
+  }, [selectedItem, profiles, setSelectedStratigraphy, selectedStratigraphy]);
 
   const createNewStratigraphy = () => {
     createStratigraphy(boreholeID, kind)
@@ -93,7 +110,7 @@ const ProfileHeader = props => {
         )}
         {kind === 3003 && (
           <Button
-            disabled={showAllInstrument}
+            disabled={showAllInstrument || isCasingNull}
             content={<TranslationText id="showAll" />}
             onClick={setShowAllInstrument}
             secondary
