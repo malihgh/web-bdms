@@ -60,16 +60,7 @@ const ProfileHeader = props => {
       setSelectedItem(profiles[0]);
       setSelectedStratigraphy(profiles[0]);
     }
-    // if (selectedStratigraphy)
-    console.log(
-      'selectedStratigraphy',
-      selectedStratigraphy,
-      !selectedStratigraphy,
-    );
-    // else if (selectedItem && !selectedStratigraphy) {
-    // setSelectedStratigraphy(selectedItem);
-    // }
-  }, [selectedItem, profiles, setSelectedStratigraphy, selectedStratigraphy]);
+  }, [selectedItem, profiles, setSelectedStratigraphy]);
 
   const createNewStratigraphy = () => {
     createStratigraphy(boreholeID, kind)
