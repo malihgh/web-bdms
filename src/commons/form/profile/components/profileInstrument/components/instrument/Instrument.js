@@ -38,8 +38,7 @@ const Instrument = props => {
     }
 
     setState(prevState => ({ ...prevState, isPatching: true }));
-    if (!isNumber) _.set(state.instrument, attribute, value);
-    else _.set(state.instrument, attribute, _.toNumber(value));
+    _.set(state.instrument, attribute, value);
 
     if (isNumber) {
       if (value === null) {
