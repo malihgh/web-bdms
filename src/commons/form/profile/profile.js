@@ -78,7 +78,8 @@ const Profile = props => {
       attribute === 'fixErrors' ||
       attribute === 'casing_kind' ||
       attribute === 'casing_material' ||
-      attribute === 'casing_drilling'
+      attribute === 'casing_drilling' ||
+      attribute === 'fill_material'
     ) {
       setReloadLayer(reloadLayer => reloadLayer + 1);
     }
