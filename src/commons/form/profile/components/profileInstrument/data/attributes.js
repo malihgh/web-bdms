@@ -37,7 +37,7 @@ export const attributes = [
   },
   {
     id: 4,
-    type: 'Dropdown',
+    type: 'CasingDropdown',
     label: 'casing',
     value: 'casing_id',
     require: true,

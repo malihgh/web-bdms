@@ -1,15 +1,15 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
-import { Input, Form, Button } from 'semantic-ui-react';
+import { Input, Form, Button, Dropdown } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
 import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
-import { patchLayer, getProfiles } from '@ist-supsi/bmsjs';
+import { patchLayer } from '@ist-supsi/bmsjs';
 import { attributes } from '../../data/attributes';
 import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 const Instrument = props => {
-  const { index, info, deleting, isEditable, boreholeID } = props.data;
+  const { index, info, deleting, isEditable, casing, update } = props.data;
 
   const { t } = useTranslation();
 
@@ -17,7 +17,6 @@ const Instrument = props => {
     isFetching: false,
     isPatching: false,
     updateAttributeDelay: {},
-    casing: [],
     instrument: {
       id: null,
       instrument_kind: null,
@@ -31,25 +30,6 @@ const Instrument = props => {
   useEffect(() => {
     setState(prevState => ({ ...prevState, instrument: info }));
   }, [info]);
-
-  const getData = useCallback((id, kind) => {
-    getProfiles(id, kind)
-      .then(response => {
-        if (response.data.success) {
-          setState(prevState => ({ ...prevState, casing: response.data.data }));
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
-  // console.log('response', state.casing);
-
-  useEffect(() => {
-    if (boreholeID) getData(boreholeID, 3002);
-  }, [boreholeID, getData]);
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     if (!isEditable) {
@@ -81,6 +61,9 @@ const Instrument = props => {
           .then(response => {
             if (response.data.success) {
               setState(prevState => ({ ...prevState, isPatching: false }));
+              if (attribute === 'casing_id') {
+                update();
+              }
             } else {
               alert(response.data.message);
               window.location.reload();
@@ -149,6 +132,24 @@ const Instrument = props => {
                   schema={item.schema}
                   search={item.search}
                   selected={
+                    _.isNil(state?.instrument?.[item.value])
+                      ? null
+                      : state.instrument[item.value]
+                  }
+                />
+              </Styled.AttributesItem>
+            )}
+
+            {item.type === 'CasingDropdown' && (
+              <Styled.AttributesItem>
+                <Dropdown
+                  fluid
+                  onChange={(e, data) => {
+                    updateChange(item.value, data.value);
+                  }}
+                  options={casing}
+                  selection
+                  value={
                     _.isNil(state?.instrument?.[item.value])
                       ? null
                       : state.instrument[item.value]

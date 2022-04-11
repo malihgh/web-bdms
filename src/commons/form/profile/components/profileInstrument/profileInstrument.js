@@ -11,6 +11,7 @@ import {
   createStratigraphy,
   createInstrument,
 } from '@ist-supsi/bmsjs';
+import { useTranslation } from 'react-i18next';
 
 const ProfileInstrument = props => {
   const {
@@ -21,8 +22,12 @@ const ProfileInstrument = props => {
     selectedStratigraphyID,
     showAllInstrument,
   } = props.data;
+
+  const { t } = useTranslation();
+
   const [instruments, setInstruments] = useState([]);
-  const [isCasingNull, setIsCasingNull] = useState(true);
+  const [casing, setCasing] = useState([]);
+  const [reload, setReload] = useState(0);
   const [state, setState] = useState({
     isFetching: false,
     isPatching: false,
@@ -72,15 +77,19 @@ const ProfileInstrument = props => {
     getProfiles(boreholeID, 3002)
       .then(response => {
         if (response.data.success) {
-          if (response.data.data.length > 0) {
-            setIsCasingNull(false);
-          } else {
-            setIsCasingNull(true);
+          for (const e of response.data.data) {
+            setCasing(prevState => {
+              return [
+                ...prevState,
+                {
+                  key: e.id,
+                  value: e.id,
+                  text:
+                    e.name === null || e.name === '' ? t('common:np') : e.name,
+                },
+              ];
+            });
           }
-          // setState(prevState => ({
-          //   ...prevState,
-          //   instrumentID: response.data.data[0].id,
-          // }));
         } else {
           alert(response.data.message);
         }
@@ -88,12 +97,12 @@ const ProfileInstrument = props => {
       .catch(error => {
         console.error(error);
       });
-  }, [boreholeID, CreateStratigraphy]);
+  }, [boreholeID, t]);
 
   useEffect(() => {
     getInstrumentProfile();
     getCasingProfile();
-  }, [getInstrumentProfile]);
+  }, [getInstrumentProfile, getCasingProfile]);
 
   const getData = useCallback(
     (instrumentID, isAll) => {
@@ -122,7 +131,7 @@ const ProfileInstrument = props => {
     if (state.instrumentID) {
       getData(state.instrumentID, showAllInstrument);
     }
-  }, [state.instrumentID, reloadLayer, getData, showAllInstrument]);
+  }, [state.instrumentID, reloadLayer, getData, showAllInstrument, reload]);
 
   const createNewLayer = () => {
     if (state.instrumentID) {
@@ -169,7 +178,7 @@ const ProfileInstrument = props => {
   };
 
   return (
-    <Styled.Container disable={isCasingNull}>
+    <Styled.Container disable={casing.length === 0}>
       <Styled.ButtonContainer>
         <Button
           content={<TranslationText id="addInstrument" />}
@@ -185,18 +194,21 @@ const ProfileInstrument = props => {
           <TranslationText id="nothingToShow" />
         </Styled.Empty>
       )}
-      {console.log('instruments', instruments, !instruments)}
+
       {instruments.length > 0 && (
         <Styled.ListContainer>
           {instruments.map((item, index) => (
             <Instrument
               data={{
-                boreholeID,
                 info: item,
                 index,
                 deleting: deletingLayer,
                 onUpdated,
                 isEditable,
+                update: () => {
+                  setReload(prevState => prevState + 1);
+                },
+                casing,
               }}
               key={index}
             />
