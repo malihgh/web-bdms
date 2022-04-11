@@ -141,21 +141,29 @@ const ProfileInstrument = props => {
           size="tiny"
         />
       </Styled.ButtonContainer>
-      <Styled.ListContainer>
-        {instruments?.map((item, index) => (
-          <Instrument
-            data={{
-              boreholeID,
-              info: item,
-              index,
-              deleting: deletingLayer,
-              onUpdated,
-              isEditable,
-            }}
-            key={index}
-          />
-        ))}
-      </Styled.ListContainer>
+      {!instruments && (
+        <Styled.Empty>
+          <TranslationText id="nothingToShow" />
+        </Styled.Empty>
+      )}
+
+      {instruments && (
+        <Styled.ListContainer>
+          {instruments?.map((item, index) => (
+            <Instrument
+              data={{
+                boreholeID,
+                info: item,
+                index,
+                deleting: deletingLayer,
+                onUpdated,
+                isEditable,
+              }}
+              key={index}
+            />
+          ))}
+        </Styled.ListContainer>
+      )}
     </Styled.Container>
   );
 };
