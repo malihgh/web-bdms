@@ -10,7 +10,7 @@ export const casingData = {
     {
       id: 1,
       type: 'Dropdown',
-      label: 'Kind',
+      label: 'kindCasing',
       value: 'casng_kind',
       require: true,
       schema: 'casi100',
@@ -38,19 +38,19 @@ export const casingData = {
     {
       id: 4,
       type: 'Date',
-      label: 'dateSpud',
+      label: 'dateSpudCasing',
       value: 'date_spud',
     },
     {
       id: 5,
       type: 'Date',
-      label: 'dateFinish',
+      label: 'dateFinishCasing',
       value: 'date_fin',
     },
     {
       id: 6,
       type: 'Date',
-      label: 'dateAbandonment',
+      label: 'dateAbandonmentCasing',
       value: 'date_abd',
     },
     {
@@ -83,7 +83,7 @@ export const casingData = {
     {
       id: 2,
       type: 'Dropdown',
-      label: 'Kind',
+      label: 'kindCasingLayer',
       value: 'casing_kind',
       require: true,
       schema: 'casi200',
@@ -94,7 +94,7 @@ export const casingData = {
     {
       id: 3,
       type: 'Dropdown',
-      label: 'MaterialCasing',
+      label: 'materialCasingLayer',
       value: 'casing_material',
       require: true,
       schema: 'casi201',

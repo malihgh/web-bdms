@@ -17,7 +17,7 @@ const ProfileLayers = props => {
   const [layers, setLayers] = useState(null);
   const [showDelete, setShowDelete] = useState();
 
-  const GetData = useCallback(stratigraphyID => {
+  const getData = useCallback(stratigraphyID => {
     getProfileLayers(stratigraphyID, true)
       .then(response => {
         if (response.data.success) {
@@ -33,13 +33,13 @@ const ProfileLayers = props => {
 
   useEffect(() => {
     if (selectedStratigraphyID) {
-      GetData(selectedStratigraphyID);
+      getData(selectedStratigraphyID);
     } else {
       setLayers(null);
     }
-  }, [selectedStratigraphyID, reloadLayer, GetData]);
+  }, [selectedStratigraphyID, reloadLayer, getData]);
 
-  const CreateLayer = () => {
+  const createNewLayer = () => {
     createLayer(selectedStratigraphyID)
       .then(response => {
         if (response.data.success) {
@@ -57,7 +57,7 @@ const ProfileLayers = props => {
       {isEditable && selectedStratigraphyID !== null && (
         <Button
           fluid
-          onClick={CreateLayer}
+          onClick={createNewLayer}
           secondary
           size="tiny"
           style={{ marginBottom: '10px' }}>
@@ -65,7 +65,9 @@ const ProfileLayers = props => {
         </Button>
       )}
       {layers?.data?.length === 0 && (
-        <Styled.Empty>Nothing to show</Styled.Empty>
+        <Styled.Empty>
+          <TranslationText id="nothingToShow" />
+        </Styled.Empty>
       )}
       {layers !== null && layers?.data?.length !== 0 && (
         <Styled.LayerContainer>
@@ -154,9 +156,11 @@ const ProfileLayers = props => {
                             <Popup
                               basic
                               content={
-                                item?.validation?.invertedDepth
-                                  ? 'envertedDepth'
-                                  : 'You should add start point.'
+                                item?.validation?.invertedDepth ? (
+                                  <TranslationText id="invertedDepth" />
+                                ) : (
+                                  <TranslationText id="errrorStartPoint" />
+                                )
                               }
                               position="bottom left"
                               trigger={
@@ -226,9 +230,11 @@ const ProfileLayers = props => {
                             <Popup
                               basic
                               content={
-                                item?.validation?.invertedDepth
-                                  ? 'envertedDepth'
-                                  : 'You should add end point.'
+                                item?.validation?.invertedDepth ? (
+                                  <TranslationText id="invertedDepth" />
+                                ) : (
+                                  <TranslationText id="errorEndPoint" />
+                                )
                               }
                               hoverable
                               position="bottom left"

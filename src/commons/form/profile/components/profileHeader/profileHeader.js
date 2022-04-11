@@ -5,7 +5,7 @@ import TranslationText from './../../../translationText';
 import PropTypes from 'prop-types';
 import DateText from '../../../dateText';
 import { getProfiles, createStratigraphy } from '@ist-supsi/bmsjs';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const ProfileHeader = props => {
   const {
@@ -15,47 +15,50 @@ const ProfileHeader = props => {
     selectedStratigraphy,
     setSelectedStratigraphy,
     reloadHeader,
+    showAllInstrument,
+    setShowAllInstrument,
   } = props.data;
-  const { t } = props;
+  const { t } = useTranslation();
   const [profiles, setProfiles] = useState([]);
-  const [selectedItem, setSelectedItem] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  const GetData = useCallback(
-    (id, kind) => {
-      getProfiles(id, kind)
-        .then(response => {
-          if (response.data.success) {
-            setProfiles(response.data.data);
-            if (!selectedStratigraphy) setSelectedItem(response.data.data[0]);
-          } else {
-            alert(response.data.message);
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
-    [selectedStratigraphy],
-  );
+  const getData = useCallback((id, kind) => {
+    getProfiles(id, kind)
+      .then(response => {
+        if (response.data.success) {
+          setProfiles(response.data.data);
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  const myKind = kind !== 3003 ? kind : 3002;
 
   useEffect(() => {
-    if (selectedItem) {
-      setSelectedStratigraphy(selectedItem);
-    } else if (profiles.length > 0) {
+    if (boreholeID) getData(boreholeID, myKind);
+  }, [boreholeID, reloadHeader, myKind, getData]);
+
+  useEffect(() => {
+    setSelectedItem(null);
+    setProfiles([]);
+  }, [kind]);
+
+  useEffect(() => {
+    if (!selectedItem) {
+      setSelectedItem(profiles[0]);
       setSelectedStratigraphy(profiles[0]);
     }
-  }, [selectedItem, setSelectedStratigraphy]);
+  }, [selectedItem, profiles, setSelectedStratigraphy]);
 
-  useEffect(() => {
-    const myKind = kind !== 3003 ? kind : 3002;
-    if (boreholeID) GetData(boreholeID, myKind);
-  }, [boreholeID, reloadHeader, GetData, kind]);
-
-  const CreateStratigraphy = () => {
+  const createNewStratigraphy = () => {
     createStratigraphy(boreholeID, kind)
       .then(response => {
         if (response.data.success) {
-          GetData();
+          getData(boreholeID, kind);
         } else {
           alert(response.data.message);
         }
@@ -74,24 +77,25 @@ const ProfileHeader = props => {
               kind === 3000 ? (
                 <TranslationText id="stratigraphy" />
               ) : kind === 3002 ? (
-                'Casing'
+                <TranslationText id="casing" />
               ) : kind === 3004 ? (
-                'Create Filling'
+                <TranslationText id="filling" />
               ) : (
                 ''
               )
             }
             disabled={kind === 3004 && profiles.length > 0}
             icon="add"
-            onClick={CreateStratigraphy}
+            onClick={createNewStratigraphy}
             secondary
             size="small"
           />
         )}
         {kind === 3003 && (
           <Button
+            disabled={showAllInstrument}
             content={<TranslationText id="showAll" />}
-            // onClick={CreateStratigraphy}
+            onClick={setShowAllInstrument}
             secondary
             size="small"
           />
@@ -102,9 +106,13 @@ const ProfileHeader = props => {
             key={item.id}
             onClick={() => {
               setSelectedItem(item);
+              setSelectedStratigraphy(item);
             }}
             style={{
-              borderBottom: item.id === selectedItem?.id && '2px solid black',
+              borderBottom:
+                selectedStratigraphy &&
+                item.id === selectedItem?.id &&
+                '2px solid black',
             }}>
             <Styled.ItemName>
               {item.primary && <Icon name="check" />}
@@ -125,4 +133,4 @@ ProfileHeader.propTypes = {
   t: PropTypes.func,
 };
 
-export default withTranslation('common')(ProfileHeader);
+export default ProfileHeader;

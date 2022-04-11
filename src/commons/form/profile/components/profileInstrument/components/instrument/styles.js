@@ -3,8 +3,9 @@ import { Form } from 'semantic-ui-react';
 
 export const FormContainer = styled.div`
   display: grid;
-  grid-template-columns: 14% 14% 14% 14% 14% 14% 6%;
-  column-gap: 2%;
+  grid-template-columns: 14% 14% 14% 14% 14% 14% 7%;
+  column-gap: 1.5%;
+  min-width: 500px;
 `;
 
 export const AttributesContainer = styled(Form.Field)``;

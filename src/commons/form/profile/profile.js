@@ -10,6 +10,7 @@ import { fillingData } from './data/fillingdata';
 import { stratigraphyData } from './data/stratigraphydata';
 import ProfileInstrument from './components/profileInstrument/profileInstrument';
 import { profileKinds } from './data/profileKinds';
+import TranslationText from '../translationText';
 
 const Profile = props => {
   const { user, borehole } = useSelector(state => ({
@@ -26,6 +27,7 @@ const Profile = props => {
   const [reloadAttribute, setReloadAttribute] = useState(0);
   const [attributesBasedKind, setAttributesBasedKind] = useState(null);
   const [stratigraphyKind, setStratigraphyKind] = useState(null);
+  const [showAllInstrument, setShowAllInstrument] = useState(false);
 
   useEffect(() => {
     if (
@@ -113,14 +115,22 @@ const Profile = props => {
             setSelectedStratigraphy: e => {
               setSelectedStratigraphy(e);
               setSelectedLayer(null);
+              setShowAllInstrument(false);
+            },
+            showAllInstrument,
+            setShowAllInstrument: () => {
+              setSelectedStratigraphy(null);
+
+              setShowAllInstrument(!showAllInstrument);
             },
             reloadHeader,
           }}
         />
       )}
-      {!selectedStratigraphy && (
+
+      {!selectedStratigraphy && !showAllInstrument && (
         <Styled.Empty>
-          Please Add new Stratigraphy with pressing Editing!
+          <TranslationText id="nothingToShow" />
         </Styled.Empty>
       )}
 
@@ -166,13 +176,13 @@ const Profile = props => {
           )}
         </Styled.Container>
       )}
-      {stratigraphyKind?.kind === 'instruments' && selectedStratigraphy && (
+      {stratigraphyKind?.kind === 'instruments' && borehole.data.id && (
         <ProfileInstrument
           data={{
             boreholeID: borehole.data.id,
+            showAllInstrument,
             selectedStratigraphyID: selectedStratigraphy?.id,
             isEditable,
-            selectedLayer,
             reloadLayer,
             onUpdated: OnUpdated,
           }}
