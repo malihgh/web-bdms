@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import * as Styled from './styles';
 import { Checkbox, Input, TextArea, Form } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
@@ -67,29 +67,38 @@ const ProfileAttributes = props => {
     },
   });
 
-  useEffect(() => {
-    load(id);
-    setShowAll(false);
-  }, [id, reloadAttribute]);
+  const mounted = useRef(false);
 
-  const load = id => {
-    if (id === null) setState({ state: null });
+  const load = useCallback(async id => {
     if (_.isInteger(id)) {
-      setState({ isFetching: true });
-      getLayerAttributes(id)
-        .then(function (response) {
-          if (response.data.success) {
-            setState({
-              isFetching: false,
-              layer: response.data.data,
-            });
-          }
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
+      const data = await getLayerAttributes(id);
+
+      if (mounted.current) {
+        if (data.data.success) {
+          setState({
+            isFetching: false,
+            layer: data.data.data,
+          });
+        } else {
+          alert(data.data.message);
+        }
+      }
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    mounted.current = true;
+
+    if (id && mounted.current) {
+      load(id);
+      setShowAll(false);
+    } else if (id === null) {
+      setState({ state: null });
+    }
+    return () => {
+      mounted.current = false;
+    };
+  }, [id, reloadAttribute, load]);
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     if (!isEditable) {
