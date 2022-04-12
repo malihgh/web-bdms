@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import * as Styled from './styles';
 import { Button, Icon } from 'semantic-ui-react';
 import TranslationText from './../../../translationText';
-import PropTypes from 'prop-types';
 import DateText from '../../../dateText';
 import { getProfiles, createStratigraphy } from '@ist-supsi/bmsjs';
 import { useTranslation } from 'react-i18next';
@@ -12,55 +11,54 @@ const ProfileHeader = props => {
     boreholeID,
     kind,
     isEditable,
-    selectedStratigraphy,
-    setSelectedStratigraphy,
+
     reloadHeader,
     showAllInstrument,
     setShowAllInstrument,
   } = props.data;
+  const { selectedStratigraphy, setSelectedStratigraphy, onClear } = props;
   const { t } = useTranslation();
   const [profiles, setProfiles] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
   const [isCasingNull, setIsCasingNull] = useState(true);
 
-  const getData = useCallback((id, kind) => {
-    getProfiles(id, kind)
-      .then(response => {
-        if (response.data.success) {
-          setProfiles(response.data.data);
-          if (kind === 3002) {
-            if (response.data.data.length > 0) {
-              setIsCasingNull(false);
-            } else {
-              setIsCasingNull(true);
+  const getData = useCallback(
+    (id, kind) => {
+      let myKind = kind !== 3003 ? kind : 3002;
+      getProfiles(id, myKind)
+        .then(response => {
+          if (response.data.success) {
+            setProfiles(response.data.data);
+            if (myKind === 3002) {
+              if (response.data.data.length > 0) {
+                setIsCasingNull(false);
+              } else {
+                setIsCasingNull(true);
+              }
             }
+
+            if (!selectedStratigraphy && kind !== 3003) {
+              setSelectedStratigraphy(response.data.data[0]);
+            }
+          } else {
+            alert(response.data.message);
           }
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
-
-  const myKind = kind !== 3003 ? kind : 3002;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    [selectedStratigraphy, setSelectedStratigraphy],
+  );
 
   useEffect(() => {
-    if (boreholeID) getData(boreholeID, myKind);
-  }, [boreholeID, reloadHeader, myKind, getData]);
+    if (boreholeID) {
+      getData(boreholeID, kind);
+    }
+  }, [boreholeID, reloadHeader, kind, getData]);
 
   useEffect(() => {
-    setSelectedItem(null);
     setProfiles([]);
   }, [kind]);
-
-  useEffect(() => {
-    if (!selectedItem) {
-      setSelectedItem(profiles[0]);
-      setSelectedStratigraphy(profiles[0]);
-    }
-  }, [selectedItem, profiles, setSelectedStratigraphy]);
 
   const createNewStratigraphy = () => {
     createStratigraphy(boreholeID, kind)
@@ -101,8 +99,8 @@ const ProfileHeader = props => {
         )}
         {kind === 3003 && (
           <Button
-            disabled={showAllInstrument || isCasingNull}
             content={<TranslationText id="showAll" />}
+            disabled={showAllInstrument || isCasingNull}
             onClick={setShowAllInstrument}
             secondary
             size="small"
@@ -113,14 +111,12 @@ const ProfileHeader = props => {
           <Styled.Item
             key={item.id}
             onClick={() => {
-              setSelectedItem(item);
               setSelectedStratigraphy(item);
+              onClear();
             }}
             style={{
               borderBottom:
-                selectedStratigraphy &&
-                item.id === selectedItem?.id &&
-                '2px solid black',
+                item.id === selectedStratigraphy?.id && '2px solid black',
             }}>
             <Styled.ItemName>
               {item.primary && <Icon name="check" />}
@@ -136,9 +132,6 @@ const ProfileHeader = props => {
       </Styled.ButtonContainer>
     </Styled.Container>
   );
-};
-ProfileHeader.propTypes = {
-  t: PropTypes.func,
 };
 
 export default ProfileHeader;

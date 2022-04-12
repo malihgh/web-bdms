@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import * as Styled from './styles';
 import { useSelector } from 'react-redux';
 import ProfileHeader from './components/profileHeader';
@@ -104,6 +104,18 @@ const Profile = props => {
       setReloadAttribute(reloadAttribute => reloadAttribute + 1);
   };
 
+  const set = useCallback(
+    e => {
+      setSelectedStratigraphy(e);
+    },
+    [setSelectedStratigraphy],
+  );
+
+  const onClear = useCallback(() => {
+    setSelectedLayer(null);
+    setShowAllInstrument(false);
+  }, [setSelectedLayer, setShowAllInstrument]);
+
   return (
     <Styled.MainContainer>
       {stratigraphyKind && borehole.data.id && (
@@ -112,12 +124,7 @@ const Profile = props => {
             boreholeID: borehole.data.id,
             kind: stratigraphyKind.kindNumber,
             isEditable,
-            selectedStratigraphy,
-            setSelectedStratigraphy: e => {
-              setSelectedStratigraphy(e);
-              setSelectedLayer(null);
-              setShowAllInstrument(false);
-            },
+
             showAllInstrument,
             setShowAllInstrument: () => {
               setSelectedStratigraphy(null);
@@ -126,6 +133,9 @@ const Profile = props => {
             },
             reloadHeader,
           }}
+          onClear={onClear}
+          selectedStratigraphy={selectedStratigraphy}
+          setSelectedStratigraphy={set}
         />
       )}
 
@@ -143,7 +153,9 @@ const Profile = props => {
             <ProfileInfo
               data={{
                 kind: stratigraphyKind.kindNumber,
-                item: selectedStratigraphy,
+                selectedStratigraphyID: selectedStratigraphy
+                  ? selectedStratigraphy.id
+                  : null,
                 isEditable,
                 onUpdated: OnUpdated,
                 attribute: attributesBasedKind?.profileInfo,
