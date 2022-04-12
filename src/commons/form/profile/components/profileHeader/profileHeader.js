@@ -11,12 +11,11 @@ const ProfileHeader = props => {
     boreholeID,
     kind,
     isEditable,
-
     reloadHeader,
     showAllInstrument,
     setShowAllInstrument,
   } = props.data;
-  const { selectedStratigraphy, setSelectedStratigraphy, onClear } = props;
+  const { selectedStratigraphy, setSelectedStratigraphy } = props;
   const { t } = useTranslation();
   const [profiles, setProfiles] = useState([]);
   const [isCasingNull, setIsCasingNull] = useState(true);
@@ -112,7 +111,6 @@ const ProfileHeader = props => {
             key={item.id}
             onClick={() => {
               setSelectedStratigraphy(item);
-              onClear();
             }}
             style={{
               borderBottom:

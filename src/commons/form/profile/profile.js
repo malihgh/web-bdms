@@ -107,14 +107,11 @@ const Profile = props => {
   const set = useCallback(
     e => {
       setSelectedStratigraphy(e);
+      setSelectedLayer(null);
+      setShowAllInstrument(false);
     },
-    [setSelectedStratigraphy],
+    [setSelectedStratigraphy, setSelectedLayer, setShowAllInstrument],
   );
-
-  const onClear = useCallback(() => {
-    setSelectedLayer(null);
-    setShowAllInstrument(false);
-  }, [setSelectedLayer, setShowAllInstrument]);
 
   return (
     <Styled.MainContainer>
@@ -124,7 +121,6 @@ const Profile = props => {
             boreholeID: borehole.data.id,
             kind: stratigraphyKind.kindNumber,
             isEditable,
-
             showAllInstrument,
             setShowAllInstrument: () => {
               setSelectedStratigraphy(null);
@@ -133,7 +129,6 @@ const Profile = props => {
             },
             reloadHeader,
           }}
-          onClear={onClear}
           selectedStratigraphy={selectedStratigraphy}
           setSelectedStratigraphy={set}
         />
@@ -143,7 +138,7 @@ const Profile = props => {
         !showAllInstrument &&
         stratigraphyKind?.kind !== 'instruments' && (
           <Styled.Empty>
-            <TranslationText id="nothingToShow" />
+            <TranslationText id="msgStartigraphyEmpty" />
           </Styled.Empty>
         )}
 
@@ -152,7 +147,7 @@ const Profile = props => {
           <Styled.FirstColumn>
             <ProfileInfo
               data={{
-                kind: stratigraphyKind.kindNumber,
+                kind: stratigraphyKind.kind,
                 selectedStratigraphyID: selectedStratigraphy
                   ? selectedStratigraphy.id
                   : null,

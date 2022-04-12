@@ -197,21 +197,25 @@ const InfoList = props => {
             paddingLeft: '5px',
             zIndex: 0,
           }}>
-          <Checkbox
-            checked={state.profileInfo && state.profileInfo.primary}
-            label=""
-            onChange={(ev, data) => {
-              if (data.checked === true) {
-                updateChange('primary', data.checked, false);
-              }
-            }}
-            toggle
-          />
-          <TranslationText id="mainStratigraphy" />
+          {kind !== 'casing' && (
+            <>
+              <Checkbox
+                checked={state.profileInfo && state.profileInfo.primary}
+                label=""
+                onChange={(ev, data) => {
+                  if (data.checked === true) {
+                    updateChange('primary', data.checked, false);
+                  }
+                }}
+                toggle
+              />
+              <TranslationText id="mainStratigraphy" />
+            </>
+          )}
         </Form>
         {isEditable && (
           <div style={{ display: 'flex' }}>
-            {kind !== 3004 && (
+            {kind !== 'filling' && (
               <Button
                 // disabled={!_.isEmpty(state.consistency)}
                 icon
