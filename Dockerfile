@@ -4,7 +4,9 @@ RUN mkdir /app
 WORKDIR /app
 COPY ./ /app/
 ARG PUBLIC_URL=''
-RUN sh -c "PUBLIC_URL=$PUBLIC_URL; npm install && npm run build" 
+ARG NODE_OPTIONS='--openssl-legacy-provider'
+RUN npm install
+RUN npm run build
 
 # Final image stage
 FROM nginx:1.20.0-alpine
