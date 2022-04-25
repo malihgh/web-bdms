@@ -159,9 +159,11 @@ const ProfileLayersError = props => {
 
       {showSolution === id && !isDelete && (
         <Styled.SolutionContainer>
-          <Styled.HowToResolveContainer>
-            <TranslationText id="errorHowToResolve" />
-          </Styled.HowToResolveContainer>
+          {error.id !== 5 && (
+            <Styled.HowToResolveContainer>
+              <TranslationText id="errorHowToResolve" />
+            </Styled.HowToResolveContainer>
+          )}
           {error?.solutions?.map((e, index) => (
             <div key={index} style={{ marginTop: 2 }}>
               {error.solutions.length > 1 && (
