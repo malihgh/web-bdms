@@ -59,8 +59,9 @@ If you are preparing a beta just change the version:
 
 ```bash
 version=$(cat ./VERSION.txt)-beta.$(date +%Y%m%d)
-docker build -t ghcr.io/geoadmin/web-bdms/service-bdms-nginx:$version .
-docker push ghcr.io/geoadmin/web-bdms/service-bdms-nginx:$version
+username=geoadmin
+docker build -t ghcr.io/$username/web-bdms/service-bdms-nginx:$version .
+docker push ghcr.io/$username/web-bdms/service-bdms-nginx:$version
 ```
 
 Stable release:

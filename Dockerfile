@@ -1,5 +1,5 @@
 # Build Stage
-FROM node:12.16.2-alpine3.11 as build-stage-web
+FROM node:17.6.0-alpine3.15 as build-stage-web
 RUN mkdir /app
 WORKDIR /app
 COPY ./ /app/
