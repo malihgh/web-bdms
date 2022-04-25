@@ -41,7 +41,7 @@ const ProfileInstrument = props => {
         if (response.data.success) {
           setState(prevState => ({
             ...prevState,
-            instrumentID: response.data.data.id,
+            instrumentID: response.data.id,
           }));
         } else {
           alert(response.data.message);
@@ -77,18 +77,25 @@ const ProfileInstrument = props => {
     getProfiles(boreholeID, 3002)
       .then(response => {
         if (response.data.success) {
-          for (const e of response.data.data) {
-            setCasing(prevState => {
-              return [
-                ...prevState,
-                {
-                  key: e.id,
-                  value: e.id,
-                  text:
-                    e.name === null || e.name === '' ? t('common:np') : e.name,
-                },
-              ];
-            });
+          if (response.data.data.length > 0) {
+            for (const e of response.data.data) {
+              setCasing(prevState => {
+                return [
+                  ...prevState,
+                  {
+                    key: e.id,
+                    value: e.id,
+                    text:
+                      e.name === null || e.name === ''
+                        ? t('common:np')
+                        : e.name,
+                  },
+                ];
+              });
+            }
+            getInstrumentProfile();
+          } else {
+            setCasing([]);
           }
         } else {
           alert(response.data.message);
@@ -97,12 +104,11 @@ const ProfileInstrument = props => {
       .catch(error => {
         console.error(error);
       });
-  }, [boreholeID, t]);
+  }, [boreholeID, t, getInstrumentProfile]);
 
   useEffect(() => {
-    getInstrumentProfile();
     getCasingProfile();
-  }, [getInstrumentProfile, getCasingProfile]);
+  }, [getCasingProfile]);
 
   const getData = useCallback(
     (instrumentID, isAll) => {
