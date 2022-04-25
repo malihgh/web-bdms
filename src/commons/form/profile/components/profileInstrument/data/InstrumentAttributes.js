@@ -1,8 +1,8 @@
-export const attributes = [
+export const InstrumentAttributes = [
   {
     id: 0,
     type: 'Input',
-    label: 'from',
+    label: 'fromMeters',
     value: 'depth_from',
     require: true,
     isNumber: true,
@@ -10,13 +10,20 @@ export const attributes = [
   {
     id: 1,
     type: 'Input',
-    label: 'to',
+    label: 'toMeters',
     value: 'depth_to',
     require: true,
     isNumber: true,
   },
   {
     id: 2,
+    type: 'Input',
+    label: 'instrumentId',
+    value: 'instrument_id',
+    require: true,
+  },
+  {
+    id: 3,
     type: 'Dropdown',
     label: 'kindInstrument',
     value: 'instrument_kind',
@@ -26,7 +33,7 @@ export const attributes = [
     search: false,
   },
   {
-    id: 3,
+    id: 4,
     type: 'Dropdown',
     label: 'status',
     value: 'instrument_status',
@@ -36,7 +43,7 @@ export const attributes = [
     search: false,
   },
   {
-    id: 4,
+    id: 5,
     type: 'CasingDropdown',
     label: 'casing',
     value: 'casing_id',
@@ -46,13 +53,13 @@ export const attributes = [
     search: false,
   },
   {
-    id: 5,
+    id: 6,
     type: 'Input',
     label: 'layer_notes',
     value: 'notes',
   },
   {
-    id: 6,
+    id: 7,
     type: 'Button',
     label: 'delete',
     value: '',

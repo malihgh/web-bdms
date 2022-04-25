@@ -4,7 +4,7 @@ import { Input, Form, Button, Dropdown } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
 import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
 import { patchLayer } from '@ist-supsi/bmsjs';
-import { attributes } from '../../data/attributes';
+import { InstrumentAttributes } from '../../data/InstrumentAttributes';
 import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
 
@@ -25,6 +25,7 @@ const Instrument = props => {
       notes: null,
       instrument_status: null,
       casing_id: null,
+      instrument_id: null,
     },
   });
   useEffect(() => {
@@ -83,7 +84,7 @@ const Instrument = props => {
   };
   return (
     <Styled.FormContainer>
-      {attributes.map((item, key) => (
+      {InstrumentAttributes.map((item, key) => (
         <Form autoComplete="false" error key={key} size="small">
           <Styled.AttributesContainer required={item.require}>
             {index === 0 && (
