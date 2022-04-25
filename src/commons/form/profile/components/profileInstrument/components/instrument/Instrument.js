@@ -89,7 +89,7 @@ const Instrument = props => {
           <Styled.AttributesContainer required={item.require}>
             {index === 0 && (
               <Styled.Label>
-                <TranslationText id={item.label} />
+                <TranslationText id={item.label} firstUpperCase />
               </Styled.Label>
             )}
 
