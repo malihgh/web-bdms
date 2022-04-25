@@ -7,15 +7,13 @@ import { getProfiles, createStratigraphy } from '@ist-supsi/bmsjs';
 import { useTranslation } from 'react-i18next';
 
 const ProfileHeader = props => {
+  const { boreholeID, kind, isEditable, reloadHeader, showAllInstrument } =
+    props.data;
   const {
-    boreholeID,
-    kind,
-    isEditable,
-    reloadHeader,
-    showAllInstrument,
+    selectedStratigraphy,
+    setSelectedStratigraphy,
     setShowAllInstrument,
-  } = props.data;
-  const { selectedStratigraphy, setSelectedStratigraphy } = props;
+  } = props;
   const { t } = useTranslation();
   const [profiles, setProfiles] = useState([]);
   const [isCasingNull, setIsCasingNull] = useState(true);
@@ -37,6 +35,12 @@ const ProfileHeader = props => {
 
             if (!selectedStratigraphy && kind !== 3003) {
               setSelectedStratigraphy(response.data.data[0]);
+            } else if (
+              !selectedStratigraphy &&
+              kind === 3003 &&
+              !showAllInstrument
+            ) {
+              setShowAllInstrument();
             }
           } else {
             alert(response.data.message);
@@ -46,7 +50,12 @@ const ProfileHeader = props => {
           console.error(error);
         });
     },
-    [selectedStratigraphy, setSelectedStratigraphy],
+    [
+      selectedStratigraphy,
+      setSelectedStratigraphy,
+      setShowAllInstrument,
+      showAllInstrument,
+    ],
   );
 
   useEffect(() => {
