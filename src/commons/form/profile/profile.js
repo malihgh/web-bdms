@@ -134,11 +134,22 @@ const Profile = props => {
           setShowAllInstrument={setShowAllInstrumentFunc}
         />
       )}
+
       {!selectedStratigraphy &&
         !showAllInstrument &&
-        stratigraphyKind?.kind !== 'instruments' && (
+        stratigraphyKind?.kind !== 'instruments' &&
+        stratigraphyKind?.kind !== 'casing' && (
           <Styled.Empty>
             <TranslationText id="msgStartigraphyEmpty" />
+          </Styled.Empty>
+        )}
+
+      {!selectedStratigraphy &&
+        !showAllInstrument &&
+        stratigraphyKind?.kind !== 'instruments' &&
+        stratigraphyKind?.kind === 'casing' && (
+          <Styled.Empty>
+            <TranslationText id="msgCasingEmpty" />
           </Styled.Empty>
         )}
 
