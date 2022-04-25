@@ -113,6 +113,11 @@ const Profile = props => {
     [setSelectedStratigraphy, setSelectedLayer, setShowAllInstrument],
   );
 
+  const setShowAllInstrumentFunc = useCallback(() => {
+    setSelectedStratigraphy(null);
+    setShowAllInstrument(!showAllInstrument);
+  }, [setSelectedStratigraphy, showAllInstrument]);
+
   return (
     <Styled.MainContainer>
       {stratigraphyKind && borehole.data.id && (
@@ -122,18 +127,13 @@ const Profile = props => {
             kind: stratigraphyKind.kindNumber,
             isEditable,
             showAllInstrument,
-            setShowAllInstrument: () => {
-              setSelectedStratigraphy(null);
-
-              setShowAllInstrument(!showAllInstrument);
-            },
             reloadHeader,
           }}
           selectedStratigraphy={selectedStratigraphy}
           setSelectedStratigraphy={set}
+          setShowAllInstrument={setShowAllInstrumentFunc}
         />
       )}
-
       {!selectedStratigraphy &&
         !showAllInstrument &&
         stratigraphyKind?.kind !== 'instruments' && (
