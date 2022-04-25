@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import * as Styled from './styles';
 import { getProfileLayers, createLayer } from '@ist-supsi/bmsjs';
 import { Icon, Button, Popup } from 'semantic-ui-react';
@@ -17,26 +17,30 @@ const ProfileLayers = props => {
   const [layers, setLayers] = useState(null);
   const [showDelete, setShowDelete] = useState();
 
-  const getData = useCallback(stratigraphyID => {
-    getProfileLayers(stratigraphyID, true)
-      .then(response => {
-        if (response.data.success) {
-          setLayers(response.data);
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  const mounted = useRef(false);
+
+  const getData = useCallback(async stratigraphyID => {
+    const data = await getProfileLayers(stratigraphyID, true);
+    if (mounted.current) {
+      if (data.data.success) {
+        setLayers(data.data);
+      } else {
+        alert(data.data.message);
+      }
+    }
   }, []);
 
   useEffect(() => {
-    if (selectedStratigraphyID) {
+    mounted.current = true;
+
+    if (selectedStratigraphyID && mounted.current) {
       getData(selectedStratigraphyID);
     } else {
       setLayers(null);
     }
+    return () => {
+      mounted.current = false;
+    };
   }, [selectedStratigraphyID, reloadLayer, getData]);
 
   const createNewLayer = () => {

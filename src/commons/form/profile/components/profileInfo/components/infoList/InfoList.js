@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import * as Styled from './styles';
 import { Input, Form } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 const InfoList = props => {
   const { attribute, id, isEditable, onUpdated, kind } = props.data;
 
+  const mounted = useRef(false);
   const { t } = useTranslation();
 
   const [state, setState] = useState({
@@ -40,26 +41,27 @@ const InfoList = props => {
     },
   });
 
-  const getData = useCallback(id => {
-    getProfile(id)
-      .then(response => {
-        if (response.data.success) {
-          setState(prevState => ({
-            ...prevState,
-            isFetching: false,
-            profileInfo: response.data.data,
-          }));
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  const getData = useCallback(async id => {
+    const data = await getProfile(id);
+    if (mounted.current) {
+      if (data.data.success) {
+        setState({
+          isFetching: false,
+          profileInfo: data.data.data,
+        });
+      } else {
+        alert(data.data.message);
+      }
+    }
   }, []);
 
   useEffect(() => {
-    getData(id);
+    mounted.current = true; // Will set it to true on mount ...
+    if (id && mounted.current) getData(id);
+    else setState({});
+    return () => {
+      mounted.current = false;
+    }; // ... and to false on unmount
   }, [id, getData]);
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
@@ -195,21 +197,25 @@ const InfoList = props => {
             paddingLeft: '5px',
             zIndex: 0,
           }}>
-          <Checkbox
-            checked={state.profileInfo && state.profileInfo.primary}
-            label=""
-            onChange={(ev, data) => {
-              if (data.checked === true) {
-                updateChange('primary', data.checked, false);
-              }
-            }}
-            toggle
-          />
-          <TranslationText id="mainStratigraphy" />
+          {kind !== 'casing' && (
+            <>
+              <Checkbox
+                checked={state.profileInfo && state.profileInfo.primary}
+                label=""
+                onChange={(ev, data) => {
+                  if (data.checked === true) {
+                    updateChange('primary', data.checked, false);
+                  }
+                }}
+                toggle
+              />
+              <TranslationText id="mainStratigraphy" />
+            </>
+          )}
         </Form>
         {isEditable && (
           <div style={{ display: 'flex' }}>
-            {kind !== 3004 && (
+            {kind !== 'filling' && (
               <Button
                 // disabled={!_.isEmpty(state.consistency)}
                 icon

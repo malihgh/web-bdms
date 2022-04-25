@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import * as Styled from './styles';
 import { useSelector } from 'react-redux';
 import ProfileHeader from './components/profileHeader';
@@ -104,6 +104,15 @@ const Profile = props => {
       setReloadAttribute(reloadAttribute => reloadAttribute + 1);
   };
 
+  const set = useCallback(
+    e => {
+      setSelectedStratigraphy(e);
+      setSelectedLayer(null);
+      setShowAllInstrument(false);
+    },
+    [setSelectedStratigraphy, setSelectedLayer, setShowAllInstrument],
+  );
+
   return (
     <Styled.MainContainer>
       {stratigraphyKind && borehole.data.id && (
@@ -112,12 +121,6 @@ const Profile = props => {
             boreholeID: borehole.data.id,
             kind: stratigraphyKind.kindNumber,
             isEditable,
-            selectedStratigraphy,
-            setSelectedStratigraphy: e => {
-              setSelectedStratigraphy(e);
-              setSelectedLayer(null);
-              setShowAllInstrument(false);
-            },
             showAllInstrument,
             setShowAllInstrument: () => {
               setSelectedStratigraphy(null);
@@ -126,6 +129,8 @@ const Profile = props => {
             },
             reloadHeader,
           }}
+          selectedStratigraphy={selectedStratigraphy}
+          setSelectedStratigraphy={set}
         />
       )}
 
@@ -133,7 +138,7 @@ const Profile = props => {
         !showAllInstrument &&
         stratigraphyKind?.kind !== 'instruments' && (
           <Styled.Empty>
-            <TranslationText id="nothingToShow" />
+            <TranslationText id="msgStartigraphyEmpty" />
           </Styled.Empty>
         )}
 
@@ -142,8 +147,10 @@ const Profile = props => {
           <Styled.FirstColumn>
             <ProfileInfo
               data={{
-                kind: stratigraphyKind.kindNumber,
-                item: selectedStratigraphy,
+                kind: stratigraphyKind.kind,
+                selectedStratigraphyID: selectedStratigraphy
+                  ? selectedStratigraphy.id
+                  : null,
                 isEditable,
                 onUpdated: OnUpdated,
                 attribute: attributesBasedKind?.profileInfo,
