@@ -26,6 +26,7 @@ const InfoList = props => {
     updateAttributeDelay: {},
     profileInfo: {
       id: null,
+      casng_id: null,
       kind: null,
       casng_kind: null,
       fill_kind: null,
