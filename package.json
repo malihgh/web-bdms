@@ -1,12 +1,16 @@
 {
   "name": "bdms",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Bohrehole Data Management System",
   "private": true,
   "proxy": "http://localhost:8888/",
   "author": "SUPSI <geoservice@supsi.ch> (https://github.com/ist-supsi)",
   "contributors": [
-    "Milan P. Antonovic <milan.antonovic@supsi.ch> (https://github.com/mantonovic)"
+    "Milan Antonovic <milan.antonovic@supsi.ch> (https://github.com/mantonovic)",
+    "Maliheh Ghasemian <maliheh.ghasemian@supsi.ch> (https://github.com/malihgh)",
+    "Massimiliano Cannata <massimiliano.cannata@supsi.ch> (https://github.com/massimiliano-cannata)",
+    "Marcus Hoffmann <marcus.hoffmann@supsi.ch> (https://github.com/marcuso45)",
+    "Davide Zanin <davide.zanin@supsi.ch> (https://github.com/dzanin)"
   ],
   "dependencies": {
     "@ist-supsi/bmsjs": "1.0.12",
