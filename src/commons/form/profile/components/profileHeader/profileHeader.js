@@ -5,6 +5,7 @@ import TranslationText from './../../../translationText';
 import DateText from '../../../dateText';
 import { useTranslation } from 'react-i18next';
 import { getData, createNewStratigraphy } from './api';
+import { profileKind } from '../../constance';
 
 const ProfileHeader = props => {
   const { boreholeID, kind, isEditable, reloadHeader, showAllInstrument } =
@@ -20,16 +21,20 @@ const ProfileHeader = props => {
 
   const setSpecialData = useCallback(
     (myKind, data) => {
-      if (myKind === 3002) {
+      if (myKind === profileKind.CASING) {
         if (data.length > 0) {
           setIsCasingNull(false);
         } else {
           setIsCasingNull(true);
         }
       }
-      if (!selectedStratigraphy && kind !== 3003) {
+      if (!selectedStratigraphy && kind !== profileKind.INSTRUMENT) {
         setSelectedStratigraphy(data[0]);
-      } else if (!selectedStratigraphy && kind === 3003 && !showAllInstrument) {
+      } else if (
+        !selectedStratigraphy &&
+        kind === profileKind.INSTRUMENT &&
+        !showAllInstrument
+      ) {
         setShowAllInstrument();
       }
     },
@@ -43,7 +48,7 @@ const ProfileHeader = props => {
   );
 
   const setData = useCallback((id, kind) => {
-    let myKind = kind !== 3003 ? kind : 3002;
+    let myKind = kind !== profileKind.INSTRUMENT ? kind : profileKind.CASING;
     getData(id, myKind).then(data => {
       if (data) {
         setProfiles(data);
@@ -73,27 +78,27 @@ const ProfileHeader = props => {
   return (
     <Styled.Container>
       <Styled.ButtonContainer>
-        {isEditable && kind !== 3003 && (
+        {isEditable && kind !== profileKind.INSTRUMENT && (
           <Button
             content={
-              kind === 3000 ? (
+              kind === profileKind.STRATIGRAPHY ? (
                 <TranslationText id="stratigraphy" />
-              ) : kind === 3002 ? (
+              ) : kind === profileKind.CASING ? (
                 <TranslationText id="casing" />
-              ) : kind === 3004 ? (
+              ) : kind === profileKind.FILLING ? (
                 <TranslationText id="filling" />
               ) : (
                 ''
               )
             }
-            disabled={kind === 3004 && profiles?.length > 0}
+            disabled={kind === profileKind.FILLING && profiles?.length > 0}
             icon="add"
             onClick={createStratigraphy}
             secondary
             size="small"
           />
         )}
-        {kind === 3003 && (
+        {kind === profileKind.INSTRUMENT && (
           <Button
             content={<TranslationText id="showAll" />}
             disabled={showAllInstrument || isCasingNull}
