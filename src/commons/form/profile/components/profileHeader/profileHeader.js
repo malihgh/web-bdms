@@ -3,9 +3,9 @@ import * as Styled from './styles';
 import { Button, Icon } from 'semantic-ui-react';
 import TranslationText from './../../../translationText';
 import DateText from '../../../dateText';
-import { getProfiles, createStratigraphy } from '@ist-supsi/bmsjs';
+import { createStratigraphy } from '@ist-supsi/bmsjs';
 import { useTranslation } from 'react-i18next';
-
+import { getData } from './api';
 const ProfileHeader = props => {
   const { boreholeID, kind, isEditable, reloadHeader, showAllInstrument } =
     props.data;
@@ -18,37 +18,30 @@ const ProfileHeader = props => {
   const [profiles, setProfiles] = useState([]);
   const [isCasingNull, setIsCasingNull] = useState(true);
 
-  const getData = useCallback(
+  const setData = useCallback(
     (id, kind) => {
       let myKind = kind !== 3003 ? kind : 3002;
-      getProfiles(id, myKind)
-        .then(response => {
-          if (response.data.success) {
-            setProfiles(response.data.data);
-            if (myKind === 3002) {
-              if (response.data.data.length > 0) {
-                setIsCasingNull(false);
-              } else {
-                setIsCasingNull(true);
-              }
+      getData(id, myKind).then(data => {
+        if (data) {
+          setProfiles(data);
+          if (myKind === 3002) {
+            if (data.length > 0) {
+              setIsCasingNull(false);
+            } else {
+              setIsCasingNull(true);
             }
-
-            if (!selectedStratigraphy && kind !== 3003) {
-              setSelectedStratigraphy(response.data.data[0]);
-            } else if (
-              !selectedStratigraphy &&
-              kind === 3003 &&
-              !showAllInstrument
-            ) {
-              setShowAllInstrument();
-            }
-          } else {
-            alert(response.data.message);
           }
-        })
-        .catch(error => {
-          console.error(error);
-        });
+          if (!selectedStratigraphy && kind !== 3003) {
+            setSelectedStratigraphy(data[0]);
+          } else if (
+            !selectedStratigraphy &&
+            kind === 3003 &&
+            !showAllInstrument
+          ) {
+            setShowAllInstrument();
+          }
+        }
+      });
     },
     [
       selectedStratigraphy,
@@ -60,9 +53,9 @@ const ProfileHeader = props => {
 
   useEffect(() => {
     if (boreholeID) {
-      getData(boreholeID, kind);
+      setData(boreholeID, kind);
     }
-  }, [boreholeID, reloadHeader, kind, getData]);
+  }, [boreholeID, reloadHeader, kind, setData]);
 
   useEffect(() => {
     setProfiles([]);
@@ -72,7 +65,7 @@ const ProfileHeader = props => {
     createStratigraphy(boreholeID, kind)
       .then(response => {
         if (response.data.success) {
-          getData(boreholeID, kind);
+          setData(boreholeID, kind);
         } else {
           alert(response.data.message);
         }
@@ -98,7 +91,7 @@ const ProfileHeader = props => {
                 ''
               )
             }
-            disabled={kind === 3004 && profiles.length > 0}
+            disabled={kind === 3004 && profiles?.length > 0}
             icon="add"
             onClick={createNewStratigraphy}
             secondary
