@@ -1,4 +1,4 @@
-import { getProfiles } from '@ist-supsi/bmsjs';
+import { getProfiles, createStratigraphy } from '@ist-supsi/bmsjs';
 
 let data = [];
 export const getData = async (id, kind) => {
@@ -15,4 +15,20 @@ export const getData = async (id, kind) => {
     });
 
   return data;
+};
+
+let createdNewStratigraphy = false;
+export const createNewStratigraphy = async (id, kind) => {
+  await createStratigraphy(id, kind)
+    .then(response => {
+      if (response.data.success) {
+        createdNewStratigraphy = true;
+      } else {
+        alert(response.data.message);
+      }
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+  return createdNewStratigraphy;
 };

@@ -3,9 +3,9 @@ import * as Styled from './styles';
 import { Button, Icon } from 'semantic-ui-react';
 import TranslationText from './../../../translationText';
 import DateText from '../../../dateText';
-import { createStratigraphy } from '@ist-supsi/bmsjs';
 import { useTranslation } from 'react-i18next';
-import { getData } from './api';
+import { getData, createNewStratigraphy } from './api';
+
 const ProfileHeader = props => {
   const { boreholeID, kind, isEditable, reloadHeader, showAllInstrument } =
     props.data;
@@ -18,38 +18,39 @@ const ProfileHeader = props => {
   const [profiles, setProfiles] = useState([]);
   const [isCasingNull, setIsCasingNull] = useState(true);
 
-  const setData = useCallback(
-    (id, kind) => {
-      let myKind = kind !== 3003 ? kind : 3002;
-      getData(id, myKind).then(data => {
-        if (data) {
-          setProfiles(data);
-          if (myKind === 3002) {
-            if (data.length > 0) {
-              setIsCasingNull(false);
-            } else {
-              setIsCasingNull(true);
-            }
-          }
-          if (!selectedStratigraphy && kind !== 3003) {
-            setSelectedStratigraphy(data[0]);
-          } else if (
-            !selectedStratigraphy &&
-            kind === 3003 &&
-            !showAllInstrument
-          ) {
-            setShowAllInstrument();
-          }
+  const setSpecialData = useCallback(
+    (myKind, data) => {
+      if (myKind === 3002) {
+        if (data.length > 0) {
+          setIsCasingNull(false);
+        } else {
+          setIsCasingNull(true);
         }
-      });
+      }
+      if (!selectedStratigraphy && kind !== 3003) {
+        setSelectedStratigraphy(data[0]);
+      } else if (!selectedStratigraphy && kind === 3003 && !showAllInstrument) {
+        setShowAllInstrument();
+      }
     },
     [
       selectedStratigraphy,
       setSelectedStratigraphy,
       setShowAllInstrument,
       showAllInstrument,
+      kind,
     ],
   );
+
+  const setData = useCallback((id, kind) => {
+    let myKind = kind !== 3003 ? kind : 3002;
+    getData(id, myKind).then(data => {
+      if (data) {
+        setProfiles(data);
+        setSpecialData(myKind, data);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (boreholeID) {
@@ -61,18 +62,12 @@ const ProfileHeader = props => {
     setProfiles([]);
   }, [kind]);
 
-  const createNewStratigraphy = () => {
-    createStratigraphy(boreholeID, kind)
-      .then(response => {
-        if (response.data.success) {
-          setData(boreholeID, kind);
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+  const createStratigraphy = () => {
+    createNewStratigraphy(boreholeID, kind).then(data => {
+      if (data) {
+        setData(boreholeID, kind);
+      }
+    });
   };
 
   return (
@@ -93,7 +88,7 @@ const ProfileHeader = props => {
             }
             disabled={kind === 3004 && profiles?.length > 0}
             icon="add"
-            onClick={createNewStratigraphy}
+            onClick={createStratigraphy}
             secondary
             size="small"
           />
