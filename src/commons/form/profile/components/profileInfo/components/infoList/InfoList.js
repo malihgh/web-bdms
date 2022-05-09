@@ -9,8 +9,8 @@ import {
   patchProfile,
   deleteStratigraphy,
   cloneStratigraphy,
-  getProfile,
 } from '@ist-supsi/bmsjs';
+import { getData } from '../../api';
 import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
 
@@ -21,7 +21,6 @@ const InfoList = props => {
   const { t } = useTranslation();
 
   const [state, setState] = useState({
-    isFetching: false,
     isPatching: false,
     updateAttributeDelay: {},
     profileInfo: {
@@ -42,28 +41,24 @@ const InfoList = props => {
     },
   });
 
-  const getData = useCallback(async id => {
-    const data = await getProfile(id);
-    if (mounted.current) {
-      if (data.data.success) {
-        setState({
-          isFetching: false,
-          profileInfo: data.data.data,
-        });
-      } else {
-        alert(data.data.message);
-      }
-    }
+  const setData = useCallback(id => {
+    getData(id).then(data => {
+      setState({ profileInfo: data });
+    });
   }, []);
 
   useEffect(() => {
-    mounted.current = true; // Will set it to true on mount ...
-    if (id && mounted.current) getData(id);
-    else setState({});
+    //using useRef for memory leak error
+    mounted.current = true;
+    if (id && mounted.current) {
+      setData(id);
+    } else {
+      setState({});
+    }
     return () => {
       mounted.current = false;
-    }; // ... and to false on unmount
-  }, [id, getData]);
+    };
+  }, [id, setData]);
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     if (!isEditable) {
