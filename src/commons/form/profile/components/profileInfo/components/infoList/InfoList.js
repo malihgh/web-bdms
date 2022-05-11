@@ -43,18 +43,16 @@ const InfoList = props => {
 
   const setData = useCallback(id => {
     getData(id).then(data => {
-      setState({ profileInfo: data });
+      if (mounted.current) setState({ profileInfo: data });
     });
   }, []);
 
   useEffect(() => {
     //using useRef for memory leak error
     mounted.current = true;
-    if (id && mounted.current) {
-      setData(id);
-    } else {
-      setState({});
-    }
+    if (id && mounted.current) setData(id);
+    else setState({});
+
     return () => {
       mounted.current = false;
     };
