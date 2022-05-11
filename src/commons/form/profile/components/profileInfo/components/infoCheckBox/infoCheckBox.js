@@ -4,6 +4,7 @@ import { Checkbox, Popup, Button, Icon } from 'semantic-ui-react';
 import { deleteStratigraphy, cloneStratigraphy } from '@ist-supsi/bmsjs';
 import { Form } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
+import { profileKind } from '../../../../constance';
 
 const infoCheckBox = props => {
   const { kind, profileInfo, updateChange, isEditable, onUpdated } = props.data;
@@ -17,7 +18,7 @@ const infoCheckBox = props => {
           paddingLeft: '5px',
           zIndex: 0,
         }}>
-        {kind !== 'casing' && (
+        {kind !== profileKind.CASING && (
           <>
             <Checkbox
               checked={profileInfo && profileInfo?.primary}
@@ -35,7 +36,7 @@ const infoCheckBox = props => {
       </Form>
       {isEditable && (
         <div style={{ display: 'flex' }}>
-          {kind !== 'filling' && (
+          {kind !== profileKind.FILLING && (
             <Button
               // disabled={!_.isEmpty(consistency)}
               icon
