@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React from 'react';
 import * as Styled from './styles';
 import { Input, Form } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
@@ -6,97 +6,16 @@ import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
 import DateField from '../../../../../dateField';
 import { Checkbox, Popup, Button, Icon } from 'semantic-ui-react';
 import { deleteStratigraphy, cloneStratigraphy } from '@ist-supsi/bmsjs';
-import { getData, sendProfile } from '../../api';
 import _ from 'lodash';
-import { useTranslation } from 'react-i18next';
 
 const InfoList = props => {
-  const { attribute, id, isEditable, onUpdated, kind } = props.data;
-
-  const mounted = useRef(false);
-  const { t } = useTranslation();
-
-  const [state, setState] = useState({
-    isPatching: false,
-    updateAttributeDelay: {},
-    profileInfo: {
-      id: null,
-      casng_id: null,
-      kind: null,
-      casng_kind: null,
-      fill_kind: null,
-      name: null,
-      primary: false,
-      date: null,
-      elevation: null,
-      elevation_ref: null,
-      date_spud: null,
-      date_fin: null,
-      date_abd: null,
-      notes: null,
-    },
-  });
-
-  const setData = useCallback(id => {
-    getData(id).then(data => {
-      if (mounted.current) setState({ profileInfo: data });
-    });
-  }, []);
-
-  useEffect(() => {
-    //using useRef for memory leak error
-    mounted.current = true;
-    if (id && mounted.current) setData(id);
-    else setState({});
-
-    return () => {
-      mounted.current = false;
-    };
-  }, [id, setData]);
-
-  const updateChange = (attribute, value, to = true, isNumber = false) => {
-    if (!isEditable) {
-      alert(t('common:errorStartEditing'));
-      return;
-    }
-    setState(prevState => ({ ...prevState, isPatching: true }));
-    _.set(state.profileInfo, attribute, value);
-
-    if (isNumber && value !== null) {
-      if (/^-?\d*[.,]?\d*$/.test(value)) {
-        patch(attribute, _.toNumber(value));
-      }
-    } else {
-      patch(attribute, value);
-    }
-  };
-
-  const patch = (attribute, value) => {
-    clearTimeout(state.updateAttributeDelay?.[attribute]);
-
-    let setDelay = setTimeout(() => {
-      sendProfile(id, attribute, value).then(res => {
-        if (res) {
-          setState(prevState => ({ ...prevState, isPatching: false }));
-          if (_.isFunction(onUpdated)) {
-            onUpdated(attribute);
-          }
-        }
-      });
-    }, 500);
-
-    Promise.resolve().then(() => {
-      setState(prevState => ({
-        ...prevState,
-        updateAttributeDelay: { [attribute]: setDelay },
-      }));
-    });
-  };
+  const { attribute, isEditable, onUpdated, kind, profileInfo, updateChange } =
+    props.data;
 
   return (
     <>
       <Styled.FormContainer>
-        {attribute.map((item, key) => (
+        {attribute?.map((item, key) => (
           <Form autoComplete="false" error key={key} size="small">
             <Styled.AttributesContainer required={item.require}>
               <Styled.Label>
@@ -120,9 +39,9 @@ const InfoList = props => {
                     spellCheck="false"
                     style={{ width: '100%' }}
                     value={
-                      _.isNil(state?.profileInfo?.[item.value])
+                      _.isNil(profileInfo?.[item.value])
                         ? ''
-                        : state.profileInfo[item.value]
+                        : profileInfo[item.value]
                     }
                   />
                 </Styled.AttributesItem>
@@ -141,9 +60,9 @@ const InfoList = props => {
                     schema={item.schema}
                     search={item.search}
                     selected={
-                      _.isNil(state?.profileInfo?.[item.value])
+                      _.isNil(profileInfo?.[item.value])
                         ? null
-                        : state.profileInfo[item.value]
+                        : profileInfo[item.value]
                     }
                   />
                 </Styled.AttributesItem>
@@ -153,9 +72,7 @@ const InfoList = props => {
                 <Styled.AttributesItem>
                   <DateField
                     date={
-                      state?.profileInfo?.[item.value]
-                        ? state.profileInfo[item.value]
-                        : null
+                      profileInfo?.[item.value] ? profileInfo[item.value] : null
                     }
                     onChange={selected => {
                       updateChange(item.value, selected, false);
@@ -179,7 +96,7 @@ const InfoList = props => {
           {kind !== 'casing' && (
             <>
               <Checkbox
-                checked={state.profileInfo && state.profileInfo.primary}
+                checked={profileInfo && profileInfo?.primary}
                 label=""
                 onChange={(ev, data) => {
                   if (data.checked === true) {
@@ -196,10 +113,10 @@ const InfoList = props => {
           <div style={{ display: 'flex' }}>
             {kind !== 'filling' && (
               <Button
-                // disabled={!_.isEmpty(state.consistency)}
+                // disabled={!_.isEmpty(consistency)}
                 icon
                 onClick={() => {
-                  cloneStratigraphy(state.profileInfo.id).then(response => {
+                  cloneStratigraphy(profileInfo?.id).then(response => {
                     onUpdated('cloneStratigraphy');
                   });
                 }}
@@ -221,13 +138,13 @@ const InfoList = props => {
               <br />
               <Button
                 icon
-                secondary
-                size="tiny"
                 onClick={() => {
-                  deleteStratigraphy(state.profileInfo.id).then(response => {
+                  deleteStratigraphy(profileInfo?.id).then(response => {
                     onUpdated('deleteStratigraphy');
                   });
-                }}>
+                }}
+                secondary
+                size="tiny">
                 <TranslationText id="yes" />
               </Button>
             </Popup>
