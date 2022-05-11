@@ -26,6 +26,8 @@ const ProfileLayersList = props => {
       item?.validation?.invertedDepth
     ) {
       setIsTopHasWarning(true);
+    } else {
+      setIsTopHasWarning(false);
     }
     if (
       item?.depth_from === null ||
@@ -33,6 +35,8 @@ const ProfileLayersList = props => {
       item?.validation?.invertedDepth
     ) {
       setShowTopPopup(true);
+    } else {
+      setShowTopPopup(false);
     }
 
     if (
@@ -42,6 +46,8 @@ const ProfileLayersList = props => {
       item?.validation?.invertedDepth
     ) {
       setIsBottomHasWarning(true);
+    } else {
+      setIsBottomHasWarning(false);
     }
     if (
       item?.depth_to === null ||
@@ -49,6 +55,8 @@ const ProfileLayersList = props => {
       item?.validation?.invertedDepth
     ) {
       setShowBottomPopup(true);
+    } else {
+      setShowBottomPopup(false);
     }
   }, [item]);
   useEffect(() => {
