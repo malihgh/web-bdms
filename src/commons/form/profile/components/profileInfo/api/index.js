@@ -1,4 +1,4 @@
-import { getProfile } from '@ist-supsi/bmsjs';
+import { getProfile, patchProfile } from '@ist-supsi/bmsjs';
 
 let data = [];
 export const getData = async id => {
@@ -15,4 +15,21 @@ export const getData = async id => {
     });
 
   return data;
+};
+
+let isSendProfile = false;
+export const sendProfile = async (id, attribute, value) => {
+  await patchProfile(id, attribute, value)
+    .then(response => {
+      if (response.data.success) {
+        isSendProfile = true;
+      } else {
+        alert(response.data.message);
+      }
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+
+  return isSendProfile;
 };

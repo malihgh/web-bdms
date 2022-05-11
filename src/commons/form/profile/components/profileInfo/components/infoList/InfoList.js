@@ -5,12 +5,8 @@ import TranslationText from '../../../../../translationText';
 import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
 import DateField from '../../../../../dateField';
 import { Checkbox, Popup, Button, Icon } from 'semantic-ui-react';
-import {
-  patchProfile,
-  deleteStratigraphy,
-  cloneStratigraphy,
-} from '@ist-supsi/bmsjs';
-import { getData } from '../../api';
+import { deleteStratigraphy, cloneStratigraphy } from '@ist-supsi/bmsjs';
+import { getData, sendProfile } from '../../api';
 import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
 
@@ -80,30 +76,21 @@ const InfoList = props => {
   const patch = (attribute, value) => {
     clearTimeout(state.updateAttributeDelay?.[attribute]);
 
-    let setDelay = {
-      [attribute]: setTimeout(() => {
-        patchProfile(id, attribute, value)
-          .then(response => {
-            if (response.data.success) {
-              setState(prevState => ({ ...prevState, isPatching: false }));
-              if (_.isFunction(onUpdated)) {
-                onUpdated(attribute);
-              }
-            } else {
-              alert(response.data.message);
-              window.location.reload();
-            }
-          })
-          .catch(function (error) {
-            console.error(error);
-          });
-      }, 500),
-    };
+    let setDelay = setTimeout(() => {
+      sendProfile(id, attribute, value).then(res => {
+        if (res) {
+          setState(prevState => ({ ...prevState, isPatching: false }));
+          if (_.isFunction(onUpdated)) {
+            onUpdated(attribute);
+          }
+        }
+      });
+    }, 500);
 
     Promise.resolve().then(() => {
       setState(prevState => ({
         ...prevState,
-        updateAttributeDelay: setDelay,
+        updateAttributeDelay: { [attribute]: setDelay },
       }));
     });
   };
