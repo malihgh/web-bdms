@@ -4,9 +4,9 @@ import { Checkbox, Input, TextArea, Form } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import DomainDropdown from '../../../domain/dropdown/domainDropdown';
 import DomainTree from '../../../domain/tree/domainTree';
-import { getLayerAttributes, patchLayer } from '@ist-supsi/bmsjs';
 import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
+import { getData, sendAttribute } from './api';
 
 const ProfileAttributes = props => {
   const { id, isEditable, onUpdated, attribute, reloadAttribute } = props.data;
@@ -69,21 +69,15 @@ const ProfileAttributes = props => {
 
   const mounted = useRef(false);
 
-  const load = useCallback(async id => {
-    if (_.isInteger(id)) {
-      const data = await getLayerAttributes(id);
-
+  const load = useCallback(id => {
+    getData(id).then(data => {
       if (mounted.current) {
-        if (data.data.success) {
-          setState({
-            isFetching: false,
-            layer: data.data.data,
-          });
-        } else {
-          alert(data.data.message);
-        }
+        setState({
+          isFetching: false,
+          layer: data,
+        });
       }
-    }
+    });
   }, []);
 
   useEffect(() => {
@@ -123,30 +117,19 @@ const ProfileAttributes = props => {
   const patch = (attribute, value) => {
     clearTimeout(state.updateAttributeDelay?.[attribute]);
 
-    let setDelay = {
-      [attribute]: setTimeout(() => {
-        patchLayer(state?.layer?.id, attribute, value)
-          .then(function (response) {
-            if (response.data.success) {
-              if (_.isFunction(onUpdated)) {
-                onUpdated(attribute);
-              }
-            } else {
-              alert(response.data.message);
-              window.location.reload();
-            }
-          })
-          .catch(function (error) {
-            console.error(error);
-          });
-      }, 500),
-    };
+    let setDelay = setTimeout(() => {
+      sendAttribute(state?.layer?.id, attribute, value).then(response => {
+        if (response) {
+          onUpdated(attribute);
+        }
+      });
+    }, 500);
 
     Promise.resolve().then(() => {
       setState(prevState => ({
         ...prevState,
         isPatching: false,
-        updateAttributeDelay: setDelay,
+        updateAttributeDelay: { [attribute]: setDelay },
       }));
     });
   };
