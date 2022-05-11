@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Icon, Popup } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
 import * as Styled from './styles';
@@ -18,7 +18,7 @@ const ProfileLayersList = props => {
   const [showTopPopup, setShowTopPopup] = useState(false);
   const [showBottomPopup, setShowBottomPopup] = useState(false);
 
-  const checkHasWarning = () => {
+  const checkHasWarning = useCallback(() => {
     if (
       item?.depth_from === null ||
       item?.validation?.topOverlap ||
@@ -50,10 +50,10 @@ const ProfileLayersList = props => {
     ) {
       setShowBottomPopup(true);
     }
-  };
+  }, [item]);
   useEffect(() => {
     checkHasWarning();
-  }, [item]);
+  }, [checkHasWarning]);
 
   return (
     <>
