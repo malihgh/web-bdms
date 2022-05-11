@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon, Popup } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
 import * as Styled from './styles';
@@ -13,6 +13,48 @@ const ProfileLayersList = props => {
     setSelectedLayer,
     item,
   } = props.data;
+  const [isTopHasWarning, setIsTopHasWarning] = useState(false);
+  const [isBottomHasWarning, setIsBottomHasWarning] = useState(false);
+  const [showTopPopup, setShowTopPopup] = useState(false);
+  const [showBottomPopup, setShowBottomPopup] = useState(false);
+
+  const checkHasWarning = () => {
+    if (
+      item?.depth_from === null ||
+      item?.validation?.topOverlap ||
+      item?.validation?.topDisjoint ||
+      item?.validation?.invertedDepth
+    ) {
+      setIsTopHasWarning(true);
+    }
+    if (
+      item?.depth_from === null ||
+      item?.validation?.missingFrom ||
+      item?.validation?.invertedDepth
+    ) {
+      setShowTopPopup(true);
+    }
+
+    if (
+      item?.depth_to === null ||
+      item?.validation?.bottomOverlap ||
+      item?.validation?.bottomDisjoint ||
+      item?.validation?.invertedDepth
+    ) {
+      setIsBottomHasWarning(true);
+    }
+    if (
+      item?.depth_to === null ||
+      item?.validation?.missingTo ||
+      item?.validation?.invertedDepth
+    ) {
+      setShowBottomPopup(true);
+    }
+  };
+  useEffect(() => {
+    checkHasWarning();
+  }, [item]);
+
   return (
     <>
       <Styled.MyCard
@@ -37,21 +79,11 @@ const ProfileLayersList = props => {
         {showDelete !== item?.id && (
           <>
             <Styled.CardInfo>
-              <Styled.Text
-                warning={
-                  item?.depth_from === null ||
-                  item?.validation?.topOverlap ||
-                  item?.validation?.topDisjoint ||
-                  item?.validation?.invertedDepth
-                }>
-                {(item?.validation?.topOverlap ||
-                  item?.validation?.topDisjoint) &&
-                  !item?.validation?.invertedDepth && (
-                    <Icon name="warning sign" style={{ color: 'red' }} />
-                  )}
-                {item?.depth_from === null ||
-                item?.validation?.missingFrom ||
-                item?.validation?.invertedDepth ? (
+              <Styled.Text warning={isTopHasWarning}>
+                {isTopHasWarning && (
+                  <Icon name="warning sign" style={{ color: 'red' }} />
+                )}
+                {showTopPopup ? (
                   <Popup
                     basic
                     content={
@@ -64,8 +96,7 @@ const ProfileLayersList = props => {
                     position="bottom left"
                     trigger={
                       <div>
-                        <Icon name="warning sign" style={{ color: 'red' }} />
-                        {item?.validation?.invertedDepth && item?.depth_from}m
+                        {item?.validation?.invertedDepth && item?.depth_from} m
                       </div>
                     }
                   />
@@ -103,21 +134,11 @@ const ProfileLayersList = props => {
                   '-'
                 )}
               </Styled.Text>
-              <Styled.Text
-                warning={
-                  item?.depth_to === null ||
-                  item?.validation?.bottomOverlap ||
-                  item?.validation?.bottomDisjoint ||
-                  item?.validation?.invertedDepth
-                }>
-                {(item?.validation?.bottomOverlap ||
-                  item?.validation?.bottomDisjoint) &&
-                  !item?.validation?.invertedDepth && (
-                    <Icon name="warning sign" style={{ color: 'red' }} />
-                  )}
-                {item?.depth_to === null ||
-                item?.validation?.missingTo ||
-                item?.validation?.invertedDepth ? (
+              <Styled.Text warning={isBottomHasWarning}>
+                {isBottomHasWarning && (
+                  <Icon name="warning sign" style={{ color: 'red' }} />
+                )}
+                {showBottomPopup ? (
                   <Popup
                     basic
                     content={
@@ -131,8 +152,7 @@ const ProfileLayersList = props => {
                     position="bottom left"
                     trigger={
                       <div>
-                        <Icon name="warning sign" style={{ color: 'red' }} />
-                        {item?.validation?.invertedDepth && item?.depth_to}m
+                        {item?.validation?.invertedDepth && item?.depth_to} m
                       </div>
                     }
                   />
