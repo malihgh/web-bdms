@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import * as Styled from './styles';
-import { getProfileLayers, createLayer } from '@ist-supsi/bmsjs';
 import { Icon, Button, Popup } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import ProfileLayersError from './components/profileLayersError';
+import { createLayerApi, getData } from './api';
 
 const ProfileLayers = props => {
   const {
@@ -19,42 +19,33 @@ const ProfileLayers = props => {
 
   const mounted = useRef(false);
 
-  const getData = useCallback(async stratigraphyID => {
-    const data = await getProfileLayers(stratigraphyID, true);
-    if (mounted.current) {
-      if (data.data.success) {
-        setLayers(data.data);
-      } else {
-        alert(data.data.message);
+  const setData = useCallback(stratigraphyID => {
+    getData(stratigraphyID).then(res => {
+      if (mounted.current) {
+        setLayers(res);
       }
-    }
+    });
   }, []);
 
   useEffect(() => {
     mounted.current = true;
 
     if (selectedStratigraphyID && mounted.current) {
-      getData(selectedStratigraphyID);
+      setData(selectedStratigraphyID);
     } else {
       setLayers(null);
     }
     return () => {
       mounted.current = false;
     };
-  }, [selectedStratigraphyID, reloadLayer, getData]);
+  }, [selectedStratigraphyID, reloadLayer, setData]);
 
   const createNewLayer = () => {
-    createLayer(selectedStratigraphyID)
-      .then(response => {
-        if (response.data.success) {
-          onUpdated('newLayer');
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+    createLayerApi(selectedStratigraphyID).then(res => {
+      if (res) {
+        onUpdated('newLayer');
+      }
+    });
   };
   return (
     <Styled.Container>
