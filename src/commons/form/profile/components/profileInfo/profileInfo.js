@@ -1,6 +1,7 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import * as Styled from './styles';
-import InfoList from './components/infoList/InfoList';
+import InfoList from './components/infoList';
+import InfoCheckBox from './components/infoCheckBox';
 import { useTranslation } from 'react-i18next';
 import { getData, sendProfile } from './api';
 import _ from 'lodash';
@@ -99,15 +100,21 @@ const ProfileInfo = props => {
         <InfoList
           data={{
             attribute,
-            id,
-            isEditable,
-            onUpdated,
-            kind,
             updateChange,
             profileInfo: state.profileInfo,
           }}
         />
       )}
+
+      <InfoCheckBox
+        data={{
+          kind,
+          profileInfo: state.profileInfo,
+          updateChange,
+          isEditable,
+          onUpdated,
+        }}
+      />
     </Styled.Container>
   );
 };
