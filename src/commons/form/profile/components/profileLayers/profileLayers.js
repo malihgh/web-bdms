@@ -3,7 +3,7 @@ import * as Styled from './styles';
 import { Button } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
 import { createLayerApi, getData } from './api';
-import ProfileLayersList from './components/profileLayersList/profileLayersList';
+import ProfileLayersValidation from './components/profileLayersValidation';
 
 const ProfileLayers = props => {
   const {
@@ -70,7 +70,7 @@ const ProfileLayers = props => {
       )}
 
       {layers !== null && layers?.data?.length !== 0 && (
-        <ProfileLayersList
+        <ProfileLayersValidation
           data={{
             layers,
             isEditable,
