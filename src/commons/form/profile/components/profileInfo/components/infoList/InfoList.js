@@ -62,10 +62,8 @@ const InfoList = props => {
     setState(prevState => ({ ...prevState, isPatching: true }));
     _.set(state.profileInfo, attribute, value);
 
-    if (isNumber) {
-      if (value === null) {
-        patch(attribute, value);
-      } else if (/^-?\d*[.,]?\d*$/.test(value)) {
+    if (isNumber && value !== null) {
+      if (/^-?\d*[.,]?\d*$/.test(value)) {
         patch(attribute, _.toNumber(value));
       }
     } else {
