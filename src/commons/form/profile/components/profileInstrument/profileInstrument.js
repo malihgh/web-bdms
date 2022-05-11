@@ -12,6 +12,7 @@ import {
   createInstrument,
 } from '@ist-supsi/bmsjs';
 import { useTranslation } from 'react-i18next';
+import { profileKind } from '../../constance';
 
 const ProfileInstrument = props => {
   const {
@@ -36,7 +37,7 @@ const ProfileInstrument = props => {
   });
 
   const CreateStratigraphy = useCallback(boreholeID => {
-    createStratigraphy(boreholeID, 3003)
+    createStratigraphy(boreholeID, profileKind.INSTRUMENT)
       .then(response => {
         if (response.data.success) {
           setState(prevState => ({
@@ -53,7 +54,7 @@ const ProfileInstrument = props => {
   }, []);
 
   const getInstrumentProfile = useCallback(() => {
-    getProfiles(boreholeID, 3003)
+    getProfiles(boreholeID, profileKind.INSTRUMENT)
       .then(response => {
         if (response.data.success) {
           if (response.data.data.length > 0) {
@@ -74,7 +75,7 @@ const ProfileInstrument = props => {
   }, [boreholeID, CreateStratigraphy]);
 
   const getCasingProfile = useCallback(() => {
-    getProfiles(boreholeID, 3002)
+    getProfiles(boreholeID, profileKind.CASING)
       .then(response => {
         if (response.data.success) {
           if (response.data.data.length > 0) {
