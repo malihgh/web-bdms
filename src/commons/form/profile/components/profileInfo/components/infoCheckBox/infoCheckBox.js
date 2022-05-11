@@ -5,7 +5,7 @@ import { deleteStratigraphy, cloneStratigraphy } from '@ist-supsi/bmsjs';
 import TranslationText from '../../../../../translationText';
 import { profileKind } from '../../../../constance';
 
-const infoCheckBox = props => {
+const InfoCheckBox = props => {
   const { kind, profileInfo, updateChange, isEditable, onUpdated } = props.data;
 
   return (
@@ -72,4 +72,4 @@ const infoCheckBox = props => {
   );
 };
 
-export default infoCheckBox;
+export default InfoCheckBox;
