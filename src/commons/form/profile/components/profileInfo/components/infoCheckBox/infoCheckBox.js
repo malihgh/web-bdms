@@ -2,7 +2,6 @@ import React from 'react';
 import * as Styled from './styles';
 import { Checkbox, Popup, Button, Icon } from 'semantic-ui-react';
 import { deleteStratigraphy, cloneStratigraphy } from '@ist-supsi/bmsjs';
-import { Form } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
 import { profileKind } from '../../../../constance';
 
@@ -11,13 +10,7 @@ const infoCheckBox = props => {
 
   return (
     <Styled.CheckBoxContainer>
-      <Form
-        size="small"
-        style={{
-          display: 'flex',
-          paddingLeft: '5px',
-          zIndex: 0,
-        }}>
+      <Styled.FormContainer size="small">
         {kind !== profileKind.CASING && (
           <>
             <Checkbox
@@ -33,7 +26,7 @@ const infoCheckBox = props => {
             <TranslationText id="mainStratigraphy" />
           </>
         )}
-      </Form>
+      </Styled.FormContainer>
       {isEditable && (
         <div style={{ display: 'flex' }}>
           {kind !== profileKind.FILLING && (
