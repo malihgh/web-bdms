@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
 import { Icon, Radio, Form, Input } from 'semantic-ui-react';
-import TranslationText from '../../../translationText';
+import TranslationText from '../../../../../translationText';
 import { gapLayer, addBedrock, deleteLayer } from '@ist-supsi/bmsjs';
 import ErrorTypes from './errorTypes';
 const ProfileLayersError = props => {

@@ -3,7 +3,7 @@ import * as Styled from './styles';
 import { getProfileLayers, createLayer } from '@ist-supsi/bmsjs';
 import { Icon, Button, Popup } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
-import ProfileLayersError from '../profileLayersError/profileLayersError';
+import ProfileLayersError from './components/profileLayersError';
 
 const ProfileLayers = props => {
   const {
