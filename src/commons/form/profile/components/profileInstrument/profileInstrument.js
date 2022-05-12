@@ -3,16 +3,16 @@ import * as Styled from './styles';
 import Instrument from './components/instrument';
 import { Button } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
-import {
-  getProfileLayers,
-  createLayer,
-  deleteLayer,
-  getProfiles,
-  createStratigraphy,
-  createInstrument,
-} from '@ist-supsi/bmsjs';
 import { useTranslation } from 'react-i18next';
 import { profileKind } from '../../constance';
+import {
+  createNewInstrument,
+  createNewLayer,
+  createNewStratigraphy,
+  deletingLayer,
+  getData,
+  getProfile,
+} from './api';
 
 const ProfileInstrument = props => {
   const {
@@ -36,152 +36,96 @@ const ProfileInstrument = props => {
     allfields: false,
   });
 
-  const CreateStratigraphy = useCallback(boreholeID => {
-    createStratigraphy(boreholeID, profileKind.INSTRUMENT)
-      .then(response => {
-        if (response.data.success) {
-          setState(prevState => ({
-            ...prevState,
-            instrumentID: response.data.id,
-          }));
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+  const createStratigraphy = useCallback(boreholeID => {
+    createNewStratigraphy(boreholeID, profileKind.INSTRUMENT).then(id => {
+      setState(prevState => ({
+        ...prevState,
+        instrumentID: id,
+      }));
+    });
   }, []);
 
   const getInstrumentProfile = useCallback(() => {
-    getProfiles(boreholeID, profileKind.INSTRUMENT)
-      .then(response => {
-        if (response.data.success) {
-          if (response.data.data.length > 0) {
-            setState(prevState => ({
-              ...prevState,
-              instrumentID: response.data.data[0].id,
-            }));
-          } else if (response.data.data.length === 0) {
-            CreateStratigraphy(boreholeID);
-          }
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, [boreholeID, CreateStratigraphy]);
+    getProfile(boreholeID, profileKind.INSTRUMENT).then(response => {
+      if (response.length > 0) {
+        setState(prevState => ({
+          ...prevState,
+          instrumentID: response[0].id,
+        }));
+      } else if (response.length === 0) {
+        createStratigraphy(boreholeID);
+      }
+    });
+  }, [boreholeID, createStratigraphy]);
 
   const getCasingProfile = useCallback(() => {
-    getProfiles(boreholeID, profileKind.CASING)
-      .then(response => {
-        if (response.data.success) {
-          if (response.data.data.length > 0) {
-            for (const e of response.data.data) {
-              setCasing(prevState => {
-                return [
-                  ...prevState,
-                  {
-                    key: e.id,
-                    value: e.id,
-                    text:
-                      e.name === null || e.name === ''
-                        ? t('common:np')
-                        : e.name,
-                  },
-                ];
-              });
-            }
-            getInstrumentProfile();
-          } else {
-            setCasing([]);
-          }
-        } else {
-          alert(response.data.message);
+    getProfile(boreholeID, profileKind.CASING).then(response => {
+      if (response.length > 0) {
+        for (const e of response) {
+          setCasing(prevState => {
+            return [
+              ...prevState,
+              {
+                key: e.id,
+                value: e.id,
+                text:
+                  e.name === null || e.name === '' ? t('common:np') : e.name,
+              },
+            ];
+          });
         }
-      })
-      .catch(error => {
-        console.error(error);
-      });
+        getInstrumentProfile();
+      } else {
+        setCasing([]);
+      }
+    });
   }, [boreholeID, t, getInstrumentProfile]);
 
   useEffect(() => {
     getCasingProfile();
   }, [getCasingProfile]);
 
-  const getData = useCallback(
+  const setData = useCallback(
     (instrumentID, isAll) => {
-      getProfileLayers(instrumentID, false)
-        .then(function (response) {
-          if (response.data.success) {
-            if (isAll) setInstruments(response.data.data);
-            else if (selectedStratigraphyID) {
-              const selected = response.data.data.filter(
-                e => e.casing_id === selectedStratigraphyID,
-              );
-              setInstruments(selected);
-            }
-          } else {
-            alert(response.data.message);
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
+      getData(instrumentID).then(response => {
+        if (isAll) setInstruments(response);
+        else if (selectedStratigraphyID) {
+          const selected = response.filter(
+            e => e.casing_id === selectedStratigraphyID,
+          );
+          setInstruments(selected);
+        }
+      });
     },
     [selectedStratigraphyID],
   );
 
   useEffect(() => {
     if (state.instrumentID) {
-      getData(state.instrumentID, showAllInstrument);
+      setData(state.instrumentID, showAllInstrument);
     }
-  }, [state.instrumentID, reloadLayer, getData, showAllInstrument, reload]);
+  }, [state.instrumentID, reloadLayer, setData, showAllInstrument, reload]);
 
-  const createNewLayer = () => {
+  const createLayer = () => {
     if (state.instrumentID) {
       if (selectedStratigraphyID) {
-        createInstrument(state.instrumentID, selectedStratigraphyID)
-          .then(response => {
-            if (response.data.success) {
-              onUpdated('newLayer');
-            } else {
-              alert(response.data.message);
-            }
-          })
-          .catch(function (error) {
-            console.error(error);
-          });
+        createNewInstrument(state.instrumentID, selectedStratigraphyID).then(
+          response => {
+            if (response) onUpdated('newLayer');
+          },
+        );
       } else {
-        createLayer(state.instrumentID)
-          .then(response => {
-            if (response.data.success) {
-              onUpdated('newLayer');
-            } else {
-              alert(response.data.message);
-            }
-          })
-          .catch(function (error) {
-            console.error(error);
-          });
+        createNewLayer(state.instrumentID).then(response => {
+          if (response) onUpdated('newLayer');
+        });
       }
     }
   };
 
-  const deletingLayer = id => {
-    deleteLayer(id)
-      .then(response => {
-        if (response.data.success) {
-          onUpdated('deleteLayer');
-        } else {
-          alert(response.data.message);
-        }
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+  const deleteLayer = id => {
+    deletingLayer(id).then(response => {
+      if (response) onUpdated('deleteLayer');
+    });
   };
 
   return (
@@ -191,7 +135,7 @@ const ProfileInstrument = props => {
           content={<TranslationText id="addInstrument" />}
           disabled={!isEditable}
           icon="add"
-          onClick={createNewLayer}
+          onClick={createLayer}
           secondary
           size="tiny"
         />
@@ -209,7 +153,7 @@ const ProfileInstrument = props => {
               data={{
                 info: item,
                 index,
-                deleting: deletingLayer,
+                deleting: deleteLayer,
                 onUpdated,
                 isEditable,
                 update: () => {
