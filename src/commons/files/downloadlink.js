@@ -8,6 +8,7 @@ import {
 
 import {
   downloadAttachment,
+  exportDownload,
 } from '@ist-supsi/bmsjs';
 
 class DownloadLink extends React.Component {
@@ -44,13 +45,23 @@ class DownloadLink extends React.Component {
               this.setState({
                 downloading: true
               }, ()=>{
-                downloadAttachment({
-                  id: props.id
-                }).then(()=>{
-                  this.setState({
-                    downloading: false
+                if (this.props.type === 'attachment'){
+                  downloadAttachment({
+                    id: props.id
+                  }).then(()=>{
+                    this.setState({
+                      downloading: false
+                    });
                   });
-                });
+                } else if (this.props.type === 'export') {
+                  exportDownload({
+                    id: props.id
+                  }).then(()=>{
+                    this.setState({
+                      downloading: false
+                    });
+                  });
+                }
               });
             }
           }}
@@ -76,12 +87,14 @@ class DownloadLink extends React.Component {
 DownloadLink.propTypes = {
   caption: PropTypes.string,
   id: PropTypes.number,
-  style: PropTypes.object
+  style: PropTypes.object,
+  type: PropTypes.string,
 };
 
 DownloadLink.defaultProps = {
   id: null,
-  caption: 'Download'
+  caption: 'Download',
+  type: 'attachment'
 };
 
 export default withTranslation()(DownloadLink);

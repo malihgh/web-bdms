@@ -1,24 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
-import {
-  Button,
-  Form,
-  Modal,
-  TextArea,
-} from 'semantic-ui-react';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { withTranslation } from "react-i18next";
+import { Button, Form, Modal, TextArea } from "semantic-ui-react";
 
-import Login from '../../commons/form/login';
+import Login from "../../commons/form/login";
+import TranslationKeys from "../../commons/translationKeys";
 
 import {
   draftContent,
   getContentDraft,
-  publishContent
-} from '@ist-supsi/bmsjs';
+  publishContent,
+} from "@ist-supsi/bmsjs";
 
 class LoginScreen extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -29,94 +24,85 @@ class LoginScreen extends React.Component {
       draft: false,
       id: null,
       title: {
-        en: '',
-        de: '',
-        fr: '',
-        it: '',
-        ro: '',
+        en: "",
+        de: "",
+        fr: "",
+        it: "",
+        ro: "",
       },
       body: {
-        en: '',
-        de: '',
-        fr: '',
-        it: '',
-        ro: '',
+        en: "",
+        de: "",
+        fr: "",
+        it: "",
+        ro: "",
       },
-      lang: props.i18n.language
+      lang: props.i18n.language,
     };
     this.changeLanguage = this.changeLanguage.bind(this);
     this.draftContent = this.draftContent.bind(this);
     this.publishContent = this.publishContent.bind(this);
   }
 
-  componentDidMount(){
-    getContentDraft('login')
-      .then(
-        r => {
-          if (r.data.data !== null) {
-            this.setState({
-              isFetching: false,
-              id: r.data.data.id,
-              draft: r.data.data.draft,
-              title: r.data.data.title,
-              body: r.data.data.body,
-            });
-          }
-        }
-      );
+  changeLanguage(lang) {
+    this.setState({
+      lang: lang,
+    });
   }
 
-  changeLanguage (lang) {
-    this.setState({
-      lang: lang
+  componentDidMount() {
+    getContentDraft("login").then((r) => {
+      if (r.data.data !== null) {
+        this.setState({
+          isFetching: false,
+          id: r.data.data.id,
+          draft: r.data.data.draft,
+          title: r.data.data.title,
+          body: r.data.data.body,
+        });
+      }
     });
   }
 
   draftContent() {
-    this.setState({
-      saving: true
-    }, () => {
-      draftContent(
-        'login',
-        {
+    this.setState(
+      {
+        saving: true,
+      },
+      () => {
+        draftContent("login", {
           body: this.state.body,
           title: this.state.title,
-        }
-      )
-        .then(
-          r => {
-            if (r.data.success === true) {
-              this.setState({
-                dirty: false,
-                draft: true,
-                saving: false
-              });
-            } else {
-              alert(r.data.message);
-              this.setState({
-                saving: false
-              });
-            }
-          }
-        );
-    });
-  }
-
-  publishContent() {
-    publishContent('login')
-      .then(
-        r => {
+        }).then((r) => {
           if (r.data.success === true) {
             this.setState({
-              draft: false,
               dirty: false,
-              confirmPublication: false,
+              draft: true,
+              saving: false,
             });
           } else {
             alert(r.data.message);
+            this.setState({
+              saving: false,
+            });
           }
-        }
-      );
+        });
+      }
+    );
+  }
+
+  publishContent() {
+    publishContent("login").then((r) => {
+      if (r.data.success === true) {
+        this.setState({
+          draft: false,
+          dirty: false,
+          confirmPublication: false,
+        });
+      } else {
+        alert(r.data.message);
+      }
+    });
   }
 
   render() {
@@ -127,205 +113,133 @@ class LoginScreen extends React.Component {
     return (
       <div
         style={{
-          padding: '2em',
+          padding: "2em",
           flex: 1,
-          display: 'flex',
-          flexDirection: 'row'
+          display: "flex",
+          flexDirection: "row",
         }}
       >
         <div
           style={{
-            flex: '1 1 60%',
-            padding: '1em',
-            margin: '1em'
+            flex: "1 1 60%",
+            padding: "1em",
+            margin: "1em",
           }}
         >
           <div
             style={{
               // alignItems: 'center',
-              display: 'flex',
-              flexDirection: 'row',
-              paddingBottom: '1em',
+              display: "flex",
+              flexDirection: "row",
+              paddingBottom: "1em",
             }}
           >
             <div
               style={{
-                color: 'rgb(237, 29, 36)',
-                fontStyle: 'italic',
-                whiteSpace: 'nowrap',
+                color: "rgb(237, 29, 36)",
+                fontStyle: "italic",
+                whiteSpace: "nowrap",
               }}
             >
-              {
-                this.state.draft === true?
-                  t('draft'):
-                  t('loginScreen')
-              }
+              {this.state.draft === true ? t("draft") : t("loginScreen")}
             </div>
             <div
               style={{
-                flex: '1 1 100%',
-                textAlign: 'right'
+                flex: "1 1 100%",
+                textAlign: "right",
               }}
             >
               <Button
-                onClick={
-                  ()=>{
-                    this.setState({
-                      confirmPublication: true
-                    });
-                  }
-                }
+                onClick={() => {
+                  this.setState({
+                    confirmPublication: true,
+                  });
+                }}
                 primary
                 style={{
-                  display: (
-                    this.state.draft === true
-                    && this.state.dirty === false
-                  )? null: 'none',
-                  textTransform: 'capitalize',
+                  display:
+                    this.state.draft === true && this.state.dirty === false
+                      ? null
+                      : "none",
+                  textTransform: "capitalize",
                 }}
               >
-                {t('publish')}
+                {t("publish")}
               </Button>
-              <Modal
-                open={this.state.confirmPublication}
-                size='mini'
-              >
+              <Modal open={this.state.confirmPublication} size="mini">
                 <Modal.Header>
-                  {t('messages:content_publish_title')}
+                  {t("messages:content_publish_title")}
                 </Modal.Header>
                 <Modal.Content>
-                  <p>
-                    {t('messages:content_publish_message')}
-                  </p>
+                  <p>{t("messages:content_publish_message")}</p>
                 </Modal.Content>
                 <Modal.Actions>
                   <Button
                     negative
-                    onClick={
-                      () => {
-                        this.setState({
-                          confirmPublication: false
-                        });
-                      }
-                    }
+                    onClick={() => {
+                      this.setState({
+                        confirmPublication: false,
+                      });
+                    }}
                     style={{
-                      textTransform: 'capitalize'
+                      textTransform: "capitalize",
                     }}
                   >
-                    {t('cancel')}
+                    {t("cancel")}
                   </Button>
                   <Button
-                    onClick={
-                      () => this.publishContent()
-                    }
+                    onClick={() => this.publishContent()}
                     primary
                     style={{
-                      textTransform: 'capitalize'
+                      textTransform: "capitalize",
                     }}
                   >
-                    {t('publish')}
+                    {t("publish")}
                   </Button>
                 </Modal.Actions>
               </Modal>
               <Button
                 disabled={this.state.dirty === false}
                 loading={this.state.saving}
-                onClick={
-                  ()=>{
-                    this.draftContent();
-                  }
-                }
+                onClick={() => {
+                  this.draftContent();
+                }}
                 secondary
                 style={{
-                  marginLeft: '1em',
-                  textTransform: 'capitalize',
-                  display: this.state.dirty === true? null: 'none',
+                  marginLeft: "1em",
+                  textTransform: "capitalize",
+                  display: this.state.dirty === true ? null : "none",
                 }}
               >
-                {t('save')}
+                {t("save")}
               </Button>
             </div>
           </div>
           <div
             style={{
-              fontSize: '0.9em',
-              padding: '1em',
-              textAlign: 'right'
+              display: "flex",
+              justifyContent: "flex-end",
             }}
           >
-            <span
-              className='link'
-              onClick={() => {
-                this.changeLanguage('de');
-              }}
-              style={{
-                paddingRight: '0.5em',
-                color: this.state.lang === 'de' ?
-                  '#ed1d24' : null,
-                textDecoration: this.state.lang === 'de' ?
-                  'underline' : null
-              }}
-            >
-              DE
-            </span>
-            <span
-              className='link'
-              onClick={() => {
-                this.changeLanguage('fr');
-              }}
-              style={{
-                paddingRight: '0.5em',
-                color: this.state.lang === 'fr' ?
-                  '#ed1d24' : null,
-                textDecoration: this.state.lang === 'fr' ?
-                  'underline' : null
-              }}
-            >
-              FR
-            </span>
-            <span
-              className='link'
-              onClick={() => {
-                this.changeLanguage('it');
-              }}
-              style={{
-                paddingRight: '0.5em',
-                color: this.state.lang === 'it' ?
-                  '#ed1d24' : null,
-                textDecoration: this.state.lang === 'it' ?
-                  'underline' : null
-              }}
-            >
-              IT
-            </span>
-            <span
-              className='link'
-              onClick={() => {
-                this.changeLanguage('en');
-              }}
-              style={{
-                color: this.state.lang === 'en' ?
-                  '#ed1d24' : null,
-                textDecoration: this.state.lang === 'en' ?
-                  'underline' : null
-              }}
-            >
-              EN
-            </span>
+            <TranslationKeys
+              ignori18n
+              handleSelectedLanguage={this.changeLanguage}
+            />
           </div>
+
           <Form>
             <Form.Input
-              label='Title'
+              label="Title"
               onChange={(e, data) => {
                 this.setState({
                   dirty: true,
                   title: {
                     ...this.state.title,
-                    [this.state.lang]: e.target.value
-                  }
+                    [this.state.lang]: e.target.value,
+                  },
                 });
               }}
-              type='text'
+              type="text"
               value={this.state.title[this.state.lang]}
             />
             <TextArea
@@ -334,8 +248,8 @@ class LoginScreen extends React.Component {
                   dirty: true,
                   body: {
                     ...this.state.body,
-                    [this.state.lang]: e.target.value
-                  }
+                    [this.state.lang]: e.target.value,
+                  },
                 });
               }}
               rows={20}
@@ -345,42 +259,42 @@ class LoginScreen extends React.Component {
         </div>
         <div
           style={{
-            flex: '1 1 100%',
-            padding: '1em',
-            margin: '1em'
+            flex: "1 1 100%",
+            padding: "1em",
+            margin: "1em",
           }}
         >
           <div
             style={{
-              alignItems: 'center',
-              display: 'flex',
-              flexDirection: 'row',
-              paddingBottom: '1em',
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "row",
+              paddingBottom: "1em",
             }}
           >
             <div
               style={{
-                color: 'rgb(237, 29, 36)',
-                fontStyle: 'italic',
-                textTransform: 'capitalize',
+                color: "rgb(237, 29, 36)",
+                fontStyle: "italic",
+                textTransform: "capitalize",
               }}
             >
-              {t('preview')}
+              {t("preview")}
             </div>
           </div>
           <div
             style={{
-              alignItems: 'center',
-              backgroundColor: '#787878',
-              display: 'flex',
-              flex: '1 1 100%',
-              justifyContent: 'center',
-              height: '100%'
+              alignItems: "center",
+              backgroundColor: "#787878",
+              display: "flex",
+              flex: "1 1 100%",
+              justifyContent: "center",
+              height: "100%",
             }}
           >
             <div
               style={{
-                transform: 'scale(0.80)'
+                transform: "scale(0.80)",
               }}
             >
               <Login
@@ -389,10 +303,10 @@ class LoginScreen extends React.Component {
                 user={{
                   data: null,
                   authentication: {
-                    password: '',
-                    username: ''
+                    password: "",
+                    username: "",
                   },
-                  error: false
+                  error: false,
                 }}
               />
             </div>
@@ -401,7 +315,7 @@ class LoginScreen extends React.Component {
       </div>
     );
   }
-};
+}
 
 LoginScreen.propTypes = {
   t: PropTypes.func,
@@ -426,4 +340,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(['common', 'messages'])(LoginScreen));
+)(withTranslation(["common", "messages"])(LoginScreen));

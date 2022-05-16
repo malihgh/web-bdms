@@ -81,7 +81,39 @@ const initialState = {
         // "processing_status": true,
         "national_relevance": true,
         // "attributes_to_edit": true
-      }
+      },
+
+      // Layers / Stratigraphy filters
+      layer: {
+        depth: true, 
+        depth_from: false,
+        depth_to: false, 
+        description: true,
+        geology: true,
+        lithology: true,
+        lithostratigraphy: true,
+        chronostratigraphy: true,
+        color: true,
+        plasticity: true,
+        humidity: true,
+        consistance: true,
+        alteration: true,
+        compactness: true,
+        organic_component: true,
+        striae: true,
+        grain_size_1: true,
+        grain_size_2: true,
+        grain_shape: true,
+        grain_granularity: true,
+        cohesion: true,
+        further_properties: true,
+        uscs_1: true,
+        uscs_2: true,
+        uscs_3: true,
+        uscs_determination: true,
+        debris: true,
+        lit_pet_deb: true,
+      },
     },
     efilter: {
       kind: true,
@@ -118,8 +150,41 @@ const initialState = {
         // "processing_status": true,
         // "national_relevance": true,
         // "attributes_to_edit": true
-      }
-    }
+      },
+
+      // Layers / Stratigraphy filters
+      layer: {
+        depth: true, 
+        depth_from: false,
+        depth_to: false, 
+        description: true,
+        geology: true,
+        lithology: true,
+        lithostratigraphy: true,
+        chronostratigraphy: true,
+        color: true,
+        plasticity: true,
+        humidity: true,
+        consistance: true,
+        alteration: true,
+        compactness: true,
+        organic_component: true,
+        striae: true,
+        grain_size_1: true,
+        grain_size_2: true,
+        grain_shape: true,
+        grain_granularity: true,
+        cohesion: true,
+        further_properties: true,
+        uscs_1: true,
+        uscs_2: true,
+        uscs_3: true,
+        uscs_determination: true,
+        debris: true,
+        lit_pet_deb: true,
+      },
+
+    },
   }
 };
 

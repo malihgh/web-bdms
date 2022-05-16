@@ -460,6 +460,8 @@ class BoreholeEditorTable extends TTable {
         loading={this.props.store.isFetching}
         style={{
           flex: "1 1 100%",
+          width: '100%',
+          height: '100%',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',

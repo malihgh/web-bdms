@@ -5,6 +5,7 @@
 
 # production
 /build
+/.git
 
 # VS Code config
 /.vscode
@@ -12,6 +13,10 @@
 # misc
 # /public/img/lit/*
 
+*.md
+LICENSE
+VERSION.txt
+code_provenance.txt
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

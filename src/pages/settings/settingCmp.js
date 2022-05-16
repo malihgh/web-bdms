@@ -31,7 +31,6 @@ const SettingCmp = (props) => {
       <div
         style={{
           flex: '1 1 100%',
-          // height: '100%',
           display: 'flex',
           flexDirection: 'row',
           overflow: 'hidden'
@@ -39,7 +38,6 @@ const SettingCmp = (props) => {
       >
         <div
           style={{
-            // borderRight: 'thin solid #dfe0e0',
             boxShadow: 'rgba(0, 0, 0, 0.17) 2px 6px 6px 0px',
             display: 'flex',
             flexDirection: 'column',
@@ -88,7 +86,6 @@ const SettingCmp = (props) => {
       </div>
     </div>
   );
-  // }
 };
 
 export default withRouter(withTranslation('common')(SettingCmp));

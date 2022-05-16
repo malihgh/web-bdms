@@ -8,6 +8,7 @@ const WorkgroupMultiselect = props => {
 
   const [filter, setFilter] = useState(
     () => {
+      console.log("useState", props);
       const tmp = props.workgroups.filter(
         w => w.boreholes > 0
       ).map(
@@ -18,23 +19,23 @@ const WorkgroupMultiselect = props => {
     }
   );
 
-  React.useEffect(() => {
-    props.onChange(filter);
-  }, [filter]);
+  // React.useEffect(() => {
+  //   props.onChange(filter);
+  // }, [filter]);
 
-  const total = () => {
-    if (filter.length === 0) {
-      return 0;
-    }
-    const selected = props.workgroups.filter(
-      w => filter.indexOf(w.id) > -1
-    );
-    let total = 0;
-    selected.forEach(el => {
-      total += el.boreholes;
-    });
-    return total;
-  };
+  // const total = () => {
+  //   if (filter.length === 0) {
+  //     return 0;
+  //   }
+  //   const selected = props.workgroups.filter(
+  //     w => filter.indexOf(w.id) > -1
+  //   );
+  //   let t = 0;
+  //   selected.forEach(el => {
+  //     t += el.boreholes;
+  //   });
+  //   return t;
+  // };
 
   return (
     <Form
@@ -56,6 +57,7 @@ const WorkgroupMultiselect = props => {
               checked={props.workgroups.filter(
                 w => w.boreholes > 0
               ).length === filter.length}
+              disabled={props.allDisabled === true}
               label={
                 props.t('common:alls').charAt(0).toUpperCase()
                 // + props.t('common:alls').slice(1)
@@ -69,15 +71,16 @@ const WorkgroupMultiselect = props => {
               name='radioGroup'
               onChange={(evt, { checked })=>{
                 if (checked) {
-                  setFilter(
-                    props.workgroups.filter(
+                  const tmp = props.workgroups.filter(
                       w => w.boreholes > 0
                     ).map(
                       w => w.id
-                    )
-                  );
+                    );
+                  setFilter(tmp);
+                  props.onChange(tmp);
                 } else {
                   setFilter([]);
+                  props.onChange([]);
                 }
               }}
             />: null
@@ -92,7 +95,7 @@ const WorkgroupMultiselect = props => {
             >
               <Checkbox
                 checked={filter.indexOf(workgroup.id) > -1}
-                disabled={workgroup.boreholes === 0}
+                disabled={props.allDisabled === true || workgroup.boreholes === 0}
                 label={
                   workgroup[props.nameKey] + 
                   (
@@ -108,6 +111,7 @@ const WorkgroupMultiselect = props => {
                 }
                 name='radioGroup'
                 onChange={(evt, { checked })=>{
+                  console.log("onChange..");
                   const tmp = [...filter];
                   const index = tmp.indexOf(workgroup.id);
                   if (index >= 0) {
@@ -116,6 +120,8 @@ const WorkgroupMultiselect = props => {
                     tmp.push(workgroup.id);
                   }
                   setFilter(tmp);
+                  props.onChange(tmp);
+                  
                 }}
               />
             </Form.Field>
@@ -128,6 +134,7 @@ const WorkgroupMultiselect = props => {
 
 WorkgroupMultiselect.propTypes = {
   all: PropTypes.bool,
+  allDisabled: PropTypes.bool,
   nameKey: PropTypes.string,
   onChange: PropTypes.func,
   t: PropTypes.func,
@@ -136,6 +143,7 @@ WorkgroupMultiselect.propTypes = {
 
 WorkgroupMultiselect.defaultProps = {
   all: true,
+  allDisabled: false,
   nameKey: 'workgroup',
 };
 

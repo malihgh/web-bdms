@@ -1,5 +1,30 @@
 # List of all changes
 
+## What's new in web-bdms 1.0.4
+
+### New features
+
+ - **Asynchronous Export**
+
+    - Administrator user and editors are able launch an export without waiting for the request to be fullfilled but it will run in parallel and the result will be available as soon the export is done, thus avoiding possible timeouts in the case of very large exports.
+
+ - **Stratigraphy search capabilities**
+
+    - Users and editors are now able to filter data also by stratigraphy attributes.
+
+ - **Stratigraphy search fields customization**
+
+    - Users and editors are able to customiza witch filters are visibile in the viewer or editor mode throught the settings pages.
+
+ - **Workflow reset**
+
+    - Editor users with publisher role can now push a borehole throught the publication workflow back to the editing process.
+
+
+ - **Map in editor page**
+
+    - Editor can also use the interactive map as in the viewer mode.
+
 ## What's new in web-bdms 1.0.3
 
 ### New features

@@ -21,7 +21,8 @@ import {
   updateBorehole,
   updateWorkflow,
   submitWorkflow,
-  rejectWorkflow
+  rejectWorkflow,
+  resetWorkflow
 } from '@ist-supsi/bmsjs';
 
 import CommentArea from './commentArea';
@@ -39,7 +40,9 @@ class WorkflowForm extends React.Component {
     this.state = {
       "expanded": false,
       "id": props.id,
-      "modal": 0
+      "modal": 0,
+      "modalRestart": false,
+      "resetting": false,
     };
   }
 
@@ -129,6 +132,11 @@ class WorkflowForm extends React.Component {
           height: '100%'
         }}
       >
+        <h3>
+          <TranslationText
+            id={'flowPublication'}
+          />
+        </h3>
         {
           filtered.length > 1?
             <div
@@ -297,6 +305,11 @@ class WorkflowForm extends React.Component {
             }
           </div>
         </div>
+        <h3>
+          <TranslationText
+            id={'flowPublicationStatus'}
+          />
+        </h3>
         {
           workflows.data.length === 0
           && workflows.isFetching === true?
@@ -336,71 +349,95 @@ class WorkflowForm extends React.Component {
                   >
                     {
                       status[role] !== null?
+                        
                         <div
                           style={{
-                            alignItems: 'center',
                             display: 'flex',
-                            flexDirection: 'row'
+                            flexDirection: 'column'
                           }}
                         >
                           <div
                             style={{
-                              whiteSpace: 'nowrap'
+                              alignItems: 'center',
+                              display: 'flex',
+                              flexDirection: 'row'
                             }}
                           >
-                            <Label
-                              circular
-                              color={
-                                status[role].finished === null?
-                                  'orange':
-                                  current === true?
-                                    'red': 'green'
-                              }
-                            />
-                          </div>
-                          <div
-                            style={{
-                              marginLeft: '0.7em',
-                              whiteSpace: 'nowrap'
-                            }}
-                          >
-                            <h4>
-                              <TranslationText
-                                id={`status${role.toLowerCase()}`}
+                            <div>
+                              <Label
+                                circular
+                                color={
+                                  status[role].finished === null?
+                                    'orange':
+                                    current === true?
+                                      'red': 'green'
+                                }
                               />
-                            </h4>
-                          </div>
-                          <div
-                            style={{
-                              flex: '1 1 100%',
-                              textAlign: 'right'
-                            }}
-                          >
-                            {
-                              current === true?
-                                <span
-                                  style={{
-                                    color: 'red',
-                                    fontSize: '0.9em'
-                                  }}
-                                >
-                                  <TranslationText
-                                    id='rejected'
-                                  />
-                                  <br />
-                                  <DateText
-                                    date={status[role].finished}
-                                    hours
-                                  />
-                                </span>:
-                                status[role].finished !== null?
+                            </div>
+                            <div
+                              style={{
+                                marginLeft: '0.7em',
+                                whiteSpace: 'nowrap'
+                              }}
+                            >
+                              <div
+                                className='bdms-header'
+                              >
+                                <TranslationText
+                                  id={`status${role.toLowerCase()}`}
+                                />
+                              </div>
+                              {
+                                (
+                                  this.props.user.data.admin === true ||
+                                  this.props.user.data.roles.indexOf('PUBLIC') >= 0
+                                ) &&
+                                role === 'EDIT' &&
+                                this.props.workflow.data.role === 'PUBLIC'?
+                                  [
+                                    <Icon
+                                      key="bdms-workflow-form-push-back-1"
+                                      color={readOnly? null: 'blue'}
+                                      name='repeat'
+                                    />,
+                                    <span
+                                      key="bdms-workflow-form-push-back-2"
+                                      className={!readOnly?'linker': null}
+                                      style={{
+                                        marginLeft: '0.2em',
+                                        color: readOnly? '#787878': null
+                                      }}
+                                      onClick={()=>{
+                                        if (!readOnly) {
+                                          this.setState({
+                                            modalRestart: true
+                                          });
+                                        }
+                                      }}
+                                    >
+                                      <TranslationText
+                                        id={'flowRestart'}
+                                      />
+                                    </span>
+                                  ]: null
+                              }
+                            </div>
+                            <div
+                              style={{
+                                flex: '1 1 100%',
+                                textAlign: 'right'
+                              }}
+                            >
+                              {
+                                current === true?
                                   <span
                                     style={{
+                                      color: 'red',
                                       fontSize: '0.9em'
                                     }}
                                   >
                                     <TranslationText
-                                      id='submitted'
+                                      id='rejected'
                                     />
                                     <br />
                                     <DateText
@@ -408,46 +445,103 @@ class WorkflowForm extends React.Component {
                                       hours
                                     />
                                   </span>:
-                                  borehole.data.id !== null && user.data.workgroups.find(
-                                    workgroup => (
-                                      workgroup.id === borehole.data.workgroup.id
-                                    )
-                                  ).roles.indexOf(borehole.data.role) === -1?
+                                  status[role].finished !== null?
                                     <span
                                       style={{
                                         fontSize: '0.9em'
                                       }}
                                     >
-                                      {
-                                        status[role].finished !== null?
-                                          "Review started":
-                                          "Pending review"
-                                      }
+                                      <TranslationText
+                                        id='submitted'
+                                      />
                                       <br />
                                       <DateText
                                         date={status[role].finished}
                                         hours
                                       />
                                     </span>:
-                                    <div>
-                                      {
-                                        role !== 'EDIT'?
-                                          <Button
-                                            disabled={readOnly || workflows.isSubmitting}
-                                            loading={workflows.isRejecting === true}
-                                            negative
-                                            onClick={()=>{
-                                              this.setState({
-                                                modal: 3
-                                              });
-                                            }}
-                                            size='mini'
-                                          >
-                                            <TranslationText
-                                              id='reject'
-                                            />
-                                          </Button>: null
-                                      }
+                                    borehole.data.id !== null && user.data.workgroups.find(
+                                      workgroup => (
+                                        workgroup.id === borehole.data.workgroup.id
+                                      )
+                                    ).roles.indexOf(borehole.data.role) === -1?
+                                      <span
+                                        style={{
+                                          fontSize: '0.9em'
+                                        }}
+                                      >
+                                        {
+                                          status[role].finished !== null?
+                                            "Review started":
+                                            "Pending review"
+                                        }
+                                        <br />
+                                        <DateText
+                                          date={status[role].finished}
+                                          hours
+                                        />
+                                      </span>:
+                                      null
+                              }
+                            </div>
+                          </div>
+                          {
+                            status[role].finished === null &&
+                            borehole.data.id !== null && 
+                            user.data.workgroups.find(
+                              workgroup => (
+                                workgroup.id === borehole.data.workgroup.id
+                              )
+                            ).roles.indexOf(borehole.data.role) > -1
+                            ?
+                              <div
+                                style={{
+                                  flex: '1 1 100%',
+                                  padding: '0.8em 0px',
+                                  textAlign: 'right',
+                                }}
+                              >
+                                <div>
+                                  {
+                                    role !== 'EDIT'?
+                                      <Button
+                                        disabled={readOnly || workflows.isSubmitting}
+                                        loading={workflows.isRejecting === true}
+                                        negative
+                                        onClick={()=>{
+                                          this.setState({
+                                            modal: 3
+                                          });
+                                        }}
+                                        size='mini'
+                                      >
+                                        <TranslationText
+                                          id='reject'
+                                        />
+                                      </Button>: null
+                                  }
+                                  <Button
+                                    disabled={
+                                      readOnly
+                                      || workflows.isRejecting
+                                    }
+                                    loading={
+                                      workflows.isSubmitting === true
+                                    }
+                                    onClick={()=>{
+                                      this.setState({
+                                        modal: 1
+                                      });
+                                    }}
+                                    secondary
+                                    size='mini'
+                                  >
+                                    <TranslationText
+                                      id='submit'
+                                    />
+                                  </Button>
+                                  {
+                                    role === 'PUBLIC'?
                                       <Button
                                         disabled={
                                           readOnly
@@ -458,18 +552,50 @@ class WorkflowForm extends React.Component {
                                         }
                                         onClick={()=>{
                                           this.setState({
-                                            modal: 1
+                                            modal: 2
                                           });
                                         }}
                                         secondary
                                         size='mini'
                                       >
                                         <TranslationText
-                                          id='submit'
+                                          id='public'
                                         />
-                                      </Button>
+                                      </Button>: null
+                                  }
+                                  <Modal
+                                    // basic
+                                    closeIcon
+                                    onClose={()=>{
+                                      this.setState({
+                                        modal: 0
+                                      });
+                                    }}
+                                    open={this.state.modal>0}
+                                    size='mini'
+                                  >
+                                    <Header
+                                      content={t(`version:${role}`)}
+                                      // icon='archive'
+                                    />
+                                    <Modal.Content>
+                                      <p>
+                                        {
+                                          this.state.modal === 2?
+                                            <TranslationText
+                                              id='pubblicazione'
+                                            />: null
+                                        }
+                                      </p>
+                                      <p>
+                                        <TranslationText
+                                          id='sure'
+                                        />
+                                      </p>
+                                    </Modal.Content>
+                                    <Modal.Actions>
                                       {
-                                        role === 'PUBLIC'?
+                                        this.state.modal < 3?
                                           <Button
                                             disabled={
                                               readOnly
@@ -479,112 +605,58 @@ class WorkflowForm extends React.Component {
                                               workflows.isSubmitting === true
                                             }
                                             onClick={()=>{
-                                              this.setState({
-                                                modal: 2
+                                              this.props.submitWorkflow(
+                                                status[role].id,
+                                                this.state.modal === 2
+                                              ).then(()=>{
+                                                this.setState({
+                                                  modal: 0
+                                                });
                                               });
                                             }}
                                             secondary
-                                            size='mini'
                                           >
-                                            <TranslationText
-                                              id='public'
+                                            <Icon
+                                              name='checkmark'
                                             />
-                                          </Button>: null
-                                      }
-                                      <Modal
-                                        // basic
-                                        closeIcon
-                                        onClose={()=>{
-                                          this.setState({
-                                            modal: 0
-                                          });
-                                        }}
-                                        open={this.state.modal>0}
-                                        size='mini'
-                                      >
-                                        <Header
-                                          content={t(`version:${role}`)}
-                                          // icon='archive'
-                                        />
-                                        <Modal.Content>
-                                          <p>
-                                            {
-                                              this.state.modal === 2?
-                                                <TranslationText
-                                                  id='pubblicazione'
-                                                />: null
+                                            &nbsp;
+                                            <TranslationText
+                                              id='submit'
+                                            />
+                                          </Button>:
+                                          <Button
+                                            disabled={
+                                              readOnly
+                                              || workflows.isSubmitting
                                             }
-                                          </p>
-                                          <p>
-                                            <TranslationText
-                                              id='sure'
+                                            loading={
+                                              workflows.isRejecting === true
+                                            }
+                                            negative
+                                            onClick={()=>{
+                                              this.props.rejectWorkflow(
+                                                status[role].id
+                                              ).then(()=>{
+                                                this.setState({
+                                                  modal: 0
+                                                });
+                                              });
+                                            }}
+                                          >
+                                            <Icon
+                                              name='checkmark'
                                             />
-                                          </p>
-                                        </Modal.Content>
-                                        <Modal.Actions>
-                                          {
-                                            this.state.modal < 3?
-                                              <Button
-                                                disabled={
-                                                  readOnly
-                                                  || workflows.isRejecting
-                                                }
-                                                loading={
-                                                  workflows.isSubmitting === true
-                                                }
-                                                onClick={()=>{
-                                                  this.props.submitWorkflow(
-                                                    status[role].id,
-                                                    this.state.modal === 2
-                                                  ).then(()=>{
-                                                    this.setState({
-                                                      modal: 0
-                                                    });
-                                                  });
-                                                }}
-                                                secondary
-                                              >
-                                                <Icon
-                                                  name='checkmark'
-                                                />
-                                                &nbsp;
-                                                <TranslationText
-                                                  id='submit'
-                                                />
-                                              </Button>:
-                                              <Button
-                                                disabled={
-                                                  readOnly
-                                                  || workflows.isSubmitting
-                                                }
-                                                loading={
-                                                  workflows.isRejecting === true
-                                                }
-                                                negative
-                                                onClick={()=>{
-                                                  this.props.rejectWorkflow(
-                                                    status[role].id
-                                                  ).then(()=>{
-                                                    this.setState({
-                                                      modal: 0
-                                                    });
-                                                  });
-                                                }}
-                                              >
-                                                <Icon
-                                                  name='checkmark'
-                                                />
-                                                &nbsp;
-                                                <TranslationText
-                                                  id='reject'
-                                                />
-                                              </Button>
-                                          }
-                                        </Modal.Actions>
-                                      </Modal>
-                                    </div>
-                            }
-                          </div>
+                                            &nbsp;
+                                            <TranslationText
+                                              id='reject'
+                                            />
+                                          </Button>
+                                      }
+                                    </Modal.Actions>
+                                  </Modal>
+                                </div>
+                              </div>: null
+                          }
                         </div>:
                         <div
                           style={{
@@ -745,6 +817,75 @@ class WorkflowForm extends React.Component {
               }
             </div>: null
         }
+
+        {
+          // Modals 
+        }
+        <Modal
+          // basic
+          closeIcon
+          onClose={()=>{
+            this.setState({
+              modalRestart: false
+            });
+          }}
+          open={this.state.modalRestart===true}
+          size='mini'
+        >
+          <Header
+            content={t(`flowRestart`)}
+            // icon='archive'
+          />
+          <Modal.Content>
+            <p>
+              <TranslationText
+                id='sure'
+              />
+            </p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button
+              loading={
+                this.state.resetting === true
+              }
+              secondary
+              onClick={()=>{
+                this.setState({
+                  resetting: true,
+                }, () => {
+                  this.props.resetWorkflow(
+                    this.props.workflow.data.id
+                  ).then(()=>{
+                    this.setState({
+                      modalRestart: false,
+                      resetting: false,
+                    });
+                  });
+                });
+              }}
+            >
+              <Icon
+                name='checkmark'
+              />
+              &nbsp;
+              <TranslationText
+                id='yes'
+              />
+            </Button>
+            <Button
+              negative
+              onClick={()=>{
+                this.setState({
+                  modalRestart: false
+                });
+              }}
+            >
+              <TranslationText
+                id='cancel'
+              />
+            </Button>
+          </Modal.Actions>
+        </Modal>
       </div>
     );
   }
@@ -797,6 +938,11 @@ const mapDispatchToProps = (dispatch, props) => {
     },
     rejectWorkflow: (id) => {
       return dispatch(rejectWorkflow(id)).then((res)=>{
+        dispatch(loadBorehole(props.id));
+      });
+    },
+    resetWorkflow: (id) => {
+      return dispatch(resetWorkflow(id)).then((res)=>{
         dispatch(loadBorehole(props.id));
       });
     },
