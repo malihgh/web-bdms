@@ -1,10 +1,12 @@
 # Build Stage
-FROM node:12.16.2-alpine3.11 as build-stage-web
+FROM node:17.6.0-alpine3.15 as build-stage-web
 RUN mkdir /app
 WORKDIR /app
 COPY ./ /app/
 ARG PUBLIC_URL='/bdms'
-RUN sh -c "PUBLIC_URL=$PUBLIC_URL; npm install && npm run build" 
+ARG NODE_OPTIONS='--openssl-legacy-provider'
+RUN npm install
+RUN npm run build
 
 # Final image stage
 FROM nginx:1.20.0-alpine

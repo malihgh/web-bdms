@@ -49,7 +49,7 @@ class MetaComponent extends React.Component {
     );
   }
 
-  getTextRow(schema, text, key = null) {
+  getTextRow(schema, text, key = Math.random().toString(16).substring(2, 8)) {
     return (
       <div
         key={key}
