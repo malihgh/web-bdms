@@ -112,7 +112,9 @@ const ProfileLayersList = props => {
                   item?.depth_from + ' m'
                 )}
               </Styled.Text>
-              <Styled.Text bold>
+              <Styled.Text
+                bold
+                warning={item?.validation?.bedrockLitStratiWrong}>
                 {item?.title ? (
                   <Styled.DomainTxt
                     id={item?.title}
@@ -122,7 +124,7 @@ const ProfileLayersList = props => {
                   '-'
                 )}
               </Styled.Text>
-              <Styled.Text>
+              <Styled.Text warning={item?.validation?.bedrockChronoWrong}>
                 {item?.subtitle ? (
                   <Styled.DomainTxt
                     id={item?.subtitle}
@@ -132,7 +134,7 @@ const ProfileLayersList = props => {
                   '-'
                 )}
               </Styled.Text>
-              <Styled.Text small>
+              <Styled.Text small warning={item?.validation?.bedrockLitPetWrong}>
                 {item?.description ? (
                   <Styled.DomainTxt
                     id={item?.description}

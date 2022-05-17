@@ -48,7 +48,7 @@ export const Text = styled.div`
   display: flex;
   font-weight: ${props => (props.bold ? 'bold' : '100')};
   font-size: ${props => (props.bold ? '14px' : props.small ? '10px' : '13px')};
-  color: ${props => (props.small ? 'grey' : props.warning ? 'red' : 'black')};
+  color: ${props => (props.warning ? 'red' : props.small ? 'grey' : 'black')};
 `;
 
 export const DomainTxt = styled(DomainText)``;

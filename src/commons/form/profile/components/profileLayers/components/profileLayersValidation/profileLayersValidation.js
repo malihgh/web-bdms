@@ -43,7 +43,10 @@ export const ProfileLayersValidation = props => {
                     key !== 'missingFrom' &&
                     key !== 'invertedDepth' &&
                     key !== 'bottomOverlap' &&
-                    key !== 'bottomDisjoint',
+                    key !== 'bottomDisjoint' &&
+                    key !== 'bedrockLitPetWrong' &&
+                    key !== 'bedrockLitStratiWrong' &&
+                    key !== 'bedrockChronoWrong',
                 )
                 .map((key, index) => (
                   <ProfileLayersError
