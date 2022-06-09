@@ -61,6 +61,7 @@ class ProfileContainer extends React.Component {
           });
         }}
         isFetchingLayer={this.state.isFetchingLayer}
+        kind={stratigraphy.kind}
         kinds={stratigraphy.kinds}
         layer={this.state.layer}
       />
