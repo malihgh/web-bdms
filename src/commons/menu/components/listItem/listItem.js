@@ -6,7 +6,7 @@ const ListItem = props => {
   const { path, name, location, history, icon, t, hasTranslation } = props;
   return (
     <Styled.Container>
-      <List divrided relaxed selection>
+      <List divided relaxed selection>
         <List.Item
           active={location.pathname === process.env.PUBLIC_URL + path}
           onClick={() => {
