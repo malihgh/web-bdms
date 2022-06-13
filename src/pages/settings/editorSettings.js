@@ -20,7 +20,7 @@ import IdentifierSettings from './editor/identifierSettings';
 import TranslationText from '../../commons/form/translationText';
 import SearchFiltersLayers from './searchFiltersLayers';
 
-const fields = [
+export const fields = [
   {
     name: 'description',
   },

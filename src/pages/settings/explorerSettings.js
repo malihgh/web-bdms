@@ -18,12 +18,13 @@ import {
 
 import {
   patchSettings,
+  patchCodeConfig,
   // getWmts,
   getWms,
 } from '@ist-supsi/bmsjs';
 
 import TranslationText from '../../commons/form/translationText';
-
+import { fields } from './editorSettings';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
 import { optionsFromCapabilities } from 'ol/source/WMTS';
@@ -52,6 +53,8 @@ class ExplorerSettings extends React.Component {
     });
     register(proj4);
     this.state = {
+      fields: false,
+
       appearance: false,
       searchFiltersBoreholes: false,
       searchFiltersLayers: false,
@@ -69,6 +72,25 @@ class ExplorerSettings extends React.Component {
     };
   }
 
+  isVisible(field) {
+    const { geocode, codes } = this.props;
+    if (_.has(codes, 'data.layer_kind') && _.isArray(codes.data.layer_kind)) {
+      for (let idx = 0; idx < codes.data.layer_kind.length; idx++) {
+        const element = codes.data.layer_kind[idx];
+        if (element.code === geocode) {
+          if (
+            _.isObject(element.conf) &&
+            _.has(element.conf, `fields.${field}`)
+          ) {
+            return element.conf.fields[field];
+          } else {
+            return false;
+          }
+        }
+      }
+    }
+    return false;
+  }
   render() {
     const {
       addExplorerMap,
@@ -77,8 +99,10 @@ class ExplorerSettings extends React.Component {
       setting,
       t,
       toggleFilter,
+      toggleField,
       i18n,
     } = this.props;
+
     return (
       <div
         style={{
@@ -1370,6 +1394,69 @@ class ExplorerSettings extends React.Component {
         ) : (
           <Divider />
         )}
+
+        {/* {this.props.user.data.admin === true ? ( */}
+        <div>
+          <div
+            style={{
+              flexDirection: 'row',
+              display: 'flex',
+            }}>
+            <Header
+              as="h3"
+              className="link"
+              onClick={() => {
+                this.setState({
+                  fields: !this.state.fields,
+                });
+              }}
+              style={{
+                margin: '0px',
+                textDecoration: 'none',
+              }}>
+              <TranslationText id="stratigraphyfields" />
+            </Header>
+            <div
+              style={{
+                flex: 1,
+                textAlign: 'right',
+              }}>
+              <Button
+                color="red"
+                onClick={() => {
+                  this.setState({
+                    fields: !this.state.fields,
+                  });
+                }}
+                size="small">
+                {this.state.fields === true ? (
+                  <TranslationText id="collapse" />
+                ) : (
+                  <TranslationText id="expand" />
+                )}
+              </Button>
+            </div>
+          </div>
+          {this.state.fields === true ? (
+            <Segment.Group>
+              {fields.map((field, idx) => (
+                <Segment key={'bms-es-fds-' + idx}>
+                  <Checkbox
+                    checked={this.isVisible(field.name.replace('layer_', ''))}
+                    label=""
+                    onChange={(e, d) => {
+                      toggleField(field.name.replace('layer_', ''), d.checked);
+                    }}
+                  />
+                  <TranslationText id={field.name} />
+                </Segment>
+              ))}
+            </Segment.Group>
+          ) : (
+            <Divider />
+          )}
+        </div>
+        {/* ) : null} */}
       </div>
     );
   }
@@ -1378,12 +1465,19 @@ class ExplorerSettings extends React.Component {
 const mapStateToProps = state => {
   return {
     setting: state.setting,
+    codes: state.core_domain_list,
   };
 };
 
+ExplorerSettings.defaultProps = {
+  geocode: 'Geol',
+};
 const mapDispatchToProps = (dispatch, state) => {
   return {
     dispatch: dispatch,
+    toggleField: (filter, enabled) => {
+      dispatch(patchCodeConfig(`fields.${filter}`, enabled));
+    },
     toggleFilter: (filter, enabled) => {
       dispatch(patchSettings(`filter.${filter}`, enabled));
     },
