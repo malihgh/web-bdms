@@ -1395,68 +1395,71 @@ class ExplorerSettings extends React.Component {
           <Divider />
         )}
 
-        {/* {this.props.user.data.admin === true ? ( */}
-        <div>
-          <div
-            style={{
-              flexDirection: 'row',
-              display: 'flex',
-            }}>
-            <Header
-              as="h3"
-              className="link"
-              onClick={() => {
-                this.setState({
-                  fields: !this.state.fields,
-                });
-              }}
-              style={{
-                margin: '0px',
-                textDecoration: 'none',
-              }}>
-              <TranslationText id="stratigraphyfields" />
-            </Header>
+        {this.props.user.data.admin === true ? (
+          <div>
             <div
               style={{
-                flex: 1,
-                textAlign: 'right',
+                flexDirection: 'row',
+                display: 'flex',
               }}>
-              <Button
-                color="red"
+              <Header
+                as="h3"
+                className="link"
                 onClick={() => {
                   this.setState({
                     fields: !this.state.fields,
                   });
                 }}
-                size="small">
-                {this.state.fields === true ? (
-                  <TranslationText id="collapse" />
-                ) : (
-                  <TranslationText id="expand" />
-                )}
-              </Button>
+                style={{
+                  margin: '0px',
+                  textDecoration: 'none',
+                }}>
+                <TranslationText id="stratigraphyfields" />
+              </Header>
+              <div
+                style={{
+                  flex: 1,
+                  textAlign: 'right',
+                }}>
+                <Button
+                  color="red"
+                  onClick={() => {
+                    this.setState({
+                      fields: !this.state.fields,
+                    });
+                  }}
+                  size="small">
+                  {this.state.fields === true ? (
+                    <TranslationText id="collapse" />
+                  ) : (
+                    <TranslationText id="expand" />
+                  )}
+                </Button>
+              </div>
             </div>
+            {this.state.fields === true ? (
+              <Segment.Group>
+                {fields.map((field, idx) => (
+                  <Segment key={'bms-es-fds-' + idx}>
+                    <Checkbox
+                      checked={this.isVisible(field.name.replace('layer_', ''))}
+                      label=""
+                      onChange={(e, d) => {
+                        toggleField(
+                          field.name.replace('layer_', ''),
+                          d.checked,
+                        );
+                      }}
+                    />
+                    <TranslationText id={field.name} />
+                  </Segment>
+                ))}
+              </Segment.Group>
+            ) : (
+              <Divider />
+            )}
           </div>
-          {this.state.fields === true ? (
-            <Segment.Group>
-              {fields.map((field, idx) => (
-                <Segment key={'bms-es-fds-' + idx}>
-                  <Checkbox
-                    checked={this.isVisible(field.name.replace('layer_', ''))}
-                    label=""
-                    onChange={(e, d) => {
-                      toggleField(field.name.replace('layer_', ''), d.checked);
-                    }}
-                  />
-                  <TranslationText id={field.name} />
-                </Segment>
-              ))}
-            </Segment.Group>
-          ) : (
-            <Divider />
-          )}
-        </div>
-        {/* ) : null} */}
+        ) : null}
       </div>
     );
   }
@@ -1466,6 +1469,7 @@ const mapStateToProps = state => {
   return {
     setting: state.setting,
     codes: state.core_domain_list,
+    user: state.core_user,
   };
 };
 
