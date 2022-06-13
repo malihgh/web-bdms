@@ -3,6 +3,7 @@ import { withTranslation } from 'react-i18next';
 
 import { Header } from 'semantic-ui-react';
 
+// eslint-disable-next-line react/prefer-stateless-function
 class ResourcesSettings extends React.Component {
   render() {
     return (
@@ -13,14 +14,9 @@ class ResourcesSettings extends React.Component {
         }}>
         <Header
           as="h3"
-          className="link"
-          onClick={() => {
-            this.setState({
-              appearance: !this.state.appearance,
-            });
-          }}
           style={{
             margin: '0px',
+            textDecoration: 'none',
           }}>
           {this.props.t('common:resources')}
         </Header>
