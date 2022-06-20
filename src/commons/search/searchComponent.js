@@ -128,6 +128,7 @@ class SearchComponent extends React.Component {
             flexDirection: 'column',
             flex: this.state.isBoreholeSelectorOpen ? '1 1 100%' : null,
             overflow: 'hidden',
+            cursor: 'pointer',
           }}>
           <div
             onClick={() => {
@@ -978,6 +979,7 @@ class SearchComponent extends React.Component {
             flexDirection: 'column',
             flex: this.state.isStratigraphySelectorOpen ? '1 1 100%' : null,
             overflow: 'hidden',
+            cursor: 'pointer',
           }}>
           <div
             onClick={() => {
