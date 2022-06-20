@@ -373,6 +373,7 @@ class SearchComponent extends React.Component {
                       trans=afterdate
                     </div>
                   ) : null}
+                  <div style={{ margin: '1em' }} />
                   <DateField
                     date={search.filter.restriction_until_to}
                     onChange={selected => {
@@ -419,6 +420,7 @@ class SearchComponent extends React.Component {
                       trans=fromelevation
                     </div>
                   ) : null}
+                  <div style={{ margin: '1em' }} />
                   <Input
                     onChange={eve => {
                       this.props.setFilter('elevation_z_to', eve.target.value);
@@ -463,6 +465,7 @@ class SearchComponent extends React.Component {
                       trans=fromdepth
                     </div>
                   ) : null}
+                  <div style={{ margin: '1em' }} />
                   <Input
                     onChange={eve => {
                       this.props.setFilter('length_to', eve.target.value);
@@ -671,6 +674,7 @@ class SearchComponent extends React.Component {
                       trans=afterdate
                     </div>
                   ) : null}
+                  <div style={{ margin: '1em' }} />
                   <DateField
                     date={search.filter.drilling_date_to}
                     onChange={selected => {
@@ -719,6 +723,7 @@ class SearchComponent extends React.Component {
                       trans=fromdiameter
                     </div>
                   ) : null}
+                  <div style={{ margin: '1em' }} />
                   <Input
                     onChange={eve => {
                       this.props.setFilter(
@@ -768,6 +773,7 @@ class SearchComponent extends React.Component {
                       trans=from + degree
                     </div>
                   ) : null}
+                  <div style={{ margin: '1em' }} />
                   <Input
                     onChange={eve => {
                       this.props.setFilter('bore_inc_to', eve.target.value);
@@ -817,6 +823,7 @@ class SearchComponent extends React.Component {
                       trans=from + degree
                     </div>
                   ) : null}
+                  <div style={{ margin: '1em' }} />
                   <Input
                     onChange={eve => {
                       this.props.setFilter('bore_inc_dir_to', eve.target.value);
@@ -1037,6 +1044,7 @@ class SearchComponent extends React.Component {
                       trans=fromdepth
                     </div>
                   ) : null}
+                  <div style={{ margin: '1em' }} />
                   <Input
                     onChange={eve => {
                       this.props.setFilter('layer_depth_to', eve.target.value);
@@ -1087,6 +1095,7 @@ class SearchComponent extends React.Component {
                       trans=fromdepth
                     </div>
                   ) : null}
+                  <div style={{ margin: '1em' }} />
                   <Input
                     onChange={eve => {
                       this.props.setFilter(
@@ -1140,6 +1149,7 @@ class SearchComponent extends React.Component {
                       trans=fromdepth
                     </div>
                   ) : null}
+                  <div style={{ margin: '1em' }} />
                   <Input
                     onChange={eve => {
                       this.props.setFilter(
