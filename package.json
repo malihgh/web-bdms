@@ -10,7 +10,9 @@
     "Maliheh Ghasemian <maliheh.ghasemian@supsi.ch> (https://github.com/malihgh)",
     "Massimiliano Cannata <massimiliano.cannata@supsi.ch> (https://github.com/massimiliano-cannata)",
     "Marcus Hoffmann <marcus.hoffmann@supsi.ch> (https://github.com/marcuso45)",
-    "Davide Zanin <davide.zanin@supsi.ch> (https://github.com/dzanin)"
+    "Davide Zanin <davide.zanin@supsi.ch> (https://github.com/dzanin)",
+    "Nils Oesterling <nils.oesterling@swisstopo.ch> (https://github.com/nOester)",
+    "Sabine Brodhag <sabine.brodhag@swisstopo.ch>"
   ],
   "dependencies": {
     "@ist-supsi/bmsjs": "1.0.12",
