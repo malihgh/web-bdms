@@ -1227,6 +1227,24 @@ class BoreholeForm extends React.Component {
                               }}
                             />
                           </Form.Field>
+                          {/* drilling type in Borehole */}
+                          <Form.Field
+                            error={
+                              borehole.kind === null ||
+                              mentions.indexOf('kind') >= 0
+                            }
+                            required>
+                            <label>
+                              <TranslationText id="kind" />
+                            </label>
+                            <DomainDropdown
+                              onSelected={selected => {
+                                this.updateChange('kind', selected.id, false);
+                              }}
+                              schema="kind"
+                              selected={borehole.kind}
+                            />
+                          </Form.Field>
                         </Form.Group>
                         <Form.Group widths="equal">
                           <Form.Field
