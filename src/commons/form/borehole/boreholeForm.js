@@ -677,7 +677,8 @@ class BoreholeForm extends React.Component {
                           value={borehole.custom.public_name}
                         />
                       </Form.Field>
-                      <Form.Field
+                      {/* drilling type in Location */}
+                      {/* <Form.Field
                         error={
                           borehole.kind === null ||
                           mentions.indexOf('kind') >= 0
@@ -693,7 +694,7 @@ class BoreholeForm extends React.Component {
                           schema="kind"
                           selected={borehole.kind}
                         />
-                      </Form.Field>
+                      </Form.Field> */}
                     </Form.Group>
                     {this.state['custom.public_name_check'] === false &&
                     this.state['custom.public_name_fetch'] === false ? (
