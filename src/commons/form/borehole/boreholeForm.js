@@ -1609,6 +1609,66 @@ class BoreholeForm extends React.Component {
                         />
                       </Form.Field>
                     </Form.Group>
+                    <Form.Group widths="equal">
+                      <Form.Field
+                        // error={mentions.indexOf('length') >= 0}
+                        required>
+                        <label>
+                          <TranslationText id="Top bedrock TVD (m)" />
+                        </label>
+                        <Input
+                          autoCapitalize="off"
+                          autoComplete="off"
+                          autoCorrect="off"
+                          // onChange={e => {
+                          //   this.updateNumber(
+                          //     'length',
+                          //     e.target.value === '' ? null : e.target.value,
+                          //   );
+                          //   // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                          //   //   this.updateChange(
+                          //   //     'length',
+                          //   //     e.target.value === '' ?
+                          //   //       null : _.toNumber(e.target.value)
+                          //   //   );
+                          //   // }
+                          // }}
+                          spellCheck="false"
+                          // value={
+                          //   _.isNil(borehole.length) ? '' : borehole.length
+                          // }
+                        />
+                      </Form.Field>
+                      <Form.Field
+                        // error={mentions.indexOf('length') >= 0}
+                        required>
+                        <label>
+                          <TranslationText id="+/- Top bedrock TVD [m]" />
+                        </label>
+                        <Input
+                          autoCapitalize="off"
+                          autoComplete="off"
+                          autoCorrect="off"
+                          // onChange={e => {
+                          //   this.updateNumber(
+                          //     'length',
+                          //     e.target.value === '' ? null : e.target.value,
+                          //   );
+                          //   // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                          //   //   this.updateChange(
+                          //   //     'length',
+                          //   //     e.target.value === '' ?
+                          //   //       null : _.toNumber(e.target.value)
+                          //   //   );
+                          //   // }
+                          // }}
+                          spellCheck="false"
+                          // value={
+                          //   _.isNil(borehole.length) ? '' : borehole.length
+                          // }
+                        />
+                      </Form.Field>
+                    </Form.Group>
                     <Form.Field
                       error={mentions.indexOf('groundwater') >= 0}
                       required>
