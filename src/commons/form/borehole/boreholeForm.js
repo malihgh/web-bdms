@@ -1187,46 +1187,6 @@ class BoreholeForm extends React.Component {
                       }}>
                       <Form autoComplete="off" error size={size}>
                         <Form.Group widths="equal">
-                          <Form.Field
-                            error={mentions.indexOf('method') >= 0}
-                            required>
-                            <label>
-                              <TranslationText id="drillingmethod" />
-                            </label>
-                            <DomainDropdown
-                              onSelected={selected => {
-                                this.updateChange(
-                                  'extended.method',
-                                  selected.id,
-                                  false,
-                                );
-                              }}
-                              schema="extended.method"
-                              selected={borehole.extended.method}
-                            />
-                          </Form.Field>
-                          <Form.Field
-                            error={
-                              (_.isString(borehole.drilling_date) &&
-                                borehole.drilling_date !== '' &&
-                                !moment(borehole.drilling_date).isValid()) ||
-                              mentions.indexOf('method') >= 0
-                            }
-                            required>
-                            <label>
-                              <TranslationText id="drilling_date" />
-                            </label>
-                            <DateField
-                              date={borehole.drilling_date}
-                              onChange={selected => {
-                                this.updateChange(
-                                  'drilling_date',
-                                  selected,
-                                  false,
-                                );
-                              }}
-                            />
-                          </Form.Field>
                           {/* drilling type in Borehole */}
                           <Form.Field
                             error={
@@ -1245,24 +1205,22 @@ class BoreholeForm extends React.Component {
                               selected={borehole.kind}
                             />
                           </Form.Field>
-                        </Form.Group>
-                        <Form.Group widths="equal">
                           <Form.Field
-                            error={mentions.indexOf('cuttings') >= 0}
+                            error={mentions.indexOf('method') >= 0}
                             required>
                             <label>
-                              <TranslationText id="cuttings" />
+                              <TranslationText id="drillingmethod" />
                             </label>
                             <DomainDropdown
                               onSelected={selected => {
                                 this.updateChange(
-                                  'custom.cuttings',
+                                  'extended.method',
                                   selected.id,
                                   false,
                                 );
                               }}
-                              schema="custom.cuttings"
-                              selected={borehole.custom.cuttings}
+                              schema="extended.method"
+                              selected={borehole.extended.method}
                             />
                           </Form.Field>
                           <Form.Field
@@ -1283,6 +1241,82 @@ class BoreholeForm extends React.Component {
                               selected={borehole.extended.purpose}
                             />
                           </Form.Field>
+                        </Form.Group>
+                        <Form.Group widths="equal">
+                          <div
+                            style={{
+                              width: '34%',
+                              paddingRight: '2%',
+                              paddingLeft: '1%',
+                            }}>
+                            <Form.Field
+                              error={mentions.indexOf('cuttings') >= 0}
+                              required>
+                              <label>
+                                <TranslationText id="cuttings" />
+                              </label>
+                              <DomainDropdown
+                                onSelected={selected => {
+                                  this.updateChange(
+                                    'custom.cuttings',
+                                    selected.id,
+                                    false,
+                                  );
+                                }}
+                                schema="custom.cuttings"
+                                selected={borehole.custom.cuttings}
+                              />
+                            </Form.Field>
+                          </div>
+                          {/* Adding Spud time variable to DB and update it he */}
+                          <div style={{ width: '33%', paddingRight: '1%' }}>
+                            <Form.Field
+                              // error={
+                              //   (_.isString(borehole.drilling_date) &&
+                              //     borehole.drilling_date !== '' &&
+                              //     !moment(borehole.drilling_date).isValid()) ||
+                              //   mentions.indexOf('method') >= 0
+                              // }
+                              required>
+                              <label>
+                                <TranslationText id="spud-time" />
+                              </label>
+                              <DateField
+                              // date={borehole.drilling_date}
+                              // onChange={selected => {
+                              //   this.updateChange(
+                              //     'drilling_date',
+                              //     selected,
+                              //     false,
+                              //   );
+                              // }}
+                              />
+                            </Form.Field>
+                          </div>
+                          <div style={{ width: '33%', paddingLeft: '1%' }}>
+                            <Form.Field
+                              error={
+                                (_.isString(borehole.drilling_date) &&
+                                  borehole.drilling_date !== '' &&
+                                  !moment(borehole.drilling_date).isValid()) ||
+                                mentions.indexOf('method') >= 0
+                              }
+                              required>
+                              <label>
+                                <TranslationText id="drilling_date" />
+                              </label>
+                              <DateField
+                                date={borehole.drilling_date}
+                                onChange={selected => {
+                                  this.updateChange(
+                                    'drilling_date',
+                                    selected,
+                                    false,
+                                  );
+                                }}
+                              />
+                            </Form.Field>
+                          </div>
                         </Form.Group>
                         <Form.Group widths="equal">
                           {/* strange bug in Edge fixed with placing
