@@ -1279,7 +1279,7 @@ class BoreholeForm extends React.Component {
                               // }
                               required>
                               <label>
-                                <TranslationText id="spud-time" />
+                                <TranslationText id="dateSpudCasing" />
                               </label>
                               <DateField
                               // date={borehole.drilling_date}
