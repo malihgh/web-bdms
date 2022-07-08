@@ -15,7 +15,6 @@ export const fillingData = {
       type: 'Input',
       label: 'remarks',
       value: 'notes',
-      require: true,
     },
   ],
   profileAttribute: [
@@ -53,7 +52,6 @@ export const fillingData = {
       type: 'TextArea',
       label: 'layer_notes',
       value: 'notes',
-      require: true,
       isVisible: true,
     },
   ],
