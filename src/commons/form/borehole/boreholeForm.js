@@ -1654,15 +1654,15 @@ class BoreholeForm extends React.Component {
                           <TranslationText id="total_depth_tvd_qt" />
                         </label>
                         <DomainDropdown
-                          // onSelected={selected => {
-                          //   this.updateChange(
-                          //     'custom.qt_top_bedrock',
-                          //     selected.id,
-                          //     false,
-                          //   );
-                          // }}
+                          onSelected={selected => {
+                            this.updateChange(
+                              'custom.qt_top_bedrock_tvd',
+                              selected.id,
+                              false,
+                            );
+                          }}
                           schema="custom.qt_top_bedrock"
-                          // selected={borehole.custom.qt_top_bedrock}
+                          selected={borehole.custom.qt_top_bedrock_tvd}
                         />
                       </Form.Field>
                     </Form.Group>
