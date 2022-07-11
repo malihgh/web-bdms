@@ -238,7 +238,7 @@
   "alternate_name": "Alternate name",
   "publication": "Publication",
   "publish": "Publish",
-  "purpose": "Purpose",
+  "purpose": "Drilling purpose",
   "qt_bore_inc_dir": "Inclin. / direction precission",
   "qt_elevation": "+/- Elevation top terrain [m]",
   "qt_depth": "+/- Total depth MD [m]",
