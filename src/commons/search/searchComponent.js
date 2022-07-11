@@ -219,29 +219,29 @@ class SearchComponent extends React.Component {
                   />
                 </Form.Field>
               ) : null}
-              {this.isVisible('custom.public_name') ? (
+              {this.isVisible('custom.alternate_name') ? (
                 <Form.Field>
                   <label>
-                    <TranslationText id="public_name" />
+                    <TranslationText id="alternate_name" />
                   </label>
                   <Input
                     onChange={eve => {
-                      this.props.setFilter('public_name', eve.target.value);
+                      this.props.setFilter('alternate_name', eve.target.value);
                     }}
-                    placeholder={t('public_name')}
-                    value={search.filter.public_name}
+                    placeholder={t('alternate_name')}
+                    value={search.filter.alternate_name}
                   />
                   {this.props.developer.debug === true ? (
                     <div
                       style={{
                         color: 'red',
                       }}>
-                      trans=public_name
+                      trans=alternate_name
                     </div>
                   ) : null}
                   <LabelReset
                     onClick={() => {
-                      this.props.setFilter('public_name', '');
+                      this.props.setFilter('alternate_name', '');
                     }}
                   />
                 </Form.Field>

@@ -51,8 +51,8 @@ class BoreholeForm extends React.Component {
       creationFetch: false,
       'extended.original_name_check': true,
       'extended.original_name_fetch': false,
-      'custom.public_name_check': true,
-      'custom.public_name_fetch': false,
+      'custom.alternate_name_check': true,
+      'custom.alternate_name_fetch': false,
 
       identifier: null,
       identifierValue: '',
@@ -650,32 +650,35 @@ class BoreholeForm extends React.Component {
                     <Form.Group widths="equal">
                       <Form.Field
                         error={
-                          borehole.custom.public_name === '' ||
-                          (this.state['custom.public_name_check'] === false &&
-                            this.state['custom.public_name_fetch'] === false) ||
-                          mentions.indexOf('public_name') >= 0
+                          borehole.custom.alternate_name === '' ||
+                          (this.state['custom.alternate_name_check'] ===
+                            false &&
+                            this.state['custom.alternate_name_fetch'] ===
+                              false) ||
+                          mentions.indexOf('alternate_name') >= 0
                         }
                         required>
                         <label>
-                          <TranslationText id="public_name" />
+                          <TranslationText id="alternate_name" />
                         </label>
                         <Input
                           autoCapitalize="off"
                           autoComplete="off"
                           autoCorrect="off"
                           icon={
-                            this.state['custom.public_name_check'] === true &&
-                            this.state['custom.public_name_fetch'] === false
+                            this.state['custom.alternate_name_check'] ===
+                              true &&
+                            this.state['custom.alternate_name_fetch'] === false
                               ? 'check'
                               : 'delete'
                           }
                           iconPosition="left"
-                          loading={this.state.public_name_fetch}
+                          loading={this.state.alternate_name_fetch}
                           onChange={e => {
-                            this.check('custom.public_name', e.target.value);
+                            this.check('custom.alternate_name', e.target.value);
                           }}
                           spellCheck="false"
-                          value={borehole.custom.public_name}
+                          value={borehole.custom.alternate_name}
                         />
                       </Form.Field>
                       {/* drilling type in Location */}
@@ -697,11 +700,11 @@ class BoreholeForm extends React.Component {
                         />
                       </Form.Field> */}
                     </Form.Group>
-                    {this.state['custom.public_name_check'] === false &&
-                    this.state['custom.public_name_fetch'] === false ? (
+                    {this.state['custom.alternate_name_check'] === false &&
+                    this.state['custom.alternate_name_fetch'] === false ? (
                       <Message
                         content={
-                          <TranslationText id="public_name" /> +
+                          <TranslationText id="alternate_name" /> +
                           ', ' +
                           <TranslationText id="duplicate" />
                         }
