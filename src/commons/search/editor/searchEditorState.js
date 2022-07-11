@@ -83,7 +83,7 @@ const initialState = {
     layer_uscs_3: null,
     layer_uscs_determination: null,
     layer_debris: null,
-    layer_lit_pet_deb: null,
+    layer_lithology_top_bedrock: null,
   },
 };
 

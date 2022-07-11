@@ -109,7 +109,7 @@ const initialState = {
         uscs_3: true,
         uscs_determination: true,
         debris: true,
-        lit_pet_deb: true,
+        lithology_top_bedrock: true,
       },
     },
     efilter: {
@@ -174,7 +174,7 @@ const initialState = {
         uscs_3: true,
         uscs_determination: true,
         debris: true,
-        lit_pet_deb: true,
+        lithology_top_bedrock: true,
       },
     },
   },

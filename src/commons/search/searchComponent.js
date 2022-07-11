@@ -1733,22 +1733,25 @@ class SearchComponent extends React.Component {
                   />
                 </Form.Field>
               ) : null}
-              {this.isVisible('layer.lit_pet_deb') ? (
+              {this.isVisible('layer.lithology_top_bedrock') ? (
                 <Form.Field>
                   <label>
-                    <TranslationText id="layer_lit_pet_deb" />
+                    <TranslationText id="layer_lithology_top_bedrock" />
                   </label>
                   <DomainDropdown
                     onSelected={selected => {
-                      this.props.setFilter('layer_lit_pet_deb', selected.id);
+                      this.props.setFilter(
+                        'layer_lithology_top_bedrock',
+                        selected.id,
+                      );
                     }}
                     reset={false}
                     schema="custom.lit_pet_top_bedrock"
-                    selected={search.filter.layer_lit_pet_deb}
+                    selected={search.filter.layer_lithology_top_bedrock}
                   />
                   <LabelReset
                     onClick={() => {
-                      this.props.setFilter('layer_lit_pet_deb', null);
+                      this.props.setFilter('layer_lithology_top_bedrock', null);
                     }}
                   />
                 </Form.Field>

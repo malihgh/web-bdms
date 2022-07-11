@@ -211,9 +211,9 @@ export const stratigraphyData = {
     {
       id: 20,
       type: 'Dropdown',
-      label: 'layer_lit_pet_deb',
-      value: 'lit_pet_deb',
-      schema: 'custom.lit_pet_top_bedrock',
+      label: 'layer_lithology_top_bedrock',
+      value: 'lithology_top_bedrock',
+      schema: 'custom.lithology_top_bedrock',
       multiple: true,
       search: true,
     },
