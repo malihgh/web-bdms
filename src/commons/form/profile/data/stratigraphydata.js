@@ -37,15 +37,15 @@ export const stratigraphyData = {
     {
       id: 2,
       type: 'TextArea',
-      label: 'description',
-      value: 'description',
+      label: 'lithological_description',
+      value: 'lithological_description',
       isVisible: true,
     },
     {
       id: 3,
       type: 'TextArea',
-      label: 'layer_geology',
-      value: 'geology',
+      label: 'facies_description',
+      value: 'facies_description',
     },
     {
       id: 4,
