@@ -3,37 +3,19 @@ export const casingData = {
     {
       id: 0,
       type: 'Input',
-      label: 'casingId',
-      value: 'casng_id',
-      require: true,
-    },
-    {
-      id: 1,
-      type: 'Input',
       label: 'casingName',
       value: 'name',
       require: true,
     },
+
     {
-      id: 2,
-      type: 'Date',
-      label: 'dateSpudCasing',
-      value: 'date_spud',
-    },
-    {
-      id: 3,
-      type: 'Date',
-      label: 'dateFinishCasing',
-      value: 'date_fin',
-    },
-    {
-      id: 4,
+      id: 1,
       type: 'Date',
       label: 'dateAbandonmentCasing',
       value: 'date_abd',
     },
     {
-      id: 5,
+      id: 2,
       type: 'Input',
       label: 'remarks',
       value: 'notes',
@@ -82,6 +64,20 @@ export const casingData = {
     },
     {
       id: 4,
+      type: 'Date',
+      label: 'dateSpudCasing',
+      value: 'date_spud',
+      isVisible: true,
+    },
+    {
+      id: 5,
+      type: 'Date',
+      label: 'dateFinishCasing',
+      value: 'date_fin',
+      isVisible: true,
+    },
+    {
+      id: 6,
       type: 'Input',
       label: 'Inner diameter (mm)',
       value: '',
@@ -90,7 +86,7 @@ export const casingData = {
       isVisible: true,
     },
     {
-      id: 5,
+      id: 7,
       type: 'Input',
       label: 'Outer diameter (mm)',
       value: '',
@@ -99,7 +95,7 @@ export const casingData = {
       isVisible: true,
     },
     {
-      id: 6,
+      id: 8,
       type: 'TextArea',
       label: 'Notes',
       value: 'notes',
