@@ -63,7 +63,10 @@ const ProfileAttributes = props => {
       fill_material: null,
       casing_kind: null,
       casing_material: null,
-      casing_drilling: null,
+      casing_date_spud: null,
+      casing_date_finish: null,
+      casing_innder_diameter: null,
+      casing_outer_diameter: null,
     },
   });
 
