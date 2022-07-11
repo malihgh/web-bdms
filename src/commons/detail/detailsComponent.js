@@ -210,7 +210,7 @@ class DetailsComponent extends React.Component {
                       }}
                     >
                       <TranslationText
-                        id='qt_length'
+                        id='qt_depth'
                       />
                     </div>
                   </div>

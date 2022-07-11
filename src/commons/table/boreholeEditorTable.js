@@ -314,7 +314,7 @@ class BoreholeEditorTable extends TTable {
         </Table.HeaderCell>
         {this.getHeaderLabel('workgroup')}
         {this.getHeaderLabel('creationdate')}
-        {this.getHeaderLabel('author')}
+        {this.getHeaderLabel('createdBy')}
         {this.getHeaderLabel('original_name')}
         {this.getHeaderLabel('kind')}
         {this.getHeaderLabel('restriction')}
@@ -390,14 +390,14 @@ class BoreholeEditorTable extends TTable {
           }}
         >
           <DateText
-            date={item.author.date}
+            date={item.creator.date}
             fromnow
           />
         </span><br />
-        <DateText date={item.author.date} />
+        <DateText date={item.creator.date} />
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
-        {item.author.username}
+        {item.creator.username}
       </Table.Cell>,
       <Table.Cell key={this.uid + "_" + idx + "_" + colIdx++}>
         {item.original_name}

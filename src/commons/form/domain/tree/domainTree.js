@@ -480,7 +480,7 @@ class DomainTree extends React.Component {
               {this.props.title}
             </div>
             {
-              this.props.schema === "custom.lit_str_top_bedrock"?
+              this.props.schema === "custom.lithostratigraphy_top_bedrock"?
                 <div>
                   <a
                     className='link'

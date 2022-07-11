@@ -491,7 +491,7 @@ class LayerForm extends React.Component {
                       'lithology', selected.id, false
                     );
                   }}
-                  schema='custom.lit_pet_top_bedrock'
+                  schema='custom.lithology_top_bedrock'
                   selected={this.state.layer.lithology}
                   title={
                     <TranslationText
@@ -528,7 +528,7 @@ class LayerForm extends React.Component {
                       false
                     );
                   }}
-                  schema='custom.lit_str_top_bedrock'
+                  schema='custom.lithostratigraphy_top_bedrock'
                   selected={this.state.layer.lithostratigraphy}
                   title={
                     <TranslationText
@@ -554,7 +554,7 @@ class LayerForm extends React.Component {
                       'chronostratigraphy', selected.id, false
                     );
                   }}
-                  schema='custom.chro_str_top_bedrock'
+                  schema='custom.chronostratigraphy_top_bedrock'
                   selected={this.state.layer.chronostratigraphy}
                 /> */}
                 <DomainTree
@@ -571,7 +571,7 @@ class LayerForm extends React.Component {
                       'chronostratigraphy', selected.id, false
                     );
                   }}
-                  schema='custom.chro_str_top_bedrock'
+                  schema='custom.chronostratigraphy_top_bedrock'
                   selected={this.state.layer.chronostratigraphy}
                   title={
                     <TranslationText
@@ -1154,7 +1154,7 @@ class LayerForm extends React.Component {
                       false
                     );
                   }}
-                  schema='custom.lit_pet_top_bedrock'
+                  schema='custom.lithology_top_bedrock'
                   search
                   selected={this.state.layer.lit_pet_deb}
                 />

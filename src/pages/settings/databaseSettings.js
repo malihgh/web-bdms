@@ -499,7 +499,7 @@ class DatabaseSettings extends React.Component {
                       <div>
                         <Form.Input
                           fluid
-                          label='Supplier name'
+                          label={t('supplier')}
                           onChange={(e)=>{
                             this.setState({
                               supplierName: e.target.value
@@ -607,6 +607,20 @@ class DatabaseSettings extends React.Component {
                               this.state.supplierName, this.state.file
                             ).then(
                               response => {
+                                if (response.data.success === false) {
+                                  let msg = "";
+                                  if (response.data.error === 'E-104') {
+                                    msg = `${t("errorAttention")}
+                                      
+${t("supplier")}: ${this.state.supplierName}
+                                    
+${t("duplicate")}
+                                    `;
+                                  } else {
+                                    msg = response.data.message;
+                                  }
+                                  alert(msg);
+                                }
                                 this.reset();
                                 this.props.reloadUser();
                               }

@@ -195,7 +195,7 @@ class StratigraphyFormContainer extends React.Component {
     
     //   Bedrock defined the top bedrock is set
     // const isBedrockDefined = (
-    //   borehole.custom.lit_pet_top_bedrock !== null
+    //   borehole.custom.lithology_top_bedrock !== null
     // );
     let missingBedrock = true;
     let bedrockLitPetWrong = false;
@@ -209,9 +209,9 @@ class StratigraphyFormContainer extends React.Component {
       const isBedrock = (
         item.depth_from === borehole.extended.top_bedrock
         // Only top_bedrock: meeting 20191017
-        // item.lithostratigraphy === borehole.custom.lit_str_top_bedrock
-        // && item.lithology === borehole.custom.lit_pet_top_bedrock
-        // && item.chronostratigraphy === borehole.custom.chro_str_top_bedrock
+        // item.lithostratigraphy === borehole.custom.lithostratigraphy_top_bedrock
+        // && item.lithology === borehole.custom.lithology_top_bedrock
+        // && item.chronostratigraphy === borehole.custom.chronostratigraphy_top_bedrock
         // && item.depth_from === borehole.extended.top_bedrock
       );
 
@@ -233,15 +233,15 @@ class StratigraphyFormContainer extends React.Component {
 
       if (isBedrock === true){
         bedrockLitPetWrong = (
-          item.lithology !== borehole.custom.lit_pet_top_bedrock
+          item.lithology !== borehole.custom.lithology_top_bedrock
         );
   
         bedrockLitStratiWrong = (
-          item.lithostratigraphy !== borehole.custom.lit_str_top_bedrock
+          item.lithostratigraphy !== borehole.custom.lithostratigraphy_top_bedrock
         );
   
         bedrockChronoWrong = (
-          item.chronostratigraphy !== borehole.custom.chro_str_top_bedrock
+          item.chronostratigraphy !== borehole.custom.chronostratigraphy_top_bedrock
         );
       }
 

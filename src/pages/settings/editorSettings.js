@@ -546,54 +546,54 @@ class EditorSettings extends React.Component {
               <Segment>
                 <Checkbox
                   checked={
-                    setting.data.efilter.custom.lit_pet_top_bedrock
+                    setting.data.efilter.custom.lithology_top_bedrock
                   }
                   label=""
                   onChange={(e, d) => {
                     toggleFilter(
-                      'custom.lit_pet_top_bedrock',
+                      'custom.lithology_top_bedrock',
                       d.checked
                     );
                   }}
                 />
                 <TranslationText
-                  id='lit_pet_top_bedrock'
+                  id='lithology_top_bedrock'
                 />
               </Segment>
 
               <Segment>
                 <Checkbox
                   checked={
-                    setting.data.efilter.custom.lit_str_top_bedrock
+                    setting.data.efilter.custom.lithostratigraphy_top_bedrock
                   }
                   label=""
                   onChange={(e, d) => {
                     toggleFilter(
-                      'custom.lit_str_top_bedrock',
+                      'custom.lithostratigraphy_top_bedrock',
                       d.checked
                     );
                   }}
                 />
                 <TranslationText
-                  id='lit_str_top_bedrock'
+                  id='lithostratigraphy_top_bedrock'
                 />
               </Segment>
 
               <Segment>
                 <Checkbox
                   checked={
-                    setting.data.efilter.custom.chro_str_top_bedrock
+                    setting.data.efilter.custom.chronostratigraphy_top_bedrock
                   }
                   label=""
                   onChange={(e, d) => {
                     toggleFilter(
-                      'custom.chro_str_top_bedrock',
+                      'custom.chronostratigraphy_top_bedrock',
                       d.checked
                     );
                   }}
                 />
                 <TranslationText
-                  id='chro_str_top_bedrock'
+                  id='chronostratigraphy_top_bedrock'
                 />
               </Segment>
 

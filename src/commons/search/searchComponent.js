@@ -1040,81 +1040,81 @@ class SearchComponent extends React.Component {
                   </Form.Field> : null
               }
               {
-                this.isVisible('custom.lit_pet_top_bedrock') ?
+                this.isVisible('custom.lithology_top_bedrock') ?
                   <Form.Field>
                     <label>
                       <TranslationText
-                        id='lit_pet_top_bedrock'
+                        id='lithology_top_bedrock'
                       />
                     </label>
                     <DomainDropdown
                       onSelected={(selected) => {
                         this.props.setFilter(
-                          'lit_pet_top_bedrock', selected.id
+                          'lithology_top_bedrock', selected.id
                         );
                       }}
                       reset={false}
-                      schema='custom.lit_pet_top_bedrock'
-                      selected={search.filter.lit_pet_top_bedrock}
+                      schema='custom.lithology_top_bedrock'
+                      selected={search.filter.lithology_top_bedrock}
                     />
                     <LabelReset
                       onClick={() => {
                         this.props.setFilter(
-                          'lit_pet_top_bedrock', null
+                          'lithology_top_bedrock', null
                         );
                       }}
                     />
                   </Form.Field> : null
               }
               {
-                this.isVisible('custom.lit_str_top_bedrock') ?
+                this.isVisible('custom.lithostratigraphy_top_bedrock') ?
                   <Form.Field>
                     <label>
                       <TranslationText
-                        id='lit_str_top_bedrock'
+                        id='lithostratigraphy_top_bedrock'
                       />
                     </label>
                     <DomainDropdown
                       onSelected={(selected) => {
                         this.props.setFilter(
-                          'lit_str_top_bedrock', selected.id
+                          'lithostratigraphy_top_bedrock', selected.id
                         );
                       }}
                       reset={false}
-                      schema='custom.lit_str_top_bedrock'
-                      selected={search.filter.lit_str_top_bedrock}
+                      schema='custom.lithostratigraphy_top_bedrock'
+                      selected={search.filter.lithostratigraphy_top_bedrock}
                     />
                     <LabelReset
                       onClick={() => {
                         this.props.setFilter(
-                          'lit_str_top_bedrock', null
+                          'lithostratigraphy_top_bedrock', null
                         );
                       }}
                     />
                   </Form.Field> : null
               }
               {
-                this.isVisible('custom.chro_str_top_bedrock') ?
+                this.isVisible('custom.chronostratigraphy_top_bedrock') ?
                   <Form.Field>
                     <label>
                       <TranslationText
-                        id='chro_str_top_bedrock'
+                        id='chronostratigraphy_top_bedrock'
                       />
                     </label>
                     <DomainDropdown
                       onSelected={(selected) => {
                         this.props.setFilter(
-                          'chro_str_top_bedrock', selected.id
+                          'chronostratigraphy_top_bedrock', selected.id
                         );
                       }}
                       reset={false}
-                      schema='custom.chro_str_top_bedrock'
-                      selected={search.filter.chro_str_top_bedrock}
+                      schema='custom.chronostratigraphy_top_bedrock'
+                      selected={search.filter.chronostratigraphy_top_bedrock}
                     />
                     <LabelReset
                       onClick={() => {
                         this.props.setFilter(
-                          'chro_str_top_bedrock', null
+                          'chronostratigraphy_top_bedrock', null
                         );
                       }}
                     />
@@ -1506,7 +1506,7 @@ class SearchComponent extends React.Component {
                           selected.id
                         );
                       }}
-                      schema='custom.lit_pet_top_bedrock'
+                      schema='custom.lithology_top_bedrock'
                       selected={search.filter.layer_lithology}
                       title={
                         <TranslationText
@@ -1545,7 +1545,7 @@ class SearchComponent extends React.Component {
                           selected.id
                         );
                       }}
-                      schema='custom.lit_str_top_bedrock'
+                      schema='custom.lithostratigraphy_top_bedrock'
                       selected={search.filter.layer_lithostratigraphy}
                       title={
                         <TranslationText
@@ -1585,7 +1585,7 @@ class SearchComponent extends React.Component {
                           selected.id
                         );
                       }}
-                      schema='custom.chro_str_top_bedrock'
+                      schema='custom.chronostratigraphy_top_bedrock'
                       selected={search.filter.layer_chronostratigraphy}
                       title={
                         <TranslationText
@@ -2167,7 +2167,7 @@ class SearchComponent extends React.Component {
                         );
                       }}
                       reset={false}
-                      schema='custom.lit_pet_top_bedrock'
+                      schema='custom.lithology_top_bedrock'
                       selected={search.filter.layer_lit_pet_deb}
                     />
                     <LabelReset

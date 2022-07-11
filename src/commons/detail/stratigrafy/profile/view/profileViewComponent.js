@@ -228,13 +228,13 @@ class ProfileView extends React.Component {
             getSubTitle={layer => (
               <DomainText
                 id={layer.lithology}
-                schema="custom.lit_pet_top_bedrock"
+                schema="custom.lithology_top_bedrock"
               />
             )}
             getTitle={layer => (
               <DomainText
                 id={layer.lithostratigraphy}
-                schema="custom.lit_str_top_bedrock"
+                schema="custom.lithostratigraphy_top_bedrock"
               />
             )}
             mapping={{
@@ -347,17 +347,17 @@ class ProfileView extends React.Component {
                 )}
                 {this.getDomainRow('qt_description', layer.qt_description)}
                 {this.getDomainRow(
-                  'custom.lit_pet_top_bedrock',
+                  'custom.lithology_top_bedrock',
                   layer.lithology,
                   'lithology',
                 )}
                 {this.getDomainRow(
-                  'custom.lit_str_top_bedrock',
+                  'custom.lithostratigraphy_top_bedrock',
                   layer.lithostratigraphy,
                   'lithostratigraphy',
                 )}
                 {this.getDomainRow(
-                  'custom.chro_str_top_bedrock',
+                  'custom.chronostratigraphy_top_bedrock',
                   layer.chronostratigraphy,
                   'chronostratigraphy',
                 )}
@@ -437,7 +437,7 @@ class ProfileView extends React.Component {
                   )} */}
                 {this.getDomainRowMultiple('mcla107', layer.debris, 'debris')}
                 {this.getDomainRowMultiple(
-                  'custom.lit_pet_top_bedrock',
+                  'custom.lithology_top_bedrock',
                   layer.lit_pet_deb,
                   'lit_pet_deb',
                 )}
