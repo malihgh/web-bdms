@@ -48,7 +48,6 @@ export const InstrumentAttributes = [
     label: 'casing',
     value: 'casing_id',
     require: true,
-    schema: 'inst100',
     multiple: false,
     search: false,
   },
