@@ -1269,7 +1269,6 @@ class BoreholeForm extends React.Component {
                               />
                             </Form.Field>
                           </div>
-                          {/* Adding Spud time variable to DB and update it he */}
                           <div style={{ width: '33%', paddingRight: '1%' }}>
                             <Form.Field
                               // error={
@@ -1283,14 +1282,14 @@ class BoreholeForm extends React.Component {
                                 <TranslationText id="dateSpudCasing" />
                               </label>
                               <DateField
-                              // date={borehole.drilling_date}
-                              // onChange={selected => {
-                              //   this.updateChange(
-                              //     'drilling_date',
-                              //     selected,
-                              //     false,
-                              //   );
-                              // }}
+                                date={borehole.spud_date}
+                                onChange={selected => {
+                                  this.updateChange(
+                                    'spud_date',
+                                    selected,
+                                    false,
+                                  );
+                                }}
                               />
                             </Form.Field>
                           </div>
@@ -1327,7 +1326,7 @@ class BoreholeForm extends React.Component {
                               display: 'none',
                             }}>
                             <label>
-                              <TranslationText id="drilldiameter" />
+                              <TranslationText id="drill_diameter" />
                             </label>
                             <Input
                               spellCheck="false"
