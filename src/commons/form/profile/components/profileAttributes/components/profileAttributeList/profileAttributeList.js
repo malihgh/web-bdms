@@ -4,6 +4,7 @@ import { Input, TextArea, Form } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
 import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
 import DomainTree from '../../../../../domain/tree/domainTree';
+import DateField from '../../../../../dateField';
 import _ from 'lodash';
 
 const ProfileAttributeList = props => {
@@ -99,6 +100,17 @@ const ProfileAttributeList = props => {
                     _.isNil(layer?.[item.value]) ? null : layer[item.value]
                   }
                   title={<TranslationText id={item.label} />}
+                />
+              </Styled.AttributesItem>
+            )}
+
+            {item.type === 'Date' && (item.isVisible || showAll) && (
+              <Styled.AttributesItem>
+                <DateField
+                  date={layer?.[item.value] ? layer[item.value] : null}
+                  onChange={selected => {
+                    updateChange(item.value, selected, false);
+                  }}
                 />
               </Styled.AttributesItem>
             )}
