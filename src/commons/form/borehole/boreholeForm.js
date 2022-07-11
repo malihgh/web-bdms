@@ -1390,7 +1390,7 @@ class BoreholeForm extends React.Component {
                         </Form.Group>
                         <Form.Group widths="equal">
                           <Form.Field
-                            error={mentions.indexOf('bore_inc') >= 0}
+                            error={mentions.indexOf('inclination') >= 0}
                             required>
                             <label>
                               <TranslationText
@@ -1404,12 +1404,12 @@ class BoreholeForm extends React.Component {
                               autoCorrect="off"
                               onChange={e => {
                                 this.updateNumber(
-                                  'bore_inc',
+                                  'inclination',
                                   e.target.value === '' ? null : e.target.value,
                                 );
                                 // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
                                 //   this.updateChange(
-                                //     'bore_inc',
+                                //     'inclination',
                                 //     e.target.value === '' ?
                                 //       null : _.toNumber(e.target.value)
                                 //   );
@@ -1417,14 +1417,16 @@ class BoreholeForm extends React.Component {
                               }}
                               spellCheck="false"
                               value={
-                                _.isNil(borehole.bore_inc)
+                                _.isNil(borehole.inclination)
                                   ? ''
-                                  : borehole.bore_inc
+                                  : borehole.inclination
                               }
                             />
                           </Form.Field>
                           <Form.Field
-                            error={mentions.indexOf('bore_inc_dir') >= 0}
+                            error={
+                              mentions.indexOf('inclination_direction') >= 0
+                            }
                             required>
                             <label>
                               <TranslationText
@@ -1438,12 +1440,12 @@ class BoreholeForm extends React.Component {
                               autoCorrect="off"
                               onChange={e => {
                                 this.updateNumber(
-                                  'bore_inc_dir',
+                                  'inclination_direction',
                                   e.target.value === '' ? null : e.target.value,
                                 );
                                 // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
                                 //   this.updateChange(
-                                //     'bore_inc_dir',
+                                //     'inclination_direction',
                                 //     e.target.value === '' ?
                                 //       null : _.toNumber(e.target.value)
                                 //   );
@@ -1451,9 +1453,9 @@ class BoreholeForm extends React.Component {
                               }}
                               spellCheck="false"
                               value={
-                                _.isNil(borehole.bore_inc_dir)
+                                _.isNil(borehole.inclination_direction)
                                   ? ''
-                                  : borehole.bore_inc_dir
+                                  : borehole.inclination_direction
                               }
                             />
                           </Form.Field>
