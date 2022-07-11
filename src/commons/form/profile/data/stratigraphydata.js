@@ -272,10 +272,10 @@ export const stratigraphyData = {
     {
       id: 27,
       type: 'Dropdown',
-      label: 'gradation new',
-      value: '',
-      schema: '',
-      multiple: true,
+      label: 'gradation',
+      value: 'gradation',
+      schema: 'gradation',
+      multiple: false,
       search: true,
     },
     {
