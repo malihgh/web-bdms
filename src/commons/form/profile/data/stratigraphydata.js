@@ -236,10 +236,10 @@ export const stratigraphyData = {
     {
       id: 23,
       type: 'Dropdown',
-      label: 'consistence new',
-      value: '',
+      label: 'layer_consistance',
+      value: 'consistance',
       schema: 'mlpr103',
-      multiple: true,
+      multiple: false,
       search: true,
     },
     {
