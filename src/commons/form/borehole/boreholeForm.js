@@ -1639,33 +1639,23 @@ class BoreholeForm extends React.Component {
                           // }
                         />
                       </Form.Field>
+
                       <Form.Field
-                        // error={mentions.indexOf('length') >= 0}
+                        // error={mentions.indexOf('qt_top_bedrock') >= 0}
                         required>
                         <label>
                           <TranslationText id="+/- Top bedrock TVD [m]" />
                         </label>
-                        <Input
-                          autoCapitalize="off"
-                          autoComplete="off"
-                          autoCorrect="off"
-                          // onChange={e => {
-                          //   this.updateNumber(
-                          //     'length',
-                          //     e.target.value === '' ? null : e.target.value,
+                        <DomainDropdown
+                          // onSelected={selected => {
+                          //   this.updateChange(
+                          //     'custom.qt_top_bedrock',
+                          //     selected.id,
+                          //     false,
                           //   );
-                          //   // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                          //   //   this.updateChange(
-                          //   //     'length',
-                          //   //     e.target.value === '' ?
-                          //   //       null : _.toNumber(e.target.value)
-                          //   //   );
-                          //   // }
                           // }}
-                          spellCheck="false"
-                          // value={
-                          //   _.isNil(borehole.length) ? '' : borehole.length
-                          // }
+                          schema="custom.qt_top_bedrock"
+                          // selected={borehole.custom.qt_top_bedrock}
                         />
                       </Form.Field>
                     </Form.Group>
