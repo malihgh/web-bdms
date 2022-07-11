@@ -170,7 +170,7 @@
   "layer_grain_size_2": "Grain size 2",
   "layer_humidity": "Humidity",
   "layer_last": "End of borehole",
-  "layer_lit_pet_deb": "Coarse component lithology",
+  "layer_lithology_top_bedrock": "Coarse component lithology",
   "layer_lithology": "Lithology",
   "layer_lithostratigraphy": "Lithostratigraphy",
   "layer_loading_fetch": "Loading an existing layer..",
