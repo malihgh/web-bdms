@@ -1210,18 +1210,18 @@ class BoreholeForm extends React.Component {
                             error={mentions.indexOf('method') >= 0}
                             required>
                             <label>
-                              <TranslationText id="drillingmethod" />
+                              <TranslationText id="drilling_method" />
                             </label>
                             <DomainDropdown
                               onSelected={selected => {
                                 this.updateChange(
-                                  'extended.method',
+                                  'extended.drilling_method',
                                   selected.id,
                                   false,
                                 );
                               }}
-                              schema="extended.method"
-                              selected={borehole.extended.method}
+                              schema="extended.drilling_method"
+                              selected={borehole.extended.drilling_method}
                             />
                           </Form.Field>
                           <Form.Field
@@ -1304,7 +1304,7 @@ class BoreholeForm extends React.Component {
                               }
                               required>
                               <label>
-                                <TranslationText id="drilling_date" />
+                                <TranslationText id="drilling_end_date" />
                               </label>
                               <DateField
                                 date={borehole.drilling_date}
@@ -1750,7 +1750,9 @@ class BoreholeForm extends React.Component {
                       />
                     </Form.Field>
                     <Form.Field
-                      error={mentions.indexOf('lithostratigraphy_top_bedrock') >= 0}
+                      error={
+                        mentions.indexOf('lithostratigraphy_top_bedrock') >= 0
+                      }
                       required>
                       <label>
                         <TranslationText id="lithostratigraphy_top_bedrock" />
@@ -1772,11 +1774,15 @@ class BoreholeForm extends React.Component {
                         }}
                         schema="custom.lithostratigraphy_top_bedrock"
                         selected={borehole.custom.lithostratigraphy_top_bedrock}
-                        title={<TranslationText id="lithostratigraphy_top_bedrock" />}
+                        title={
+                          <TranslationText id="lithostratigraphy_top_bedrock" />
+                        }
                       />
                     </Form.Field>
                     <Form.Field
-                      error={mentions.indexOf('chronostratigraphy_top_bedrock') >= 0}
+                      error={
+                        mentions.indexOf('chronostratigraphy_top_bedrock') >= 0
+                      }
                       required>
                       <label>
                         <TranslationText id="chronostratigraphy_top_bedrock" />
@@ -1809,8 +1815,12 @@ class BoreholeForm extends React.Component {
                           );
                         }}
                         schema="custom.chronostratigraphy_top_bedrock"
-                        selected={borehole.custom.chronostratigraphy_top_bedrock}
-                        title={<TranslationText id="chronostratigraphy_top_bedrock" />}
+                        selected={
+                          borehole.custom.chronostratigraphy_top_bedrock
+                        }
+                        title={
+                          <TranslationText id="chronostratigraphy_top_bedrock" />
+                        }
                       />
                     </Form.Field>
                   </Form>
