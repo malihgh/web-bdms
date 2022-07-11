@@ -1511,7 +1511,7 @@ class BoreholeForm extends React.Component {
                   <Form autoComplete="off" error size={size}>
                     <Form.Group widths="equal">
                       <Form.Field
-                        error={mentions.indexOf('length') >= 0}
+                        error={mentions.indexOf('total_depth') >= 0}
                         required>
                         <label>
                           <TranslationText id="totaldepth" />
@@ -1522,12 +1522,12 @@ class BoreholeForm extends React.Component {
                           autoCorrect="off"
                           onChange={e => {
                             this.updateNumber(
-                              'length',
+                              'total_depth',
                               e.target.value === '' ? null : e.target.value,
                             );
                             // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
                             //   this.updateChange(
-                            //     'length',
+                            //     'total_depth',
                             //     e.target.value === '' ?
                             //       null : _.toNumber(e.target.value)
                             //   );
@@ -1535,7 +1535,9 @@ class BoreholeForm extends React.Component {
                           }}
                           spellCheck="false"
                           value={
-                            _.isNil(borehole.length) ? '' : borehole.length
+                            _.isNil(borehole.total_depth)
+                              ? ''
+                              : borehole.total_depth
                           }
                         />
                       </Form.Field>
@@ -1614,32 +1616,34 @@ class BoreholeForm extends React.Component {
                     </Form.Group>
                     <Form.Group widths="equal">
                       <Form.Field
-                        // error={mentions.indexOf('length') >= 0}
+                        // error={borehole.extended.top_bedrock_tvd === true}
                         required>
                         <label>
-                          <TranslationText id="Top bedrock TVD (m)" />
+                          <TranslationText id="total_depth_tvd" />
                         </label>
                         <Input
                           autoCapitalize="off"
                           autoComplete="off"
                           autoCorrect="off"
-                          // onChange={e => {
-                          //   this.updateNumber(
-                          //     'length',
-                          //     e.target.value === '' ? null : e.target.value,
-                          //   );
-                          //   // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                          //   //   this.updateChange(
-                          //   //     'length',
-                          //   //     e.target.value === '' ?
-                          //   //       null : _.toNumber(e.target.value)
-                          //   //   );
-                          //   // }
-                          // }}
+                          onChange={e => {
+                            this.updateNumber(
+                              'extended.top_bedrock_tvd',
+                              e.target.value === '' ? null : e.target.value,
+                            );
+                            // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                            //   this.updateChange(
+                            //     'length',
+                            //     e.target.value === '' ?
+                            //       null : _.toNumber(e.target.value)
+                            //   );
+                            // }
+                          }}
                           spellCheck="false"
-                          // value={
-                          //   _.isNil(borehole.length) ? '' : borehole.length
-                          // }
+                          value={
+                            _.isNil(borehole.extended.top_bedrock_tvd)
+                              ? ''
+                              : borehole.extended.top_bedrock_tvd
+                          }
                         />
                       </Form.Field>
 
@@ -1647,7 +1651,7 @@ class BoreholeForm extends React.Component {
                         // error={mentions.indexOf('qt_top_bedrock') >= 0}
                         required>
                         <label>
-                          <TranslationText id="+/- Top bedrock TVD [m]" />
+                          <TranslationText id="total_depth_tvd_qt" />
                         </label>
                         <DomainDropdown
                           // onSelected={selected => {
