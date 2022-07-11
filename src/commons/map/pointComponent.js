@@ -239,7 +239,7 @@ class PointComponent extends React.Component {
 
   }
 
-  componentWillReceiveProps(nextProps){
+  UNSAFE_componentWillReceiveProps(nextProps){
     if (
       _.isNumber(nextProps.x) &&
       _.isNumber(nextProps.y) &&

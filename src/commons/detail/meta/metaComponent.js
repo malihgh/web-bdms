@@ -572,9 +572,9 @@ class MetaComponent extends React.Component {
             }}
           >
             {this.getDomainRow(
-              'custom.qt_length',
-              data.custom.qt_length,
-              'qt_length'
+              'custom.qt_depth',
+              data.custom.qt_depth,
+              'qt_depth'
             )}
             {this.getDomainRow(
               'custom.qt_top_bedrock',

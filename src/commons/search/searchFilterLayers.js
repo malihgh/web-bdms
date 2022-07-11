@@ -279,7 +279,7 @@ class SearchFilterLayers extends Component {
                     selected.id
                   );
                 }}
-                schema='custom.lit_pet_top_bedrock'
+                schema='custom.lithology_top_bedrock'
                 selected={search.filter.layer_lithology}
                 title={
                   <TranslationText
@@ -318,7 +318,7 @@ class SearchFilterLayers extends Component {
                     selected.id
                   );
                 }}
-                schema='custom.lit_str_top_bedrock'
+                schema='custom.lithostratigraphy_top_bedrock'
                 selected={search.filter.layer_lithostratigraphy}
                 title={
                   <TranslationText
@@ -358,7 +358,7 @@ class SearchFilterLayers extends Component {
                     selected.id
                   );
                 }}
-                schema='custom.chro_str_top_bedrock'
+                schema='custom.chronostratigraphy_top_bedrock'
                 selected={search.filter.layer_chronostratigraphy}
                 title={
                   <TranslationText
@@ -940,7 +940,7 @@ class SearchFilterLayers extends Component {
                   );
                 }}
                 reset={false}
-                schema='custom.lit_pet_top_bedrock'
+                schema='custom.lithology_top_bedrock'
                 selected={search.filter.layer_lit_pet_deb}
               />
               <LabelReset

@@ -179,10 +179,28 @@ class DetailsComponent extends React.Component {
                   </div>
                   <div
                     style={{
-                      color: '#787878',
-                      fontSize: '0.8em',
-                    }}>
-                    <TranslationText id="totaldepth" />
+                      textAlign: "center",
+                      margin: '0px 1em'
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: '1.1em'
+                      }}
+                    >
+                      {detail.borehole.length}m
+                    </div>
+                    <div
+                      style={{
+                        color: '#787878',
+                        fontSize: '0.8em'
+                      }}
+                    >
+                      <TranslationText
+                        id='qt_length'
+                      />
+                    </div>
                   </div>
                 </div>
                 <div

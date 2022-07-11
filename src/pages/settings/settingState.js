@@ -73,14 +73,10 @@ const initialState = {
         landuse: true,
         cuttings: true,
         "drill_diameter": true,
-        "lit_pet_top_bedrock": true,
-        "lit_str_top_bedrock": true,
-        "chro_str_top_bedrock": true,
-        remarks: true,
-        // mistakes: true,
-        // "processing_status": true,
-        "national_relevance": true,
-        // "attributes_to_edit": true
+        "lithology_top_bedrock": true,
+        "lithostratigraphy_top_bedrock": true,
+        "chronostratigraphy_top_bedrock": true,
+        remarks: true
       },
 
       // Layers / Stratigraphy filters
@@ -142,14 +138,10 @@ const initialState = {
         landuse: true,
         cuttings: true,
         "drill_diameter": true,
-        "lit_pet_top_bedrock": true,
-        "lit_str_top_bedrock": true,
-        "chro_str_top_bedrock": true,
+        "lithology_top_bedrock": true,
+        "lithostratigraphy_top_bedrock": true,
+        "chronostratigraphy_top_bedrock": true,
         remarks: true,
-        // mistakes: true,
-        // "processing_status": true,
-        // "national_relevance": true,
-        // "attributes_to_edit": true
       },
 
       // Layers / Stratigraphy filters

@@ -69,7 +69,7 @@ export const stratigraphyData = {
       type: 'DomainTree',
       label: 'layer_lithology',
       value: 'lithology',
-      schema: 'custom.lit_pet_top_bedrock',
+      schema: 'custom.lithology_top_bedrock',
       levels: {
         1: 'rock',
         2: 'process',
@@ -83,7 +83,7 @@ export const stratigraphyData = {
       type: 'DomainTree',
       label: 'layer_lithostratigraphy',
       value: 'lithostratigraphy',
-      schema: 'custom.lit_str_top_bedrock',
+      schema: 'custom.lithostratigraphy_top_bedrock',
       levels: {
         1: 'super',
         2: 'group',
@@ -99,7 +99,7 @@ export const stratigraphyData = {
       type: 'DomainTree',
       label: 'layer_chronostratigraphy',
       value: 'chronostratigraphy',
-      schema: 'custom.chro_str_top_bedrock',
+      schema: 'custom.chronostratigraphy_top_bedrock',
       levels: {
         1: '1st_order_eon',
         2: '2nd_order_era',

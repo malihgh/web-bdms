@@ -229,6 +229,7 @@ class BoreholeForm extends React.Component {
   }
 
   checkLock() {
+    debugger;
     if (this.props.borehole.data.role !== 'EDIT') {
       alert('Borehole status not editable');
       return false;
@@ -1537,21 +1538,21 @@ class BoreholeForm extends React.Component {
                         />
                       </Form.Field>
                       <Form.Field
-                        error={mentions.indexOf('qt_length') >= 0}
+                        error={mentions.indexOf('qt_depth') >= 0}
                         required>
                         <label>
-                          <TranslationText id="qt_length" />
+                          <TranslationText id="qt_depth" />
                         </label>
                         <DomainDropdown
                           onSelected={selected => {
                             this.updateChange(
-                              'custom.qt_length',
+                              'custom.qt_depth',
                               selected.id,
                               false,
                             );
                           }}
-                          schema="custom.qt_length"
-                          selected={borehole.custom.qt_length}
+                          schema="custom.qt_depth"
+                          selected={borehole.custom.qt_depth}
                         />
                       </Form.Field>
                     </Form.Group>
@@ -1724,10 +1725,10 @@ class BoreholeForm extends React.Component {
                       </Form.Group>
                     </Form.Field>
                     <Form.Field
-                      error={mentions.indexOf('lit_pet_top_bedrock') >= 0}
+                      error={mentions.indexOf('lithology_top_bedrock') >= 0}
                       required>
                       <label>
-                        <TranslationText id="lit_pet_top_bedrock" />
+                        <TranslationText id="lithology_top_bedrock" />
                       </label>
                       <DomainTree
                         levels={{
@@ -1738,21 +1739,21 @@ class BoreholeForm extends React.Component {
                         }}
                         onSelected={selected => {
                           this.updateChange(
-                            'custom.lit_pet_top_bedrock',
+                            'custom.lithology_top_bedrock',
                             selected.id,
                             false,
                           );
                         }}
-                        schema="custom.lit_pet_top_bedrock"
-                        selected={borehole.custom.lit_pet_top_bedrock}
-                        title={<TranslationText id="lit_pet_top_bedrock" />}
+                        schema="custom.lithology_top_bedrock"
+                        selected={borehole.custom.lithology_top_bedrock}
+                        title={<TranslationText id="lithology_top_bedrock" />}
                       />
                     </Form.Field>
                     <Form.Field
-                      error={mentions.indexOf('lit_str_top_bedrock') >= 0}
+                      error={mentions.indexOf('lithostratigraphy_top_bedrock') >= 0}
                       required>
                       <label>
-                        <TranslationText id="lit_str_top_bedrock" />
+                        <TranslationText id="lithostratigraphy_top_bedrock" />
                       </label>
                       <DomainTree
                         levels={{
@@ -1764,32 +1765,32 @@ class BoreholeForm extends React.Component {
                         }}
                         onSelected={selected => {
                           this.updateChange(
-                            'custom.lit_str_top_bedrock',
+                            'custom.lithostratigraphy_top_bedrock',
                             selected.id,
                             false,
                           );
                         }}
-                        schema="custom.lit_str_top_bedrock"
-                        selected={borehole.custom.lit_str_top_bedrock}
-                        title={<TranslationText id="lit_str_top_bedrock" />}
+                        schema="custom.lithostratigraphy_top_bedrock"
+                        selected={borehole.custom.lithostratigraphy_top_bedrock}
+                        title={<TranslationText id="lithostratigraphy_top_bedrock" />}
                       />
                     </Form.Field>
                     <Form.Field
-                      error={mentions.indexOf('chro_str_top_bedrock') >= 0}
+                      error={mentions.indexOf('chronostratigraphy_top_bedrock') >= 0}
                       required>
                       <label>
-                        <TranslationText id="chro_str_top_bedrock" />
+                        <TranslationText id="chronostratigraphy_top_bedrock" />
                       </label>
                       {/* <DomainDropdown
                         onSelected={(selected) => {
                           this.updateChange(
-                            'custom.chro_str_top_bedrock',
+                            'custom.chronostratigraphy_top_bedrock',
                             selected.id,
                             false
                           );
                         }}
-                        schema='custom.chro_str_top_bedrock'
-                        selected={borehole.custom.chro_str_top_bedrock}
+                        schema='custom.chronostratigraphy_top_bedrock'
+                        selected={borehole.custom.chronostratigraphy_top_bedrock}
                       /> */}
                       <DomainTree
                         levels={{
@@ -1802,14 +1803,14 @@ class BoreholeForm extends React.Component {
                         }}
                         onSelected={selected => {
                           this.updateChange(
-                            'custom.chro_str_top_bedrock',
+                            'custom.chronostratigraphy_top_bedrock',
                             selected.id,
                             false,
                           );
                         }}
-                        schema="custom.chro_str_top_bedrock"
-                        selected={borehole.custom.chro_str_top_bedrock}
-                        title={<TranslationText id="chro_str_top_bedrock" />}
+                        schema="custom.chronostratigraphy_top_bedrock"
+                        selected={borehole.custom.chronostratigraphy_top_bedrock}
+                        title={<TranslationText id="chronostratigraphy_top_bedrock" />}
                       />
                     </Form.Field>
                   </Form>

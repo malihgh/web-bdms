@@ -689,7 +689,7 @@ class LayersList extends React.Component {
                             item[style.pattern] !== null?
                               <DomainText
                                 id={item.lithostratigraphy}
-                                schema={'custom.lit_str_top_bedrock'}
+                                schema={'custom.lithostratigraphy_top_bedrock'}
                               />: '-'
                           }
                         </div>
@@ -709,7 +709,7 @@ class LayersList extends React.Component {
                             item.chronostratigraphy !== null?
                               <DomainText
                                 id={item.chronostratigraphy}
-                                schema='custom.chro_str_top_bedrock'
+                                schema='custom.chronostratigraphy_top_bedrock'
                               />: '-'
                           }
                         </div>
@@ -729,7 +729,7 @@ class LayersList extends React.Component {
                             item.lithology !== null?
                               <DomainText
                                 id={item.lithology}
-                                schema='custom.lit_pet_top_bedrock'
+                                schema='custom.lithology_top_bedrock'
                               />: '-'
                           }
                         </div>
