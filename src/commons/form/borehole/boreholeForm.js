@@ -1078,46 +1078,6 @@ class BoreholeForm extends React.Component {
                             />
                           </Form.Field>
                         </Form.Group>
-                        <Form.Group widths="equal">
-                          <Form.Field error={mentions.indexOf('address') >= 0}>
-                            <label>
-                              <TranslationText id="address" />
-                            </label>
-                            <Input
-                              autoCapitalize="off"
-                              autoComplete="off"
-                              autoCorrect="off"
-                              onChange={e => {
-                                this.updateChange(
-                                  'custom.address',
-                                  e.target.value,
-                                );
-                              }}
-                              spellCheck="false"
-                              value={
-                                _.isNil(borehole.custom.address)
-                                  ? ''
-                                  : borehole.custom.address
-                              }
-                            />
-                          </Form.Field>
-                          <Form.Field error={mentions.indexOf('landuse') >= 0}>
-                            <label>
-                              <TranslationText id="landuse" />
-                            </label>
-                            <DomainDropdown
-                              onSelected={selected => {
-                                this.updateChange(
-                                  'custom.landuse',
-                                  selected.id,
-                                  false,
-                                );
-                              }}
-                              schema="custom.landuse"
-                              selected={borehole.custom.landuse}
-                            />
-                          </Form.Field>
-                        </Form.Group>
                       </Form>
                     </Segment>
                   </div>
