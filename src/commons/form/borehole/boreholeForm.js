@@ -912,6 +912,97 @@ class BoreholeForm extends React.Component {
                               }
                             />
                           </Form.Field>
+
+                          <Form.Field
+                            error={mentions.indexOf('qt_elevation') >= 0}
+                            required>
+                            <label>
+                              <TranslationText id="qt_elevation" />
+                            </label>
+                            <DomainDropdown
+                              onSelected={selected => {
+                                this.updateChange(
+                                  'qt_elevation',
+                                  selected.id,
+                                  false,
+                                );
+                              }}
+                              schema="qt_elevation"
+                              selected={borehole.qt_elevation}
+                            />
+                          </Form.Field>
+                        </Form.Group>
+                        <Form.Group widths="equal">
+                          <Form.Field
+                            // error={mentions.indexOf('elevation_z') >= 0}
+                            required>
+                            <label>
+                              <TranslationText id="reference_elevation" />
+                            </label>
+                            <Input
+                              autoCapitalize="off"
+                              autoComplete="off"
+                              autoCorrect="off"
+                              // onChange={e => {
+                              //   this.updateNumber(
+                              //     'elevation_z',
+                              //     e.target.value === '' ? null : e.target.value,
+                              //   );
+
+                              // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                              //   this.updateChange(
+                              //     'elevation_z',
+                              //     e.target.value === '' ?
+                              //       null : _.toNumber(e.target.value)
+                              //   );
+                              // }
+                              // }}
+                              spellCheck="false"
+                              // value={
+                              //   _.isNil(borehole.elevation_z)
+                              //     ? ''
+                              //     : '' + borehole.elevation_z
+                              // }
+                            />
+                          </Form.Field>
+                          <Form.Field
+                            // error={mentions.indexOf('qt_elevation') >= 0}
+                            required>
+                            <label>
+                              <TranslationText id="reference_elevation_qt" />
+                            </label>
+                            <DomainDropdown
+                              onSelected={selected => {
+                                // this.updateChange(
+                                //   'qt_elevation',
+                                //   selected.id,
+                                //   false,
+                                // );
+                              }}
+                              schema="qt_elevation"
+                              selected={borehole.qt_elevation}
+                            />
+                          </Form.Field>
+                        </Form.Group>
+                        <Form.Group widths="equal">
+                          <Form.Field
+                            // error={mentions.indexOf('qt_elevation') >= 0}
+                            required>
+                            <label>
+                              <TranslationText id="reference_elevation_type" />
+                            </label>
+                            <DomainDropdown
+                              onSelected={selected => {
+                                // this.updateChange(
+                                //   'qt_elevation',
+                                //   selected.id,
+                                //   false,
+                                // );
+                              }}
+                              schema="qt_elevation"
+                              selected={borehole.qt_elevation}
+                            />
+                          </Form.Field>
                           <Form.Field
                             error={mentions.indexOf('hrs') >= 0}
                             required>
@@ -935,24 +1026,6 @@ class BoreholeForm extends React.Component {
                                 <DomainText id={borehole.hrs} schema="hrs" />
                               </div>
                             </div>
-                          </Form.Field>
-                          <Form.Field
-                            error={mentions.indexOf('qt_elevation') >= 0}
-                            required>
-                            <label>
-                              <TranslationText id="qt_elevation" />
-                            </label>
-                            <DomainDropdown
-                              onSelected={selected => {
-                                this.updateChange(
-                                  'qt_elevation',
-                                  selected.id,
-                                  false,
-                                );
-                              }}
-                              schema="qt_elevation"
-                              selected={borehole.qt_elevation}
-                            />
                           </Form.Field>
                         </Form.Group>
                       </Form>
