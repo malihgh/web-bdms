@@ -1008,7 +1008,7 @@ class BoreholeForm extends React.Component {
                                 </span>
                               ) : null}
                             </label>
-                            <CantonDropdown
+                            {/* <CantonDropdown
                               onSelected={selected => {
                                 if (borehole.custom.city !== null) {
                                   this.updateChange('custom.city', null, false);
@@ -1020,6 +1020,13 @@ class BoreholeForm extends React.Component {
                                 );
                               }}
                               selected={borehole.custom.canton}
+                            /> */}
+                            <Input
+                              value={
+                                this.props.cantons.filter(
+                                  e => e.id === borehole.custom.canton,
+                                )?.[0]?.name
+                              }
                             />
                           </Form.Field>
                           <Form.Field
@@ -1064,17 +1071,32 @@ class BoreholeForm extends React.Component {
                                 </span>
                               ) : null}
                             </label>
-                            <MunicipalityDropdown
-                              canton={borehole.custom.canton}
-                              disabled={borehole.custom.canton === null}
-                              onSelected={selected => {
-                                this.updateChange(
-                                  'custom.city',
-                                  selected.id,
-                                  false,
-                                );
-                              }}
-                              selected={borehole.custom.city}
+                            <div style={{ display: 'none' }}>
+                              <MunicipalityDropdown
+                                canton={borehole.custom.canton}
+                                disabled={borehole.custom.canton === null}
+                                // onSelected={selected => {
+                                //   this.updateChange(
+                                //     'custom.city',
+                                //     selected.id,
+                                //     false,
+                                //   );
+                                // }}
+                                selected={borehole.custom.city}
+                              />
+                            </div>
+                            <Input
+                              value={
+                                this.props.municipalities
+                                  ?.filter(
+                                    municipality =>
+                                      borehole.custom.canton ===
+                                      municipality.cid,
+                                  )
+                                  ?.filter(
+                                    e => e.id === borehole.custom.city,
+                                  )?.[0]?.name
+                              }
                             />
                           </Form.Field>
                         </Form.Group>
