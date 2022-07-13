@@ -44,6 +44,7 @@ class SearchFilterLayers extends Component {
                 trans=fromdepth
               </div>
             ) : null}
+            <div style={{ margin: '1em' }} />
             <Input
               onChange={eve => {
                 this.props.setFilter('layer_depth_to', eve.target.value);
@@ -91,6 +92,7 @@ class SearchFilterLayers extends Component {
                 trans=fromdepth
               </div>
             ) : null}
+            <div style={{ margin: '1em' }} />
             <Input
               onChange={eve => {
                 this.props.setFilter('layer_depth_from_to', eve.target.value);

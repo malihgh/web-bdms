@@ -50,7 +50,7 @@ class SearchEditorComponent extends React.Component {
           display: 'flex',
           flexDirection: 'column',
           flex: '1 1 100%',
-          overflow: 'hidden',
+          overflow: 'auto',
         }}>
         <WorkgroupRadioGroup
           filter={search.filter.workgroup}
@@ -119,7 +119,6 @@ class SearchEditorComponent extends React.Component {
             display: 'flex',
             flexDirection: 'column',
             flex: this.state.isBoreholeSelectorOpen ? '1 1 100%' : null,
-            overflow: 'hidden',
           }}>
           <div
             style={{
@@ -822,6 +821,7 @@ class SearchEditorComponent extends React.Component {
                       trans=from + degree
                     </div>
                   ) : null}
+                  <div style={{ margin: '1em' }} />
                   <Input
                     onChange={eve => {
                       this.props.setFilter('bore_inc_to', eve.target.value);
@@ -871,6 +871,7 @@ class SearchEditorComponent extends React.Component {
                       trans=from + degree
                     </div>
                   ) : null}
+                  <div style={{ margin: '1em' }} />
                   <Input
                     onChange={eve => {
                       this.props.setFilter('bore_inc_dir_to', eve.target.value);
@@ -1032,7 +1033,6 @@ class SearchEditorComponent extends React.Component {
               display: 'flex',
               flexDirection: 'column',
               flex: this.state.isStratigraphySelectorOpen ? '1 1 100%' : null,
-              overflow: 'hidden',
               cursor: 'pointer',
             }}>
             <div
