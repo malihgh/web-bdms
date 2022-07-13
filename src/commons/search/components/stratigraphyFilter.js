@@ -5,12 +5,12 @@ import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import { Form, Input } from 'semantic-ui-react';
 
-import TranslationText from '../form/translationText';
-import LabelReset from '../form/labelReset';
-import DomainDropdown from '../form/domain/dropdown/domainDropdown';
-import DomainTree from '../form/domain/tree/domainTree';
+import TranslationText from '../../form/translationText';
+import LabelReset from '../../form/labelReset';
+import DomainDropdown from '../../form/domain/dropdown/domainDropdown';
+import DomainTree from '../../form/domain/tree/domainTree';
 
-class SearchFilterLayers extends Component {
+class StratigraphyFilter extends Component {
   isVisible(filter) {
     const { settings } = this.props;
     if (_.get(settings, filter) === true) {
@@ -727,7 +727,7 @@ class SearchFilterLayers extends Component {
   }
 }
 
-SearchFilterLayers.propTypes = {
+StratigraphyFilter.propTypes = {
   developer: PropTypes.object,
   setFilter: PropTypes.func,
   settings: PropTypes.object,
@@ -748,4 +748,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTranslation(['common'])(SearchFilterLayers));
+)(withTranslation(['common'])(StratigraphyFilter));
