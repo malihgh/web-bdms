@@ -8,6 +8,7 @@ import StratigraphyFilter from '../components/stratigraphyFilter';
 import TranslationText from '../../form/translationText';
 import WorkgroupRadioGroup from '../../form/workgroup/radio';
 import BoreholeFilter from '../components/boreholeFilter';
+import * as Styled from './seacrchEditorStyles';
 
 class SearchEditorComponent extends React.Component {
   constructor(props) {
@@ -16,6 +17,26 @@ class SearchEditorComponent extends React.Component {
       accordionIdx: 0,
       isBoreholeSelectorOpen: false,
       isStratigraphySelectorOpen: false,
+      searchList: [
+        {
+          id: 0,
+          name: 'location',
+          translationId: 'location',
+          isSelected: false,
+        },
+        {
+          id: 1,
+          name: 'borehole',
+          translationId: 'searchFiltersBoreholes',
+          isSelected: false,
+        },
+        {
+          id: 2,
+          name: 'stratigraphy',
+          translationId: 'searchFiltersLayers',
+          isSelected: false,
+        },
+      ],
     };
   }
   componentDidUpdate(prevProps) {
@@ -108,103 +129,57 @@ class SearchEditorComponent extends React.Component {
             ),
           )}
         </Form>
-
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            flex: this.state.isBoreholeSelectorOpen ? '1 1 100%' : null,
-          }}>
-          <div
-            style={{
-              padding: '0.5em 0px',
-              backgroundColor: this.state.isBoreholeSelectorOpen && '#e0e0e0',
-              cursor: 'pointer',
-            }}
-            onClick={() => {
-              this.setState({
-                isBoreholeSelectorOpen: !this.state.isBoreholeSelectorOpen,
-                isStratigraphySelectorOpen: false,
-              });
-            }}>
-            <Icon
-              name={`caret ${
-                this.state.isBoreholeSelectorOpen ? 'down' : 'right'
-              }`}
-            />{' '}
-            <span>
-              <TranslationText id="searchFiltersBoreholes" />
-            </span>
-          </div>
-          <div
-            style={{
-              flex: '1 1 100%',
-              overflow: 'auto',
-              padding: '7px',
-              paddingRight: '15px',
-              display: this.state.isBoreholeSelectorOpen ? null : 'none',
-              border: '1px solid #e0e0e0',
-            }}>
-            <BoreholeFilter
-              onChange={this.props.onChange}
-              resetBoreInc={this.props.resetBoreInc}
-              resetBoreIncDir={this.props.resetBoreIncDir}
-              resetDrillDiameter={this.props.resetDrillDiameter}
-              resetDrilling={this.props.resetDrilling}
-              resetElevation={this.props.resetElevation}
-              resetRestriction={this.props.resetRestriction}
-              resetTotBedrock={this.props.resetTotBedrock}
-              search={this.props.search}
-              setFilter={this.props.setFilter}
-              settings={this.props.settings.data.efilter}
-            />
-          </div>
-
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              flex: this.state.isStratigraphySelectorOpen ? '1 1 100%' : null,
-              cursor: 'pointer',
-            }}>
-            <div
-              style={{
-                padding: '0.5em 0px',
-                backgroundColor:
-                  this.state.isStratigraphySelectorOpen && '#e0e0e0',
-              }}
-              onClick={() => {
-                this.setState({
-                  isBoreholeSelectorOpen: false,
-                  isStratigraphySelectorOpen:
-                    !this.state.isStratigraphySelectorOpen,
-                });
-              }}>
-              <Icon
-                name={`caret ${
-                  this.state.isStratigraphySelectorOpen ? 'down' : 'right'
-                }`}
-              />{' '}
-              <span>
-                <TranslationText id="searchFiltersLayers" />
-              </span>
-            </div>
-            <div
-              style={{
-                flex: '1 1 100%',
-                overflow: 'auto',
-                padding: '7px',
-                paddingRight: '15px',
-                display: this.state.isStratigraphySelectorOpen ? null : 'none',
-                border: '1px solid #e0e0e0',
-              }}>
-              <StratigraphyFilter
-                search={this.props.search}
-                settings={this.props.settings.data.efilter}
-                setFilter={this.props.setFilter}
-              />
-            </div>
-          </div>
+        <div>
+          {this.state?.searchList?.map((filter, idx) => (
+            <Styled.FilterContainer key={idx}>
+              <Styled.FilterButton
+                isSelected={filter?.isSelected}
+                onClick={() => {
+                  this.setState(prevState => ({
+                    ...prevState,
+                    // update an array of objects:
+                    searchList: prevState.searchList.map(obj =>
+                      obj.id === idx
+                        ? { ...obj, isSelected: !obj.isSelected }
+                        : { ...obj, isSelected: false },
+                    ),
+                  }));
+                }}>
+                <Icon name={`caret ${filter?.isSelected ? 'down' : 'right'}`} />{' '}
+                <span>
+                  <TranslationText id={filter?.translationId} />
+                </span>
+              </Styled.FilterButton>
+              {this.state?.searchList?.[idx]?.name === 'borehole' &&
+                this.state?.searchList?.[idx]?.isSelected && (
+                  <Styled.FormFilterContainer>
+                    <BoreholeFilter
+                      onChange={this.props.onChange}
+                      resetBoreInc={this.props.resetBoreInc}
+                      resetBoreIncDir={this.props.resetBoreIncDir}
+                      resetDrillDiameter={this.props.resetDrillDiameter}
+                      resetDrilling={this.props.resetDrilling}
+                      resetElevation={this.props.resetElevation}
+                      resetRestriction={this.props.resetRestriction}
+                      resetTotBedrock={this.props.resetTotBedrock}
+                      search={this.props.search}
+                      setFilter={this.props.setFilter}
+                      settings={this.props.settings.data.efilter}
+                    />
+                  </Styled.FormFilterContainer>
+                )}
+              {this.state?.searchList?.[idx]?.name === 'stratigraphy' &&
+                this.state?.searchList?.[idx]?.isSelected && (
+                  <Styled.FormFilterContainer>
+                    <StratigraphyFilter
+                      search={this.props.search}
+                      settings={this.props.settings.data.efilter}
+                      setFilter={this.props.setFilter}
+                    />
+                  </Styled.FormFilterContainer>
+                )}
+            </Styled.FilterContainer>
+          ))}
         </div>
       </div>
     );
