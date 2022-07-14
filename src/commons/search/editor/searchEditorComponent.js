@@ -8,7 +8,8 @@ import StratigraphyFilter from '../components/stratigraphyFilter';
 import TranslationText from '../../form/translationText';
 import WorkgroupRadioGroup from '../../form/workgroup/radio';
 import BoreholeFilter from '../components/boreholeFilter';
-import * as Styled from './seacrchEditorStyles';
+import LocationFilter from '../components/locationFilter';
+import * as Styled from './searchEditorStyles';
 
 class SearchEditorComponent extends React.Component {
   constructor(props) {
@@ -150,6 +151,24 @@ class SearchEditorComponent extends React.Component {
                   <TranslationText id={filter?.translationId} />
                 </span>
               </Styled.FilterButton>
+              {this.state?.searchList?.[idx]?.name === 'location' &&
+                this.state?.searchList?.[idx]?.isSelected && (
+                  <Styled.FormFilterContainer>
+                    <LocationFilter
+                      onChange={this.props.onChange}
+                      resetBoreInc={this.props.resetBoreInc}
+                      resetBoreIncDir={this.props.resetBoreIncDir}
+                      resetDrillDiameter={this.props.resetDrillDiameter}
+                      resetDrilling={this.props.resetDrilling}
+                      resetElevation={this.props.resetElevation}
+                      resetRestriction={this.props.resetRestriction}
+                      resetTotBedrock={this.props.resetTotBedrock}
+                      search={this.props.search}
+                      setFilter={this.props.setFilter}
+                      settings={this.props.settings.data.efilter}
+                    />
+                  </Styled.FormFilterContainer>
+                )}
               {this.state?.searchList?.[idx]?.name === 'borehole' &&
                 this.state?.searchList?.[idx]?.isSelected && (
                   <Styled.FormFilterContainer>
