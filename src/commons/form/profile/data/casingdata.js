@@ -6,6 +6,7 @@ export const casingData = {
       label: 'casingName',
       value: 'name',
       require: true,
+      isVisible: true,
     },
 
     {
@@ -13,12 +14,14 @@ export const casingData = {
       type: 'Date',
       label: 'dateAbandonmentCasing',
       value: 'date_abd',
+      isVisible: true,
     },
     {
       id: 2,
       type: 'Input',
       label: 'remarks',
       value: 'notes',
+      isVisible: true,
     },
   ],
   profileAttribute: [
