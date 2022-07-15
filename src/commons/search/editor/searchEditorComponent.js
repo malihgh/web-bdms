@@ -12,6 +12,8 @@ import LocationFilter from '../components/locationFilter';
 import * as Styled from './searchEditorStyles';
 import CompletionFilter from '../components/completionFilter';
 import { casingData } from '../../form/profile/data/casingdata';
+import { InstrumentAttributes } from '../../form/profile/components/profileInstrument/data/InstrumentAttributes';
+import { fillingData } from '../../form/profile/data/fillingdata';
 
 class SearchEditorComponent extends React.Component {
   constructor(props) {
@@ -43,6 +45,18 @@ class SearchEditorComponent extends React.Component {
           id: 3,
           name: 'casing',
           translationId: 'casing',
+          isSelected: false,
+        },
+        {
+          id: 4,
+          name: 'instrument',
+          translationId: 'instrument',
+          isSelected: false,
+        },
+        {
+          id: 5,
+          name: 'filling',
+          translationId: 'filling',
           isSelected: false,
         },
       ],
@@ -216,6 +230,36 @@ class SearchEditorComponent extends React.Component {
                         // reloadAttribute,
                         attribute: casingData.profileInfo.concat(
                           casingData.profileAttribute,
+                        ),
+                      }}
+                    />
+                  </Styled.FormFilterContainer>
+                )}
+              {this.state?.searchList?.[idx]?.name === 'instrument' &&
+                this.state?.searchList?.[idx]?.isSelected && (
+                  <Styled.FormFilterContainer>
+                    <CompletionFilter
+                      data={{
+                        id: 1,
+                        isEditable: true,
+                        // onUpdated,
+                        // reloadAttribute,
+                        attribute: InstrumentAttributes,
+                      }}
+                    />
+                  </Styled.FormFilterContainer>
+                )}
+              {this.state?.searchList?.[idx]?.name === 'filling' &&
+                this.state?.searchList?.[idx]?.isSelected && (
+                  <Styled.FormFilterContainer>
+                    <CompletionFilter
+                      data={{
+                        id: 1,
+                        isEditable: true,
+                        // onUpdated,
+                        // reloadAttribute,
+                        attribute: fillingData.profileInfo.concat(
+                          fillingData.profileAttribute,
                         ),
                       }}
                     />
