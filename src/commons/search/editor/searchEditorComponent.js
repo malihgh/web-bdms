@@ -10,6 +10,8 @@ import WorkgroupRadioGroup from '../../form/workgroup/radio';
 import BoreholeFilter from '../components/boreholeFilter';
 import LocationFilter from '../components/locationFilter';
 import * as Styled from './searchEditorStyles';
+import CompletionFilter from '../components/completionFilter';
+import { casingData } from '../../form/profile/data/casingdata';
 
 class SearchEditorComponent extends React.Component {
   constructor(props) {
@@ -35,6 +37,12 @@ class SearchEditorComponent extends React.Component {
           id: 2,
           name: 'stratigraphy',
           translationId: 'searchFiltersLayers',
+          isSelected: false,
+        },
+        {
+          id: 3,
+          name: 'casing',
+          translationId: 'casing',
           isSelected: false,
         },
       ],
@@ -194,6 +202,22 @@ class SearchEditorComponent extends React.Component {
                       search={this.props.search}
                       settings={this.props.settings.data.efilter}
                       setFilter={this.props.setFilter}
+                    />
+                  </Styled.FormFilterContainer>
+                )}
+              {this.state?.searchList?.[idx]?.name === 'casing' &&
+                this.state?.searchList?.[idx]?.isSelected && (
+                  <Styled.FormFilterContainer>
+                    <CompletionFilter
+                      data={{
+                        id: 1,
+                        isEditable: true,
+                        // onUpdated,
+                        // reloadAttribute,
+                        attribute: casingData.profileInfo.concat(
+                          casingData.profileAttribute,
+                        ),
+                      }}
                     />
                   </Styled.FormFilterContainer>
                 )}
