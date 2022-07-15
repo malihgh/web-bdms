@@ -14,6 +14,7 @@ import CompletionFilter from '../components/completionFilter';
 import { casingData } from '../../form/profile/data/casingdata';
 import { InstrumentAttributes } from '../../form/profile/components/profileInstrument/data/InstrumentAttributes';
 import { fillingData } from '../../form/profile/data/fillingdata';
+import StatusFilter from '../components/statusFilter';
 
 class SearchEditorComponent extends React.Component {
   constructor(props) {
@@ -25,36 +26,48 @@ class SearchEditorComponent extends React.Component {
       searchList: [
         {
           id: 0,
+          name: 'workgroup',
+          translationId: 'workgroup',
+          isSelected: false,
+        },
+        {
+          id: 1,
+          name: 'status',
+          translationId: 'status',
+          isSelected: false,
+        },
+        {
+          id: 2,
           name: 'location',
           translationId: 'location',
           isSelected: false,
         },
         {
-          id: 1,
+          id: 3,
           name: 'borehole',
           translationId: 'searchFiltersBoreholes',
           isSelected: false,
         },
         {
-          id: 2,
+          id: 4,
           name: 'stratigraphy',
           translationId: 'searchFiltersLayers',
           isSelected: false,
         },
         {
-          id: 3,
+          id: 5,
           name: 'casing',
           translationId: 'casing',
           isSelected: false,
         },
         {
-          id: 4,
+          id: 6,
           name: 'instrument',
           translationId: 'instrument',
           isSelected: false,
         },
         {
-          id: 5,
+          id: 7,
           name: 'filling',
           translationId: 'filling',
           isSelected: false,
@@ -91,67 +104,6 @@ class SearchEditorComponent extends React.Component {
           flex: '1 1 100%',
           overflow: 'auto',
         }}>
-        <WorkgroupRadioGroup
-          filter={search.filter.workgroup}
-          onChange={workgroup => {
-            this.props.setFilter('workgroup', workgroup);
-          }}
-          workgroups={user.data.workgroups}
-        />
-        <Form
-          size="tiny"
-          style={{
-            marginBottom: '1em',
-          }}>
-          <Form.Field>
-            <label>
-              <TranslationText firstUpperCase id="status" />
-            </label>
-            <Radio
-              checked={search.filter.role === 'all'}
-              label={''}
-              name="radioGroup"
-              onChange={() => {
-                this.props.setFilter('role', 'all');
-              }}
-            />
-            <span
-              style={{
-                color: 'black',
-                fontSize: '1.1em',
-                fontWeight: 'bold',
-              }}>
-              <TranslationText firstUpperCase id="alls" />
-            </span>
-          </Form.Field>
-          {['statusedit', 'statuscontrol', 'statusvalid', 'statuspublic'].map(
-            (role, idx) => (
-              <Form.Field key={'sec-' + role}>
-                <Radio
-                  checked={
-                    search.filter.role ===
-                    role.replace('status', '').toUpperCase()
-                  }
-                  label={''}
-                  name="radioGroup"
-                  onChange={() => {
-                    this.props.setFilter(
-                      'role',
-                      role.replace('status', '').toUpperCase(),
-                    );
-                  }}
-                />
-                <span
-                  style={{
-                    color: 'black',
-                    fontSize: '1.1em',
-                  }}>
-                  <TranslationText firstUpperCase id={role} />
-                </span>
-              </Form.Field>
-            ),
-          )}
-        </Form>
         <div>
           {this.state?.searchList?.map((filter, idx) => (
             <Styled.FilterContainer key={idx}>
@@ -173,6 +125,33 @@ class SearchEditorComponent extends React.Component {
                   <TranslationText id={filter?.translationId} />
                 </span>
               </Styled.FilterButton>
+
+              {this.state?.searchList?.[idx]?.name === 'workgroup' &&
+                this.state?.searchList?.[idx]?.isSelected && (
+                  <WorkgroupRadioGroup
+                    filter={search.filter.workgroup}
+                    onChange={workgroup => {
+                      this.props.setFilter('workgroup', workgroup);
+                    }}
+                    workgroups={user.data.workgroups}
+                  />
+                )}
+              {this.state?.searchList?.[idx]?.name === 'status' &&
+                this.state?.searchList?.[idx]?.isSelected && (
+                  <StatusFilter
+                    onChange={this.props.onChange}
+                    resetBoreInc={this.props.resetBoreInc}
+                    resetBoreIncDir={this.props.resetBoreIncDir}
+                    resetDrillDiameter={this.props.resetDrillDiameter}
+                    resetDrilling={this.props.resetDrilling}
+                    resetElevation={this.props.resetElevation}
+                    resetRestriction={this.props.resetRestriction}
+                    resetTotBedrock={this.props.resetTotBedrock}
+                    search={this.props.search}
+                    setFilter={this.props.setFilter}
+                    settings={this.props.settings.data.efilter}
+                  />
+                )}
               {this.state?.searchList?.[idx]?.name === 'location' &&
                 this.state?.searchList?.[idx]?.isSelected && (
                   <Styled.FormFilterContainer>

@@ -9,6 +9,8 @@ export const FilterContainer = styled.div`
 
 export const FilterButton = styled.div`
   padding: 0.5em 0px;
+  border: 1px solid #e0e0e0;
+  border-bottom-width: 0px;
   background-color: ${props => props.isSelected && '#e0e0e0'};
 `;
 
