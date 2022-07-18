@@ -15,6 +15,7 @@ import { casingData } from '../../form/profile/data/casingdata';
 import { InstrumentAttributes } from '../../form/profile/components/profileInstrument/data/InstrumentAttributes';
 import { fillingData } from '../../form/profile/data/fillingdata';
 import StatusFilter from '../components/statusFilter';
+import { casingSearchData } from '../data/casingSearchData';
 
 class SearchEditorComponent extends React.Component {
   constructor(props) {
@@ -249,9 +250,7 @@ class SearchEditorComponent extends React.Component {
                     isEditable: true,
                     // onUpdated,
                     // reloadAttribute,
-                    attribute: casingData.profileInfo.concat(
-                      casingData.profileAttribute,
-                    ),
+                    attribute: casingSearchData,
                   }}
                 />
               </Styled.FormFilterContainer>

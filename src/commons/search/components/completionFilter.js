@@ -186,6 +186,7 @@ const CompletionFilter = props => {
                         }
                         spellCheck="false"
                         style={{ width: '100%' }}
+                        type={item?.InputType}
                         value={
                           _.isNil(layer?.[item.value]) ? '' : layer[item.value]
                         }
@@ -281,8 +282,7 @@ const CompletionFilter = props => {
                       />
                     </Styled.AttributesItem>
                   )}
-
-                  {(item.isVisible || showAll) && (
+                  {(item.isVisible || showAll) && !item.hasTwoFields && (
                     <Styled.Reset>
                       <LabelReset
                         onClick={() => {
@@ -291,6 +291,17 @@ const CompletionFilter = props => {
                       />
                     </Styled.Reset>
                   )}
+                  {(item.isVisible || showAll) &&
+                    item.hasTwoFields &&
+                    item.label === '' && (
+                      <Styled.Reset>
+                        <LabelReset
+                          onClick={() => {
+                            // this.props.setFilter('canton', null);
+                          }}
+                        />
+                      </Styled.Reset>
+                    )}
                 </Styled.AttributesContainer>
               </Form>
             ))}
