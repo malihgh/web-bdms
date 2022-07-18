@@ -24,9 +24,18 @@ export const casingData = {
       isVisible: true,
     },
   ],
+
   profileAttribute: [
     {
       id: 0,
+      type: 'Input',
+      label: 'casingId',
+      value: '',
+      require: true,
+      isVisible: true,
+    },
+    {
+      id: 1,
       type: 'Input',
       label: 'layer_depth_from',
       value: 'depth_from',
@@ -35,7 +44,7 @@ export const casingData = {
       isNumber: true,
     },
     {
-      id: 1,
+      id: 2,
       type: 'Input',
       label: 'layer_depth_to',
       value: 'depth_to',
@@ -44,7 +53,7 @@ export const casingData = {
       isNumber: true,
     },
     {
-      id: 2,
+      id: 3,
       type: 'Dropdown',
       label: 'kindCasingLayer',
       value: 'casing_kind',
@@ -55,7 +64,7 @@ export const casingData = {
       isVisible: true,
     },
     {
-      id: 3,
+      id: 4,
       type: 'Dropdown',
       label: 'materialCasingLayer',
       value: 'casing_material',
@@ -66,21 +75,21 @@ export const casingData = {
       isVisible: true,
     },
     {
-      id: 4,
+      id: 5,
       type: 'Date',
       label: 'dateSpudCasing',
       value: 'casing_date_spud',
       isVisible: true,
     },
     {
-      id: 5,
+      id: 6,
       type: 'Date',
       label: 'dateFinishCasing',
       value: 'casing_date_finish',
       isVisible: true,
     },
     {
-      id: 6,
+      id: 7,
       type: 'Input',
       label: 'Inner diameter (mm)',
       value: 'casing_inner_diameter',
@@ -89,7 +98,7 @@ export const casingData = {
       isVisible: true,
     },
     {
-      id: 7,
+      id: 8,
       type: 'Input',
       label: 'Outer diameter (mm)',
       value: 'casing_outer_diameter',
@@ -98,7 +107,7 @@ export const casingData = {
       isVisible: true,
     },
     {
-      id: 8,
+      id: 9,
       type: 'TextArea',
       label: 'Notes',
       value: 'notes',
