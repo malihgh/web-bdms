@@ -30,7 +30,7 @@ export const casingData = {
       id: 0,
       type: 'Input',
       label: 'casingId',
-      value: '',
+      value: 'casing_id',
       require: true,
       isVisible: true,
     },

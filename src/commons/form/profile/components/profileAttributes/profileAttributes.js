@@ -61,6 +61,7 @@ const ProfileAttributes = props => {
       kirost: null,
       notes: '',
       fill_material: null,
+      casing_id: null,
       casing_kind: null,
       casing_material: null,
       casing_date_spud: null,
