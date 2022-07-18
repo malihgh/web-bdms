@@ -8,13 +8,13 @@ import StratigraphyFilter from '../components/stratigraphyFilter';
 import TranslationText from '../../form/translationText';
 import WorkgroupRadioGroup from '../../form/workgroup/radio';
 import BoreholeFilter from '../components/boreholeFilter';
-import LocationFilter from '../components/locationFilter';
 import * as Styled from './searchEditorStyles';
 import CompletionFilter from '../components/completionFilter';
 import StatusFilter from '../components/statusFilter';
 import { casingSearchData } from '../data/casingSearchData';
 import { InstrumentSearchData } from '../data/InstrumentSearchData';
 import { fillingSearchData } from '../data/fillingSearchData';
+import { LocationSearchData } from '../data/LocationSearchData';
 
 class SearchEditorComponent extends React.Component {
   constructor(props) {
@@ -188,21 +188,18 @@ class SearchEditorComponent extends React.Component {
                 settings={this.props.settings.data.efilter}
               />
             )}
+
           {this.state?.searchList?.[2]?.name === 'location' &&
             this.state?.searchList?.[2]?.isSelected && (
               <Styled.FormFilterContainer>
-                <LocationFilter
-                  onChange={this.props.onChange}
-                  resetBoreInc={this.props.resetBoreInc}
-                  resetBoreIncDir={this.props.resetBoreIncDir}
-                  resetDrillDiameter={this.props.resetDrillDiameter}
-                  resetDrilling={this.props.resetDrilling}
-                  resetElevation={this.props.resetElevation}
-                  resetRestriction={this.props.resetRestriction}
-                  resetTotBedrock={this.props.resetTotBedrock}
-                  search={this.props.search}
-                  setFilter={this.props.setFilter}
-                  settings={this.props.settings.data.efilter}
+                <CompletionFilter
+                  data={{
+                    id: 1,
+                    isEditable: true,
+                    // onUpdated,
+                    // reloadAttribute,
+                    attribute: LocationSearchData,
+                  }}
                 />
               </Styled.FormFilterContainer>
             )}
