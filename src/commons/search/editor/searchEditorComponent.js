@@ -258,7 +258,10 @@ class SearchEditorComponent extends React.Component {
                     isEditable: true,
                     // onUpdated,
                     // reloadAttribute,
-                    attribute: InstrumentAttributes,
+                    attribute: InstrumentAttributes.splice(
+                      0,
+                      InstrumentAttributes.length - 1,
+                    ),
                   }}
                 />
               </Styled.FormFilterContainer>
