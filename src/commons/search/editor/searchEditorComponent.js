@@ -11,11 +11,10 @@ import BoreholeFilter from '../components/boreholeFilter';
 import LocationFilter from '../components/locationFilter';
 import * as Styled from './searchEditorStyles';
 import CompletionFilter from '../components/completionFilter';
-import { casingData } from '../../form/profile/data/casingdata';
-import { InstrumentAttributes } from '../../form/profile/components/profileInstrument/data/InstrumentAttributes';
 import { fillingData } from '../../form/profile/data/fillingdata';
 import StatusFilter from '../components/statusFilter';
 import { casingSearchData } from '../data/casingSearchData';
+import { InstrumentSearchData } from '../data/InstrumentSearchData';
 
 class SearchEditorComponent extends React.Component {
   constructor(props) {
@@ -95,13 +94,7 @@ class SearchEditorComponent extends React.Component {
     }
     return false;
   }
-  InstrumentData() {
-    if (InstrumentAttributes.length === 8)
-      return InstrumentAttributes.filter(
-        (element, index) => index < InstrumentAttributes.length - 1,
-      );
-    else return InstrumentAttributes;
-  }
+
   render() {
     const { search, t, user } = this.props;
     return (
@@ -264,7 +257,7 @@ class SearchEditorComponent extends React.Component {
                     isEditable: true,
                     // onUpdated,
                     // reloadAttribute,
-                    attribute: this.InstrumentData(),
+                    attribute: InstrumentSearchData,
                   }}
                 />
               </Styled.FormFilterContainer>
