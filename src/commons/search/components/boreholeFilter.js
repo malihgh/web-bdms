@@ -182,17 +182,17 @@ class BoreholeFilter extends Component {
             />
           </Form.Field>
         ) : null}
-        {this.isVisible('extended.method') ? (
+        {this.isVisible('extended..drilling_method') ? (
           <Form.Field>
             <label>
-              <TranslationText id="drillingmethod" />
+              <TranslationText id="drilling_method" />
             </label>
             <DomainDropdown
               onSelected={selected => {
                 this.props.setFilter('method', selected.id);
               }}
               reset={false}
-              schema="extended.method"
+              schema="extended.drilling_method"
               selected={search.filter.method}
             />
             <LabelReset
@@ -245,26 +245,6 @@ class BoreholeFilter extends Component {
             <LabelReset
               onClick={() => {
                 this.props.setFilter('restriction', null);
-              }}
-            />
-          </Form.Field>
-        ) : null}
-        {this.isVisible('custom.landuse') ? (
-          <Form.Field>
-            <label>
-              <TranslationText id="landuse" />
-            </label>
-            <DomainDropdown
-              onSelected={selected => {
-                this.props.setFilter('landuse', selected.id);
-              }}
-              reset={false}
-              schema="custom.landuse"
-              selected={search.filter.landuse}
-            />
-            <LabelReset
-              onClick={() => {
-                this.props.setFilter('landuse', null);
               }}
             />
           </Form.Field>
@@ -567,7 +547,7 @@ class BoreholeFilter extends Component {
         {this.isVisible('drilling_date') ? (
           <Form.Field>
             <label>
-              <TranslationText id="drilling_date" />
+              <TranslationText id="drilling_end_date" />
             </label>
             <DateField
               date={search.filter.drilling_date_from}
@@ -612,7 +592,7 @@ class BoreholeFilter extends Component {
         {this.isVisible('custom.drill_diameter') ? (
           <Form.Field>
             <label>
-              <TranslationText id="drilldiameter" />
+              <TranslationText id="drill_diameter" />
             </label>
             <Input
               onChange={eve => {
@@ -706,7 +686,7 @@ class BoreholeFilter extends Component {
         {this.isVisible('bore_inc_dir') ? (
           <Form.Field>
             <label>
-              <TranslationText id="inclinationdirection" />
+              <TranslationText id="inclination_direction" />
             </label>
             <Input
               onChange={eve => {
@@ -847,34 +827,6 @@ class BoreholeFilter extends Component {
             <LabelReset
               onClick={() => {
                 this.props.setFilter('municipality', null);
-              }}
-            />
-          </Form.Field>
-        ) : null}
-        {this.isVisible('custom.canton') ? (
-          <Form.Field>
-            <label>
-              <TranslationText id="address" />
-            </label>
-            <Input
-              onChange={eve => {
-                this.props.setFilter('address', eve.target.value);
-              }}
-              placeholder={t('address')}
-              value={search.filter.address}
-            />
-            {this.props.developer.debug === true ? (
-              <div
-                style={{
-                  color: 'red',
-                  margin: '5px',
-                }}>
-                trans=address
-              </div>
-            ) : null}
-            <LabelReset
-              onClick={() => {
-                this.props.setFilter('address', '');
               }}
             />
           </Form.Field>
