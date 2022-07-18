@@ -51,7 +51,7 @@ export const InstrumentAttributes = [
     id: 5,
     type: 'CasingDropdown',
     label: 'casing',
-    value: 'casing_id',
+    value: 'instrument_casing_id',
     require: true,
     multiple: false,
     search: false,

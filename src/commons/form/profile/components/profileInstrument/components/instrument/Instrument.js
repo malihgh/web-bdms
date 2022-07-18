@@ -24,7 +24,7 @@ const Instrument = props => {
       depth_to: null,
       notes: null,
       instrument_status: null,
-      casing_id: null,
+      instrument_casing_id: null,
       instrument_id: null,
     },
   });
