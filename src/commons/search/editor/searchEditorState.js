@@ -1,99 +1,101 @@
 import _ from 'lodash';
 
 const initialState = {
-  "isFetching": false,
-  "filter": {
-    "refresh": 1,
-    "borehole_identifier": null,
-    "identifier_value": '',
-    "role": 'all',
-    "workgroup": 'all',
-    "original_name": '',
-    "public_name": '',
-    "kind": null,
-    "method": null,
-    "restriction": null,
-    "project_name": '',
-    "landuse": null,
-    "restriction_until_from": '',
-    "restriction_until_to": '',
-    "elevation_z_from": '',
-    "elevation_z_to": '',
-    "length_from": '',
-    "length_to": '',
-    "groundwater": -1,
-    "top_bedrock_from": '',
-    "top_bedrock_to": '',
-    "status": null,
-    "purpose": null,
-    "cuttings": null,
-    "drilling_date_from": '',
-    "drilling_date_to": '',
-    "drill_diameter_from": '',
-    "drill_diameter_to": '',
-    "bore_inc_from": '',
-    "bore_inc_to": '',
-    "bore_inc_dir_from": '',
-    "bore_inc_dir_to": '',
-    "lithology_top_bedrock": null,
-    "lithostratigraphy_top_bedrock": null,
-    "chronostratigraphy_top_bedrock": null,
-    "canton": null,
-    "municipality": null,
-    "address": '',
+  isFetching: false,
+  filter: {
+    refresh: 1,
+    borehole_identifier: null,
+    identifier_value: '',
+    role: 'all',
+    workgroup: 'all',
+    original_name: '',
+    alternate_name: '',
+    kind: null,
+    method: null,
+    restriction: null,
+    project_name: '',
+    landuse: null,
+    restriction_until_from: '',
+    restriction_until_to: '',
+    elevation_z_from: '',
+    elevation_z_to: '',
+    length_from: '',
+    length_to: '',
+    groundwater: -1,
+    top_bedrock_from: '',
+    top_bedrock_to: '',
+    status: null,
+    purpose: null,
+    cuttings: null,
+    drilling_date_from: '',
+    drilling_date_to: '',
+    drill_diameter_from: '',
+    drill_diameter_to: '',
+    bore_inc_from: '',
+    bore_inc_to: '',
+    bore_inc_dir_from: '',
+    bore_inc_dir_to: '',
+    lithology_top_bedrock: null,
+    lithostratigraphy_top_bedrock: null,
+    chronostratigraphy_top_bedrock: null,
+    canton: null,
+    municipality: null,
+    address: '',
 
-    "project": null,
-    "last_update": '',
-    "creation": '',
-    "completness": 'all',
+    project: null,
+    last_update: '',
+    creation: '',
+    completness: 'all',
 
     // Layers filter
-    "layer_depth_from": '',
-    "layer_depth_to": '',
+    layer_depth_from: '',
+    layer_depth_to: '',
 
-    "layer_depth_from_from": '',
-    "layer_depth_from_to": '',
+    layer_depth_from_from: '',
+    layer_depth_from_to: '',
 
-    "layer_depth_to_from": '',
-    "layer_depth_to_to": '',
+    layer_depth_to_from: '',
+    layer_depth_to_to: '',
 
-    "layer_description": '',
-    "layer_geology": '',
+    layer_description: '',
+    layer_geology: '',
 
-    "layer_lithology": null,
-    "layer_lithostratigraphy": null,
-    "layer_chronostratigraphy": null,
+    layer_lithology: null,
+    layer_lithostratigraphy: null,
+    layer_chronostratigraphy: null,
 
-    "layer_color": null,
-    "layer_plasticity": null,
-    "layer_humidity": null,
-    "layer_consistance": null,
-    "layer_alteration": null,
-    "layer_compactness": null,
-    "layer_organic_component": null,
-    "layer_striae": null,
-    "layer_grain_size_1": null,
-    "layer_grain_size_2": null,
-    "layer_grain_shape": null,
-    "layer_grain_granularity": null,
-    "layer_cohesion": null,
-    "layer_further_properties": null,
-    "layer_uscs_1": null,
-    "layer_uscs_2": null,
-    "layer_uscs_3": null,
-    "layer_uscs_determination": null,
-    "layer_debris": null,
-    "layer_lit_pet_deb": null,
-  }
+    layer_color: null,
+    layer_plasticity: null,
+    layer_humidity: null,
+    layer_consistance: null,
+    layer_alteration: null,
+    layer_compactness: null,
+    layer_organic_component: null,
+    layer_striae: null,
+    layer_grain_size_1: null,
+    layer_grain_size_2: null,
+    layer_grain_shape: null,
+    layer_grain_granularity: null,
+    layer_cohesion: null,
+    layer_further_properties: null,
+    layer_uscs_1: null,
+    layer_uscs_2: null,
+    layer_uscs_3: null,
+    layer_uscs_determination: null,
+    layer_debris: null,
+    layer_lithology_top_bedrock: null,
+  },
 };
 
 const searchEditor = (
   state = {
     ...initialState,
     filter: {
-      ...initialState.filter
-    }
-  }, action) => {
+      ...initialState.filter,
+    },
+  },
+  action,
+) => {
   switch (action.type) {
     case 'SEARCH_EDITOR_FILTER_CHANGED': {
       const copy = { ...state };
@@ -169,8 +171,8 @@ const searchEditor = (
       return {
         ...state,
         filter: {
-          ...initialState.filter
-        }
+          ...initialState.filter,
+        },
       };
     }
     case 'SEARCH_EDITOR_COMPLETNESS_CHANGED': {
@@ -178,8 +180,8 @@ const searchEditor = (
         ...state,
         filter: {
           ...state.filter,
-          completness: action.completness
-        }
+          completness: action.completness,
+        },
       };
     }
     case 'SEARCH_EDITOR_PROJECT_CHANGED': {
@@ -187,8 +189,8 @@ const searchEditor = (
         ...state,
         filter: {
           ...state.filter,
-          project: action.id
-        }
+          project: action.id,
+        },
       };
     }
     case 'SEARCH_EDITOR_LASTUPDATE_CHANGED': {
@@ -196,8 +198,8 @@ const searchEditor = (
         ...state,
         filter: {
           ...state.filter,
-          last_update: action.date
-        }
+          last_update: action.date,
+        },
       };
     }
     case 'SEARCH_EDITOR_CREATION_CHANGED': {
@@ -205,8 +207,8 @@ const searchEditor = (
         ...state,
         filter: {
           ...state.filter,
-          creation: action.date
-        }
+          creation: action.date,
+        },
       };
     }
     default:

@@ -219,29 +219,29 @@ class SearchComponent extends React.Component {
                   />
                 </Form.Field>
               ) : null}
-              {this.isVisible('custom.public_name') ? (
+              {this.isVisible('custom.alternate_name') ? (
                 <Form.Field>
                   <label>
-                    <TranslationText id="public_name" />
+                    <TranslationText id="alternate_name" />
                   </label>
                   <Input
                     onChange={eve => {
-                      this.props.setFilter('public_name', eve.target.value);
+                      this.props.setFilter('alternate_name', eve.target.value);
                     }}
-                    placeholder={t('public_name')}
-                    value={search.filter.public_name}
+                    placeholder={t('alternate_name')}
+                    value={search.filter.alternate_name}
                   />
                   {this.props.developer.debug === true ? (
                     <div
                       style={{
                         color: 'red',
                       }}>
-                      trans=public_name
+                      trans=alternate_name
                     </div>
                   ) : null}
                   <LabelReset
                     onClick={() => {
-                      this.props.setFilter('public_name', '');
+                      this.props.setFilter('alternate_name', '');
                     }}
                   />
                 </Form.Field>
@@ -1733,22 +1733,25 @@ class SearchComponent extends React.Component {
                   />
                 </Form.Field>
               ) : null}
-              {this.isVisible('layer.lit_pet_deb') ? (
+              {this.isVisible('layer.lithology_top_bedrock') ? (
                 <Form.Field>
                   <label>
-                    <TranslationText id="layer_lit_pet_deb" />
+                    <TranslationText id="layer_lithology_top_bedrock" />
                   </label>
                   <DomainDropdown
                     onSelected={selected => {
-                      this.props.setFilter('layer_lit_pet_deb', selected.id);
+                      this.props.setFilter(
+                        'layer_lithology_top_bedrock',
+                        selected.id,
+                      );
                     }}
                     reset={false}
                     schema="custom.lit_pet_top_bedrock"
-                    selected={search.filter.layer_lit_pet_deb}
+                    selected={search.filter.layer_lithology_top_bedrock}
                   />
                   <LabelReset
                     onClick={() => {
-                      this.props.setFilter('layer_lit_pet_deb', null);
+                      this.props.setFilter('layer_lithology_top_bedrock', null);
                     }}
                   />
                 </Form.Field>

@@ -1372,23 +1372,23 @@ class ExplorerSettings extends React.Component {
             </Segment>
             <Segment>
               <Checkbox
-                checked={setting.data.filter.layer.lit_pet_deb}
+                checked={setting.data.filter.layer.lithology_top_bedrock}
                 label=""
                 onChange={(e, d) => {
-                  toggleFilter('layer.lit_pet_deb', d.checked);
+                  toggleFilter('layer.lithology_top_bedrock', d.checked);
                 }}
               />
-              <TranslationText id="layer_lit_pet_deb" />
+              <TranslationText id="layer_lithology_top_bedrock" />
             </Segment>
             <Segment>
               <Checkbox
-                checked={setting.data.filter.layer.lit_pet_deb}
+                checked={setting.data.filter.layer.lithology_top_bedrock}
                 label=""
                 onChange={(e, d) => {
-                  toggleFilter('layer.lit_pet_deb', d.checked);
+                  toggleFilter('layer.lithology_top_bedrock', d.checked);
                 }}
               />
-              <TranslationText id="layer_lit_pet_deb" />
+              <TranslationText id="layer_lithology_top_bedrock" />
             </Segment>
           </Segment.Group>
         ) : (

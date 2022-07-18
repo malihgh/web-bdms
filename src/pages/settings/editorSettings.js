@@ -109,7 +109,7 @@ export const fields = [
     name: 'layer_debris',
   },
   {
-    name: 'layer_lit_pet_deb',
+    name: 'layer_lithology_top_bedrock',
   },
   {
     name: 'layer_notes',

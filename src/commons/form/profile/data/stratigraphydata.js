@@ -37,15 +37,15 @@ export const stratigraphyData = {
     {
       id: 2,
       type: 'TextArea',
-      label: 'description',
-      value: 'description',
+      label: 'lithological_description',
+      value: 'lithological_description',
       isVisible: true,
     },
     {
       id: 3,
       type: 'TextArea',
-      label: 'layer_geology',
-      value: 'geology',
+      label: 'facies_description',
+      value: 'facies_description',
     },
     {
       id: 4,
@@ -211,9 +211,9 @@ export const stratigraphyData = {
     {
       id: 20,
       type: 'Dropdown',
-      label: 'layer_lit_pet_deb',
-      value: 'lit_pet_deb',
-      schema: 'custom.lit_pet_top_bedrock',
+      label: 'layer_lithology_top_bedrock',
+      value: 'lithology_top_bedrock',
+      schema: 'custom.lithology_top_bedrock',
       multiple: true,
       search: true,
     },
@@ -236,10 +236,10 @@ export const stratigraphyData = {
     {
       id: 23,
       type: 'Dropdown',
-      label: 'consistence new',
-      value: '',
+      label: 'layer_consistance',
+      value: 'consistance',
       schema: 'mlpr103',
-      multiple: true,
+      multiple: false,
       search: true,
     },
     {
@@ -272,10 +272,10 @@ export const stratigraphyData = {
     {
       id: 27,
       type: 'Dropdown',
-      label: 'gradation new',
-      value: '',
-      schema: '',
-      multiple: true,
+      label: 'gradation',
+      value: 'gradation',
+      schema: 'gradation',
+      multiple: false,
       search: true,
     },
     {

@@ -9,12 +9,14 @@ export const fillingData = {
       schema: 'fill100',
       multiple: false,
       search: false,
+      isVisible: true,
     },
     {
       id: 1,
       type: 'Input',
       label: 'remarks',
       value: 'notes',
+      isVisible: true,
     },
   ],
   profileAttribute: [

@@ -95,8 +95,8 @@ class ProfileView extends React.Component {
       </div>,
       layer !== null && domains.data.hasOwnProperty('layer_kind')
         ? (() => {
-            const filtered = domains.data.layer_kind.filter(kind =>
-              layer.kind === kind.id
+            const filtered = domains.data.layer_kind.filter(
+              kind => layer.kind === kind.id,
               //layer.kinds.includes(kind.id),
             );
             let fields = { ...filtered[0].conf.fields };
@@ -438,8 +438,8 @@ class ProfileView extends React.Component {
                 {this.getDomainRowMultiple('mcla107', layer.debris, 'debris')}
                 {this.getDomainRowMultiple(
                   'custom.lithology_top_bedrock',
-                  layer.lit_pet_deb,
-                  'lit_pet_deb',
+                  layer.lithology_top_bedrock,
+                  'lithology_top_bedrock',
                 )}
                 {/* {this.getDomainRow(
                     'mcla105',

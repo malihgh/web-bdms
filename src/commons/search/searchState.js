@@ -12,7 +12,7 @@ const initialState = {
     borehole_identifier: null,
     identifier_value: '',
     identifier: '',
-    public_name: '',
+    alternate_name: '',
     project_name: '',
     kind: null,
     method: null,
@@ -82,21 +82,22 @@ const initialState = {
     layer_uscs_3: null,
     layer_uscs_determination: null,
     layer_debris: null,
-    layer_lit_pet_deb: null,
-    
-  }
+    layer_lithology_top_bedrock: null,
+  },
 };
 
 const search = (
   state = {
     ...initialState,
     filter: {
-      ...initialState.filter
+      ...initialState.filter,
     },
     stratigraphyFilter: {
-      ...initialState.stratigraphyFilter
-    }
-  }, action) => {
+      ...initialState.stratigraphyFilter,
+    },
+  },
+  action,
+) => {
   switch (action.type) {
     case 'SEARCH_MAPFILTER_CHANGED': {
       if (action.active === true) {
@@ -104,42 +105,42 @@ const search = (
           ...state,
           filter: {
             ...state.filter,
-            extent: state.extent
+            extent: state.extent,
           },
-          mapfilter: action.active
+          mapfilter: action.active,
         };
       }
       return {
         ...state,
         filter: {
           ...state.filter,
-          extent: null
+          extent: null,
         },
-        mapfilter: action.active
+        mapfilter: action.active,
       };
     }
     case 'SEARCH_CENTER2_CHANGED': {
       if (action.active === true) {
         return {
           ...state,
-          center2selected: action.active
+          center2selected: action.active,
         };
       }
       return {
         ...state,
-        center2selected: action.active
+        center2selected: action.active,
       };
     }
     case 'SEARCH_ZOOM2_CHANGED': {
       if (action.active === true) {
         return {
           ...state,
-          zoom2selected: action.active
+          zoom2selected: action.active,
         };
       }
       return {
         ...state,
-        zoom2selected: action.active
+        zoom2selected: action.active,
       };
     }
     case 'SEARCH_FILTER_CHANGED': {
@@ -233,8 +234,8 @@ const search = (
       return {
         ...state,
         filter: {
-          ...initialState.filter
-        }
+          ...initialState.filter,
+        },
       };
     }
     case 'SEARCH_EXTENT_CHANGED': {
@@ -244,19 +245,19 @@ const search = (
           extent: action.extent,
           filter: {
             ...state.filter,
-            extent: action.extent
-          }
+            extent: action.extent,
+          },
         };
       }
       return {
         ...state,
-        extent: action.extent
+        extent: action.extent,
       };
     }
 
     default:
       return state;
   }
-}
+};
 
-export default search
+export default search;
