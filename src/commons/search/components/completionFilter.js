@@ -184,9 +184,16 @@ const CompletionFilter = props => {
                             item?.isNumber,
                           )
                         }
+                        // placeholder={
+                        //   item?.inputType
+                        //     ? item?.hasTwoFields && item?.label === ''
+                        //       ? 'to'
+                        //       : 'from'
+                        //     : ''
+                        // }
                         spellCheck="false"
                         style={{ width: '100%' }}
-                        type={item?.InputType}
+                        type={item?.inputType}
                         value={
                           _.isNil(layer?.[item.value]) ? '' : layer[item.value]
                         }

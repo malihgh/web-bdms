@@ -48,7 +48,7 @@ export const casingSearchData = [
     isVisible: true,
     require: true,
     isNumber: true,
-    InputType: 'number',
+    inputType: 'number',
     hasTwoFields: true,
   },
   {
@@ -59,7 +59,7 @@ export const casingSearchData = [
     isVisible: true,
     require: true,
     isNumber: true,
-    InputType: 'number',
+    inputType: 'number',
     hasTwoFields: true,
   },
   {
@@ -70,7 +70,7 @@ export const casingSearchData = [
     isVisible: true,
     require: true,
     isNumber: true,
-    InputType: 'number',
+    inputType: 'number',
     hasTwoFields: true,
   },
   {
@@ -81,7 +81,7 @@ export const casingSearchData = [
     isVisible: true,
     require: true,
     isNumber: true,
-    InputType: 'number',
+    inputType: 'number',
     hasTwoFields: true,
   },
   {
@@ -147,7 +147,7 @@ export const casingSearchData = [
     isNumber: true,
     isVisible: true,
     hasTwoFields: true,
-    InputType: 'number',
+    inputType: 'number',
   },
   {
     id: 16,
@@ -158,7 +158,7 @@ export const casingSearchData = [
     isNumber: true,
     isVisible: true,
     hasTwoFields: true,
-    InputType: 'number',
+    inputType: 'number',
   },
   {
     id: 17,
@@ -169,7 +169,7 @@ export const casingSearchData = [
     isNumber: true,
     isVisible: true,
     hasTwoFields: true,
-    InputType: 'number',
+    inputType: 'number',
   },
   {
     id: 18,
@@ -180,7 +180,7 @@ export const casingSearchData = [
     isNumber: true,
     isVisible: true,
     hasTwoFields: true,
-    InputType: 'number',
+    inputType: 'number',
   },
   {
     id: 19,
