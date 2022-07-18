@@ -934,7 +934,7 @@ class BoreholeForm extends React.Component {
                         </Form.Group>
                         <Form.Group widths="equal">
                           <Form.Field
-                            // error={mentions.indexOf('elevation_z') >= 0}
+                            error={mentions.indexOf('reference_elevation') >= 0}
                             required>
                             <label>
                               <TranslationText id="reference_elevation" />
@@ -943,64 +943,69 @@ class BoreholeForm extends React.Component {
                               autoCapitalize="off"
                               autoComplete="off"
                               autoCorrect="off"
-                              // onChange={e => {
-                              //   this.updateNumber(
-                              //     'elevation_z',
-                              //     e.target.value === '' ? null : e.target.value,
-                              //   );
+                              onChange={e => {
+                                this.updateNumber(
+                                  'reference_elevation',
+                                  e.target.value === '' ? null : e.target.value,
+                                );
 
-                              // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
-                              //   this.updateChange(
-                              //     'elevation_z',
-                              //     e.target.value === '' ?
-                              //       null : _.toNumber(e.target.value)
-                              //   );
-                              // }
-                              // }}
+                                if (/^-?\d*[.,]?\d*$/.test(e.target.value)) {
+                                  this.updateChange(
+                                    'reference_elevation',
+                                    e.target.value === ''
+                                      ? null
+                                      : _.toNumber(e.target.value),
+                                  );
+                                }
+                              }}
                               spellCheck="false"
-                              // value={
-                              //   _.isNil(borehole.elevation_z)
-                              //     ? ''
-                              //     : '' + borehole.elevation_z
-                              // }
+                              value={
+                                _.isNil(borehole.reference_elevation)
+                                  ? ''
+                                  : '' + borehole.reference_elevation
+                              }
                             />
                           </Form.Field>
                           <Form.Field
-                            // error={mentions.indexOf('qt_elevation') >= 0}
+                            error={
+                              mentions.indexOf('qt_reference_elevation') >= 0
+                            }
                             required>
                             <label>
                               <TranslationText id="reference_elevation_qt" />
                             </label>
                             <DomainDropdown
                               onSelected={selected => {
-                                // this.updateChange(
-                                //   'qt_elevation',
-                                //   selected.id,
-                                //   false,
-                                // );
+                                this.updateChange(
+                                  'qt_reference_elevation',
+                                  selected.id,
+                                  false,
+                                );
                               }}
                               schema="qt_elevation"
-                              selected={borehole.qt_elevation}
+                              selected={borehole.qt_reference_elevation}
                             />
                           </Form.Field>
                         </Form.Group>
                         <Form.Group widths="equal">
                           <Form.Field
-                            // error={mentions.indexOf('qt_elevation') >= 0}
+                            error={
+                              mentions.indexOf('reference_elevation_type') >= 0
+                            }
                             required>
                             <label>
                               <TranslationText id="reference_elevation_type" />
                             </label>
                             <DomainDropdown
                               onSelected={selected => {
-                                // this.updateChange(
-                                //   'qt_elevation',
-                                //   selected.id,
-                                //   false,
-                                // );
+                                this.updateChange(
+                                  'reference_elevation_type',
+                                  selected.id,
+                                  false,
+                                );
                               }}
                               schema="ibor117"
-                              selected={borehole.qt_elevation}
+                              selected={borehole.reference_elevation_type}
                             />
                           </Form.Field>
                           <Form.Field
