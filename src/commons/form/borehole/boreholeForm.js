@@ -999,7 +999,7 @@ class BoreholeForm extends React.Component {
                                 //   false,
                                 // );
                               }}
-                              schema="qt_elevation"
+                              schema="ibor117"
                               selected={borehole.qt_elevation}
                             />
                           </Form.Field>
