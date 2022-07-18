@@ -94,6 +94,13 @@ class SearchEditorComponent extends React.Component {
     }
     return false;
   }
+  InstrumentData() {
+    if (InstrumentAttributes.length === 8)
+      return InstrumentAttributes.filter(
+        (element, index) => index < InstrumentAttributes.length - 1,
+      );
+    else return InstrumentAttributes;
+  }
   render() {
     const { search, t, user } = this.props;
     return (
@@ -258,10 +265,7 @@ class SearchEditorComponent extends React.Component {
                     isEditable: true,
                     // onUpdated,
                     // reloadAttribute,
-                    attribute: InstrumentAttributes.splice(
-                      0,
-                      InstrumentAttributes.length - 1,
-                    ),
+                    attribute: this.InstrumentData(),
                   }}
                 />
               </Styled.FormFilterContainer>
