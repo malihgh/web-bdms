@@ -1,4 +1,6 @@
 export const boreholeSearchData = [
+  // isVisibleValue + placeholder + hasUnknown for Radio + hasTwoFields + inputType ==>new
+  // remove isVisable + require
   {
     id: 0,
     type: 'Date',
