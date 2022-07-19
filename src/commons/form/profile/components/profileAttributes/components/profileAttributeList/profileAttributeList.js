@@ -6,9 +6,12 @@ import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
 import DomainTree from '../../../../../domain/tree/domainTree';
 import DateField from '../../../../../dateField';
 import _ from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 const ProfileAttributeList = props => {
   const { attribute, showAll, updateChange, layer } = props.data;
+  const { t } = useTranslation();
+
   return (
     <Styled.Container>
       {attribute.map((item, key) => (
@@ -54,9 +57,9 @@ const ProfileAttributeList = props => {
               <Form.Group style={{ display: 'flex', paddingTop: '5px' }}>
                 <Form.Radio
                   checked={
-                    _.isNil(layer?.[item.value]) ? false : layer[item.value]
+                    _.isNil(layer?.[item.value]) ? true : layer[item.value]
                   }
-                  label={'Yes'}
+                  label={t('yes')}
                   onChange={() => updateChange(item.value, true, item?.to)}
                   style={{ paddingRight: '20px' }}
                 />
@@ -64,7 +67,7 @@ const ProfileAttributeList = props => {
                   checked={
                     _.isNil(layer?.[item.value]) ? false : !layer[item.value]
                   }
-                  label={'No'}
+                  label={t('no')}
                   onChange={() => updateChange(item.value, false, item?.to)}
                 />
               </Form.Group>
