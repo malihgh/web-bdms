@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
-import { Icon, Form, Radio } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import StratigraphyFilter from '../components/stratigraphyFilter';
 import TranslationText from '../../form/translationText';
 import WorkgroupRadioGroup from '../../form/workgroup/radio';
-import BoreholeFilter from '../components/boreholeFilter';
 import * as Styled from './searchEditorStyles';
 import CompletionFilter from '../components/completionFilter';
 import StatusFilter from '../components/statusFilter';
@@ -15,6 +14,7 @@ import { casingSearchData } from '../data/casingSearchData';
 import { InstrumentSearchData } from '../data/InstrumentSearchData';
 import { fillingSearchData } from '../data/fillingSearchData';
 import { LocationSearchData } from '../data/LocationSearchData';
+import { boreholeSearchData } from '../data/boreholeSearchData';
 
 class SearchEditorComponent extends React.Component {
   constructor(props) {
@@ -96,7 +96,7 @@ class SearchEditorComponent extends React.Component {
   }
 
   render() {
-    const { search, t, user } = this.props;
+    const { search, user } = this.props;
     return (
       <Styled.Container>
         <Styled.SearchFilterLabel>
@@ -195,24 +195,28 @@ class SearchEditorComponent extends React.Component {
                 <CompletionFilter
                   data={{
                     id: 1,
-                    isEditable: true,
-                    // onUpdated,
-                    // reloadAttribute,
                     attribute: LocationSearchData,
                   }}
+                  search={this.props.search}
+                  setFilter={this.props.setFilter}
                 />
               </Styled.FormFilterContainer>
             )}
+
           {this.state?.searchList?.[3]?.name === 'borehole' &&
             this.state?.searchList?.[3]?.isSelected && (
               <Styled.FormFilterContainer>
-                <BoreholeFilter
-                  onChange={this.props.onChange}
+                <CompletionFilter
+                  data={{
+                    id: 1,
+                    attribute: boreholeSearchData,
+                  }}
                   resetBoreInc={this.props.resetBoreInc}
                   resetBoreIncDir={this.props.resetBoreIncDir}
                   resetDrillDiameter={this.props.resetDrillDiameter}
                   resetDrilling={this.props.resetDrilling}
                   resetElevation={this.props.resetElevation}
+                  resetIdentifier={this.props.resetIdentifier}
                   resetRestriction={this.props.resetRestriction}
                   resetTotBedrock={this.props.resetTotBedrock}
                   search={this.props.search}
@@ -226,8 +230,8 @@ class SearchEditorComponent extends React.Component {
               <Styled.FormFilterContainer>
                 <StratigraphyFilter
                   search={this.props.search}
-                  settings={this.props.settings.data.efilter}
                   setFilter={this.props.setFilter}
+                  settings={this.props.settings.data.efilter}
                 />
               </Styled.FormFilterContainer>
             )}
@@ -237,11 +241,10 @@ class SearchEditorComponent extends React.Component {
                 <CompletionFilter
                   data={{
                     id: 1,
-                    isEditable: true,
-                    // onUpdated,
-                    // reloadAttribute,
                     attribute: casingSearchData,
                   }}
+                  search={this.props.search}
+                  setFilter={this.props.setFilter}
                 />
               </Styled.FormFilterContainer>
             )}
@@ -251,11 +254,10 @@ class SearchEditorComponent extends React.Component {
                 <CompletionFilter
                   data={{
                     id: 1,
-                    isEditable: true,
-                    // onUpdated,
-                    // reloadAttribute,
                     attribute: InstrumentSearchData,
                   }}
+                  search={this.props.search}
+                  setFilter={this.props.setFilter}
                 />
               </Styled.FormFilterContainer>
             )}
@@ -265,11 +267,10 @@ class SearchEditorComponent extends React.Component {
                 <CompletionFilter
                   data={{
                     id: 1,
-                    isEditable: true,
-                    // onUpdated,
-                    // reloadAttribute,
                     attribute: fillingSearchData,
                   }}
+                  search={this.props.search}
+                  setFilter={this.props.setFilter}
                 />
               </Styled.FormFilterContainer>
             )}
@@ -306,6 +307,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     dispatch: dispatch,
     setFilter: (key, value) => {
+      console.log('llll', key, value);
       dispatch({
         type: 'SEARCH_EDITOR_FILTER_CHANGED',
         key: key,
