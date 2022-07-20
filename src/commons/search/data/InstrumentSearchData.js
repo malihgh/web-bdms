@@ -8,6 +8,7 @@ export const InstrumentSearchData = [
     isNumber: true,
     isVisible: true,
     hasTwoFields: true,
+    placeholder: 'fromdepth',
     inputType: 'number',
   },
   {
@@ -19,6 +20,7 @@ export const InstrumentSearchData = [
     isNumber: true,
     isVisible: true,
     hasTwoFields: true,
+    placeholder: 'todepth',
     inputType: 'number',
   },
   {
@@ -30,6 +32,7 @@ export const InstrumentSearchData = [
     isNumber: true,
     isVisible: true,
     hasTwoFields: true,
+    placeholder: 'fromdepth',
     inputType: 'number',
   },
   {
@@ -41,6 +44,7 @@ export const InstrumentSearchData = [
     isNumber: true,
     isVisible: true,
     hasTwoFields: true,
+    placeholder: 'todepth',
     inputType: 'number',
   },
   {
@@ -81,13 +85,6 @@ export const InstrumentSearchData = [
     require: true,
     multiple: false,
     search: false,
-    isVisible: true,
-  },
-  {
-    id: 8,
-    type: 'Input',
-    label: 'layer_notes',
-    value: 'notes',
     isVisible: true,
   },
 ];
