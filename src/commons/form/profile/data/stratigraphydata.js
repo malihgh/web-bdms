@@ -299,7 +299,7 @@ export const stratigraphyData = {
     {
       id: 30,
       type: 'TextArea',
-      label: 'remarks',
+      label: 'layer_notes',
       value: 'notes',
       isVisible: true,
     },
