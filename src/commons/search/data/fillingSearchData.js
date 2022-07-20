@@ -11,13 +11,6 @@ export const fillingSearchData = [
     isVisible: true,
   },
   {
-    id: 1,
-    type: 'Input',
-    label: 'remarks',
-    value: 'notes',
-    isVisible: true,
-  },
-  {
     id: 2,
     type: 'Input',
     label: 'layer_depth_from',
@@ -26,6 +19,7 @@ export const fillingSearchData = [
     require: true,
     isNumber: true,
     inputType: 'number',
+    placeholder: 'fromdepth',
     hasTwoFields: true,
   },
   {
@@ -37,6 +31,7 @@ export const fillingSearchData = [
     require: true,
     isNumber: true,
     inputType: 'number',
+    placeholder: 'todepth',
     hasTwoFields: true,
   },
   {
@@ -48,6 +43,7 @@ export const fillingSearchData = [
     require: true,
     isNumber: true,
     inputType: 'number',
+    placeholder: 'fromdepth',
     hasTwoFields: true,
   },
   {
@@ -59,6 +55,7 @@ export const fillingSearchData = [
     require: true,
     isNumber: true,
     inputType: 'number',
+    placeholder: 'todepth',
     hasTwoFields: true,
   },
   {
@@ -70,13 +67,6 @@ export const fillingSearchData = [
     schema: 'fill200',
     multiple: false,
     search: false,
-    isVisible: true,
-  },
-  {
-    id: 7,
-    type: 'TextArea',
-    label: 'layer_notes',
-    value: 'notes',
     isVisible: true,
   },
 ];
