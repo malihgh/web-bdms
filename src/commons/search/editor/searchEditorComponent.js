@@ -45,13 +45,13 @@ class SearchEditorComponent extends React.Component {
         {
           id: 3,
           name: 'borehole',
-          translationId: 'searchFiltersBoreholes',
+          translationId: 'borehole',
           isSelected: false,
         },
         {
           id: 4,
           name: 'stratigraphy',
-          translationId: 'searchFiltersLayers',
+          translationId: 'stratigraphy',
           isSelected: false,
         },
         {
