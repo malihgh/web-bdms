@@ -51,6 +51,7 @@ export const LocationSearchData = [
     label: 'restriction_until',
     value: '_from',
     isVisible: true,
+    placeholder: 'afterdate',
     hasTwoFields: true,
   },
   {
@@ -59,6 +60,7 @@ export const LocationSearchData = [
     label: '',
     value: '_to',
     isVisible: true,
+    placeholder: 'beforedate',
     hasTwoFields: true,
   },
   {
@@ -81,6 +83,7 @@ export const LocationSearchData = [
     require: true,
     isNumber: true,
     inputType: 'number',
+    placeholder: 'fromelevation',
     hasTwoFields: true,
   },
   {
@@ -92,6 +95,7 @@ export const LocationSearchData = [
     require: true,
     isNumber: true,
     inputType: 'number',
+    placeholder: 'toelevation',
     hasTwoFields: true,
   },
   {
@@ -114,6 +118,7 @@ export const LocationSearchData = [
     require: true,
     isNumber: true,
     inputType: 'number',
+    placeholder: 'fromelevation',
     hasTwoFields: true,
   },
   {
@@ -125,6 +130,7 @@ export const LocationSearchData = [
     require: true,
     isNumber: true,
     inputType: 'number',
+    placeholder: 'toelevation',
     hasTwoFields: true,
   },
   {
@@ -160,5 +166,18 @@ export const LocationSearchData = [
     search: false,
     isVisible: true,
   },
-  //canton , city
+  {
+    id: 16,
+    type: 'Canton',
+    label: 'canton',
+    value: 'canton',
+    isVisibleValue: 'custom.canton',
+  },
+  {
+    id: 17,
+    type: 'City',
+    label: 'municipality',
+    value: 'municipality',
+    isVisibleValue: 'custom.canton',
+  },
 ];
