@@ -1404,7 +1404,7 @@ class BoreholeForm extends React.Component {
                           <Form.Field
                             error={mentions.indexOf('drill_diameter') >= 0}>
                             <label>
-                              <TranslationText id="drilldiameter" />
+                              <TranslationText id="drill_diameter" />
                             </label>
                             <Input
                               onChange={e => {
@@ -1493,7 +1493,7 @@ class BoreholeForm extends React.Component {
                             <label>
                               <TranslationText
                                 firstUpperCase
-                                id="inclinationdirection"
+                                id="inclination_direction"
                               />
                             </label>
                             <Input
