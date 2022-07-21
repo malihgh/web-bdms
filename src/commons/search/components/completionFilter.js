@@ -93,7 +93,7 @@ const CompletionFilter = props => {
   };
 
   return (
-    <Styled.Container disable={!id}>
+    <Styled.Container>
       <Styled.CheckboxContainer>
         <Checkbox
           checked={showAll}
