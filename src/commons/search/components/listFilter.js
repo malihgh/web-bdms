@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import React, { useState } from 'react';
-import * as Styled from './completionFilterStyles';
+import * as Styled from './listFilterStyles';
 import { Checkbox, Input, TextArea, Form } from 'semantic-ui-react';
 import TranslationText from '../../form/translationText';
 import _ from 'lodash';
@@ -12,9 +12,9 @@ import LabelReset from '../../form/labelReset';
 import MunicipalityDropdown from '../../form/municipality/dropdown/municipalityDropdown';
 import CantonDropdown from '../../form/cantons/dropdown/cantonDropdown';
 
-const CompletionFilter = props => {
-  const { id, attribute } = props.data;
+const ListFilter = props => {
   const {
+    attribute,
     resetBoreInc,
     resetBoreIncDir,
     resetDrillDiameter,
@@ -341,4 +341,4 @@ const CompletionFilter = props => {
   );
 };
 
-export default CompletionFilter;
+export default ListFilter;

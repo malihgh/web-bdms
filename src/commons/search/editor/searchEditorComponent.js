@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import { Icon } from 'semantic-ui-react';
-import StratigraphyFilter from '../components/stratigraphyFilter';
 import TranslationText from '../../form/translationText';
 import WorkgroupRadioGroup from '../../form/workgroup/radio';
 import * as Styled from './searchEditorStyles';
-import CompletionFilter from '../components/completionFilter';
+import ListFilter from '../components/listFilter';
 import StatusFilter from '../components/statusFilter';
 import { casingSearchData } from '../data/casingSearchData';
 import { InstrumentSearchData } from '../data/InstrumentSearchData';
@@ -193,11 +192,8 @@ class SearchEditorComponent extends React.Component {
           {this.state?.searchList?.[2]?.name === 'location' &&
             this.state?.searchList?.[2]?.isSelected && (
               <Styled.FormFilterContainer>
-                <CompletionFilter
-                  data={{
-                    id: 1,
-                    attribute: LocationSearchData,
-                  }}
+                <ListFilter
+                  attribute={LocationSearchData}
                   search={this.props.search}
                   setFilter={this.props.setFilter}
                 />
@@ -207,11 +203,8 @@ class SearchEditorComponent extends React.Component {
           {this.state?.searchList?.[3]?.name === 'borehole' &&
             this.state?.searchList?.[3]?.isSelected && (
               <Styled.FormFilterContainer>
-                <CompletionFilter
-                  data={{
-                    id: 1,
-                    attribute: boreholeSearchData,
-                  }}
+                <ListFilter
+                  attribute={boreholeSearchData}
                   resetBoreInc={this.props.resetBoreInc}
                   resetBoreIncDir={this.props.resetBoreIncDir}
                   resetDrillDiameter={this.props.resetDrillDiameter}
@@ -229,11 +222,8 @@ class SearchEditorComponent extends React.Component {
           {this.state?.searchList?.[4]?.name === 'stratigraphy' &&
             this.state?.searchList?.[4]?.isSelected && (
               <Styled.FormFilterContainer>
-                <CompletionFilter
-                  data={{
-                    id: 1,
-                    attribute: stratigraphySearchData,
-                  }}
+                <ListFilter
+                  attribute={stratigraphySearchData}
                   search={this.props.search}
                   setFilter={this.props.setFilter}
                   settings={this.props.settings.data.efilter}
@@ -243,11 +233,8 @@ class SearchEditorComponent extends React.Component {
           {this.state?.searchList?.[5]?.name === 'casing' &&
             this.state?.searchList?.[5]?.isSelected && (
               <Styled.FormFilterContainer>
-                <CompletionFilter
-                  data={{
-                    id: 1,
-                    attribute: casingSearchData,
-                  }}
+                <ListFilter
+                  attribute={casingSearchData}
                   search={this.props.search}
                   setFilter={this.props.setFilter}
                 />
@@ -256,11 +243,8 @@ class SearchEditorComponent extends React.Component {
           {this.state?.searchList?.[6]?.name === 'instrument' &&
             this.state?.searchList?.[6]?.isSelected && (
               <Styled.FormFilterContainer>
-                <CompletionFilter
-                  data={{
-                    id: 1,
-                    attribute: InstrumentSearchData,
-                  }}
+                <ListFilter
+                  attribute={InstrumentSearchData}
                   search={this.props.search}
                   setFilter={this.props.setFilter}
                 />
@@ -269,11 +253,8 @@ class SearchEditorComponent extends React.Component {
           {this.state?.searchList?.[7]?.name === 'filling' &&
             this.state?.searchList?.[7]?.isSelected && (
               <Styled.FormFilterContainer>
-                <CompletionFilter
-                  data={{
-                    id: 1,
-                    attribute: fillingSearchData,
-                  }}
+                <ListFilter
+                  attribute={fillingSearchData}
                   search={this.props.search}
                   setFilter={this.props.setFilter}
                 />
