@@ -95,6 +95,43 @@ class SearchEditorComponent extends React.Component {
     return false;
   }
 
+  handleButtonSelected() {
+    let selectedData = null;
+    if (
+      this.state?.searchList?.[2]?.name === 'location' &&
+      this.state?.searchList?.[2]?.isSelected
+    ) {
+      selectedData = LocationSearchData;
+    } else if (
+      this.state?.searchList?.[3]?.name === 'borehole' &&
+      this.state?.searchList?.[3]?.isSelected
+    ) {
+      selectedData = boreholeSearchData;
+    } else if (
+      this.state?.searchList?.[4]?.name === 'stratigraphy' &&
+      this.state?.searchList?.[4]?.isSelected
+    ) {
+      selectedData = stratigraphySearchData;
+    } else if (
+      this.state?.searchList?.[5]?.name === 'casing' &&
+      this.state?.searchList?.[5]?.isSelected
+    ) {
+      selectedData = casingSearchData;
+    } else if (
+      this.state?.searchList?.[6]?.name === 'instrument' &&
+      this.state?.searchList?.[6]?.isSelected
+    ) {
+      selectedData = InstrumentSearchData;
+    } else if (
+      this.state?.searchList?.[7]?.name === 'filling' &&
+      this.state?.searchList?.[7]?.isSelected
+    ) {
+      selectedData = fillingSearchData;
+    } else {
+      selectedData = null;
+    }
+    return selectedData;
+  }
   render() {
     const { search, user } = this.props;
     return (
@@ -189,77 +226,24 @@ class SearchEditorComponent extends React.Component {
               />
             )}
 
-          {this.state?.searchList?.[2]?.name === 'location' &&
-            this.state?.searchList?.[2]?.isSelected && (
-              <Styled.FormFilterContainer>
-                <ListFilter
-                  attribute={LocationSearchData}
-                  search={this.props.search}
-                  setFilter={this.props.setFilter}
-                />
-              </Styled.FormFilterContainer>
-            )}
-
-          {this.state?.searchList?.[3]?.name === 'borehole' &&
-            this.state?.searchList?.[3]?.isSelected && (
-              <Styled.FormFilterContainer>
-                <ListFilter
-                  attribute={boreholeSearchData}
-                  resetBoreInc={this.props.resetBoreInc}
-                  resetBoreIncDir={this.props.resetBoreIncDir}
-                  resetDrillDiameter={this.props.resetDrillDiameter}
-                  resetDrilling={this.props.resetDrilling}
-                  resetElevation={this.props.resetElevation}
-                  resetIdentifier={this.props.resetIdentifier}
-                  resetRestriction={this.props.resetRestriction}
-                  resetTotBedrock={this.props.resetTotBedrock}
-                  search={this.props.search}
-                  setFilter={this.props.setFilter}
-                  settings={this.props.settings.data.efilter}
-                />
-              </Styled.FormFilterContainer>
-            )}
-          {this.state?.searchList?.[4]?.name === 'stratigraphy' &&
-            this.state?.searchList?.[4]?.isSelected && (
-              <Styled.FormFilterContainer>
-                <ListFilter
-                  attribute={stratigraphySearchData}
-                  search={this.props.search}
-                  setFilter={this.props.setFilter}
-                  settings={this.props.settings.data.efilter}
-                />
-              </Styled.FormFilterContainer>
-            )}
-          {this.state?.searchList?.[5]?.name === 'casing' &&
-            this.state?.searchList?.[5]?.isSelected && (
-              <Styled.FormFilterContainer>
-                <ListFilter
-                  attribute={casingSearchData}
-                  search={this.props.search}
-                  setFilter={this.props.setFilter}
-                />
-              </Styled.FormFilterContainer>
-            )}
-          {this.state?.searchList?.[6]?.name === 'instrument' &&
-            this.state?.searchList?.[6]?.isSelected && (
-              <Styled.FormFilterContainer>
-                <ListFilter
-                  attribute={InstrumentSearchData}
-                  search={this.props.search}
-                  setFilter={this.props.setFilter}
-                />
-              </Styled.FormFilterContainer>
-            )}
-          {this.state?.searchList?.[7]?.name === 'filling' &&
-            this.state?.searchList?.[7]?.isSelected && (
-              <Styled.FormFilterContainer>
-                <ListFilter
-                  attribute={fillingSearchData}
-                  search={this.props.search}
-                  setFilter={this.props.setFilter}
-                />
-              </Styled.FormFilterContainer>
-            )}
+          {this.handleButtonSelected() !== null && (
+            <Styled.FormFilterContainer>
+              <ListFilter
+                attribute={this.handleButtonSelected()}
+                resetBoreInc={this.props.resetBoreInc}
+                resetBoreIncDir={this.props.resetBoreIncDir}
+                resetDrillDiameter={this.props.resetDrillDiameter}
+                resetDrilling={this.props.resetDrilling}
+                resetElevation={this.props.resetElevation}
+                resetIdentifier={this.props.resetIdentifier}
+                resetRestriction={this.props.resetRestriction}
+                resetTotBedrock={this.props.resetTotBedrock}
+                search={this.props.search}
+                setFilter={this.props.setFilter}
+                settings={this.props.settings.data.efilter}
+              />
+            </Styled.FormFilterContainer>
+          )}
         </div>
       </Styled.Container>
     );
