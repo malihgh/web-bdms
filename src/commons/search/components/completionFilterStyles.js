@@ -5,8 +5,6 @@ export const ContainerList = styled.div``;
 
 export const Container = styled.div`
   flex: 1 1 100%;
-  opacity: ${props => props.disable && '0.5'};
-  pointer-events: ${props => props.disable && 'none'};
 `;
 
 export const CheckboxContainer = styled.div`
