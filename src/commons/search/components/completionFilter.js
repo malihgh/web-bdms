@@ -83,6 +83,12 @@ const CompletionFilter = props => {
       resetBoreInc();
     } else if (item.value === 'bore_inc_dir_to') {
       resetBoreIncDir();
+    } else if (item.value === 'layer_depth_from_to') {
+      updateChange('layer_depth_from_from', '', false);
+      updateChange('layer_depth_from_to', '', false);
+    } else if (item.value === 'layer_depth_to_to') {
+      updateChange('layer_depth_to_from', '', false);
+      updateChange('layer_depth_to_to', '', false);
     }
   };
 

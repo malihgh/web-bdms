@@ -15,6 +15,7 @@ import { InstrumentSearchData } from '../data/InstrumentSearchData';
 import { fillingSearchData } from '../data/fillingSearchData';
 import { LocationSearchData } from '../data/LocationSearchData';
 import { boreholeSearchData } from '../data/boreholeSearchData';
+import { stratigraphySearchData } from '../data/stratigraphySearchData';
 
 class SearchEditorComponent extends React.Component {
   constructor(props) {
@@ -228,7 +229,11 @@ class SearchEditorComponent extends React.Component {
           {this.state?.searchList?.[4]?.name === 'stratigraphy' &&
             this.state?.searchList?.[4]?.isSelected && (
               <Styled.FormFilterContainer>
-                <StratigraphyFilter
+                <CompletionFilter
+                  data={{
+                    id: 1,
+                    attribute: stratigraphySearchData,
+                  }}
                   search={this.props.search}
                   setFilter={this.props.setFilter}
                   settings={this.props.settings.data.efilter}
