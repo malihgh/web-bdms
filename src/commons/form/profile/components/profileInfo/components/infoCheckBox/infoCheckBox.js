@@ -11,7 +11,7 @@ const InfoCheckBox = props => {
   return (
     <Styled.CheckBoxContainer>
       <Styled.FormContainer size="small">
-        {kind !== profileKind.CASING && (
+        {kind !== profileKind.FILLING && (
           <>
             <Checkbox
               checked={profileInfo && profileInfo?.primary}
@@ -23,25 +23,28 @@ const InfoCheckBox = props => {
               }}
               toggle
             />
-            <TranslationText id="mainStratigraphy" />
+            {kind !== profileKind.CASING && (
+              <TranslationText id="mainStratigraphy" />
+            )}
+            {kind === profileKind.CASING && (
+              <TranslationText id="somethingnew" />
+            )}
           </>
         )}
       </Styled.FormContainer>
       {isEditable && (
         <div style={{ display: 'flex' }}>
-          {kind !== profileKind.FILLING && (
-            <Button
-              // disabled={!_.isEmpty(consistency)}
-              icon
-              onClick={() => {
-                cloneStratigraphy(profileInfo?.id).then(response => {
-                  onUpdated('cloneStratigraphy');
-                });
-              }}
-              size="tiny">
-              <Icon name="clone outline" />
-            </Button>
-          )}
+          <Button
+            // disabled={!_.isEmpty(consistency)}
+            icon
+            onClick={() => {
+              cloneStratigraphy(profileInfo?.id).then(response => {
+                onUpdated('cloneStratigraphy');
+              });
+            }}
+            size="tiny">
+            <Icon name="clone outline" />
+          </Button>
           <Popup
             flowing
             hoverable
