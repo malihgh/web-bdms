@@ -142,7 +142,7 @@ export const casingSearchData = [
   {
     id: 14,
     type: 'Input',
-    label: 'Inner diameter (mm)',
+    label: 'casing_inner_diameter',
     value: 'casing_inner_diameter_from',
     require: true,
     isNumber: true,
@@ -166,7 +166,7 @@ export const casingSearchData = [
   {
     id: 16,
     type: 'Input',
-    label: 'Outer diameter (mm)',
+    label: 'casing_outer_diameter',
     value: 'casing_outer_diameter_from',
     require: true,
     isNumber: true,
