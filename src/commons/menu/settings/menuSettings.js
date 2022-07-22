@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
-import TranslationText from '../../form/translationText';
 import ListItem from '../components/listItem';
 
 const MenuSettings = props => {
