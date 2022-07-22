@@ -84,7 +84,6 @@ const Instrument = props => {
     });
   };
 
-  const casingChagne = value => {};
 
   return (
     <Styled.FormContainer>
