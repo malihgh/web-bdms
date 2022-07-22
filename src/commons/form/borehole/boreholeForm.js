@@ -20,7 +20,6 @@ import PointComponent from '../../map/pointComponent';
 import DomainDropdown from '../domain/dropdown/domainDropdown';
 import DomainTree from '../domain/tree/domainTree';
 import MunicipalityDropdown from '../municipality/dropdown/municipalityDropdown';
-import CantonDropdown from '../cantons/dropdown/cantonDropdown';
 import DateField from '../dateField';
 import DomainText from '../domain/domainText';
 import EditorBoreholeFilesTable from '../../files/table/editorBoreholeFilesTable';
