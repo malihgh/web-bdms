@@ -86,7 +86,6 @@ const ProfileHeader = props => {
         {isEditable && kind !== profileKind.INSTRUMENT && (
           <Button
             content={setText}
-            disabled={kind === profileKind.FILLING && profiles?.length > 0}
             icon="add"
             onClick={createStratigraphy}
             secondary
