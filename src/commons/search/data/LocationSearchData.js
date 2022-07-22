@@ -161,5 +161,6 @@ export const LocationSearchData = [
     label: 'canton',
     value: 'canton',
     isVisibleValue: 'custom.canton',
+    isVisible: true,
   },
 ];
