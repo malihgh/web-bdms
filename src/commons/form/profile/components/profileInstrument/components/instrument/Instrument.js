@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
-import { Input, Form, Button, Dropdown } from 'semantic-ui-react';
+import { Input, Form, Button } from 'semantic-ui-react';
 import TranslationText from '../../../../../translationText';
 import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
 import { patchLayer } from '@ist-supsi/bmsjs';
 import { InstrumentAttributes } from '../../data/InstrumentAttributes';
 import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
+import CasingList from '../../../casingList';
 
 const Instrument = props => {
-  const { index, info, deleting, isEditable, casing, update } = props.data;
+  const { index, info, deleting, isEditable, boreholeID, update } = props.data;
 
   const { t } = useTranslation();
 
@@ -82,6 +83,9 @@ const Instrument = props => {
       }));
     });
   };
+
+  const casingChagne = value => {};
+
   return (
     <Styled.FormContainer>
       {InstrumentAttributes.map((item, key) => (
@@ -142,18 +146,15 @@ const Instrument = props => {
 
             {item.type === 'CasingDropdown' && (
               <Styled.AttributesItem>
-                <Dropdown
-                  fluid
-                  onChange={(e, data) => {
-                    updateChange(item.value, data.value);
-                  }}
-                  options={casing}
-                  selection
-                  value={
+                <CasingList
+                  dropDownValue={
                     _.isNil(state?.instrument?.[item.value])
                       ? null
                       : state.instrument[item.value]
                   }
+                  handleCasing={updateChange}
+                  id={boreholeID}
+                  ItemValue={item.value}
                 />
               </Styled.AttributesItem>
             )}
