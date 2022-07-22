@@ -92,16 +92,29 @@ const ListFilter = props => {
     }
   };
 
+  const showCheckbox = () => {
+    let isVisibleCounter = 0;
+    attribute.forEach(item => {
+      if (item.isVisible) {
+        isVisibleCounter++;
+      }
+    });
+    if (isVisibleCounter === attribute.length) {
+      return false;
+    } else return true;
+  };
   return (
     <Styled.Container>
-      <Styled.CheckboxContainer>
-        <Checkbox
-          checked={showAll}
-          onChange={() => setShowAll(!showAll)}
-          toggle
-        />
-        <TranslationText id="showallfields" />
-      </Styled.CheckboxContainer>
+      {showCheckbox() && (
+        <Styled.CheckboxContainer>
+          <Checkbox
+            checked={showAll}
+            onChange={() => setShowAll(!showAll)}
+            toggle
+          />
+          <TranslationText id="showallfields" />
+        </Styled.CheckboxContainer>
+      )}
 
       {attribute && (
         <>
