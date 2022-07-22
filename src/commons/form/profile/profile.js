@@ -172,6 +172,7 @@ const Profile = props => {
                 isEditable,
                 onUpdated,
                 attribute: attributesBasedKind?.profileInfo,
+                boreholeID: borehole.data.id,
               }}
             />
 

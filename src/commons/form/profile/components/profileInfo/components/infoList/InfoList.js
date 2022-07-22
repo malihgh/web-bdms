@@ -5,9 +5,10 @@ import TranslationText from '../../../../../translationText';
 import DomainDropdown from '../../../../../domain/dropdown/domainDropdown';
 import DateField from '../../../../../dateField';
 import _ from 'lodash';
+import CasingList from '../../../casingList';
 
 const InfoList = props => {
-  const { attribute, profileInfo, updateChange } = props.data;
+  const { attribute, profileInfo, updateChange, boreholeID } = props.data;
 
   return (
     <>
@@ -74,6 +75,21 @@ const InfoList = props => {
                     onChange={selected => {
                       updateChange(item.value, selected, false);
                     }}
+                  />
+                </Styled.AttributesItem>
+              )}
+
+              {item.type === 'CasingDropdown' && (
+                <Styled.AttributesItem>
+                  <CasingList
+                    dropDownValue={
+                      _.isNil(profileInfo?.[item.value])
+                        ? null
+                        : profileInfo?.[item.value]
+                    }
+                    handleCasing={updateChange}
+                    id={boreholeID}
+                    ItemValue={item.value}
                   />
                 </Styled.AttributesItem>
               )}
