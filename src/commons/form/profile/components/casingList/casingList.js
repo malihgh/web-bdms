@@ -10,7 +10,7 @@ const CasingList = props => {
     (async () => {
       await getCasingList();
     })();
-  }, []);
+  }, [getCasingList]);
 
   return (
     <div>
