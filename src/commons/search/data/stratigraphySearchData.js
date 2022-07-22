@@ -45,15 +45,6 @@ export const stratigraphySearchData = [
     isVisible: true,
     placeholder: 'todepth',
   },
-  // /////////////////////?????????????
-  // {
-  //   id: 4,
-  //   type: 'Radio',
-  //   label: 'layer_last',
-  //   value: 'last',
-  //   to: false,
-  //   isVisible: true,
-  // },
   {
     id: 5,
     type: 'Dropdown',
