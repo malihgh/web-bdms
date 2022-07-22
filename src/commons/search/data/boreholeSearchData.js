@@ -1,9 +1,8 @@
 export const boreholeSearchData = [
   // isVisibleValue + placeholder + hasUnknown for Radio + hasTwoFields + inputType ==>new
   // remove isVisable + require
-
   {
-    id: 5,
+    id: 0,
     type: 'Dropdown',
     label: 'kind',
     value: 'kind',
@@ -13,7 +12,7 @@ export const boreholeSearchData = [
     isVisibleValue: 'kind',
   },
   {
-    id: 6,
+    id: 1,
     type: 'Dropdown',
     label: 'drilling_method',
     value: 'method',
@@ -23,7 +22,7 @@ export const boreholeSearchData = [
     isVisibleValue: 'extended..drilling_method',
   },
   {
-    id: 19,
+    id: 2,
     type: 'Dropdown',
     label: 'purpose',
     value: 'purpose',
@@ -33,7 +32,7 @@ export const boreholeSearchData = [
     isVisibleValue: 'extended.purpose',
   },
   {
-    id: 20,
+    id: 3,
     type: 'Dropdown',
     label: 'cuttings',
     value: 'cuttings',
@@ -43,7 +42,7 @@ export const boreholeSearchData = [
     isVisibleValue: 'custom.cuttings',
   },
   {
-    id: 21,
+    id: 4,
     type: 'Date',
     label: 'spud_date',
     value: '',
@@ -52,7 +51,7 @@ export const boreholeSearchData = [
     placeholder: 'afterdate',
   },
   {
-    id: 22,
+    id: 5,
     type: 'Date',
     label: '',
     value: '',
@@ -61,7 +60,7 @@ export const boreholeSearchData = [
     placeholder: 'beforedate',
   },
   {
-    id: 21,
+    id: 6,
     type: 'Date',
     label: 'drilling_end_date',
     value: 'drilling_date_from',
@@ -70,7 +69,7 @@ export const boreholeSearchData = [
     placeholder: 'afterdate',
   },
   {
-    id: 22,
+    id: 7,
     type: 'Date',
     label: '',
     value: 'drilling_date_to',
@@ -79,7 +78,7 @@ export const boreholeSearchData = [
     placeholder: 'beforedate',
   },
   {
-    id: 23,
+    id: 8,
     type: 'Input',
     label: 'drill_diameter',
     value: 'drill_diameter_from',
@@ -90,7 +89,7 @@ export const boreholeSearchData = [
     placeholder: 'fromdiameter',
   },
   {
-    id: 24,
+    id: 9,
     type: 'Input',
     label: '',
     value: 'drill_diameter_to',
@@ -101,7 +100,7 @@ export const boreholeSearchData = [
     placeholder: 'todiameter',
   },
   {
-    id: 18,
+    id: 10,
     type: 'Dropdown',
     label: 'boreholestatus',
     value: 'status',
@@ -111,7 +110,7 @@ export const boreholeSearchData = [
     isVisibleValue: 'extended.status',
   },
   {
-    id: 25,
+    id: 11,
     type: 'Input',
     label: 'inclination',
     value: 'bore_inc_from',
@@ -123,7 +122,7 @@ export const boreholeSearchData = [
   },
   // from degree and to degree in placeholder
   {
-    id: 26,
+    id: 12,
     type: 'Input',
     label: '',
     value: 'bore_inc_to',
@@ -134,7 +133,7 @@ export const boreholeSearchData = [
     placeholder: 'to',
   },
   {
-    id: 27,
+    id: 13,
     type: 'Input',
     label: 'inclination_direction',
     value: 'bore_inc_dir_from',
@@ -146,7 +145,7 @@ export const boreholeSearchData = [
   },
   // from degree and to degree in placeholder
   {
-    id: 28,
+    id: 14,
     type: 'Input',
     label: '',
     value: 'bore_inc_dir_to',
@@ -157,7 +156,7 @@ export const boreholeSearchData = [
     placeholder: 'to',
   },
   {
-    id: 5,
+    id: 15,
     type: 'Dropdown',
     label: 'qt_bore_inc_dir',
     value: '',
@@ -167,7 +166,7 @@ export const boreholeSearchData = [
     // isVisibleValue: 'kind',
   },
   {
-    id: 13,
+    id: 16,
     type: 'Input',
     label: 'totaldepth',
     value: 'length_from',
@@ -178,7 +177,7 @@ export const boreholeSearchData = [
     placeholder: 'fromdepth',
   },
   {
-    id: 14,
+    id: 17,
     type: 'Input',
     label: '',
     value: 'length_to',
@@ -189,29 +188,7 @@ export const boreholeSearchData = [
     placeholder: 'todepth',
   },
   {
-    id: 16,
-    type: 'Input',
-    label: 'top_bedrock',
-    value: 'top_bedrock_from',
-    isNumber: true,
-    inputType: 'number',
-    hasTwoFields: true,
-    isVisibleValue: 'extended.top_bedrock',
-    placeholder: 'fromdepth',
-  },
-  {
-    id: 17,
-    type: 'Input',
-    label: '',
-    value: 'top_bedrock_to',
-    isNumber: true,
-    inputType: 'number',
-    hasTwoFields: true,
-    isVisibleValue: 'extended.top_bedrock',
-    placeholder: 'todepth',
-  },
-  {
-    id: 13,
+    id: 18,
     type: 'Input',
     label: 'total_depth_tvd',
     value: '',
@@ -222,7 +199,7 @@ export const boreholeSearchData = [
     placeholder: 'fromdepth',
   },
   {
-    id: 14,
+    id: 19,
     type: 'Input',
     label: '',
     value: '',
@@ -233,7 +210,51 @@ export const boreholeSearchData = [
     placeholder: 'todepth',
   },
   {
-    id: 5,
+    id: 20,
+    type: 'Input',
+    label: 'top_bedrock',
+    value: 'top_bedrock_from',
+    isNumber: true,
+    inputType: 'number',
+    hasTwoFields: true,
+    isVisibleValue: 'extended.top_bedrock',
+    placeholder: 'fromdepth',
+  },
+  {
+    id: 21,
+    type: 'Input',
+    label: '',
+    value: 'top_bedrock_to',
+    isNumber: true,
+    inputType: 'number',
+    hasTwoFields: true,
+    isVisibleValue: 'extended.top_bedrock',
+    placeholder: 'todepth',
+  },
+  {
+    id: 22,
+    type: 'Input',
+    label: 'top_bedrock_tvd',
+    value: '',
+    isNumber: true,
+    inputType: 'number',
+    hasTwoFields: true,
+    isVisibleValue: 'extended.top_bedrock',
+    placeholder: 'fromdepth',
+  },
+  {
+    id: 23,
+    type: 'Input',
+    label: '',
+    value: '',
+    isNumber: true,
+    inputType: 'number',
+    hasTwoFields: true,
+    isVisibleValue: 'extended.top_bedrock',
+    placeholder: 'todepth',
+  },
+  {
+    id: 24,
     type: 'Dropdown',
     label: 'qt_depth',
     value: '',
@@ -243,17 +264,7 @@ export const boreholeSearchData = [
     // isVisibleValue: 'kind',
   },
   {
-    id: 5,
-    type: 'Dropdown',
-    label: 'qt_top_bedrock',
-    value: '',
-    schema: 'custom.qt_top_bedrock',
-    multiple: false,
-    search: false,
-    // isVisibleValue: 'kind',
-  },
-  {
-    id: 5,
+    id: 25,
     type: 'Dropdown',
     label: 'total_depth_tvd_qt',
     value: '',
@@ -263,7 +274,27 @@ export const boreholeSearchData = [
     // isVisibleValue: 'kind',
   },
   {
-    id: 15,
+    id: 26,
+    type: 'Dropdown',
+    label: 'qt_top_bedrock',
+    value: '',
+    schema: 'custom.qt_top_bedrock',
+    multiple: false,
+    search: false,
+    // isVisibleValue: 'kind',
+  },
+  {
+    id: 27,
+    type: 'Dropdown',
+    label: 'top_bedrock_tvd_qt',
+    value: '',
+    schema: 'custom.qt_top_bedrock',
+    multiple: false,
+    search: false,
+    // isVisibleValue: 'kind',
+  },
+  {
+    id: 28,
     type: 'Radio',
     label: 'groundwater',
     value: 'groundwater',
