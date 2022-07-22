@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   flex: 1 1 100%;
-  padding: 15px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -14,7 +13,7 @@ export const ButtonContainer = styled.div`
   flex: 1 1 5%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   overflow: hidden;
 `;
 

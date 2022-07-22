@@ -17,4 +17,5 @@ export const AttributesItem = styled.div`
 
 export const Label = styled.label`
   font-weight: bold;
+  white-space: nowrap;
 `;
