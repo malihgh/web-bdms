@@ -55,7 +55,6 @@ const ProfileAttributes = props => {
       unconrocks: null,
       debris: [],
       lithology_top_bedrock: [],
-      consistance: null,
       gradation: null,
       lithok: null,
       kirost: null,
