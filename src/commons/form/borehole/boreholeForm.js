@@ -1624,6 +1624,58 @@ class BoreholeForm extends React.Component {
                     </Form.Group>
                     <Form.Group widths="equal">
                       <Form.Field
+                        // error={borehole.extended.top_bedrock_tvd === true}
+                        required>
+                        <label>
+                          <TranslationText id="total_depth_tvd" />
+                        </label>
+                        <Input
+                          autoCapitalize="off"
+                          autoComplete="off"
+                          autoCorrect="off"
+                          onChange={e => {
+                            this.updateNumber(
+                              // 'extended.top_bedrock_tvd',???????????????
+                              e.target.value === '' ? null : e.target.value,
+                            );
+                            // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
+                            //   this.updateChange(
+                            //     'length',
+                            //     e.target.value === '' ?
+                            //       null : _.toNumber(e.target.value)
+                            //   );
+                            // }
+                          }}
+                          spellCheck="false"
+                          // value={
+                          //   _.isNil(borehole.extended.top_bedrock_tvd)
+                          //     ? ''
+                          //     : borehole.extended.top_bedrock_tvd
+                          // }???????????????????????
+                        />
+                      </Form.Field>
+
+                      <Form.Field
+                        // error={mentions.indexOf('qt_top_bedrock') >= 0}
+                        required>
+                        <label>
+                          <TranslationText id="total_depth_tvd_qt" />
+                        </label>
+                        <DomainDropdown
+                          onSelected={selected => {
+                            this.updateChange(
+                              // 'custom.qt_top_bedrock_tvd',???????????????????
+                              selected.id,
+                              false,
+                            );
+                          }}
+                          schema="custom.qt_top_bedrock"
+                          // selected={borehole.custom.qt_top_bedrock_tvd}??????????????????
+                        />
+                      </Form.Field>
+                    </Form.Group>
+                    <Form.Group widths="equal">
+                      <Form.Field
                         error={
                           mentions.indexOf('top_bedrock') >= 0
                           // || _.isNil(borehole.extended.top_bedrock)
@@ -1681,7 +1733,7 @@ class BoreholeForm extends React.Component {
                         // error={borehole.extended.top_bedrock_tvd === true}
                         required>
                         <label>
-                          <TranslationText id="total_depth_tvd" />
+                          <TranslationText id="top_bedrock_tvd" />
                         </label>
                         <Input
                           autoCapitalize="off"
@@ -1713,7 +1765,7 @@ class BoreholeForm extends React.Component {
                         // error={mentions.indexOf('qt_top_bedrock') >= 0}
                         required>
                         <label>
-                          <TranslationText id="total_depth_tvd_qt" />
+                          <TranslationText id="top_bedrock_tvd_qt" />
                         </label>
                         <DomainDropdown
                           onSelected={selected => {
