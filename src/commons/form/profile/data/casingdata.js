@@ -80,6 +80,7 @@ export const casingData = {
       label: 'dateSpudCasing',
       value: 'casing_date_spud',
       isVisible: true,
+      require: true,
     },
     {
       id: 6,
@@ -87,6 +88,7 @@ export const casingData = {
       label: 'dateFinishCasing',
       value: 'casing_date_finish',
       isVisible: true,
+      require: true,
     },
     {
       id: 7,
