@@ -27,7 +27,7 @@ const InfoCheckBox = props => {
               <TranslationText id="mainStratigraphy" />
             )}
             {kind === profileKind.CASING && (
-              <TranslationText id="somethingnew" />
+              <TranslationText id="mainCompletion" />
             )}
           </>
         )}
