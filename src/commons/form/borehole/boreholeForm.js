@@ -1401,7 +1401,8 @@ class BoreholeForm extends React.Component {
                             />
                           </Form.Field>
                           <Form.Field
-                            error={mentions.indexOf('drill_diameter') >= 0}>
+                            error={mentions.indexOf('drill_diameter') >= 0}
+                            required>
                             <label>
                               <TranslationText id="drill_diameter" />
                             </label>
