@@ -327,6 +327,6 @@
   "searchFilterInstrument": "Suchfilter Instrumentierung",
   "searchFilterFilling": "Suchfilter Hinterfüllung",
   "mainCompletion": "Dies ist der Hauptausbau",
-  "ExportDatabase": "Export einer Arbeitsgruppe oder Bohrung in eine gezippte .gpkg-Datei",
-  "ImportDatabase": "Bitte importieren Sie eine gezippte .gpkg-Datei (nur swissforages-Exporte) einer Arbeitsgruppe oder Bohrung."
+  "export_database": "Export einer Arbeitsgruppe oder Bohrung in eine gezippte .gpkg-Datei",
+  "import_database": "Bitte importieren Sie eine gezippte .gpkg-Datei (nur swissforages-Exporte) einer Arbeitsgruppe oder Bohrung."
 }
