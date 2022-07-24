@@ -21,6 +21,7 @@ import TranslationText from '../../commons/form/translationText';
 import SearchFiltersLayers from './searchFiltersLayers';
 import EditorSettingList from './components/editorSettingList/editorSettingList';
 import { boreholeEditorData } from './data/boreholeEditorData';
+import { stratigraphyFilterEditorData } from './data/stratigraphyFilterEditorData';
 
 export const fields = [
   {
@@ -204,7 +205,6 @@ class EditorSettings extends React.Component {
           <EditorSettingList
             attribute={boreholeEditorData}
             setting={setting}
-            t={t}
             toggleFilter={toggleFilter}
           />
         ) : (
@@ -255,9 +255,10 @@ class EditorSettings extends React.Component {
         </div>
 
         {this.state.searchFiltersLayers === true ? (
-          <SearchFiltersLayers
-            layer={setting.data.efilter.layer}
-            toggleFilter={this.props.toggleFilter}
+          <EditorSettingList
+            attribute={stratigraphyFilterEditorData}
+            setting={setting}
+            toggleFilter={toggleFilter}
           />
         ) : (
           <Divider />

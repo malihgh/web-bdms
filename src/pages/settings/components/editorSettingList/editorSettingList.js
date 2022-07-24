@@ -24,6 +24,7 @@ const EditorSettingList = props => {
                 toggleFilter(item.value, d.checked);
               }}
             />
+            {console.log('item.value', setting.data.efilter)}
             <TranslationText id={item.label} />
           </Segment>
         ))}
