@@ -319,5 +319,11 @@
   "workgroup": "workgroup",
   "yes": "Yes",
   "you": "You",
-  "yourcomments": "Your comments"
+  "yourcomments": "Your comments",
+  "country": "Country",
+  "description": "Description",
+  "searchFilterLocation": "Location filters",
+  "searchFilterCasing": "Casing filters",
+  "searchFilterInstrument": "Instrumentation filters",
+  "searchFilterFilling": "Backfill filters"
 }

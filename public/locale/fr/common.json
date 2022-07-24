@@ -319,5 +319,12 @@
   "workgroup": "Groupe de travail",
   "yes": "Oui",
   "you": "Toi",
-  "yourcomments": "Vos commentaires"
+  "yourcomments": "Vos commentaires",
+  "country": "Pays",
+  "description": "Description",
+  "searchFilterLocation": "Filtres par position",
+  "searchFilterCasing": "Filtres par tubage",
+  "searchFilterInstrument": "Filtres par instrumentation",
+  "searchFilterFilling": "Filtres par remplissage",
+  "“mainCompletion” \"Dies ist der Hauptausbau\"": "Questa è l’'installazione principale"
 }

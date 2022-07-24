@@ -319,5 +319,12 @@
   "workgroup": "Gruppo di lavoro",
   "yes": "Sì",
   "you": "Tu",
-  "yourcomments": "Commenti"
+  "yourcomments": "Commenti",
+  "country": "Stato",
+  "description": "Descrizione",
+  "searchFilterLocation": "Filtri specifici alla posizione",
+  "searchFilterCasing": "Filtri specifici alla tubazione",
+  "searchFilterInstrument": "Filtri specifici alla strumentazione",
+  "searchFilterFilling": "Filtri specifici al riempimento",
+  "“mainCompletion” \"Dies ist der Hauptausbau\"": "This is the main completion"
 }

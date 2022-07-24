@@ -319,5 +319,12 @@
   "workgroup": "Arbeitsgruppe",
   "yes": "Ja",
   "you": "Du",
-  "yourcomments": "Ihre Kommentare"
+  "yourcomments": "Ihre Kommentare",
+  "country": "Land",
+  "description": "Beschreibung",
+  "searchFilterLocation": "Suchfilter Standort",
+  "searchFilterCasing": "Suchfilter Verrohrung",
+  "searchFilterInstrument": "Suchfilter Instrumentierung",
+  "searchFilterFilling": "Suchfilter Hinterfüllung",
+  "“mainCompletion” \"Dies ist der Hauptausbau\"": "Ceci est l’aménagement principale"
 }
