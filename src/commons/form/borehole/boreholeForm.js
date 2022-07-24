@@ -1424,7 +1424,10 @@ class BoreholeForm extends React.Component {
                             error={mentions.indexOf('status') >= 0}
                             required>
                             <label>
-                              <TranslationText firstUpperCase id="status" />
+                              <TranslationText
+                                firstUpperCase
+                                id="boreholestatus"
+                              />
                             </label>
                             <DomainDropdown
                               onSelected={selected => {
