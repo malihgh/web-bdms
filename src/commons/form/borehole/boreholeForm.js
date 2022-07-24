@@ -638,9 +638,11 @@ class BoreholeForm extends React.Component {
                     this.state['extended.original_name_fetch'] === false ? (
                       <Message
                         content={
-                          <TranslationText id="original_name" /> +
-                          ', ' +
-                          <TranslationText id="duplicate" />
+                          <div>
+                            <TranslationText id="original_name" />
+                            {', '}
+                            <TranslationText id="duplicate" />
+                          </div>
                         }
                         error
                         size={size}
@@ -694,9 +696,11 @@ class BoreholeForm extends React.Component {
                     this.state['custom.alternate_name_fetch'] === false ? (
                       <Message
                         content={
-                          <TranslationText id="alternate_name" /> +
-                          ', ' +
-                          <TranslationText id="duplicate" />
+                          <div>
+                            <TranslationText id="alternate_name" />
+                            {', '}
+                            <TranslationText id="duplicate" />
+                          </div>
                         }
                         error
                         size={size}
