@@ -236,7 +236,7 @@ class DatabaseSettings extends React.Component {
               margin: '0px',
               textDecoration: 'none',
             }}>
-            Export
+            <TranslationText id="export" />
           </Header>
           <div
             style={{
@@ -311,7 +311,8 @@ class DatabaseSettings extends React.Component {
                 }}
                 primary
                 size="small">
-                Export &nbsp; ({this.countExportableBoreholes()}
+                <TranslationText id="export" /> &nbsp; (
+                {this.countExportableBoreholes()}
                 &nbsp;
                 <TranslationText id="boreholes" />)
               </Button>
