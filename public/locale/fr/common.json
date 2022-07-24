@@ -326,5 +326,7 @@
   "searchFilterCasing": "Filtres par tubage",
   "searchFilterInstrument": "Filtres par instrumentation",
   "searchFilterFilling": "Filtres par remplissage",
-  "mainCompletion": "Ceci est l’aménagement principale"
+  "mainCompletion": "Ceci est l’aménagement principale",
+  "ExportDatabase": "Exporter un groupe de travail ou un forage dans un fichier .gpkg zippé",
+  "ImportDatabase": "Veuillez importer un fichier .gpkg zippé (uniquement sous forme d’exports de swissforages) d'un groupe de travail ou d’un forage."
 }

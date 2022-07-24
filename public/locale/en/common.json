@@ -326,5 +326,7 @@
   "searchFilterCasing": "Casing filters",
   "searchFilterInstrument": "Instrumentation filters",
   "searchFilterFilling": "Backfill filters",
-  "mainCompletion": "This is the main completion"
+  "mainCompletion": "This is the main completion",
+  "ExportDatabase": "Export of a workgroup or borehole in a zipped .gpkg file",
+  "ImportDatabase": "Please import a zipped .gpkg file (swissforages exports only) of a workgroup or borehole."
 }

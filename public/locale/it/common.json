@@ -326,5 +326,7 @@
   "searchFilterCasing": "Filtri specifici alla tubazione",
   "searchFilterInstrument": "Filtri specifici alla strumentazione",
   "searchFilterFilling": "Filtri specifici al riempimento",
-  "mainCompletion": "Questa è l’'installazione principale"
+  "mainCompletion": "Questa è l’'installazione principale",
+  "ExportDatabase": "Esportazione di un gruppo di lavoro o di una perforazione in un file .gpkg zippato",
+  "ImportDatabase": "Per favore importare un file .gpkg zippato (valido unicamente per le esportazioni da swissforages) di un gruppo di lavoro o di una perforazione."
 }
