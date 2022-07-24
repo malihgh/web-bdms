@@ -490,7 +490,11 @@ class BoreholeForm extends React.Component {
                   {this.props.borehole.data.lock !== null ? (
                     <Form autoComplete="off" size="tiny">
                       <Form.Group widths="equal">
-                        <Form.Field error={this.state.identifier === null}>
+                        <Form.Field
+                          error={
+                            this.state.identifier === null &&
+                            borehole?.custom?.identifiers?.length === 0
+                          }>
                           <label>&nbsp;</label>
                           <DomainDropdown
                             // exclude={
@@ -506,7 +510,11 @@ class BoreholeForm extends React.Component {
                             selected={this.state.identifier}
                           />
                         </Form.Field>
-                        <Form.Field error={this.state.identifierValue === ''}>
+                        <Form.Field
+                          error={
+                            this.state.identifierValue === '' &&
+                            borehole?.custom?.identifiers?.length === 0
+                          }>
                           <label>&nbsp;</label>
                           <Input
                             autoCapitalize="off"
