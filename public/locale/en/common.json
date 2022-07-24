@@ -325,5 +325,6 @@
   "searchFilterLocation": "Location filters",
   "searchFilterCasing": "Casing filters",
   "searchFilterInstrument": "Instrumentation filters",
-  "searchFilterFilling": "Backfill filters"
+  "searchFilterFilling": "Backfill filters",
+  "mainCompletion": "This is the main completion"
 }
