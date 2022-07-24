@@ -692,20 +692,6 @@ class BoreholeForm extends React.Component {
                         />
                       </Form.Field> */}
                     </Form.Group>
-                    {this.state['custom.alternate_name_check'] === false &&
-                    this.state['custom.alternate_name_fetch'] === false ? (
-                      <Message
-                        content={
-                          <div>
-                            <TranslationText id="alternate_name" />
-                            {', '}
-                            <TranslationText id="duplicate" />
-                          </div>
-                        }
-                        error
-                        size={size}
-                      />
-                    ) : null}
                   </Form>
                 </Segment>
                 <Segment>
