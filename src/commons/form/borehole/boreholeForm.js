@@ -647,16 +647,7 @@ class BoreholeForm extends React.Component {
                       />
                     ) : null}
                     <Form.Group widths="equal">
-                      <Form.Field
-                        error={
-                          borehole.custom.alternate_name === '' ||
-                          (this.state['custom.alternate_name_check'] ===
-                            false &&
-                            this.state['custom.alternate_name_fetch'] ===
-                              false) ||
-                          mentions.indexOf('alternate_name') >= 0
-                        }
-                        required>
+                      <Form.Field>
                         <label>
                           <TranslationText id="alternate_name" />
                         </label>
