@@ -67,6 +67,7 @@ const ProfileAttributes = props => {
       casing_date_finish: null,
       casing_innder_diameter: null,
       casing_outer_diameter: null,
+      fill_kind: null,
     },
   });
 

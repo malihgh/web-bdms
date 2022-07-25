@@ -25,12 +25,13 @@ const ProfileInfo = props => {
     profileInfo: {
       id: null,
       kind: null,
-      fill_kind: null,
       name: null,
+      fill_casing: null,
       primary: false,
       date: null,
       date_abd: null,
       notes: null,
+      fill_name: null,
     },
   });
 
