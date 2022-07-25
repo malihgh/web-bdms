@@ -277,7 +277,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     dispatch: dispatch,
     setFilter: (key, value) => {
-      console.log('llll', key, value);
       dispatch({
         type: 'SEARCH_EDITOR_FILTER_CHANGED',
         key: key,
