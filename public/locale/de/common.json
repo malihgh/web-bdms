@@ -91,7 +91,7 @@
   "errorHowToResolve": "Wie soll dieser Fehler behoben werden?",
   "errorLocked": "Bohrung durch den {{user}} gesperrt",
   "errorMissingBedrock": "Tiefe Top Fels fehlt",
-  "errorMissingBedrockSolutionv": "Tiefe Top Fels automatisch aus der Bohrdaten-Seite übernehmen",
+  "errorMissingBedrockSolution": "Tiefe Top Fels automatisch aus der Bohrdaten-Seite übernehmen",
   "errorMissingLayer": "Fehlende Schicht",
   "errorMissingLayerSolution": "Bitte Schichten zwischen Geländeoberfläche und Top Fels (unten) ergänzen",
   "errorMoreerror": "{{number}} Fehler gefunden",
