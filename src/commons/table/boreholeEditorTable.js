@@ -323,7 +323,7 @@ class BoreholeEditorTable extends TTable {
           {this.getHeaderLabel('srs', true)*/}
         {this.getHeaderLabel('elevation_z')}
         {this.getHeaderLabel('hrs', true)}
-        {this.getHeaderLabel('drilling_date')}
+        {this.getHeaderLabel('drilling_end_date')}
         {this.getHeaderLabel('boreholestatus')}
         {this.getHeaderLabel('totaldepth')}
       </Table.Row>

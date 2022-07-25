@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
-import { Icon, Form, Radio } from 'semantic-ui-react';
-import StratigraphyFilter from '../components/stratigraphyFilter';
+import { Icon } from 'semantic-ui-react';
 import TranslationText from '../../form/translationText';
 import WorkgroupRadioGroup from '../../form/workgroup/radio';
-import BoreholeFilter from '../components/boreholeFilter';
 import * as Styled from './searchEditorStyles';
-import CompletionFilter from '../components/completionFilter';
+import ListFilter from '../components/listFilter';
 import StatusFilter from '../components/statusFilter';
 import { casingSearchData } from '../data/casingSearchData';
 import { InstrumentSearchData } from '../data/InstrumentSearchData';
 import { fillingSearchData } from '../data/fillingSearchData';
 import { LocationSearchData } from '../data/LocationSearchData';
+import { boreholeSearchData } from '../data/boreholeSearchData';
+import { stratigraphySearchData } from '../data/stratigraphySearchData';
 
 class SearchEditorComponent extends React.Component {
   constructor(props) {
@@ -45,13 +45,13 @@ class SearchEditorComponent extends React.Component {
         {
           id: 3,
           name: 'borehole',
-          translationId: 'searchFiltersBoreholes',
+          translationId: 'borehole',
           isSelected: false,
         },
         {
           id: 4,
           name: 'stratigraphy',
-          translationId: 'searchFiltersLayers',
+          translationId: 'stratigraphy',
           isSelected: false,
         },
         {
@@ -95,8 +95,45 @@ class SearchEditorComponent extends React.Component {
     return false;
   }
 
+  handleButtonSelected() {
+    let selectedData = null;
+    if (
+      this.state?.searchList?.[2]?.name === 'location' &&
+      this.state?.searchList?.[2]?.isSelected
+    ) {
+      selectedData = LocationSearchData;
+    } else if (
+      this.state?.searchList?.[3]?.name === 'borehole' &&
+      this.state?.searchList?.[3]?.isSelected
+    ) {
+      selectedData = boreholeSearchData;
+    } else if (
+      this.state?.searchList?.[4]?.name === 'stratigraphy' &&
+      this.state?.searchList?.[4]?.isSelected
+    ) {
+      selectedData = stratigraphySearchData;
+    } else if (
+      this.state?.searchList?.[5]?.name === 'casing' &&
+      this.state?.searchList?.[5]?.isSelected
+    ) {
+      selectedData = casingSearchData;
+    } else if (
+      this.state?.searchList?.[6]?.name === 'instrument' &&
+      this.state?.searchList?.[6]?.isSelected
+    ) {
+      selectedData = InstrumentSearchData;
+    } else if (
+      this.state?.searchList?.[7]?.name === 'filling' &&
+      this.state?.searchList?.[7]?.isSelected
+    ) {
+      selectedData = fillingSearchData;
+    } else {
+      selectedData = null;
+    }
+    return selectedData;
+  }
   render() {
-    const { search, t, user } = this.props;
+    const { search, user } = this.props;
     return (
       <Styled.Container>
         <Styled.SearchFilterLabel>
@@ -189,90 +226,24 @@ class SearchEditorComponent extends React.Component {
               />
             )}
 
-          {this.state?.searchList?.[2]?.name === 'location' &&
-            this.state?.searchList?.[2]?.isSelected && (
-              <Styled.FormFilterContainer>
-                <CompletionFilter
-                  data={{
-                    id: 1,
-                    isEditable: true,
-                    // onUpdated,
-                    // reloadAttribute,
-                    attribute: LocationSearchData,
-                  }}
-                />
-              </Styled.FormFilterContainer>
-            )}
-          {this.state?.searchList?.[3]?.name === 'borehole' &&
-            this.state?.searchList?.[3]?.isSelected && (
-              <Styled.FormFilterContainer>
-                <BoreholeFilter
-                  onChange={this.props.onChange}
-                  resetBoreInc={this.props.resetBoreInc}
-                  resetBoreIncDir={this.props.resetBoreIncDir}
-                  resetDrillDiameter={this.props.resetDrillDiameter}
-                  resetDrilling={this.props.resetDrilling}
-                  resetElevation={this.props.resetElevation}
-                  resetRestriction={this.props.resetRestriction}
-                  resetTotBedrock={this.props.resetTotBedrock}
-                  search={this.props.search}
-                  setFilter={this.props.setFilter}
-                  settings={this.props.settings.data.efilter}
-                />
-              </Styled.FormFilterContainer>
-            )}
-          {this.state?.searchList?.[4]?.name === 'stratigraphy' &&
-            this.state?.searchList?.[4]?.isSelected && (
-              <Styled.FormFilterContainer>
-                <StratigraphyFilter
-                  search={this.props.search}
-                  settings={this.props.settings.data.efilter}
-                  setFilter={this.props.setFilter}
-                />
-              </Styled.FormFilterContainer>
-            )}
-          {this.state?.searchList?.[5]?.name === 'casing' &&
-            this.state?.searchList?.[5]?.isSelected && (
-              <Styled.FormFilterContainer>
-                <CompletionFilter
-                  data={{
-                    id: 1,
-                    isEditable: true,
-                    // onUpdated,
-                    // reloadAttribute,
-                    attribute: casingSearchData,
-                  }}
-                />
-              </Styled.FormFilterContainer>
-            )}
-          {this.state?.searchList?.[6]?.name === 'instrument' &&
-            this.state?.searchList?.[6]?.isSelected && (
-              <Styled.FormFilterContainer>
-                <CompletionFilter
-                  data={{
-                    id: 1,
-                    isEditable: true,
-                    // onUpdated,
-                    // reloadAttribute,
-                    attribute: InstrumentSearchData,
-                  }}
-                />
-              </Styled.FormFilterContainer>
-            )}
-          {this.state?.searchList?.[7]?.name === 'filling' &&
-            this.state?.searchList?.[7]?.isSelected && (
-              <Styled.FormFilterContainer>
-                <CompletionFilter
-                  data={{
-                    id: 1,
-                    isEditable: true,
-                    // onUpdated,
-                    // reloadAttribute,
-                    attribute: fillingSearchData,
-                  }}
-                />
-              </Styled.FormFilterContainer>
-            )}
+          {this.handleButtonSelected() !== null && (
+            <Styled.FormFilterContainer>
+              <ListFilter
+                attribute={this.handleButtonSelected()}
+                resetBoreInc={this.props.resetBoreInc}
+                resetBoreIncDir={this.props.resetBoreIncDir}
+                resetDrillDiameter={this.props.resetDrillDiameter}
+                resetDrilling={this.props.resetDrilling}
+                resetElevation={this.props.resetElevation}
+                resetIdentifier={this.props.resetIdentifier}
+                resetRestriction={this.props.resetRestriction}
+                resetTotBedrock={this.props.resetTotBedrock}
+                search={this.props.search}
+                setFilter={this.props.setFilter}
+                settings={this.props.settings.data.efilter}
+              />
+            </Styled.FormFilterContainer>
+          )}
         </div>
       </Styled.Container>
     );
@@ -306,6 +277,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     dispatch: dispatch,
     setFilter: (key, value) => {
+      console.log('llll', key, value);
       dispatch({
         type: 'SEARCH_EDITOR_FILTER_CHANGED',
         key: key,

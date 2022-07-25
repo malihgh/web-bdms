@@ -15,7 +15,7 @@ class StatusFilter extends Component {
     return false;
   }
   render() {
-    const { search, t } = this.props;
+    const { search} = this.props;
     return (
       <Form
         size="tiny"

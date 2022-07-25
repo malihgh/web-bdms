@@ -18,7 +18,10 @@ import { patchCodeConfig, patchSettings } from '@ist-supsi/bmsjs';
 
 import IdentifierSettings from './editor/identifierSettings';
 import TranslationText from '../../commons/form/translationText';
-import SearchFiltersLayers from './searchFiltersLayers';
+import EditorSettingList from './components/editorSettingList/editorSettingList';
+import { boreholeEditorData } from './data/boreholeEditorData';
+import { stratigraphyFilterEditorData } from './data/stratigraphyFilterEditorData';
+import { stratigraphyFieldEditorData } from './data/stratigraphyFieldEditorData';
 
 export const fields = [
   {
@@ -199,226 +202,11 @@ class EditorSettings extends React.Component {
           </div>
         </div>
         {this.state.searchFiltersBoreholes === true ? (
-          <Segment.Group>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.custom.borehole_identifier}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.borehole_identifier', d.checked);
-                }}
-              />
-              <TranslationText id="borehole_identifier" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.extended.original_name}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('extended.original_name', d.checked);
-                }}
-              />
-              <TranslationText id="original_name" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.kind}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('kind', d.checked);
-                }}
-              />
-              <TranslationText id="kind" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.extended.method}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('extended.method', d.checked);
-                }}
-              />
-              <TranslationText id="drillingmethod" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.custom.project_name}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.project_name', d.checked);
-                }}
-              />
-              <TranslationText id="project_name" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.restriction}
-                label={t('restriction') + '/' + t('restriction_until')}
-                onChange={(e, d) => {
-                  toggleFilter('restriction', d.checked);
-                }}
-              />
-              <TranslationText id="project_name" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.custom.landuse}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.landuse', d.checked);
-                }}
-              />
-              <TranslationText id="landuse" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.custom.canton}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.canton', d.checked);
-                }}
-              />
-              <TranslationText id="canton" />
-              &nbsp;/&nbsp;
-              <TranslationText id="city" />
-              &nbsp;/&nbsp;
-              <TranslationText id="address" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.elevation_z}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('elevation_z', d.checked);
-                }}
-              />
-              <TranslationText id="elevation_z" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.length}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('length', d.checked);
-                }}
-              />
-              <TranslationText id="totaldepth" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.extended.groundwater}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('extended.groundwater', d.checked);
-                }}
-              />
-              <TranslationText id="groundwater" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.extended.top_bedrock}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('extended.top_bedrock', d.checked);
-                }}
-              />
-              <TranslationText id="top_bedrock" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.extended.status}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('extended.status', d.checked);
-                }}
-              />
-              <TranslationText id="status" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.extended.purpose}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('extended.purpose', d.checked);
-                }}
-              />
-              <TranslationText id="purpose" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.custom.cuttings}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.cuttings', d.checked);
-                }}
-              />
-              <TranslationText id="cuttings" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.drilling_date}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('drilling_date', d.checked);
-                }}
-              />
-              <TranslationText id="drilling_date" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.custom.drill_diameter}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.drill_diameter', d.checked);
-                }}
-              />
-              <TranslationText id="drilldiameter" />
-            </Segment>
-
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.bore_inc}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('bore_inc', d.checked);
-                }}
-              />
-              <TranslationText id="inclination" />
-            </Segment>
-
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.custom.lit_pet_top_bedrock}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.lit_pet_top_bedrock', d.checked);
-                }}
-              />
-              <TranslationText id="lit_pet_top_bedrock" />
-            </Segment>
-
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.custom.lit_str_top_bedrock}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.lit_str_top_bedrock', d.checked);
-                }}
-              />
-              <TranslationText id="lit_str_top_bedrock" />
-            </Segment>
-
-            <Segment>
-              <Checkbox
-                checked={setting.data.efilter.custom.chro_str_top_bedrock}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.chro_str_top_bedrock', d.checked);
-                }}
-              />
-              <TranslationText id="chro_str_top_bedrock" />
-            </Segment>
-          </Segment.Group>
+          <EditorSettingList
+            attribute={boreholeEditorData}
+            setting={setting}
+            toggleFilter={toggleFilter}
+          />
         ) : (
           <Divider />
         )}
@@ -467,9 +255,10 @@ class EditorSettings extends React.Component {
         </div>
 
         {this.state.searchFiltersLayers === true ? (
-          <SearchFiltersLayers
-            layer={setting.data.efilter.layer}
-            toggleFilter={this.props.toggleFilter}
+          <EditorSettingList
+            attribute={stratigraphyFilterEditorData}
+            setting={setting}
+            toggleFilter={toggleFilter}
           />
         ) : (
           <Divider />
@@ -537,8 +326,18 @@ class EditorSettings extends React.Component {
             ) : (
               <Divider />
             )}
+            {this.state.fields === true ? (
+              <EditorSettingList
+                attribute={stratigraphyFieldEditorData}
+                setting={setting}
+                toggleFilter={toggleFilter}
+              />
+            ) : (
+              <Divider />
+            )}
           </div>
         ) : null}
+
         {this.props.user.data.admin === true ? (
           <div>
             <div

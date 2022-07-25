@@ -80,6 +80,7 @@ export const casingData = {
       label: 'dateSpudCasing',
       value: 'casing_date_spud',
       isVisible: true,
+      require: true,
     },
     {
       id: 6,
@@ -87,11 +88,12 @@ export const casingData = {
       label: 'dateFinishCasing',
       value: 'casing_date_finish',
       isVisible: true,
+      require: true,
     },
     {
       id: 7,
       type: 'Input',
-      label: 'Inner diameter (mm)',
+      label: 'casing_inner_diameter',
       value: 'casing_inner_diameter',
       require: true,
       isNumber: true,
@@ -100,7 +102,7 @@ export const casingData = {
     {
       id: 8,
       type: 'Input',
-      label: 'Outer diameter (mm)',
+      label: 'casing_outer_diameter',
       value: 'casing_outer_diameter',
       require: true,
       isNumber: true,
@@ -109,7 +111,7 @@ export const casingData = {
     {
       id: 9,
       type: 'TextArea',
-      label: 'Notes',
+      label: 'layer_notes',
       value: 'notes',
       isNumber: true,
       isVisible: true,

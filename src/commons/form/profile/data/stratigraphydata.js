@@ -63,6 +63,7 @@ export const stratigraphyData = {
       schema: 'qt_description',
       multiple: false,
       search: false,
+      require: true,
     },
     {
       id: 6,
@@ -124,7 +125,7 @@ export const stratigraphyData = {
       label: 'layer_uscs_determination',
       value: 'uscs_determination',
       schema: 'mcla104',
-      multiple: true,
+      multiple: false,
       search: true,
     },
     {
@@ -169,7 +170,7 @@ export const stratigraphyData = {
       label: 'layer_uscs_3',
       value: 'uscs_3',
       schema: 'mcla101',
-      multiple: true,
+      multiple: false,
       search: false,
     },
     {
@@ -214,7 +215,7 @@ export const stratigraphyData = {
       label: 'layer_lithology_top_bedrock',
       value: 'lithology_top_bedrock',
       schema: 'custom.lithology_top_bedrock',
-      multiple: true,
+      multiple: false,
       search: true,
     },
     {
@@ -299,7 +300,7 @@ export const stratigraphyData = {
     {
       id: 30,
       type: 'TextArea',
-      label: 'remarks',
+      label: 'layer_notes',
       value: 'notes',
       isVisible: true,
     },

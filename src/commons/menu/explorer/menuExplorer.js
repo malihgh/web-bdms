@@ -84,7 +84,7 @@ class MenuExplorer extends React.Component {
                       color: '#787878',
                       fontSize: '0.8em',
                     }}>
-                    <TranslationText id="creator" />:
+                    <TranslationText id="createdBy" />:
                   </span>
                   <br />
                   {_.hasIn(detail.borehole, 'author.username')

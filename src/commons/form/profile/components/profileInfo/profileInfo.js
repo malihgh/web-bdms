@@ -13,6 +13,7 @@ const ProfileInfo = props => {
     onUpdated,
     attribute,
     kind,
+    boreholeID,
   } = props.data;
 
   const mounted = useRef(false);
@@ -96,6 +97,7 @@ const ProfileInfo = props => {
             attribute,
             updateChange,
             profileInfo: state.profileInfo,
+            boreholeID,
           }}
         />
       )}

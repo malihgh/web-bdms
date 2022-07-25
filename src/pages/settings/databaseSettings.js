@@ -224,20 +224,23 @@ class DatabaseSettings extends React.Component {
             flexDirection: 'row',
             display: 'flex',
           }}>
-          <Header
-            as="h3"
-            className="link"
-            onClick={() => {
-              this.setState({
-                export: !this.state.export,
-              });
-            }}
-            style={{
-              margin: '0px',
-              textDecoration: 'none',
-            }}>
-            Export
-          </Header>
+          <div>
+            <Header
+              as="h3"
+              className="link"
+              onClick={() => {
+                this.setState({
+                  export: !this.state.export,
+                });
+              }}
+              style={{
+                margin: '0px',
+                textDecoration: 'none',
+              }}>
+              <TranslationText id="export" />
+            </Header>
+            <TranslationText id="export_database" />
+          </div>
           <div
             style={{
               flex: 1,
@@ -311,7 +314,8 @@ class DatabaseSettings extends React.Component {
                 }}
                 primary
                 size="small">
-                Export &nbsp; ({this.countExportableBoreholes()}
+                <TranslationText id="export" /> &nbsp; (
+                {this.countExportableBoreholes()}
                 &nbsp;
                 <TranslationText id="boreholes" />)
               </Button>
@@ -362,20 +366,23 @@ class DatabaseSettings extends React.Component {
             flexDirection: 'row',
             display: 'flex',
           }}>
-          <Header
-            as="h3"
-            className="link"
-            onClick={() => {
-              this.setState({
-                restore: !this.state.restore,
-              });
-            }}
-            style={{
-              margin: '0px',
-              textDecoration: 'none',
-            }}>
-            Import
-          </Header>
+          <div>
+            <Header
+              as="h3"
+              className="link"
+              onClick={() => {
+                this.setState({
+                  restore: !this.state.restore,
+                });
+              }}
+              style={{
+                margin: '0px',
+                textDecoration: 'none',
+              }}>
+              Import
+            </Header>
+            <TranslationText id="import_database" />
+          </div>
           <div
             style={{
               flex: 1,
