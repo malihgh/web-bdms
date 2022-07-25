@@ -120,9 +120,21 @@ const initialState = {
     backfill_depth_to_to: '',
     fill_material: null,
 
-    layer_qt_description: '',
+    layer_qt_description: null,
     layer_uscs_original: '',
     layer_gradation: null,
+
+    spud_date_from: '',
+    spud_date_to: '',
+    qt_inclination_direction: null,
+    total_depth_tvd_from: '',
+    total_depth_tvd_to: '',
+    top_bedrock_tvd_from: '',
+    top_bedrock_tvd_to: '',
+    qt_depth: null,
+    qt_total_depth_tvd: null,
+    qt_top_bedrock: null,
+    qt_top_bedrock_tvd: null,
   },
 };
 
@@ -203,6 +215,12 @@ const searchEditor = (
       const copy = { ...state };
       copy.filter.bore_inc_dir_from = '';
       copy.filter.bore_inc_dir_to = '';
+      return copy;
+    }
+    case 'SEARCH_EDITOR_FILTER_RESET_DEPTH': {
+      const copy = { ...state };
+      copy.filter.length_from = '';
+      copy.filter.length_to = '';
       return copy;
     }
 

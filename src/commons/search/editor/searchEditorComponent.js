@@ -232,6 +232,7 @@ class SearchEditorComponent extends React.Component {
                 attribute={this.handleButtonSelected()}
                 resetBoreInc={this.props.resetBoreInc}
                 resetBoreIncDir={this.props.resetBoreIncDir}
+                resetDepth={this.props.resetDepth}
                 resetDrillDiameter={this.props.resetDrillDiameter}
                 resetDrilling={this.props.resetDrilling}
                 resetElevation={this.props.resetElevation}
@@ -346,6 +347,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch({
         type: 'SEARCH_EDITOR_CREATION_CHANGED',
         date: date,
+      });
+    },
+    resetDepth: () => {
+      dispatch({
+        type: 'SEARCH_EDITOR_FILTER_RESET_DEPTH',
       });
     },
   };

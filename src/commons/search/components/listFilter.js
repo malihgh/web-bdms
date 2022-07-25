@@ -26,6 +26,7 @@ const ListFilter = props => {
     setFilter,
     settings,
     resetIdentifier,
+    resetDepth,
   } = props;
   const { t } = useTranslation();
 
@@ -70,7 +71,7 @@ const ListFilter = props => {
     } else if (item.value === 'elevation_z_to') {
       resetElevation();
     } else if (item.value === 'length_to') {
-      // resetDepth();??????????
+      resetDepth();
     } else if (item.value === 'top_bedrock_to') {
       resetTotBedrock();
     } else if (item.value === 'drilling_date_to') {
@@ -120,6 +121,15 @@ const ListFilter = props => {
     } else if (item.value === 'backfill_depth_to_to') {
       updateChange('backfill_depth_to_from', '', false);
       updateChange('backfill_depth_to_to', '', false);
+    } else if (item.value === 'spud_date_to') {
+      updateChange('spud_date_from', '', false);
+      updateChange('spud_date_to', '', false);
+    } else if (item.value === 'total_depth_tvd_to') {
+      updateChange('total_depth_tvd_from', '', false);
+      updateChange('total_depth_tvd_to', '', false);
+    } else if (item.value === 'top_bedrock_tvd_to') {
+      updateChange('top_bedrock_tvd_from', '', false);
+      updateChange('top_bedrock_tvd_to', '', false);
     }
   };
 
