@@ -39,8 +39,6 @@ const ListFilter = props => {
   };
 
   const updateChange = (attribute, value, to = true, isNumber = false) => {
-    console.log('attribute', attribute, value);
-    // setFilter('layer_depth_from_from', value);
     setFilter(attribute, value);
   };
 
@@ -110,6 +108,12 @@ const ListFilter = props => {
     } else if (item.value === 'casing_outer_diameter_to') {
       updateChange('casing_outer_diameter_from', '', false);
       updateChange('casing_outer_diameter_to', '', false);
+    } else if (item.value === 'instrument_depth_from_to') {
+      updateChange('instrument_depth_from_from', '', false);
+      updateChange('instrument_depth_from_to', '', false);
+    } else if (item.value === 'instrument_depth_to_to') {
+      updateChange('instrument_depth_to_from', '', false);
+      updateChange('instrument_depth_to_to', '', false);
     }
   };
 

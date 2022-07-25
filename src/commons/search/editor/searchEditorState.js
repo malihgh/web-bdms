@@ -89,7 +89,7 @@ const initialState = {
     date_abd_from: null,
     date_abd_to: null,
     casing_id: null,
-    casing_depth_from_from: null,
+    casing_depth_from_from: '',
     casing_depth_from_to: '',
     casing_depth_to_from: '',
     casing_depth_to_to: '',
@@ -103,6 +103,14 @@ const initialState = {
     casing_inner_diameter_to: null,
     casing_outer_diameter_from: null,
     casing_outer_diameter_to: null,
+
+    instrument_depth_from_from: '',
+    instrument_depth_from_to: '',
+    instrument_depth_to_from: '',
+    instrument_depth_to_to: '',
+    instrument_kind: null,
+    instrument_status: null,
+    instrument_id: '',
   },
 };
 
