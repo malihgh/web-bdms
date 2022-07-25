@@ -18,10 +18,10 @@ import { patchCodeConfig, patchSettings } from '@ist-supsi/bmsjs';
 
 import IdentifierSettings from './editor/identifierSettings';
 import TranslationText from '../../commons/form/translationText';
-import SearchFiltersLayers from './searchFiltersLayers';
 import EditorSettingList from './components/editorSettingList/editorSettingList';
 import { boreholeEditorData } from './data/boreholeEditorData';
 import { stratigraphyFilterEditorData } from './data/stratigraphyFilterEditorData';
+import { stratigraphyFieldEditorData } from './data/stratigraphyFieldEditorData';
 
 export const fields = [
   {
@@ -326,8 +326,18 @@ class EditorSettings extends React.Component {
             ) : (
               <Divider />
             )}
+            {this.state.fields === true ? (
+              <EditorSettingList
+                attribute={stratigraphyFieldEditorData}
+                setting={setting}
+                toggleFilter={toggleFilter}
+              />
+            ) : (
+              <Divider />
+            )}
           </div>
         ) : null}
+
         {this.props.user.data.admin === true ? (
           <div>
             <div
