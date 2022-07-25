@@ -49,10 +49,11 @@ export const stratigraphySearchData = [
     id: 5,
     type: 'Dropdown',
     label: 'layer_qt_description',
-    value: '',
+    value: 'layer_qt_description',
     schema: 'qt_description',
     multiple: false,
     search: false,
+    isVisibleValue: 'layer.qt_description',
   },
   {
     id: 6,
@@ -65,7 +66,6 @@ export const stratigraphySearchData = [
       2: 'process',
       3: 'type',
     },
-
     isVisibleValue: 'layer.lithology',
   },
   {
@@ -99,13 +99,13 @@ export const stratigraphySearchData = [
     },
     isVisibleValue: 'layer.chronostratigraphy',
   },
-  // /////??????????????????????
   {
     id: 9,
     type: 'Input',
     label: 'layer_uscs_original',
-    value: '',
+    value: 'layer_uscs_original',
     require: false,
+    isVisibleValue: 'layer.uscs_original',
   },
   {
     id: 10,
@@ -276,15 +276,15 @@ export const stratigraphySearchData = [
     search: false,
     isVisibleValue: 'layer.cohesion',
   },
-  // /////??????????????????????
   {
     id: 27,
     type: 'Dropdown',
     label: 'gradation',
-    value: '',
+    value: 'layer_gradation',
     schema: 'gradation',
     multiple: false,
     search: true,
+    isVisibleValue: 'layer.gradation',
   },
   {
     id: 28,

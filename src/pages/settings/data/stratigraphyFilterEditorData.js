@@ -12,7 +12,7 @@ export const stratigraphyFilterEditorData = [
   {
     id: 2,
     label: 'layer_qt_description',
-    value: '',
+    value: 'layer.qt_description',
   },
   {
     id: 3,
@@ -32,7 +32,7 @@ export const stratigraphyFilterEditorData = [
   {
     id: 6,
     label: 'layer_uscs_original',
-    value: '',
+    value: 'layer.uscs_original',
   },
   {
     id: 7,
@@ -122,7 +122,7 @@ export const stratigraphyFilterEditorData = [
   {
     id: 24,
     label: 'gradation',
-    value: '',
+    value: 'layer.gradation',
   },
   {
     id: 25,

@@ -119,6 +119,10 @@ const initialState = {
     backfill_depth_to_from: '',
     backfill_depth_to_to: '',
     fill_material: null,
+
+    layer_qt_description: '',
+    layer_uscs_original: '',
+    layer_gradation: null,
   },
 };
 
