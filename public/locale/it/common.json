@@ -84,6 +84,7 @@
   "errorAttention": "Attenzione",
   "errorEndPoint": "Per favore aggiungere il punto finale",
   "errorGap": "C'è una lacuna nella sequenza degli strati",
+  "errorGapSolution1": "Riempire la lacuna con uno 'strato non definito'",
   "errorGapSolution2": "Sostituire lo strato superiore con il top dello strato inferiore",
   "errorGapSolution3": "Sostituire il top dello strato inferiore con 0 metri",
   "errorGapSolution4": "Sostituire il top dello strato inferiore con la base dello strato superiore",
@@ -96,6 +97,7 @@
   "errorMoreerror": "{{number}} errori trovati",
   "errorOneerror": "Un errore trovato",
   "errorOverlap": "Sovrapposizione di strati",
+  "errorStartEditing": "Per favore premere il pulsante 'iniziare la modifica'",
   "errorStartWrong": "Il primo strato non inizia dalla riferimento della quota",
   "errorWrongDepth": "Profondità errata",
   "errorWrongDepthSolution1": "La profondità dell'ultimo strato ({{lDepth}}) non coincide con quanto dichiarato nei metadati della perforazione ({{bDepth}}).",
@@ -107,6 +109,7 @@
   "extendupper": "Estendere lo strato superiore verso il basso",
   "facies_description": "Descrizione del facies geologico",
   "filling": "Riempimento",
+  "fill_name": "Nome del riempimento",
   "filterByHierarchicalUnits": "Filtrare per unità (gerarchicamente)",
   "filterbymap": "Filtrare con la mappa",
   "filterByName": "Filtrare per nome",
@@ -324,7 +327,7 @@
   "searchFilterCasing": "Filtri specifici alla tubazione",
   "searchFilterInstrument": "Filtri specifici alla strumentazione",
   "searchFilterFilling": "Filtri specifici al riempimento",
-  "mainCompletion": "Questa è l’'installazione principale",
+  "mainCompletion": "Questa è l'installazione principale",
   "export_database": "Esportazione di un gruppo di lavoro o di una perforazione in un file .gpkg zippato",
   "import_database": "Per favore importare un file .gpkg zippato (valido unicamente per le esportazioni da swissforages) di un gruppo di lavoro o di una perforazione."
 }
