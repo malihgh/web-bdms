@@ -1627,7 +1627,7 @@ class BoreholeForm extends React.Component {
                           autoCorrect="off"
                           onChange={e => {
                             this.updateNumber(
-                              // 'extended.top_bedrock_tvd',???????????????
+                              'total_depth_tvd',
                               e.target.value === '' ? null : e.target.value,
                             );
                             // if (/^-?\d*[.,]?\d*$/.test(e.target.value)){
@@ -1639,11 +1639,11 @@ class BoreholeForm extends React.Component {
                             // }
                           }}
                           spellCheck="false"
-                          // value={
-                          //   _.isNil(borehole.extended.top_bedrock_tvd)
-                          //     ? ''
-                          //     : borehole.extended.top_bedrock_tvd
-                          // }???????????????????????
+                          value={
+                            _.isNil(borehole.total_depth_tvd)
+                              ? ''
+                              : borehole.total_depth_tvd
+                          }
                         />
                       </Form.Field>
 
@@ -1656,13 +1656,13 @@ class BoreholeForm extends React.Component {
                         <DomainDropdown
                           onSelected={selected => {
                             this.updateChange(
-                              // 'custom.qt_top_bedrock_tvd',???????????????????
+                              'qt_total_depth_tvd',
                               selected.id,
                               false,
                             );
                           }}
                           schema="custom.qt_top_bedrock"
-                          // selected={borehole.custom.qt_top_bedrock_tvd}??????????????????
+                          selected={borehole.qt_total_depth_tvd}
                         />
                       </Form.Field>
                     </Form.Group>
