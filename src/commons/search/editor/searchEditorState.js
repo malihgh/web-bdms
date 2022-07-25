@@ -111,6 +111,14 @@ const initialState = {
     instrument_kind: null,
     instrument_status: null,
     instrument_id: '',
+
+    fill_name: '',
+    fill_kind: null,
+    backfill_depth_from_from: '',
+    backfill_depth_from_to: '',
+    backfill_depth_to_from: '',
+    backfill_depth_to_to: '',
+    fill_material: null,
   },
 };
 

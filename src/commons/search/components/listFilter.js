@@ -114,6 +114,12 @@ const ListFilter = props => {
     } else if (item.value === 'instrument_depth_to_to') {
       updateChange('instrument_depth_to_from', '', false);
       updateChange('instrument_depth_to_to', '', false);
+    } else if (item.value === 'backfill_depth_from_to') {
+      updateChange('backfill_depth_from_from', '', false);
+      updateChange('backfill_depth_from_to', '', false);
+    } else if (item.value === 'backfill_depth_to_to') {
+      updateChange('backfill_depth_to_from', '', false);
+      updateChange('backfill_depth_to_to', '', false);
     }
   };
 
