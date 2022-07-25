@@ -15,7 +15,6 @@ const CasingList = props => {
   return (
     <div>
       <Dropdown
-        clearable
         fluid
         onChange={(e, data) => {
           handleCasing(ItemValue, data.value);

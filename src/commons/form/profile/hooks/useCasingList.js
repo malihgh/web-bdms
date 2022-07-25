@@ -5,7 +5,14 @@ import { getProfile } from '../components/profileInstrument/api';
 
 export default function useCasingList(boreholeID) {
   const { t } = useTranslation();
-  const [casing, setCasing] = useState([]);
+  const [casing, setCasing] = useState([
+    {
+      key: 0,
+      value: null,
+      text: t('common:reset'),
+    },
+    { key: 1, value: 0, text: t('common:nocasing') },
+  ]);
 
   const getCasingList = useCallback(() => {
     getProfile(boreholeID, profileKind.CASING).then(response => {
