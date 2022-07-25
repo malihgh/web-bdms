@@ -91,7 +91,7 @@
   "errorHowToResolve": "Comment cette erreur doit-elle est résolue?",
   "errorLocked": "Modification en cours par l'utilisateur {{user}}",
   "errorMissingBedrock": "La profondeur du toit du rocher manque",
-  "errorMissingBedrockSolutionv": "Reprendre automatiquement la profondeur du toit du rocher à partir de la page des données de forage",
+  "errorMissingBedrockSolution": "Reprendre automatiquement la profondeur du toit du rocher à partir de la page des données de forage",
   "errorMissingLayer": "Couche manquante",
   "errorMissingLayerSolution": "Veuillez remplir l'espace entre la surface topographique et le toit du rocher en ajoutant de nouvelles couches",
   "errorMoreerror": "{{number}} erreurs trouvées",

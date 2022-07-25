@@ -90,7 +90,7 @@
   "errorHowToResolve": "Come si può risolvere questo errore?",
   "errorLocked": "Modifica della perforazione in corso da parte di {{user}}",
   "errorMissingBedrock": "Manca la profondità del substrato roccioso",
-  "errorMissingBedrockSolutionv": "Crea automaticamente la profondità del substrato roccioso attingendo dai dati inseriti nella pagina della perforazione",
+  "errorMissingBedrockSolution": "Crea automaticamente la profondità del substrato roccioso attingendo dai dati inseriti nella pagina della perforazione",
   "errorMissingLayer": "Strato mancante",
   "errorMissingLayerSolution": "Per favore riempire la lacuna tra la superficie topografica e il bedrock aggiungendo nuovi strati",
   "errorMoreerror": "{{number}} errori trovati",

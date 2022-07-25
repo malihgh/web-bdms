@@ -90,7 +90,7 @@
   "errorHowToResolve": "How should this isue be resolved?",
   "errorLocked": "Borehole locked by {{user}}",
   "errorMissingBedrock": "Missing top bedrock depth",
-  "errorMissingBedrockSolutionv": "Take the top bedrock depth automatically from the borehole page",
+  "errorMissingBedrockSolution": "Take the top bedrock depth automatically from the borehole page",
   "errorMissingLayer": "Missing layer",
   "errorMissingLayerSolution": "Please fill the space between the terrain and the bedrock below by adding new layers",
   "errorMoreerror": "{{number}} errors found",
