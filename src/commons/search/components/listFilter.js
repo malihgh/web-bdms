@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Styled from './listFilterStyles';
 import { Checkbox, Input, TextArea, Form } from 'semantic-ui-react';
 import TranslationText from '../../form/translationText';
@@ -31,6 +31,10 @@ const ListFilter = props => {
   const { t } = useTranslation();
 
   const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    setShowAll(false);
+  }, [attribute]);
 
   const isVisibleFunction = filter => {
     if (_.get(settings, filter) === true) {

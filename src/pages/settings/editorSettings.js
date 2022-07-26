@@ -2,18 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import _ from 'lodash';
-
-import {
-  Button,
-  Checkbox,
-  Divider,
-  Header,
-  // Input,
-  // Icon,
-  Segment,
-} from 'semantic-ui-react';
-
+import { Button, Divider, Segment } from 'semantic-ui-react';
 import { patchCodeConfig, patchSettings } from '@ist-supsi/bmsjs';
 
 import IdentifierSettings from './editor/identifierSettings';
