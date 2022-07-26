@@ -22,6 +22,7 @@ import EditorSettingList from './components/editorSettingList/editorSettingList'
 import { boreholeEditorData } from './data/boreholeEditorData';
 import { stratigraphyFilterEditorData } from './data/stratigraphyFilterEditorData';
 import { stratigraphyFieldEditorData } from './data/stratigraphyFieldEditorData';
+import { casingEditorData } from './data/casingEditorData';
 
 export const fields = [
   {
@@ -329,6 +330,16 @@ class EditorSettings extends React.Component {
             {this.state.fields === true ? (
               <EditorSettingList
                 attribute={stratigraphyFieldEditorData}
+                setting={setting}
+                toggleFilter={toggleFilter}
+              />
+            ) : (
+              <Divider />
+            )}
+            casinggggggg
+            {this.state.fields === true ? (
+              <EditorSettingList
+                attribute={casingEditorData}
                 setting={setting}
                 toggleFilter={toggleFilter}
               />
