@@ -39,6 +39,20 @@ const ListFilter = props => {
     return false;
   };
 
+  const showCheckbox = () => {
+    let isVisibleCounter = 0;
+
+    for (let i = 0; i < attribute.length; i++) {
+      if (_.get(settings, attribute[i].isVisibleValue) === true) {
+        isVisibleCounter++;
+      }
+    }
+
+    if (isVisibleCounter === attribute.length) {
+      return false;
+    } else return true;
+  };
+
   const updateChange = (attribute, value, to = true, isNumber = false) => {
     setFilter(attribute, value);
   };
@@ -133,17 +147,6 @@ const ListFilter = props => {
     }
   };
 
-  const showCheckbox = () => {
-    let isVisibleCounter = 0;
-    attribute.forEach(item => {
-      if (item.isVisible) {
-        isVisibleCounter++;
-      }
-    });
-    if (isVisibleCounter === attribute.length) {
-      return false;
-    } else return true;
-  };
   return (
     <Styled.Container>
       {showCheckbox() && (
