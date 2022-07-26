@@ -135,7 +135,6 @@ class EditorComponent extends React.Component {
                           this.state.hover !== null ? [this.state.hover.id] : []
                         }
                         hover={id => {
-                          console.log(id);
                           this.setState({
                             maphover: id,
                           });
