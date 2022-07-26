@@ -42,13 +42,13 @@ const ListFilter = props => {
   const showCheckbox = () => {
     let isVisibleCounter = 0;
 
-    for (let i = 0; i < attribute.length; i++) {
-      if (_.get(settings, attribute[i].isVisibleValue) === true) {
+    for (let i = 0; i < attribute?.length; i++) {
+      if (isVisibleFunction(attribute[i]?.isVisibleValue)) {
         isVisibleCounter++;
       }
     }
 
-    if (isVisibleCounter === attribute.length) {
+    if (isVisibleCounter === attribute?.length) {
       return false;
     } else return true;
   };
