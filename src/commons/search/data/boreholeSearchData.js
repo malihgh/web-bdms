@@ -19,7 +19,7 @@ export const boreholeSearchData = [
     schema: 'extended.drilling_method',
     multiple: false,
     search: false,
-    isVisibleValue: 'extended..drilling_method',
+    isVisibleValue: 'extended.method',
   },
   {
     id: 2,
@@ -46,7 +46,7 @@ export const boreholeSearchData = [
     type: 'Date',
     label: 'spud_date',
     value: 'spud_date_from',
-    // isVisibleValue: 'drilling_date',
+    isVisibleValue: 'spud_date',
     hasTwoFields: true,
     placeholder: 'afterdate',
   },
@@ -55,7 +55,7 @@ export const boreholeSearchData = [
     type: 'Date',
     label: '',
     value: 'spud_date_to',
-    // isVisibleValue: 'drilling_date',
+    isVisibleValue: 'spud_date',
     hasTwoFields: true,
     placeholder: 'beforedate',
   },
@@ -163,7 +163,7 @@ export const boreholeSearchData = [
     schema: 'custom.qt_bore_inc_dir',
     multiple: false,
     search: false,
-    // isVisibleValue: 'kind',
+    isVisibleValue: 'qt_bore_inc_dir',
   },
   {
     id: 16,
@@ -195,7 +195,7 @@ export const boreholeSearchData = [
     isNumber: true,
     inputType: 'number',
     hasTwoFields: true,
-    // isVisibleValue: 'length',
+    isVisibleValue: 'total_depth_tvd',
     placeholder: 'fromdepth',
   },
   {
@@ -206,7 +206,7 @@ export const boreholeSearchData = [
     isNumber: true,
     inputType: 'number',
     hasTwoFields: true,
-    // isVisibleValue: 'length',
+    isVisibleValue: 'total_depth_tvd',
     placeholder: 'todepth',
   },
   {
@@ -239,7 +239,7 @@ export const boreholeSearchData = [
     isNumber: true,
     inputType: 'number',
     hasTwoFields: true,
-    isVisibleValue: 'extended.top_bedrock',
+    isVisibleValue: 'extended.top_bedrock_tvd',
     placeholder: 'fromdepth',
   },
   {
@@ -250,7 +250,7 @@ export const boreholeSearchData = [
     isNumber: true,
     inputType: 'number',
     hasTwoFields: true,
-    isVisibleValue: 'extended.top_bedrock',
+    isVisibleValue: 'extended.top_bedrock_tvd',
     placeholder: 'todepth',
   },
   {
@@ -261,7 +261,7 @@ export const boreholeSearchData = [
     schema: 'custom.qt_depth',
     multiple: false,
     search: false,
-    // isVisibleValue: 'kind',
+    isVisibleValue: 'qt_depth',
   },
   {
     id: 25,
@@ -271,7 +271,7 @@ export const boreholeSearchData = [
     schema: 'custom.qt_top_bedrock',
     multiple: false,
     search: false,
-    // isVisibleValue: 'kind',
+    isVisibleValue: 'total_depth_tvd_qt',
   },
   {
     id: 26,
@@ -281,7 +281,7 @@ export const boreholeSearchData = [
     schema: 'custom.qt_top_bedrock',
     multiple: false,
     search: false,
-    // isVisibleValue: 'kind',
+    isVisibleValue: 'qt_top_bedrock',
   },
   {
     id: 27,
@@ -291,7 +291,7 @@ export const boreholeSearchData = [
     schema: 'custom.qt_top_bedrock',
     multiple: false,
     search: false,
-    // isVisibleValue: 'kind',
+    isVisibleValue: 'top_bedrock_tvd_qt',
   },
   {
     id: 28,

@@ -22,7 +22,7 @@ export const boreholeEditorData = [
   {
     id: 4,
     label: 'spud_date',
-    value: '',
+    value: 'spud_date',
   },
   {
     id: 5,
@@ -47,12 +47,12 @@ export const boreholeEditorData = [
   {
     id: 9,
     label: 'inclination_direction',
-    value: '',
+    value: 'bore_inc_dir',
   },
   {
     id: 10,
     label: 'qt_bore_inc_dir',
-    value: '',
+    value: 'qt_bore_inc_dir',
   },
   {
     id: 11,
@@ -62,7 +62,7 @@ export const boreholeEditorData = [
   {
     id: 12,
     label: 'total_depth_tvd',
-    value: '',
+    value: 'total_depth_tvd',
   },
   {
     id: 13,
@@ -72,27 +72,27 @@ export const boreholeEditorData = [
   {
     id: 14,
     label: 'top_bedrock_tvd',
-    value: '',
+    value: 'extended.top_bedrock_tvd',
   },
   {
     id: 15,
     label: 'qt_depth',
-    value: '',
+    value: 'qt_depth',
   },
   {
     id: 16,
     label: 'total_depth_tvd_qt',
-    value: '',
+    value: 'total_depth_tvd_qt',
   },
   {
     id: 17,
     label: 'qt_top_bedrock',
-    value: '',
+    value: 'qt_top_bedrock',
   },
   {
     id: 18,
     label: 'top_bedrock_tvd_qt',
-    value: '',
+    value: 'top_bedrock_tvd_qt',
   },
   {
     id: 19,
