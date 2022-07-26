@@ -54,7 +54,8 @@ const Profile = props => {
       attribute === 'primary' ||
       attribute === 'name' ||
       attribute === 'date' ||
-      attribute === 'cloneStratigraphy'
+      attribute === 'cloneStratigraphy' ||
+      attribute === 'fill_name'
     )
       setReloadHeader(reloadHeader => reloadHeader + 1);
 
