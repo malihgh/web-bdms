@@ -304,35 +304,46 @@ export const boreholeSearchData = [
   },
   {
     id: 29,
-    type: 'Dropdown',
+    type: 'DomainTree',
     label: 'lithology_top_bedrock',
-    // ????,isVisibleValue,search, DomainDropdown or Dropdown????
     value: 'lithology_top_bedrock',
     schema: 'custom.lithology_top_bedrock',
-    multiple: false,
-    search: false,
+    levels: {
+      1: 'rock',
+      2: 'process',
+      3: 'type',
+    },
     isVisibleValue: 'custom.lit_pet_top_bedrock',
   },
   {
     id: 30,
-    type: 'Dropdown',
+    type: 'DomainTree',
     label: 'lithostratigraphy_top_bedrock',
-    // ????,isVisibleValue , search, DomainDropdown or Dropdown????
     value: 'lithostratigraphy_top_bedrock',
     schema: 'custom.lithostratigraphy_top_bedrock',
-    multiple: false,
-    search: false,
+    levels: {
+      1: 'super',
+      2: 'group',
+      3: 'subgroup',
+      4: 'superformation',
+      5: 'formation',
+    },
     isVisibleValue: 'custom.lit_str_top_bedrock',
   },
   {
     id: 31,
-    type: 'Dropdown',
+    type: 'DomainTree',
     label: 'chronostratigraphy_top_bedrock',
-    // ????,isVisibleValue , search, DomainDropdown or Dropdown????
     value: 'chronostratigraphy_top_bedrock',
     schema: 'custom.chronostratigraphy_top_bedrock',
-    multiple: false,
-    search: false,
+    levels: {
+      1: '1st_order_eon',
+      2: '2nd_order_era',
+      3: '3rd_order_period',
+      4: '4th_order_epoch',
+      5: '5th_order_sub_epoch',
+      6: '6th_order_sub_stage',
+    },
     isVisibleValue: 'custom.chro_str_top_bedrock',
   },
 ];
