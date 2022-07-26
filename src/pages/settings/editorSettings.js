@@ -27,101 +27,7 @@ import { locationEditorData } from './data/locationEditorData';
 import { instrumentEditorData } from './data/instrumentEditorData';
 import { fillingEditorData } from './data/fillingEditorData';
 
-export const fields = [
-  {
-    name: 'description',
-  },
-  {
-    name: 'layer_geology',
-  },
-  {
-    name: 'layer_qt_description',
-  },
-  {
-    name: 'layer_lithology',
-  },
-  {
-    name: 'layer_lithostratigraphy',
-  },
-  {
-    name: 'layer_chronostratigraphy',
-  },
-  {
-    name: 'layer_tectonic_unit',
-  },
-  {
-    name: 'layer_color',
-  },
-  {
-    name: 'layer_plasticity',
-  },
-  {
-    name: 'layer_humidity',
-  },
-  {
-    name: 'layer_consistance',
-  },
-  {
-    name: 'layer_alteration',
-  },
-  {
-    name: 'layer_compactness',
-  },
-  // {
-  //   name: 'jointing'
-  // },
-  // {
-  //   name: 'soil_state'
-  // },
-  {
-    name: 'layer_organic_component',
-  },
-  {
-    name: 'layer_striae',
-  },
-  {
-    name: 'layer_grain_size_1',
-  },
-  {
-    name: 'layer_grain_size_2',
-  },
-  {
-    name: 'layer_grain_shape',
-  },
-  {
-    name: 'layer_grain_granularity',
-  },
-  {
-    name: 'layer_cohesion',
-  },
-  {
-    name: 'layer_further_properties',
-  },
-  {
-    name: 'layer_uscs_1',
-  },
-  {
-    name: 'layer_uscs_2',
-  },
-  {
-    name: 'layer_uscs_3',
-  },
-  {
-    name: 'layer_uscs_original',
-  },
-  {
-    name: 'layer_uscs_determination',
-  },
-  {
-    name: 'layer_debris',
-  },
-  {
-    name: 'layer_lithology_top_bedrock',
-  },
-  {
-    name: 'layer_notes',
-  },
-];
+export const fields = [];
 
 class EditorSettings extends React.Component {
   constructor(props) {
@@ -129,31 +35,95 @@ class EditorSettings extends React.Component {
     this.state = {
       fields: false,
       identifiers: false,
-      searchFiltersBoreholes: false,
-      searchFiltersLayers: false,
+      searchList: [
+        {
+          id: 0,
+          name: 'location',
+          translationId: 'searchFilterLocation',
+          isSelected: false,
+        },
+        {
+          id: 1,
+          name: 'borehole',
+          translationId: 'searchFiltersBoreholes',
+          isSelected: false,
+        },
+
+        {
+          id: 2,
+          name: 'stratigraphy',
+          translationId: 'searchFiltersLayers',
+          isSelected: false,
+        },
+        {
+          id: 3,
+          name: 'casing',
+          translationId: 'searchFilterCasing',
+          isSelected: false,
+        },
+        {
+          id: 4,
+          name: 'instrument',
+          translationId: 'searchFilterInstrument',
+          isSelected: false,
+        },
+        {
+          id: 5,
+          name: 'filling',
+          translationId: 'searchFilterFilling',
+          isSelected: false,
+        },
+        {
+          id: 6,
+          name: 'stratigraphyfields',
+          translationId: 'stratigraphyfields',
+          isSelected: false,
+        },
+      ],
     };
   }
-
-  isVisible(field) {
-    const { geocode, codes } = this.props;
-    if (_.has(codes, 'data.layer_kind') && _.isArray(codes.data.layer_kind)) {
-      for (let idx = 0; idx < codes.data.layer_kind.length; idx++) {
-        const element = codes.data.layer_kind[idx];
-        if (element.code === geocode) {
-          if (
-            _.isObject(element.conf) &&
-            _.has(element.conf, `fields.${field}`)
-          ) {
-            return element.conf.fields[field];
-          } else {
-            return false;
-          }
-        }
-      }
+  handleButtonSelected() {
+    let selectedData = null;
+    if (
+      this.state?.searchList?.[0]?.name === 'location' &&
+      this.state?.searchList?.[0]?.isSelected
+    ) {
+      selectedData = locationEditorData;
+    } else if (
+      this.state?.searchList?.[1]?.name === 'borehole' &&
+      this.state?.searchList?.[1]?.isSelected
+    ) {
+      selectedData = boreholeEditorData;
+    } else if (
+      this.state?.searchList?.[2]?.name === 'stratigraphy' &&
+      this.state?.searchList?.[2]?.isSelected
+    ) {
+      selectedData = stratigraphyFilterEditorData;
+    } else if (
+      this.state?.searchList?.[3]?.name === 'casing' &&
+      this.state?.searchList?.[3]?.isSelected
+    ) {
+      selectedData = casingEditorData;
+    } else if (
+      this.state?.searchList?.[4]?.name === 'instrument' &&
+      this.state?.searchList?.[4]?.isSelected
+    ) {
+      selectedData = instrumentEditorData;
+    } else if (
+      this.state?.searchList?.[5]?.name === 'filling' &&
+      this.state?.searchList?.[5]?.isSelected
+    ) {
+      selectedData = fillingEditorData;
+    } else if (
+      this.state?.searchList?.[6]?.name === 'stratigraphyfields' &&
+      this.state?.searchList?.[6]?.isSelected
+    ) {
+      selectedData = stratigraphyFieldEditorData;
+    } else {
+      selectedData = null;
     }
-    return false;
+    return selectedData;
   }
-
   render() {
     const { setting, t, toggleField, toggleFilter } = this.props;
     return (
@@ -162,146 +132,46 @@ class EditorSettings extends React.Component {
           padding: '2em',
           flex: 1,
         }}>
-        {
-          // SEARCH FILTER BOREHOLE
-        }
-        <div
-          style={{
-            flexDirection: 'row',
-            display: 'flex',
-          }}>
-          <Header
-            as="h3"
-            className="link"
-            onClick={() => {
-              this.setState({
-                searchFiltersBoreholes: !this.state.searchFiltersBoreholes,
-              });
-            }}
-            style={{
-              margin: '0px',
-              textDecoration: 'none',
-            }}>
-            <TranslationText id="searchFiltersBoreholes" />
-          </Header>
+        {this.state?.searchList?.map((filter, idx) => (
           <div
-            style={{
-              flex: 1,
-              textAlign: 'right',
-            }}>
-            <Button
-              color="red"
-              onClick={() => {
-                this.setState({
-                  searchFiltersBoreholes: !this.state.searchFiltersBoreholes,
-                });
-              }}
-              size="small">
-              {this.state.searchFiltersBoreholes === true ? (
-                <TranslationText id="collapse" />
-              ) : (
-                <TranslationText id="expand" />
-              )}
-            </Button>
-          </div>
-        </div>
-        {this.state.searchFiltersBoreholes === true ? (
-          <EditorSettingList
-            attribute={boreholeEditorData}
-            setting={setting}
-            toggleFilter={toggleFilter}
-          />
-        ) : (
-          <Divider />
-        )}
-        {
-          // SEARCH FILTER LAYERS
-        }
-        <div
-          style={{
-            flexDirection: 'row',
-            display: 'flex',
-          }}>
-          <Header
-            as="h3"
-            className="link"
+            key={idx}
             onClick={() => {
-              this.setState({
-                searchFiltersLayers: !this.state.searchFiltersLayers,
-              });
-            }}
-            style={{
-              margin: '0px',
-              textDecoration: 'none',
+              this.setState(prevState => ({
+                ...prevState,
+                // update an array of objects:
+                searchList: prevState.searchList.map(
+                  obj =>
+                    obj.id === idx
+                      ? { ...obj, isSelected: !obj.isSelected }
+                      : { ...obj },
+                  // : { ...obj, isSelected: false }, if you want to select only one filter
+                ),
+              }));
             }}>
-            <TranslationText id="searchFiltersLayers" />
-          </Header>
-          <div
-            style={{
-              flex: 1,
-              textAlign: 'right',
-            }}>
-            <Button
-              color="red"
-              onClick={() => {
-                this.setState({
-                  searchFiltersLayers: !this.state.searchFiltersLayers,
-                });
-              }}
-              size="small">
-              {this.state.searchFiltersLayers === true ? (
-                <TranslationText id="collapse" />
-              ) : (
-                <TranslationText id="expand" />
-              )}
-            </Button>
-          </div>
-        </div>
-
-        {this.state.searchFiltersLayers === true ? (
-          <EditorSettingList
-            attribute={stratigraphyFilterEditorData}
-            setting={setting}
-            toggleFilter={toggleFilter}
-          />
-        ) : (
-          <Divider />
-        )}
-        {this.props.user.data.admin === true ? (
-          <div>
             <div
               style={{
                 flexDirection: 'row',
                 display: 'flex',
+                cursor: 'pointer',
+                backgroundColor: filter.isSelected ? '#f5f5f5' : '#fff',
+                padding: 10,
               }}>
-              <Header
-                as="h3"
-                className="link"
-                onClick={() => {
-                  this.setState({
-                    fields: !this.state.fields,
-                  });
-                }}
+              <div
                 style={{
-                  margin: '0px',
-                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: 18,
+                  fontWeight: 'bold',
                 }}>
-                <TranslationText id="stratigraphyfields" />
-              </Header>
+                <TranslationText id={filter.translationId} />
+              </div>
               <div
                 style={{
                   flex: 1,
                   textAlign: 'right',
                 }}>
-                <Button
-                  color="red"
-                  onClick={() => {
-                    this.setState({
-                      fields: !this.state.fields,
-                    });
-                  }}
-                  size="small">
-                  {this.state.fields === true ? (
+                <Button color="red" size="small">
+                  {filter.isSelected === true ? (
                     <TranslationText id="collapse" />
                   ) : (
                     <TranslationText id="expand" />
@@ -309,113 +179,49 @@ class EditorSettings extends React.Component {
                 </Button>
               </div>
             </div>
-            {this.state.fields === true ? (
-              <Segment.Group>
-                {fields.map((field, idx) => (
-                  <Segment key={'bms-es-fds-' + idx}>
-                    <Checkbox
-                      checked={this.isVisible(field.name.replace('layer_', ''))}
-                      label=""
-                      onChange={(e, d) => {
-                        toggleField(
-                          field.name.replace('layer_', ''),
-                          d.checked,
-                        );
-                      }}
-                    />
-                    <TranslationText id={field.name} />
-                  </Segment>
-                ))}
-              </Segment.Group>
-            ) : (
-              <Divider />
-            )}
-            {this.state.fields === true ? (
+            {filter.isSelected === true &&
+            this.handleButtonSelected() !== null ? (
               <EditorSettingList
-                attribute={stratigraphyFieldEditorData}
+                attribute={this.handleButtonSelected()}
                 setting={setting}
                 toggleFilter={toggleFilter}
               />
             ) : (
-              <Divider />
-            )}
-            casinggggggg
-            {this.state.fields === true ? (
-              <EditorSettingList
-                attribute={casingEditorData}
-                setting={setting}
-                toggleFilter={toggleFilter}
-              />
-            ) : (
-              <Divider />
-            )}
-            Locationnnnn
-            {this.state.fields === true ? (
-              <EditorSettingList
-                attribute={locationEditorData}
-                setting={setting}
-                toggleFilter={toggleFilter}
-              />
-            ) : (
-              <Divider />
-            )}
-            Instrumenttttt
-            {this.state.fields === true ? (
-              <EditorSettingList
-                attribute={instrumentEditorData}
-                setting={setting}
-                toggleFilter={toggleFilter}
-              />
-            ) : (
-              <Divider />
-            )}
-            fillinggggg
-            {this.state.fields === true ? (
-              <EditorSettingList
-                attribute={fillingEditorData}
-                setting={setting}
-                toggleFilter={toggleFilter}
-              />
-            ) : (
-              <Divider />
+              <Divider style={{ margin: 0 }} />
             )}
           </div>
-        ) : null}
+        ))}
 
         {this.props.user.data.admin === true ? (
           <div>
             <div
+              onClick={() => {
+                this.setState({
+                  identifiers: !this.state.identifiers,
+                });
+              }}
               style={{
                 flexDirection: 'row',
                 display: 'flex',
+                cursor: 'pointer',
+                backgroundColor: this.state.identifiers ? '#f5f5f5' : '#fff',
+                padding: 10,
               }}>
-              <Header
-                as="h3"
-                className="link"
-                onClick={() => {
-                  this.setState({
-                    identifiers: !this.state.identifiers,
-                  });
-                }}
+              <div
                 style={{
-                  margin: '0px',
-                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: 18,
+                  fontWeight: 'bold',
                 }}>
                 <TranslationText id="identifierManager" />
-              </Header>
+              </div>
               <div
                 style={{
                   flex: 1,
                   textAlign: 'right',
                 }}>
-                <Button
-                  color="red"
-                  onClick={() => {
-                    this.setState({
-                      identifiers: !this.state.identifiers,
-                    });
-                  }}
-                  size="small">
+                <Button color="red" size="small">
                   {this.state.identifiers === true ? (
                     <TranslationText id="collapse" />
                   ) : (
@@ -425,11 +231,11 @@ class EditorSettings extends React.Component {
               </div>
             </div>
             {this.state.identifiers === true ? (
-              <Segment>
+              <Segment style={{ margin: 0 }}>
                 <IdentifierSettings />
               </Segment>
             ) : (
-              <Divider />
+              <Divider style={{ margin: 0 }} />
             )}
           </div>
         ) : null}
