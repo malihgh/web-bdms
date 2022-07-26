@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { profileKind } from '../constance';
 import { useTranslation } from 'react-i18next';
 import { getProfile } from '../components/profileInstrument/api';
@@ -9,7 +9,14 @@ export default function useCasingList(boreholeID) {
     {
       key: 0,
       value: null,
-      text: t('common:reset'),
+      text: (
+        <span
+          style={{
+            color: 'red',
+          }}>
+          {t('common:reset')}
+        </span>
+      ),
     },
     { key: 1, value: 0, text: t('common:nocasing') },
   ]);
