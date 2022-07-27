@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-// import {
-//   Table
-// } from 'semantic-ui-react';
-
 import DomainText from '../../form/domain/domainText';
 import DateText from '../../form/dateText';
 import MunicipalityText from '../../form/municipality/municipalityText';
 import CantonText from '../../form/cantons/cantonText';
 import TranslationText from '../../form/translationText';
-// import FromNowText from '../../form/fromNowText';
 
+// if it's text: this.getTextRow(translationId, data)
+// if it's dropdown :  this.getDomainRow(schema,data,translationId)
+// if it's date : this.getTextRow(translationId, data)
 class MetaComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +19,6 @@ class MetaComponent extends React.Component {
   }
 
   getDomainRow(schema, id, i18n = undefined) {
-    // const { t } = this.props;
     return this.getTextRow(
       _.isUndefined(i18n) ? schema : i18n,
       _.isNil(id) || id === '' ? null : (
@@ -32,8 +29,6 @@ class MetaComponent extends React.Component {
     );
   }
   getDateRow(schema, isodate) {
-    // const { t } = this.props;
-
     return this.getTextRow(
       schema,
       _.isNil(isodate) || isodate === '' ? null : <DateText date={isodate} />,
@@ -213,7 +208,6 @@ class MetaComponent extends React.Component {
               flex: '1 1 100%',
             }}>
             {this.getTextRow('project_name', data.custom.project_name)}
-            {this.getDomainRow('kind', data.kind)}
           </div>
         </div>
 
@@ -253,18 +247,13 @@ class MetaComponent extends React.Component {
             style={{
               flex: '1 1 100%',
             }}>
-            {this.getTextRow('restriction', data.restriction)}
+            {this.getDomainRow('restriction', data.restriction, 'restriction')}
           </div>
           <div
             style={{
               flex: '1 1 100%',
             }}>
-            {data.restriction_until !== null && data.restriction_until !== ''
-              ? this.getTextRow(
-                  'restriction_until',
-                  <DateText date={data.restriction_until} />,
-                )
-              : null}
+            {this.getTextRow('restriction_until', data.restriction_until)}
           </div>
         </div>
 
@@ -281,34 +270,29 @@ class MetaComponent extends React.Component {
               flex: '1 1 100%',
             }}>
             {this.getTextRow(
-              'coordinates',
+              'coordinates????',
               data.location_x + ', ' + data.location_y,
             )}
             {this.getTextRow('elevation_z', data.elevation_z)}
+            {this.getTextRow('reference_elevation', data.reference_elevation)}
+            {this.getDomainRow(
+              'ibor117',
+              data.reference_elevation_type,
+              'reference_elevation_type',
+            )}
           </div>
           <div
             style={{
               flex: '1 1 100%',
             }}>
             {this.getDomainRow('qt_location', data.qt_location)}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-              }}>
-              <div
-                style={{
-                  flex: '1 1 100%',
-                }}>
-                {this.getDomainRow('hrs', data.hrs)}
-              </div>
-              <div
-                style={{
-                  flex: '1 1 100%',
-                }}>
-                {this.getDomainRow('qt_elevation', data.qt_elevation)}
-              </div>
-            </div>
+            {this.getDomainRow('qt_elevation', data.qt_elevation)}
+            {this.getDomainRow(
+              'qt_elevation',
+              data.qt_reference_elevation,
+              'reference_elevation_qt',
+            )}
+            {this.getDomainRow('hrs', data.hrs)}
           </div>
         </div>
 
@@ -324,22 +308,16 @@ class MetaComponent extends React.Component {
             style={{
               flex: '1 1 100%',
             }}>
-            {this.getDomainRow(
-              'custom.landuse',
-              data.custom.landuse,
-              'landuse',
-            )}
-            {this.getTextRow(
-              'city',
-              <MunicipalityText id={data.custom.city} />,
-            )}
+            {this.getTextRow('canton', <CantonText id={data.custom.canton} />)}
           </div>
           <div
             style={{
               flex: '1 1 100%',
             }}>
-            {this.getTextRow('canton', <CantonText id={data.custom.canton} />)}
-            {this.getTextRow('address', data.custom.address)}
+            {this.getTextRow(
+              'city',
+              <MunicipalityText id={data.custom.city} />,
+            )}
           </div>
         </div>
 
@@ -358,16 +336,13 @@ class MetaComponent extends React.Component {
               style={{
                 flex: '1 1 100%',
               }}>
+              {this.getDomainRow('kind', data.kind)}
               {this.getDomainRow(
-                'extended.method',
-                data.extended.method,
-                'method',
+                'extended.purpose',
+                data.extended.purpose,
+                'purpose',
               )}
-              {this.getDomainRow(
-                'custom.cuttings',
-                data.custom.cuttings,
-                'cuttings',
-              )}
+              {this.getTextRow('spud_date', data.spud_date)}
               {this.getTextRow(
                 'drill_diameter',
                 data.custom.drill_diameter !== null
@@ -375,50 +350,46 @@ class MetaComponent extends React.Component {
                   : null,
               )}
               {this.getTextRow(
-                'bore_inc',
-                data.bore_inc !== null ? data.bore_inc + '°' : null,
+                'inclination',
+                data.inclination !== null ? data.inclination + '°' : null,
+              )}
+              {this.getDomainRow(
+                'custom.qt_bore_inc_dir',
+                data.custom.qt_bore_inc_dir,
+                'qt_bore_inc_dir',
               )}
             </div>
             <div
               style={{
                 flex: '1 1 100%',
               }}>
-              {this.getDateRow('drilling_date', data.drilling_date)}
               {this.getDomainRow(
-                'extended.purpose',
-                data.extended.purpose,
-                'purpose',
+                'extended.drilling_method',
+                data.extended.drilling_method,
+                'drilling_method',
               )}
+
+              {this.getDomainRow(
+                'custom.cuttings',
+                data.custom.cuttings,
+                'cuttings',
+              )}
+              {this.getTextRow('drilling_end_date', data.drilling_date)}
               {this.getDomainRow(
                 'extended.status',
                 data.extended.status,
-                'status',
+                'boreholestatus',
               )}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                }}>
-                <div
-                  style={{
-                    flex: '1 1 100%',
-                  }}>
-                  {this.getTextRow(
-                    'bore_inc_dir',
-                    data.bore_inc_dir !== null ? data.bore_inc_dir + '°' : null,
-                  )}
-                </div>
-                <div
-                  style={{
-                    flex: '1 1 100%',
-                  }}>
-                  {this.getDomainRow(
-                    'custom.qt_bore_inc_dir',
-                    data.custom.qt_bore_inc_dir,
-                    'qt_bore_inc_dir',
-                  )}
-                </div>
-              </div>
+              {this.getTextRow(
+                'inclination_direction',
+                data.inclination_direction !== null
+                  ? data.inclination_direction + '°'
+                  : null,
+              )}
+              {this.getTextRow(
+                'remarks',
+                data.custom.remarks !== '' ? data.custom.remarks : '-',
+              )}
             </div>
           </div>
         </div>
@@ -436,13 +407,25 @@ class MetaComponent extends React.Component {
               flex: '1 1 100%',
             }}>
             {this.getTextRow(
-              'length',
-              data.length !== null ? data.length + ' m' : null,
+              'totaldepth',
+              data.total_depth !== null ? data.total_depth + ' m' : null,
+            )}
+            {this.getTextRow(
+              'total_depth_tvd',
+              data.total_depth_tvd !== null
+                ? data.total_depth_tvd + ' m'
+                : null,
             )}
             {this.getTextRow(
               'top_bedrock',
               data.extended.top_bedrock !== null
                 ? data.extended.top_bedrock + ' m'
+                : null,
+            )}
+            {this.getTextRow(
+              'top_bedrock_tvd',
+              data.extended.top_bedrock_tvd !== null
+                ? data.extended.top_bedrock_tvd + ' m'
                 : null,
             )}
             {this.getTextRow(
@@ -452,6 +435,11 @@ class MetaComponent extends React.Component {
               ) : data.extended.groundwater === false ? (
                 <TranslationText id="no" />
               ) : null,
+            )}
+            {this.getDomainRow(
+              'custom.lithostratigraphy_top_bedrock',
+              data.custom.lithostratigraphy_top_bedrock,
+              'lithostratigraphy_top_bedrock',
             )}
           </div>
           <div
@@ -465,27 +453,28 @@ class MetaComponent extends React.Component {
             )}
             {this.getDomainRow(
               'custom.qt_top_bedrock',
+              data.qt_total_depth_tvd,
+              'total_depth_tvd_qt',
+            )}
+            {this.getDomainRow(
+              'custom.qt_top_bedrock',
               data.custom.qt_top_bedrock,
               'qt_top_bedrock',
             )}
-          </div>
-        </div>
-
-        <div
-          style={{
-            // borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
-            display: 'flex',
-            flexDirection: 'row',
-            margin: margin,
-            padding: padding,
-          }}>
-          <div
-            style={{
-              flex: '1 1 100%',
-            }}>
-            {this.getTextRow(
-              'remarks',
-              data.custom.remarks !== '' ? data.custom.remarks : '-',
+            {this.getDomainRow(
+              'custom.qt_top_bedrock',
+              data.custom.qt_top_bedrock_tvd,
+              'top_bedrock_tvd_qt',
+            )}
+            {this.getDomainRow(
+              'custom.lithology_top_bedrock',
+              data.custom.lithology_top_bedrock,
+              'lithology_top_bedrock',
+            )}
+            {this.getDomainRow(
+              'custom.chronostratigraphy_top_bedrock',
+              data.custom.chronostratigraphy_top_bedrock,
+              'chronostratigraphy_top_bedrock',
             )}
           </div>
         </div>
