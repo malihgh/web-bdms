@@ -271,7 +271,9 @@ class LayerForm extends React.Component {
             alignItems: 'center',
             textAlign: 'right',
             whiteSpace: 'nowrap',
+            justifyContent: 'space-between',
           }}>
+          <TranslationText id="showallfields" />
           <Checkbox
             checked={this.state.allfields}
             onChange={(ev, data) => {
@@ -282,7 +284,6 @@ class LayerForm extends React.Component {
             toggle
           />
           &nbsp;
-          <TranslationText id="showallfields" />
         </div>
         <Form autoComplete="off" error size={size}>
           <Form.Field error={this.state.layer.depth_from === null} required>

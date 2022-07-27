@@ -155,12 +155,12 @@ const ListFilter = props => {
     <Styled.Container>
       {showCheckbox() && (
         <Styled.CheckboxContainer>
+          <TranslationText id="showallfields" />
           <Checkbox
             checked={showAll}
             onChange={() => setShowAll(!showAll)}
             toggle
           />
-          <TranslationText id="showallfields" />
         </Styled.CheckboxContainer>
       )}
 
