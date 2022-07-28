@@ -2,22 +2,22 @@ export const locationEditorData = [
   {
     id: 0,
     label: 'borehole_identifier',
-    value: 'borehole_identifier',
+    value: 'custom.borehole_identifier',
   },
   {
     id: 1,
     label: 'original_name',
-    value: 'original_name',
+    value: 'extended.original_name',
   },
   {
     id: 2,
     label: 'project_name',
-    value: 'project_name',
+    value: 'custom.project_name',
   },
   {
     id: 3,
     label: 'alternate_name',
-    value: 'alternate_name',
+    value: 'custom.alternate_name',
   },
   {
     id: 4,
