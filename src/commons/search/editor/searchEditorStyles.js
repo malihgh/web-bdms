@@ -37,7 +37,6 @@ export const FilterButton = styled.div`
 `;
 
 export const FormFilterContainer = styled.div`
-  flex: 1 1 100%;
   padding: 7px;
   padding-right: 15px;
   border: 1px solid #e0e0e0;

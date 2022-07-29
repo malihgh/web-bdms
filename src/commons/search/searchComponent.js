@@ -129,73 +129,77 @@ class SearchComponent extends React.Component {
         <Styled.SearchFilterLabel>
           <TranslationText id={'searchfilters'} />:
         </Styled.SearchFilterLabel>
-        <Form size="tiny">
-          {settings.data.appearance.explorer === 0
-            ? null
-            : [
-                <Form.Field
-                  key="msc-1"
-                  style={{
-                    display:
-                      search.advanced === true || filter.mapfilter === true
-                        ? 'flex'
-                        : 'none',
-                    justifyContent: 'space-between',
-                  }}>
-                  <label>
-                    <TranslationText id="filterbymap" />
-                  </label>
-                  <Checkbox
-                    checked={search.mapfilter}
-                    onChange={(e, d) => {
-                      this.props.setmapfilter(d.checked);
-                    }}
-                    toggle
-                  />
-                </Form.Field>,
-                <Form.Group
-                  key="msc-2"
-                  style={{
-                    display:
-                      search.advanced === true || filter.zoom2selected === true
-                        ? null
-                        : 'none',
-                  }}
-                  widths="equal">
-                  <Form.Field>
-                    <label
-                      style={{
-                        whiteSpace: 'nowrap',
-                      }}>
-                      <TranslationText id="centerselected" />
-                    </label>
-                    <Checkbox
-                      checked={search.center2selected}
-                      onChange={(e, d) => {
-                        this.props.setcenter2filter(d.checked);
-                      }}
-                      toggle
-                    />
-                  </Form.Field>
+        <div style={{ padding: 10 }}>
+          <Form size="tiny">
+            {settings.data.appearance.explorer === 0
+              ? null
+              : [
                   <Form.Field
+                    key="msc-1"
                     style={{
-                      textAlign: 'right',
-                      display: search.center2selected === true ? null : 'none',
+                      display:
+                        search.advanced === true || filter.mapfilter === true
+                          ? 'flex'
+                          : 'none',
+                      justifyContent: 'space-between',
                     }}>
                     <label>
-                      <TranslationText id="andzoom" />
+                      <TranslationText id="filterbymap" />
                     </label>
                     <Checkbox
-                      checked={search.zoom2selected}
+                      checked={search.mapfilter}
                       onChange={(e, d) => {
-                        this.props.setzoom2filter(d.checked);
+                        this.props.setmapfilter(d.checked);
                       }}
                       toggle
                     />
-                  </Form.Field>
-                </Form.Group>,
-              ]}
-        </Form>
+                  </Form.Field>,
+                  <Form.Group
+                    key="msc-2"
+                    style={{
+                      display:
+                        search.advanced === true ||
+                        filter.zoom2selected === true
+                          ? null
+                          : 'none',
+                    }}
+                    widths="equal">
+                    <Form.Field>
+                      <label
+                        style={{
+                          whiteSpace: 'nowrap',
+                        }}>
+                        <TranslationText id="centerselected" />
+                      </label>
+                      <Checkbox
+                        checked={search.center2selected}
+                        onChange={(e, d) => {
+                          this.props.setcenter2filter(d.checked);
+                        }}
+                        toggle
+                      />
+                    </Form.Field>
+                    <Form.Field
+                      style={{
+                        textAlign: 'right',
+                        opacity: !search.center2selected && '0.5',
+                        pointerEvents: !search.center2selected && 'none',
+                      }}>
+                      <label>
+                        <TranslationText id="andzoom" />
+                      </label>
+                      <Checkbox
+                        checked={search.zoom2selected}
+                        onChange={(e, d) => {
+                          this.props.setzoom2filter(d.checked);
+                        }}
+                        toggle
+                      />
+                    </Form.Field>
+                  </Form.Group>,
+                ]}
+          </Form>
+        </div>
         {this.state?.searchList?.map((filter, idx) => (
           <Styled.FilterContainer key={idx}>
             {!filter?.isSelected && (
@@ -269,7 +273,7 @@ class SearchComponent extends React.Component {
               resetTotBedrock={this.props.resetTotBedrock}
               search={this.props.search}
               setFilter={this.props.setFilter}
-              settings={this.props.settings.data.efilter}
+              settings={this.props.settings.data.filter}
             />
           </Styled.FormFilterContainer>
         )}
