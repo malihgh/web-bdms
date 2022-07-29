@@ -165,238 +165,232 @@ const ListFilter = props => {
       )}
 
       {attribute && (
-        <>
-          <Styled.ContainerList>
-            {attribute.map((item, key) => (
-              <Form autoComplete="false" error key={key}>
-                <Styled.AttributesContainer>
-                  {(item.isVisible ||
+        <Styled.ContainerList>
+          {attribute.map((item, key) => (
+            <Form autoComplete="false" error key={key}>
+              <Styled.AttributesContainer>
+                {(item.isVisible ||
+                  isVisibleFunction(item.isVisibleValue) ||
+                  showAll) && (
+                  <Styled.Label>
+                    <TranslationText id={item.label} />
+                  </Styled.Label>
+                )}
+                {item.type === 'Input' &&
+                  (item.isVisible ||
                     isVisibleFunction(item.isVisibleValue) ||
                     showAll) && (
-                    <Styled.Label>
-                      <TranslationText id={item.label} />
-                    </Styled.Label>
+                    <Styled.AttributesItem>
+                      <Input
+                        autoCapitalize="off"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        onChange={e =>
+                          updateChange(
+                            item.value,
+                            // e.target.value === '' ? null : e.target.value,
+                            e.target.value === '' ? '' : e.target.value,
+                            item?.to,
+                            item?.isNumber,
+                          )
+                        }
+                        placeholder={t(item?.placeholder)}
+                        spellCheck="false"
+                        style={{ width: '100%' }}
+                        type={item?.inputType}
+                        value={
+                          _.isNil(search.filter?.[item.value])
+                            ? ''
+                            : search.filter[item.value]
+                        }
+                      />
+                    </Styled.AttributesItem>
                   )}
-                  {item.type === 'Input' &&
-                    (item.isVisible ||
-                      isVisibleFunction(item.isVisibleValue) ||
-                      showAll) && (
-                      <Styled.AttributesItem>
-                        <Input
-                          autoCapitalize="off"
-                          autoComplete="off"
-                          autoCorrect="off"
-                          onChange={e =>
-                            updateChange(
-                              item.value,
-                              // e.target.value === '' ? null : e.target.value,
-                              e.target.value === '' ? '' : e.target.value,
-                              item?.to,
-                              item?.isNumber,
-                            )
-                          }
-                          placeholder={t(item?.placeholder)}
-                          spellCheck="false"
-                          style={{ width: '100%' }}
-                          type={item?.inputType}
-                          value={
-                            _.isNil(search.filter?.[item.value])
-                              ? ''
-                              : search.filter[item.value]
-                          }
-                        />
-                      </Styled.AttributesItem>
-                    )}
 
-                  {item.type === 'TextArea' &&
-                    (item.isVisible ||
-                      isVisibleFunction(item.isVisibleValue) ||
-                      showAll) && (
-                      <Styled.AttributesItem>
-                        <TextArea
-                          onChange={e =>
-                            updateChange(item.value, e.target.value)
-                          }
-                          style={{ width: '100%' }}
-                          value={
-                            _.isNil(search.filter?.[item.value])
-                              ? ''
-                              : search.filter[item.value]
-                          }
-                        />
-                      </Styled.AttributesItem>
-                    )}
-
-                  {item.type === 'Radio' &&
-                    (item.isVisible ||
-                      isVisibleFunction(item.isVisibleValue) ||
-                      showAll) && (
-                      <Form.Group>
-                        <div style={{ display: 'flex', paddingTop: '5px' }}>
-                          {item.hasUnknown && (
-                            <>
-                              <Form.Radio
-                                checked={search.filter?.[item.value] === true}
-                                label={t('yes')}
-                                onChange={() =>
-                                  updateChange(item.value, true, item?.to)
-                                }
-                                style={{
-                                  paddingRight: '10px',
-                                  paddingLeft: '10px',
-                                }}
-                              />
-                              <Form.Radio
-                                checked={search.filter?.[item.value] === false}
-                                label={t('no')}
-                                onChange={() =>
-                                  updateChange(item.value, false, item?.to)
-                                }
-                                style={{ paddingRight: '10px' }}
-                              />
-                              <Form.Radio
-                                checked={search.filter?.[item.value] === null}
-                                label={t('np')}
-                                onChange={() =>
-                                  updateChange(item.value, null, item?.to)
-                                }
-                              />
-                            </>
-                          )}
-                        </div>
-                      </Form.Group>
-                    )}
-
-                  {item.type === 'Dropdown' &&
-                    (item.isVisible ||
-                      isVisibleFunction(item.isVisibleValue) ||
-                      showAll) && (
-                      <Styled.AttributesItem>
-                        <DomainDropdown
-                          multiple={item.multiple}
-                          onSelected={e =>
-                            updateChange(
-                              item.value,
-                              item.multiple ? e.map(mlpr => mlpr.id) : e.id,
-                              false,
-                            )
-                          }
-                          schema={item.schema}
-                          search={item.search}
-                          selected={
-                            _.isNil(search.filter?.[item.value])
-                              ? null
-                              : search.filter[item.value]
-                          }
-                        />
-                      </Styled.AttributesItem>
-                    )}
-
-                  {item.type === 'DomainTree' &&
-                    (item.isVisible ||
-                      isVisibleFunction(item.isVisibleValue) ||
-                      showAll) && (
-                      <Styled.AttributesItem>
-                        <DomainTree
-                          levels={item.levels}
-                          onSelected={e =>
-                            updateChange(item.value, e.id, false)
-                          }
-                          schema={item.schema}
-                          selected={
-                            _.isNil(search.filter?.[item.value])
-                              ? null
-                              : search.filter[item.value]
-                          }
-                          title={<TranslationText id={item.label} />}
-                        />
-                      </Styled.AttributesItem>
-                    )}
-
-                  {item.type === 'Date' &&
-                    (item.isVisible ||
-                      isVisibleFunction(item.isVisibleValue) ||
-                      showAll) && (
-                      <Styled.AttributesItem>
-                        <DateField
-                          date={
-                            search.filter?.[item.value]
-                              ? search.filter[item.value]
-                              : null
-                          }
-                          onChange={selected => {
-                            updateChange(item.value, selected, false);
-                          }}
-                          placeholder={t(item?.placeholder)}
-                        />
-                      </Styled.AttributesItem>
-                    )}
-
-                  {item.type === 'Canton' &&
-                    (item.isVisible ||
-                      isVisibleFunction(item.isVisibleValue) ||
-                      showAll) && (
-                      <Styled.AttributesItem>
-                        <CantonDropdown
-                          onSelected={selected => {
-                            if (search.filter.municipality !== null) {
-                              updateChange('municipality', null, false);
-                            }
-
-                            updateChange(item.value, selected.id, false);
-                          }}
-                          selected={search.filter?.[item.value]}
-                        />
-                      </Styled.AttributesItem>
-                    )}
-
-                  {item.type === 'City' &&
-                    (item.isVisible ||
-                      isVisibleFunction(item.isVisibleValue) ||
-                      showAll) && (
-                      <Styled.AttributesItem>
-                        <MunicipalityDropdown
-                          canton={search.filter.canton}
-                          disabled={search.filter.canton === null}
-                          onSelected={selected => {
-                            updateChange(item.value, selected.id, false);
-                          }}
-                          selected={search.filter?.[item.value]}
-                        />
-                      </Styled.AttributesItem>
-                    )}
-
-                  {(item.isVisible ||
+                {item.type === 'TextArea' &&
+                  (item.isVisible ||
                     isVisibleFunction(item.isVisibleValue) ||
-                    showAll) &&
-                    !item.hasTwoFields && (
-                      <Styled.Reset>
-                        <LabelReset
-                          onClick={() => {
-                            resetChange(item);
-                          }}
-                        />
-                      </Styled.Reset>
-                    )}
+                    showAll) && (
+                    <Styled.AttributesItem>
+                      <TextArea
+                        onChange={e => updateChange(item.value, e.target.value)}
+                        style={{ width: '100%' }}
+                        value={
+                          _.isNil(search.filter?.[item.value])
+                            ? ''
+                            : search.filter[item.value]
+                        }
+                      />
+                    </Styled.AttributesItem>
+                  )}
 
-                  {(item.isVisible ||
+                {item.type === 'Radio' &&
+                  (item.isVisible ||
                     isVisibleFunction(item.isVisibleValue) ||
-                    showAll) &&
-                    item.hasTwoFields &&
-                    item.label === '' && (
-                      <Styled.Reset>
-                        <LabelReset
-                          onClick={() => {
-                            resetTwoFieldsChange(item);
-                          }}
-                        />
-                      </Styled.Reset>
-                    )}
-                </Styled.AttributesContainer>
-              </Form>
-            ))}
-          </Styled.ContainerList>
-        </>
+                    showAll) && (
+                    <Form.Group>
+                      <div style={{ display: 'flex', paddingTop: '5px' }}>
+                        {item.hasUnknown && (
+                          <>
+                            <Form.Radio
+                              checked={search.filter?.[item.value] === true}
+                              label={t('yes')}
+                              onChange={() =>
+                                updateChange(item.value, true, item?.to)
+                              }
+                              style={{
+                                paddingRight: '10px',
+                                paddingLeft: '10px',
+                              }}
+                            />
+                            <Form.Radio
+                              checked={search.filter?.[item.value] === false}
+                              label={t('no')}
+                              onChange={() =>
+                                updateChange(item.value, false, item?.to)
+                              }
+                              style={{ paddingRight: '10px' }}
+                            />
+                            <Form.Radio
+                              checked={search.filter?.[item.value] === null}
+                              label={t('np')}
+                              onChange={() =>
+                                updateChange(item.value, null, item?.to)
+                              }
+                            />
+                          </>
+                        )}
+                      </div>
+                    </Form.Group>
+                  )}
+
+                {item.type === 'Dropdown' &&
+                  (item.isVisible ||
+                    isVisibleFunction(item.isVisibleValue) ||
+                    showAll) && (
+                    <Styled.AttributesItem>
+                      <DomainDropdown
+                        multiple={item.multiple}
+                        onSelected={e =>
+                          updateChange(
+                            item.value,
+                            item.multiple ? e.map(mlpr => mlpr.id) : e.id,
+                            false,
+                          )
+                        }
+                        schema={item.schema}
+                        search={item.search}
+                        selected={
+                          _.isNil(search.filter?.[item.value])
+                            ? null
+                            : search.filter[item.value]
+                        }
+                      />
+                    </Styled.AttributesItem>
+                  )}
+
+                {item.type === 'DomainTree' &&
+                  (item.isVisible ||
+                    isVisibleFunction(item.isVisibleValue) ||
+                    showAll) && (
+                    <Styled.AttributesItem>
+                      <DomainTree
+                        levels={item.levels}
+                        onSelected={e => updateChange(item.value, e.id, false)}
+                        schema={item.schema}
+                        selected={
+                          _.isNil(search.filter?.[item.value])
+                            ? null
+                            : search.filter[item.value]
+                        }
+                        title={<TranslationText id={item.label} />}
+                      />
+                    </Styled.AttributesItem>
+                  )}
+
+                {item.type === 'Date' &&
+                  (item.isVisible ||
+                    isVisibleFunction(item.isVisibleValue) ||
+                    showAll) && (
+                    <Styled.AttributesItem>
+                      <DateField
+                        date={
+                          search.filter?.[item.value]
+                            ? search.filter[item.value]
+                            : null
+                        }
+                        onChange={selected => {
+                          updateChange(item.value, selected, false);
+                        }}
+                        placeholder={t(item?.placeholder)}
+                      />
+                    </Styled.AttributesItem>
+                  )}
+
+                {item.type === 'Canton' &&
+                  (item.isVisible ||
+                    isVisibleFunction(item.isVisibleValue) ||
+                    showAll) && (
+                    <Styled.AttributesItem>
+                      <CantonDropdown
+                        onSelected={selected => {
+                          if (search.filter.municipality !== null) {
+                            updateChange('municipality', null, false);
+                          }
+
+                          updateChange(item.value, selected.id, false);
+                        }}
+                        selected={search.filter?.[item.value]}
+                      />
+                    </Styled.AttributesItem>
+                  )}
+
+                {item.type === 'City' &&
+                  (item.isVisible ||
+                    isVisibleFunction(item.isVisibleValue) ||
+                    showAll) && (
+                    <Styled.AttributesItem>
+                      <MunicipalityDropdown
+                        canton={search.filter.canton}
+                        disabled={search.filter.canton === null}
+                        onSelected={selected => {
+                          updateChange(item.value, selected.id, false);
+                        }}
+                        selected={search.filter?.[item.value]}
+                      />
+                    </Styled.AttributesItem>
+                  )}
+
+                {(item.isVisible ||
+                  isVisibleFunction(item.isVisibleValue) ||
+                  showAll) &&
+                  !item.hasTwoFields && (
+                    <Styled.Reset>
+                      <LabelReset
+                        onClick={() => {
+                          resetChange(item);
+                        }}
+                      />
+                    </Styled.Reset>
+                  )}
+
+                {(item.isVisible ||
+                  isVisibleFunction(item.isVisibleValue) ||
+                  showAll) &&
+                  item.hasTwoFields &&
+                  item.label === '' && (
+                    <Styled.Reset>
+                      <LabelReset
+                        onClick={() => {
+                          resetTwoFieldsChange(item);
+                        }}
+                      />
+                    </Styled.Reset>
+                  )}
+              </Styled.AttributesContainer>
+            </Form>
+          ))}
+        </Styled.ContainerList>
       )}
     </Styled.Container>
   );
