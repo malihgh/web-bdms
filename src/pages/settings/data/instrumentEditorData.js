@@ -21,7 +21,7 @@ export const instrumentEditorData = [
   },
   {
     id: 4,
-    label: 'instrument_status',
+    label: 'status',
     value: 'instrument_status',
   },
 ];
