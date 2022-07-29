@@ -103,7 +103,7 @@ export const stratigraphyFieldEditorData = [
   {
     id: 20,
     label: 'layer_lithology_top_bedrock',
-    value: 'lithology_top_bedrock', //in code lit_pet_deb
+    value: 'lithology_top_bedrock',
   },
   {
     id: 21,
@@ -153,6 +153,6 @@ export const stratigraphyFieldEditorData = [
   {
     id: 30,
     label: 'layer_notes',
-    value: 'notes',
+    value: 'notes', ///is not working
   },
 ];
