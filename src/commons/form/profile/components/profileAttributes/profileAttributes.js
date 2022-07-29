@@ -6,9 +6,14 @@ import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { getData, sendAttribute } from './api';
 import ProfileAttributeList from './components/profileAttributeList/profileAttributeList';
+import { useSelector } from 'react-redux';
 
 const ProfileAttributes = props => {
   const { id, isEditable, onUpdated, attribute, reloadAttribute } = props.data;
+  const { codes, geocode } = useSelector(state => ({
+    codes: state.core_domain_list,
+    geocode: 'Geol',
+  }));
 
   const { t } = useTranslation();
 
@@ -138,14 +143,35 @@ const ProfileAttributes = props => {
     });
   };
 
+  const isVisibleFunction = field => {
+    if (_.has(codes, 'data.layer_kind') && _.isArray(codes.data.layer_kind)) {
+      for (let idx = 0; idx < codes.data.layer_kind.length; idx++) {
+        const element = codes.data.layer_kind[idx];
+        if (element.code === geocode) {
+          if (
+            _.isObject(element.conf) &&
+            _.has(element.conf, `fields.${field}`)
+          ) {
+            return element.conf.fields[field];
+          } else {
+            return false;
+          }
+        }
+      }
+    }
+    return false;
+  };
+
   const showCheckbox = () => {
     let isVisibleCounter = 0;
-    attribute.forEach(item => {
-      if (item.isVisible) {
+
+    for (let i = 0; i < attribute?.length; i++) {
+      if (isVisibleFunction(attribute[i]?.isVisibleValue)) {
         isVisibleCounter++;
       }
-    });
-    if (isVisibleCounter === attribute.length) {
+    }
+
+    if (isVisibleCounter === attribute?.length) {
       return false;
     } else return true;
   };
@@ -164,7 +190,13 @@ const ProfileAttributes = props => {
 
       {attribute && (
         <ProfileAttributeList
-          data={{ attribute, showAll, updateChange, layer: state.layer }}
+          data={{
+            attribute,
+            showAll,
+            updateChange,
+            layer: state.layer,
+            isVisibleFunction,
+          }}
         />
       )}
     </Styled.Container>

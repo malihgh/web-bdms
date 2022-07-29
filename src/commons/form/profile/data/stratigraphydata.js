@@ -20,32 +20,32 @@ export const stratigraphyData = {
       type: 'Input',
       label: 'layer_depth_from',
       value: 'depth_from',
-      isVisible: true,
       require: true,
       isNumber: true,
+      isVisibleValue: '',
     },
     {
       id: 1,
       type: 'Input',
       label: 'layer_depth_to',
       value: 'depth_to',
-      isVisible: true,
       require: true,
       isNumber: true,
-      // ref:createRef(),
+      isVisibleValue: '',
     },
     {
       id: 2,
       type: 'TextArea',
       label: 'lithological_description',
       value: 'lithological_description',
-      isVisible: true,
+      isVisibleValue: '',
     },
     {
       id: 3,
       type: 'TextArea',
       label: 'facies_description',
       value: 'facies_description',
+      isVisibleValue: '',
     },
     {
       id: 4,
@@ -53,7 +53,7 @@ export const stratigraphyData = {
       label: 'layer_last',
       value: 'last',
       to: false,
-      isVisible: true,
+      isVisibleValue: '',
     },
     {
       id: 5,
@@ -64,6 +64,7 @@ export const stratigraphyData = {
       multiple: false,
       search: false,
       require: true,
+      isVisibleValue: 'qt_description',
     },
     {
       id: 6,
@@ -76,8 +77,9 @@ export const stratigraphyData = {
         2: 'process',
         3: 'type',
       },
-      isVisible: true,
+
       require: true,
+      isVisibleValue: 'lithology',
     },
     {
       id: 7,
@@ -92,8 +94,8 @@ export const stratigraphyData = {
         4: 'superformation',
         5: 'formation',
       },
-      isVisible: true,
       require: true,
+      isVisibleValue: 'lithostratigraphy',
     },
     {
       id: 8,
@@ -109,8 +111,8 @@ export const stratigraphyData = {
         5: '5th_order_sub_epoch',
         6: '6th_order_sub_stage',
       },
-      isVisible: true,
       require: false,
+      isVisibleValue: 'chronostratigraphy',
     },
     {
       id: 9,
@@ -118,6 +120,7 @@ export const stratigraphyData = {
       label: 'layer_uscs_original',
       value: 'uscs_original',
       require: false,
+      isVisibleValue: 'uscs_original',
     },
     {
       id: 10,
@@ -127,6 +130,7 @@ export const stratigraphyData = {
       schema: 'mcla104',
       multiple: false,
       search: true,
+      isVisibleValue: 'uscs_determination',
     },
     {
       id: 11,
@@ -136,6 +140,7 @@ export const stratigraphyData = {
       schema: 'mcla101',
       multiple: false,
       search: false,
+      isVisibleValue: 'uscs_1',
     },
     {
       id: 12,
@@ -145,6 +150,7 @@ export const stratigraphyData = {
       schema: 'mlpr109',
       multiple: false,
       search: false,
+      isVisibleValue: 'grain_size_1',
     },
     {
       id: 13,
@@ -154,6 +160,7 @@ export const stratigraphyData = {
       schema: 'mcla101',
       multiple: false,
       search: false,
+      isVisibleValue: 'uscs_2',
     },
     {
       id: 14,
@@ -163,6 +170,7 @@ export const stratigraphyData = {
       schema: 'mlpr109',
       multiple: false,
       search: false,
+      isVisibleValue: 'grain_size_2',
     },
     {
       id: 15,
@@ -172,6 +180,7 @@ export const stratigraphyData = {
       schema: 'mcla101',
       multiple: false,
       search: false,
+      isVisibleValue: 'uscs_3',
     },
     {
       id: 16,
@@ -181,6 +190,7 @@ export const stratigraphyData = {
       schema: 'mlpr110',
       multiple: true,
       search: true,
+      isVisibleValue: 'grain_shape',
     },
     {
       id: 17,
@@ -190,6 +200,7 @@ export const stratigraphyData = {
       schema: 'mlpr115',
       multiple: true,
       search: true,
+      isVisibleValue: 'grain_granularity',
     },
     {
       id: 18,
@@ -199,6 +210,7 @@ export const stratigraphyData = {
       schema: 'mlpr108',
       multiple: true,
       search: true,
+      isVisibleValue: 'organic_component',
     },
     {
       id: 19,
@@ -208,6 +220,7 @@ export const stratigraphyData = {
       schema: 'mcla107',
       multiple: true,
       search: true,
+      isVisibleValue: 'debris',
     },
     {
       id: 20,
@@ -217,6 +230,7 @@ export const stratigraphyData = {
       schema: 'custom.lithology_top_bedrock',
       multiple: false,
       search: true,
+      isVisibleValue: 'lithology_top_bedrock',
     },
     {
       id: 21,
@@ -224,6 +238,7 @@ export const stratigraphyData = {
       label: 'layer_striae',
       value: 'striae',
       to: false,
+      isVisibleValue: 'striae',
     },
     {
       id: 22,
@@ -233,6 +248,7 @@ export const stratigraphyData = {
       schema: 'mlpr112',
       multiple: true,
       search: true,
+      isVisibleValue: 'color',
     },
     {
       id: 23,
@@ -242,6 +258,7 @@ export const stratigraphyData = {
       schema: 'mlpr103',
       multiple: false,
       search: true,
+      isVisibleValue: 'consistance',
     },
     {
       id: 24,
@@ -251,6 +268,7 @@ export const stratigraphyData = {
       schema: 'mlpr101',
       multiple: false,
       search: false,
+      isVisibleValue: 'plasticity',
     },
     {
       id: 25,
@@ -260,6 +278,7 @@ export const stratigraphyData = {
       schema: 'mlpr102',
       multiple: false,
       search: false,
+      isVisibleValue: 'compactness',
     },
     {
       id: 26,
@@ -269,6 +288,7 @@ export const stratigraphyData = {
       schema: 'mlpr116',
       multiple: false,
       search: false,
+      isVisibleValue: 'cohesion',
     },
     {
       id: 27,
@@ -278,6 +298,7 @@ export const stratigraphyData = {
       schema: 'gradation',
       multiple: false,
       search: true,
+      isVisibleValue: '',
     },
     {
       id: 28,
@@ -287,6 +308,7 @@ export const stratigraphyData = {
       schema: 'mlpr105',
       multiple: false,
       search: false,
+      isVisibleValue: 'humidity',
     },
     {
       id: 29,
@@ -296,13 +318,14 @@ export const stratigraphyData = {
       schema: 'mlpr106',
       multiple: false,
       search: false,
+      isVisibleValue: 'alteration',
     },
     {
       id: 30,
       type: 'TextArea',
       label: 'layer_notes',
       value: 'notes',
-      isVisible: true,
+      isVisibleValue: 'notes',
     },
   ],
 };
