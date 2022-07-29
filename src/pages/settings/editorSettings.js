@@ -118,7 +118,7 @@ class EditorSettings extends React.Component {
     return (
       <div
         style={{
-          padding: '2em',
+          padding: '1em',
           flex: 1,
         }}>
         {this.state?.searchList?.map((filter, idx) => (
@@ -171,7 +171,11 @@ class EditorSettings extends React.Component {
             this.handleButtonSelected() !== null ? (
               <EditorSettingList
                 attribute={this.handleButtonSelected()}
+                codes={this.props.codes}
                 data={setting.data.efilter}
+                geocode={this.props.geocode}
+                listName={filter.name}
+                toggleField={toggleField}
                 toggleFilter={toggleFilter}
               />
             ) : (

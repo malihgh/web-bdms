@@ -190,7 +190,7 @@ class ExplorerSettings extends React.Component {
     return (
       <div
         style={{
-          padding: '2em',
+          padding: '1em',
           flex: 1,
         }}>
         <div
@@ -912,7 +912,11 @@ class ExplorerSettings extends React.Component {
             this.handleButtonSelected() !== null ? (
               <EditorSettingList
                 attribute={this.handleButtonSelected()}
+                codes={this.props.codes}
                 data={setting.data.filter}
+                geocode={this.props.geocode}
+                listName={filter.name}
+                toggleField={toggleField}
                 toggleFilter={toggleFilter}
               />
             ) : (
