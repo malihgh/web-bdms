@@ -171,7 +171,7 @@ class EditorSettings extends React.Component {
             this.handleButtonSelected() !== null ? (
               <EditorSettingList
                 attribute={this.handleButtonSelected()}
-                setting={setting}
+                data={setting.data.efilter}
                 toggleFilter={toggleFilter}
               />
             ) : (

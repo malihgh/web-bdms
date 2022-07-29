@@ -912,7 +912,7 @@ class ExplorerSettings extends React.Component {
             this.handleButtonSelected() !== null ? (
               <EditorSettingList
                 attribute={this.handleButtonSelected()}
-                setting={setting}
+                data={setting.data.filter}
                 toggleFilter={toggleFilter}
               />
             ) : (

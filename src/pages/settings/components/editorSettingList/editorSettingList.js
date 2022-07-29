@@ -4,7 +4,7 @@ import { Checkbox, Segment } from 'semantic-ui-react';
 import TranslationText from '../../../../commons/form/translationText';
 
 const EditorSettingList = props => {
-  const { setting, toggleFilter, attribute } = props;
+  const { data, toggleFilter, attribute } = props;
 
   return (
     <Styled.Container>
@@ -13,17 +13,15 @@ const EditorSettingList = props => {
           <Checkbox
             checked={
               item.value.split('.').length > 1
-                ? setting.data.efilter?.[item.value.split('.')[0]]?.[
-                    item.value.split('.')[1]
-                  ]
-                : setting.data.efilter?.[item.value]
+                ? data?.[item.value.split('.')[0]]?.[item.value.split('.')[1]]
+                : data?.[item.value]
             }
             label=""
             onChange={(e, d) => {
               toggleFilter(item.value, d.checked);
             }}
           />
-          {console.log('item.value', setting.data.efilter)}
+          {console.log('item.value', data)}
           <TranslationText id={item.label} />
         </Segment>
       ))}
