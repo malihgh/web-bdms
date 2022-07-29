@@ -9,27 +9,26 @@ import {
   Checkbox,
   Divider,
   Dropdown,
-  Header,
   Input,
   Label,
   Popup,
   Segment,
 } from 'semantic-ui-react';
-
-import {
-  patchSettings,
-  patchCodeConfig,
-  // getWmts,
-  getWms,
-} from '@ist-supsi/bmsjs';
-
+import { patchSettings, patchCodeConfig, getWms } from '@ist-supsi/bmsjs';
 import TranslationText from '../../commons/form/translationText';
-import { fields } from './editorSettings';
 import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
 import { optionsFromCapabilities } from 'ol/source/WMTS';
 import { register } from 'ol/proj/proj4';
 import proj4 from 'proj4';
+import { locationEditorData } from './data/locationEditorData';
+import { boreholeEditorData } from './data/boreholeEditorData';
+import { stratigraphyFilterEditorData } from './data/stratigraphyFilterEditorData';
+import { casingEditorData } from './data/casingEditorData';
+import { instrumentEditorData } from './data/instrumentEditorData';
+import { fillingEditorData } from './data/fillingEditorData';
+import { stratigraphyFieldEditorData } from './data/stratigraphyFieldEditorData';
+import EditorSettingList from './components/editorSettingList/editorSettingList';
 const projections = {
   'EPSG:21781':
     '+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=674.4,15.1,405.3,0,0,0,0 +units=m +no_defs',
@@ -42,8 +41,6 @@ const projections = {
   'EPSG:4150':
     '+proj=longlat +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +no_defs',
 };
-
-// import Scroller from '../../commons/scroller';
 
 class ExplorerSettings extends React.Component {
   constructor(props) {
@@ -69,6 +66,51 @@ class ExplorerSettings extends React.Component {
       searchWms: '',
       searchWmsUser: '',
       wms: null,
+      searchList: [
+        {
+          id: 0,
+          name: 'location',
+          translationId: 'searchFilterLocation',
+          isSelected: false,
+        },
+        {
+          id: 1,
+          name: 'borehole',
+          translationId: 'searchFiltersBoreholes',
+          isSelected: false,
+        },
+
+        {
+          id: 2,
+          name: 'stratigraphy',
+          translationId: 'searchFiltersLayers',
+          isSelected: false,
+        },
+        {
+          id: 3,
+          name: 'casing',
+          translationId: 'searchFilterCasing',
+          isSelected: false,
+        },
+        {
+          id: 4,
+          name: 'instrument',
+          translationId: 'searchFilterInstrument',
+          isSelected: false,
+        },
+        {
+          id: 5,
+          name: 'filling',
+          translationId: 'searchFilterFilling',
+          isSelected: false,
+        },
+        {
+          id: 6,
+          name: 'stratigraphyfields',
+          translationId: 'stratigraphyfields',
+          isSelected: false,
+        },
+      ],
     };
   }
 
@@ -91,6 +133,48 @@ class ExplorerSettings extends React.Component {
     }
     return false;
   }
+  handleButtonSelected() {
+    let selectedData = null;
+    if (
+      this.state?.searchList?.[0]?.name === 'location' &&
+      this.state?.searchList?.[0]?.isSelected
+    ) {
+      selectedData = locationEditorData;
+    } else if (
+      this.state?.searchList?.[1]?.name === 'borehole' &&
+      this.state?.searchList?.[1]?.isSelected
+    ) {
+      selectedData = boreholeEditorData;
+    } else if (
+      this.state?.searchList?.[2]?.name === 'stratigraphy' &&
+      this.state?.searchList?.[2]?.isSelected
+    ) {
+      selectedData = stratigraphyFilterEditorData;
+    } else if (
+      this.state?.searchList?.[3]?.name === 'casing' &&
+      this.state?.searchList?.[3]?.isSelected
+    ) {
+      selectedData = casingEditorData;
+    } else if (
+      this.state?.searchList?.[4]?.name === 'instrument' &&
+      this.state?.searchList?.[4]?.isSelected
+    ) {
+      selectedData = instrumentEditorData;
+    } else if (
+      this.state?.searchList?.[5]?.name === 'filling' &&
+      this.state?.searchList?.[5]?.isSelected
+    ) {
+      selectedData = fillingEditorData;
+    } else if (
+      this.state?.searchList?.[6]?.name === 'stratigraphyfields' &&
+      this.state?.searchList?.[6]?.isSelected
+    ) {
+      selectedData = stratigraphyFieldEditorData;
+    } else {
+      selectedData = null;
+    }
+    return selectedData;
+  }
   render() {
     const {
       addExplorerMap,
@@ -110,37 +194,33 @@ class ExplorerSettings extends React.Component {
           flex: 1,
         }}>
         <div
+          onClick={() => {
+            this.setState({
+              appearance: !this.state.appearance,
+            });
+          }}
           style={{
             flexDirection: 'row',
             display: 'flex',
+            cursor: 'pointer',
+            backgroundColor: this.state.appearance ? '#f5f5f5' : '#fff',
+            padding: 10,
           }}>
-          <Header
-            as="h3"
-            className="link"
-            onClick={() => {
-              this.setState({
-                appearance: !this.state.appearance,
-              });
-            }}
+          <div
             style={{
-              margin: '0px',
-              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              fontSize: 18,
+              fontWeight: 'bold',
             }}>
             <TranslationText id="appearance" />
-          </Header>
+          </div>
           <div
             style={{
               flex: 1,
               textAlign: 'right',
             }}>
-            <Button
-              color="red"
-              onClick={() => {
-                this.setState({
-                  appearance: !this.state.appearance,
-                });
-              }}
-              size="small">
+            <Button color="red" size="small">
               {this.state.appearance === true ? (
                 <TranslationText id="collapse" />
               ) : (
@@ -150,7 +230,7 @@ class ExplorerSettings extends React.Component {
           </div>
         </div>
         {this.state.appearance === true ? (
-          <Segment.Group>
+          <Segment.Group style={{ margin: 0 }}>
             <Segment>
               <div>
                 <Checkbox
@@ -222,40 +302,36 @@ class ExplorerSettings extends React.Component {
             </Segment>
           </Segment.Group>
         ) : (
-          <Divider />
+          <Divider style={{ margin: 0 }} />
         )}
         <div
+          onClick={() => {
+            this.setState({
+              map: !this.state.map,
+            });
+          }}
           style={{
             flexDirection: 'row',
             display: 'flex',
+            cursor: 'pointer',
+            backgroundColor: this.state.map ? '#f5f5f5' : '#fff',
+            padding: 10,
           }}>
-          <Header
-            as="h3"
-            className="link"
-            onClick={() => {
-              this.setState({
-                map: !this.state.map,
-              });
-            }}
+          <div
             style={{
-              margin: '0px',
-              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              fontSize: 18,
+              fontWeight: 'bold',
             }}>
             <TranslationText id="map" />
-          </Header>
+          </div>
           <div
             style={{
               flex: 1,
               textAlign: 'right',
             }}>
-            <Button
-              color="red"
-              onClick={() => {
-                this.setState({
-                  map: !this.state.map,
-                });
-              }}
-              size="small">
+            <Button color="red" size="small">
               {this.state.map === true ? (
                 <TranslationText id="collapse" />
               ) : (
@@ -265,7 +341,7 @@ class ExplorerSettings extends React.Component {
           </div>
         </div>
         {this.state.map === true ? (
-          <Segment.Group>
+          <Segment.Group style={{ margin: 0 }}>
             <Segment>
               <div
                 style={{
@@ -784,652 +860,47 @@ class ExplorerSettings extends React.Component {
             </Segment>
           </Segment.Group>
         ) : (
-          <Divider />
+          <Divider style={{ margin: 0 }} />
         )}
-        {
-          // SEARCH FILTER BOREHOLE
-        }
-        <div
-          style={{
-            flexDirection: 'row',
-            display: 'flex',
-          }}>
-          <Header
-            as="h3"
-            className="link"
-            onClick={() => {
-              this.setState({
-                searchFiltersBoreholes: !this.state.searchFiltersBoreholes,
-              });
-            }}
-            style={{
-              margin: '0px',
-              textDecoration: 'none',
-            }}>
-            <TranslationText id="searchFiltersBoreholes" />
-          </Header>
-          <div
-            style={{
-              flex: 1,
-              textAlign: 'right',
-            }}>
-            <Button
-              color="red"
-              onClick={() => {
-                this.setState({
-                  searchFiltersBoreholes: !this.state.searchFiltersBoreholes,
-                });
-              }}
-              size="small">
-              {this.state.searchFiltersBoreholes === true ? (
-                <TranslationText id="collapse" />
-              ) : (
-                <TranslationText id="expand" />
-              )}
-            </Button>
-          </div>
-        </div>
-        {this.state.searchFiltersBoreholes === true ? (
-          <Segment.Group>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.mapfilter}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('mapfilter', d.checked);
-                }}
-              />
-              <TranslationText id="filterbymap" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.zoom2selected}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('zoom2selected', d.checked);
-                }}
-              />
-              <TranslationText id="centerselected" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.custom.borehole_identifier}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.borehole_identifier', d.checked);
-                }}
-              />
-              <TranslationText id="borehole_identifier" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.kind}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('kind', d.checked);
-                }}
-              />
-              <TranslationText id="kind" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.extended.method}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('extended.method', d.checked);
-                }}
-              />
-              <TranslationText id="drillingmethod" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.custom.project_name}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.project_name', d.checked);
-                }}
-              />
-              <TranslationText id="project_name" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.restriction}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('restriction', d.checked);
-                }}
-              />
-              <TranslationText id="restriction" />
-              &nbsp;/&nbsp;
-              <TranslationText id="restriction_until" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.custom.landuse}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.landuse', d.checked);
-                }}
-              />
-              <TranslationText id="landuse" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.custom.canton}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.canton', d.checked);
-                }}
-              />
-              <TranslationText id="canton" />
-              &nbsp;/&nbsp;
-              <TranslationText id="city" />
-              &nbsp;/&nbsp;
-              <TranslationText id="address" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.elevation_z}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('elevation_z', d.checked);
-                }}
-              />
-              <TranslationText id="elevation_z" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.length}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('length', d.checked);
-                }}
-              />
-              <TranslationText id="totaldepth" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.extended.groundwater}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('extended.groundwater', d.checked);
-                }}
-              />
-              <TranslationText id="groundwater" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.extended.top_bedrock}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('extended.top_bedrock', d.checked);
-                }}
-              />
-              <TranslationText id="top_bedrock" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.extended.status}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('extended.status', d.checked);
-                }}
-              />
-              <TranslationText id="status" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.extended.purpose}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('extended.purpose', d.checked);
-                }}
-              />
-              <TranslationText id="purpose" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.custom.cuttings}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.cuttings', d.checked);
-                }}
-              />
-              <TranslationText id="cuttings" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.drilling_date}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('drilling_date', d.checked);
-                }}
-              />
-              <TranslationText id="drilling_date" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.custom.drill_diameter}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.drill_diameter', d.checked);
-                }}
-              />
-              <TranslationText id="drilldiameter" />
-            </Segment>
-
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.bore_inc}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('bore_inc', d.checked);
-                }}
-              />
-              <TranslationText id="inclination" />
-            </Segment>
-
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.custom.lit_pet_top_bedrock}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.lit_pet_top_bedrock', d.checked);
-                }}
-              />
-              <TranslationText id="lit_pet_top_bedrock" />
-            </Segment>
-
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.custom.lit_str_top_bedrock}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.lit_str_top_bedrock', d.checked);
-                }}
-              />
-              <TranslationText id="lit_str_top_bedrock" />
-            </Segment>
-
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.custom.chro_str_top_bedrock}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('custom.chro_str_top_bedrock', d.checked);
-                }}
-              />
-              <TranslationText id="chro_str_top_bedrock" />
-            </Segment>
-          </Segment.Group>
-        ) : (
-          <Divider />
-        )}
-        {
-          // SEARCH FILTER LAYERS
-        }
-        <div
-          style={{
-            flexDirection: 'row',
-            display: 'flex',
-          }}>
-          <Header
-            as="h3"
-            className="link"
-            onClick={() => {
-              this.setState({
-                searchFiltersLayers: !this.state.searchFiltersLayers,
-              });
-            }}
-            style={{
-              margin: '0px',
-              textDecoration: 'none',
-            }}>
-            <TranslationText id="searchFiltersLayers" />
-          </Header>
-          <div
-            style={{
-              flex: 1,
-              textAlign: 'right',
-            }}>
-            <Button
-              color="red"
-              onClick={() => {
-                this.setState({
-                  searchFiltersLayers: !this.state.searchFiltersLayers,
-                });
-              }}
-              size="small">
-              {this.state.searchFiltersLayers === true ? (
-                <TranslationText id="collapse" />
-              ) : (
-                <TranslationText id="expand" />
-              )}
-            </Button>
-          </div>
-        </div>
-        {this.state.searchFiltersLayers === true ? (
-          <Segment.Group>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.depth}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.depth', d.checked);
-                }}
-              />
-              <TranslationText id="layer_depth" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.depth_from}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.depth_from', d.checked);
-                }}
-              />
-              <TranslationText id="layer_depth_from" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.depth_to}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.depth_to', d.checked);
-                }}
-              />
-              <TranslationText id="layer_depth_to" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.description}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.description', d.checked);
-                }}
-              />
-              <TranslationText id="description" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.geology}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.geology', d.checked);
-                }}
-              />
-              <TranslationText id="layer_geology" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.lithology}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.lithology', d.checked);
-                }}
-              />
-              <TranslationText id="layer_lithology" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.lithostratigraphy}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.lithostratigraphy', d.checked);
-                }}
-              />
-              <TranslationText id="layer_lithostratigraphy" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.chronostratigraphy}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.chronostratigraphy', d.checked);
-                }}
-              />
-              <TranslationText id="layer_chronostratigraphy" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.color}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.color', d.checked);
-                }}
-              />
-              <TranslationText id="layer_color" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.plasticity}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.plasticity', d.checked);
-                }}
-              />
-              <TranslationText id="layer_plasticity" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.humidity}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.humidity', d.checked);
-                }}
-              />
-              <TranslationText id="layer_humidity" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.consistance}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.consistance', d.checked);
-                }}
-              />
-              <TranslationText id="layer_consistance" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.alteration}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.alteration', d.checked);
-                }}
-              />
-              <TranslationText id="layer_alteration" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.compactness}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.compactness', d.checked);
-                }}
-              />
-              <TranslationText id="layer_compactness" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.organic_component}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.organic_component', d.checked);
-                }}
-              />
-              <TranslationText id="layer_organic_component" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.striae}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.striae', d.checked);
-                }}
-              />
-              <TranslationText id="layer_striae" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.grain_size_1}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.grain_size_1', d.checked);
-                }}
-              />
-              <TranslationText id="layer_grain_size_1" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.grain_size_2}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.grain_size_2', d.checked);
-                }}
-              />
-              <TranslationText id="layer_grain_size_2" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.grain_shape}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.grain_shape', d.checked);
-                }}
-              />
-              <TranslationText id="layer_grain_shape" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.grain_granularity}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.grain_granularity', d.checked);
-                }}
-              />
-              <TranslationText id="layer_grain_granularity" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.cohesion}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.cohesion', d.checked);
-                }}
-              />
-              <TranslationText id="layer_cohesion" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.further_properties}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.further_properties', d.checked);
-                }}
-              />
-              <TranslationText id="layer_further_properties" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.uscs_1}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.uscs_1', d.checked);
-                }}
-              />
-              <TranslationText id="layer_uscs_1" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.uscs_3}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.uscs_3', d.checked);
-                }}
-              />
-              <TranslationText id="layer_uscs_3" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.uscs_determination}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.uscs_determination', d.checked);
-                }}
-              />
-              <TranslationText id="layer_uscs_determination" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.debris}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.debris', d.checked);
-                }}
-              />
-              <TranslationText id="layer_debris" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.lithology_top_bedrock}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.lithology_top_bedrock', d.checked);
-                }}
-              />
-              <TranslationText id="layer_lithology_top_bedrock" />
-            </Segment>
-            <Segment>
-              <Checkbox
-                checked={setting.data.filter.layer.lithology_top_bedrock}
-                label=""
-                onChange={(e, d) => {
-                  toggleFilter('layer.lithology_top_bedrock', d.checked);
-                }}
-              />
-              <TranslationText id="layer_lithology_top_bedrock" />
-            </Segment>
-          </Segment.Group>
-        ) : (
-          <Divider />
-        )}
-
-        {this.props.user.data.admin === true ? (
-          <div>
+        {this.state?.searchList?.map((filter, idx) => (
+          <div key={idx}>
             <div
               style={{
                 flexDirection: 'row',
                 display: 'flex',
+                cursor: 'pointer',
+                backgroundColor: filter.isSelected ? '#f5f5f5' : '#fff',
+                padding: 10,
               }}>
-              <Header
-                as="h3"
-                className="link"
-                onClick={() => {
-                  this.setState({
-                    fields: !this.state.fields,
-                  });
-                }}
+              <div
                 style={{
-                  margin: '0px',
-                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                }}
+                onClick={() => {
+                  this.setState(prevState => ({
+                    ...prevState,
+                    // update an array of objects:
+                    searchList: prevState.searchList.map(
+                      obj =>
+                        obj.id === idx
+                          ? { ...obj, isSelected: !obj.isSelected }
+                          : { ...obj },
+                      // : { ...obj, isSelected: false }, if you want to select only one filter
+                    ),
+                  }));
                 }}>
-                <TranslationText id="stratigraphyfields" />
-              </Header>
+                <TranslationText id={filter.translationId} />
+              </div>
               <div
                 style={{
                   flex: 1,
                   textAlign: 'right',
                 }}>
-                <Button
-                  color="red"
-                  onClick={() => {
-                    this.setState({
-                      fields: !this.state.fields,
-                    });
-                  }}
-                  size="small">
-                  {this.state.fields === true ? (
+                <Button color="red" size="small">
+                  {filter.isSelected === true ? (
                     <TranslationText id="collapse" />
                   ) : (
                     <TranslationText id="expand" />
@@ -1437,29 +908,18 @@ class ExplorerSettings extends React.Component {
                 </Button>
               </div>
             </div>
-            {this.state.fields === true ? (
-              <Segment.Group>
-                {fields.map((field, idx) => (
-                  <Segment key={'bms-es-fds-' + idx}>
-                    <Checkbox
-                      checked={this.isVisible(field.name.replace('layer_', ''))}
-                      label=""
-                      onChange={(e, d) => {
-                        toggleField(
-                          field.name.replace('layer_', ''),
-                          d.checked,
-                        );
-                      }}
-                    />
-                    <TranslationText id={field.name} />
-                  </Segment>
-                ))}
-              </Segment.Group>
+            {filter.isSelected === true &&
+            this.handleButtonSelected() !== null ? (
+              <EditorSettingList
+                attribute={this.handleButtonSelected()}
+                setting={setting}
+                toggleFilter={toggleFilter}
+              />
             ) : (
-              <Divider />
+              <Divider style={{ margin: 0 }} />
             )}
           </div>
-        ) : null}
+        ))}
       </div>
     );
   }
