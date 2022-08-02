@@ -6,7 +6,6 @@ import { withTranslation } from 'react-i18next';
 import {
   Button,
   Divider,
-  Header,
   Message,
   Icon,
   Segment,
