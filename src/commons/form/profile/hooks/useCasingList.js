@@ -25,22 +25,16 @@ export default function useCasingList(boreholeID) {
     getProfile(boreholeID, profileKind.CASING).then(response => {
       if (response.length > 0) {
         for (const e of response) {
-          setCasing(prevState => {
-            return [
-              ...prevState,
-              {
-                key: e.id,
-                value: e.id,
-                text:
-                  e.name === null || e.name === '' ? t('common:np') : e.name,
-              },
-            ];
+          casing.push({
+            key: e.id,
+            value: e.id,
+            text: e.name === null || e.name === '' ? t('common:np') : e.name,
           });
         }
       } else {
         setCasing([]);
       }
     });
-  }, [boreholeID, t]);
+  }, [boreholeID, t, casing]);
   return { casing, getCasingList };
 }
