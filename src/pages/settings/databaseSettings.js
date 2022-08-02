@@ -85,8 +85,6 @@ class DatabaseSettings extends React.Component {
           if (r.data.success === true) {
             const status = r.data.data.status;
 
-            console.log('STATUS: ' + status);
-
             // No exports have been done so far
             if (status === 'empty') {
               this.setState(
