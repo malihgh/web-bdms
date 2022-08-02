@@ -115,7 +115,7 @@ class MetaComponent extends React.Component {
       const pubblication = data.pubblications[index];
       if (pubblication.finished) {
         ret.push(
-          <div>
+          <div key={index}>
             {ret.length === 0 ? (
               <div
                 style={{
