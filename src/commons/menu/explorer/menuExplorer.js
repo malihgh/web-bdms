@@ -7,6 +7,7 @@ import { Button, Header, Icon, Menu, Segment } from 'semantic-ui-react';
 import DateText from '../../form/dateText';
 import SearchComponent from '../../search/searchComponent';
 import TranslationText from '../../form/translationText';
+let isMounted = true;
 
 class MenuExplorer extends React.Component {
   constructor(props) {
@@ -16,13 +17,15 @@ class MenuExplorer extends React.Component {
       scroller: false,
     };
   }
-
   componentDidMount() {
-    this.updateDimensions();
-    window.addEventListener('resize', this.updateDimensions.bind(this));
+    if (isMounted) {
+      this.updateDimensions();
+      window.addEventListener('resize', this.updateDimensions.bind(this));
+    }
   }
 
   componentWillUnmount() {
+    isMounted = false;
     window.removeEventListener('resize', this.updateDimensions.bind(this));
   }
 

@@ -19,6 +19,7 @@ import {
 import { createBorehole, importBoreholeList } from '@ist-supsi/bmsjs';
 
 import SearchEditorComponent from '../../search/editor/searchEditorComponent';
+let isMounted = true;
 
 class MenuEditorSearch extends React.Component {
   constructor(props) {
@@ -43,11 +44,14 @@ class MenuEditorSearch extends React.Component {
   }
 
   componentDidMount() {
-    this.updateDimensions();
-    window.addEventListener('resize', this.updateDimensions.bind(this));
+    if (isMounted) {
+      this.updateDimensions();
+      window.addEventListener('resize', this.updateDimensions.bind(this));
+    }
   }
 
   componentWillUnmount() {
+    isMounted = false;
     window.removeEventListener('resize', this.updateDimensions.bind(this));
   }
 
