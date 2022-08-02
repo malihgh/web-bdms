@@ -526,7 +526,7 @@ class BoreholeForm extends React.Component {
                               });
                             }}
                             spellCheck="false"
-                            value={this.state.identifierValue}
+                            value={this.state.identifierValue ?? ''}
                           />
                         </Form.Field>
                         <div
@@ -620,7 +620,7 @@ class BoreholeForm extends React.Component {
                             );
                           }}
                           spellCheck="false"
-                          value={borehole.extended.original_name}
+                          value={borehole.extended.original_name ?? ''}
                         />
                       </Form.Field>
                       <Form.Field error={mentions.indexOf('project_name') >= 0}>
@@ -638,7 +638,7 @@ class BoreholeForm extends React.Component {
                             );
                           }}
                           spellCheck="false"
-                          value={borehole.custom.project_name}
+                          value={borehole.custom.project_name ?? ''}
                         />
                       </Form.Field>
                     </Form.Group>
@@ -678,7 +678,7 @@ class BoreholeForm extends React.Component {
                             this.check('custom.alternate_name', e.target.value);
                           }}
                           spellCheck="false"
-                          value={borehole.custom.alternate_name}
+                          value={borehole.custom.alternate_name ?? ''}
                         />
                       </Form.Field>
                       {/* drilling type in Location */}
@@ -1091,7 +1091,7 @@ class BoreholeForm extends React.Component {
                               value={
                                 this.props.cantons.filter(
                                   e => e.id === borehole.custom.canton,
-                                )?.[0]?.name
+                                )?.[0]?.name ?? ''
                               }
                             />
                           </Form.Field>
@@ -1161,7 +1161,7 @@ class BoreholeForm extends React.Component {
                                   )
                                   ?.filter(
                                     e => e.id === borehole.custom.city,
-                                  )?.[0]?.name
+                                  )?.[0]?.name ?? ''
                               }
                             />
                           </Form.Field>
