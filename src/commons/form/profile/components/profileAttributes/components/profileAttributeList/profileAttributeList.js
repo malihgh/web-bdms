@@ -18,13 +18,17 @@ const ProfileAttributeList = props => {
       {attribute.map((item, key) => (
         <Form autoComplete="false" error key={key}>
           <Styled.AttributesContainer required={item.require}>
-            {(isVisibleFunction(item.isVisibleValue) || showAll) && (
+            {(item.isVisible ||
+              isVisibleFunction(item.isVisibleValue) ||
+              showAll) && (
               <Styled.Label>
                 <TranslationText id={item.label} />
               </Styled.Label>
             )}
             {item.type === 'Input' &&
-              (isVisibleFunction(item.isVisibleValue) || showAll) && (
+              (item.isVisible ||
+                isVisibleFunction(item.isVisibleValue) ||
+                showAll) && (
                 <Styled.AttributesItem>
                   <Input
                     autoCapitalize="off"
@@ -48,7 +52,9 @@ const ProfileAttributeList = props => {
               )}
 
             {item.type === 'TextArea' &&
-              (isVisibleFunction(item.isVisibleValue) || showAll) && (
+              (item.isVisible ||
+                isVisibleFunction(item.isVisibleValue) ||
+                showAll) && (
                 <Styled.AttributesItem>
                   <TextArea
                     onChange={e => updateChange(item.value, e.target.value)}
@@ -61,7 +67,9 @@ const ProfileAttributeList = props => {
               )}
 
             {item.type === 'Radio' &&
-              (isVisibleFunction(item.isVisibleValue) || showAll) && (
+              (item.isVisible ||
+                isVisibleFunction(item.isVisibleValue) ||
+                showAll) && (
                 <Form.Group style={{ display: 'flex', paddingTop: '5px' }}>
                   <Form.Radio
                     checked={
@@ -82,7 +90,9 @@ const ProfileAttributeList = props => {
               )}
 
             {item.type === 'Dropdown' &&
-              (isVisibleFunction(item.isVisibleValue) || showAll) && (
+              (item.isVisible ||
+                isVisibleFunction(item.isVisibleValue) ||
+                showAll) && (
                 <Styled.AttributesItem>
                   <DomainDropdown
                     multiple={item.multiple}
@@ -103,7 +113,9 @@ const ProfileAttributeList = props => {
               )}
 
             {item.type === 'DomainTree' &&
-              (isVisibleFunction(item.isVisibleValue) || showAll) && (
+              (item.isVisible ||
+                isVisibleFunction(item.isVisibleValue) ||
+                showAll) && (
                 <Styled.AttributesItem>
                   <DomainTree
                     levels={item.levels}
@@ -118,7 +130,9 @@ const ProfileAttributeList = props => {
               )}
 
             {item.type === 'Date' &&
-              (isVisibleFunction(item.isVisibleValue) || showAll) && (
+              (item.isVisible ||
+                isVisibleFunction(item.isVisibleValue) ||
+                showAll) && (
                 <Styled.AttributesItem>
                   <DateField
                     date={layer?.[item.value] ? layer[item.value] : null}

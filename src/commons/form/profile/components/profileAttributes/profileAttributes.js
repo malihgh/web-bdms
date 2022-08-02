@@ -168,6 +168,8 @@ const ProfileAttributes = props => {
     for (let i = 0; i < attribute?.length; i++) {
       if (isVisibleFunction(attribute[i]?.isVisibleValue)) {
         isVisibleCounter++;
+      } else if (attribute[i]?.isVisible) {
+        isVisibleCounter++;
       }
     }
 
