@@ -218,25 +218,28 @@ class DatabaseSettings extends React.Component {
           flex: 1,
         }}>
         <div
+          onClick={() => {
+            this.setState({
+              export: !this.state.export,
+            });
+          }}
           style={{
             flexDirection: 'row',
             display: 'flex',
+            cursor: 'pointer',
+            backgroundColor: this.state.export ? '#f5f5f5' : '#fff',
+            padding: 10,
           }}>
           <div>
-            <Header
-              as="h3"
-              className="link"
-              onClick={() => {
-                this.setState({
-                  export: !this.state.export,
-                });
-              }}
+            <div
               style={{
-                margin: '0px',
-                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                fontSize: 18,
+                fontWeight: 'bold',
               }}>
               <TranslationText id="export" />
-            </Header>
+            </div>
             <TranslationText id="export_database" />
           </div>
           <div
@@ -244,20 +247,13 @@ class DatabaseSettings extends React.Component {
               flex: 1,
               textAlign: 'right',
             }}>
-            <Button
-              color="red"
-              onClick={() => {
-                this.setState({
-                  export: !this.state.export,
-                });
-              }}
-              size="small">
+            <Button color="red" size="small">
               {this.state.export === true ? t('collapse') : t('expand')}
             </Button>
           </div>
         </div>
         {this.state.export === true ? (
-          <Segment>
+          <Segment style={{ margin: 0 }}>
             <WorkgroupMultiselect
               key="web-bdms-db-setting-1"
               nameKey="name"
@@ -357,28 +353,31 @@ class DatabaseSettings extends React.Component {
             )}
           </Segment>
         ) : (
-          <Divider />
+          <Divider style={{ margin: 0 }} />
         )}
         <div
+          onClick={() => {
+            this.setState({
+              restore: !this.state.restore,
+            });
+          }}
           style={{
             flexDirection: 'row',
             display: 'flex',
+            cursor: 'pointer',
+            backgroundColor: this.state.restore ? '#f5f5f5' : '#fff',
+            padding: 10,
           }}>
           <div>
-            <Header
-              as="h3"
-              className="link"
-              onClick={() => {
-                this.setState({
-                  restore: !this.state.restore,
-                });
-              }}
+            <div
               style={{
-                margin: '0px',
-                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                fontSize: 18,
+                fontWeight: 'bold',
               }}>
               Import
-            </Header>
+            </div>
             <TranslationText id="import_database" />
           </div>
           <div
@@ -386,21 +385,15 @@ class DatabaseSettings extends React.Component {
               flex: 1,
               textAlign: 'right',
             }}>
-            <Button
-              color="red"
-              onClick={() => {
-                this.setState({
-                  restore: !this.state.restore,
-                });
-              }}
-              size="small">
+            <Button color="red" size="small">
               {this.state.restore === true ? t('collapse') : t('expand')}
             </Button>
           </div>
         </div>
         {this.state.restore === true ? (
-          <Segment>
+          <Segment style={{ margin: 0 }}>
             <div
+              // style={{ margin: 0 }}
               style={{
                 marginBottom: '1em',
                 padding: '1em',
@@ -603,7 +596,7 @@ class DatabaseSettings extends React.Component {
             </div>
           </Segment>
         ) : (
-          <Divider />
+          <Divider style={{ margin: 0 }} />
         )}
       </div>
     );
