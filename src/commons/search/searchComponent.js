@@ -122,7 +122,7 @@ class SearchComponent extends React.Component {
     return selectedData;
   }
   render() {
-    const { search, settings, t } = this.props;
+    const { search, settings } = this.props;
     const filter = settings.data.filter;
     return (
       <Styled.Container>

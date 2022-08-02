@@ -114,7 +114,7 @@ class EditorSettings extends React.Component {
     return selectedData;
   }
   render() {
-    const { setting, t, toggleField, toggleFilter } = this.props;
+    const { setting, toggleField, toggleFilter } = this.props;
     return (
       <div
         style={{
