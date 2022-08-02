@@ -865,6 +865,19 @@ class ExplorerSettings extends React.Component {
         {this.state?.searchList?.map((filter, idx) => (
           <div key={idx}>
             <div
+              onClick={() => {
+                this.setState(prevState => ({
+                  ...prevState,
+                  // update an array of objects:
+                  searchList: prevState.searchList.map(
+                    obj =>
+                      obj.id === idx
+                        ? { ...obj, isSelected: !obj.isSelected }
+                        : { ...obj },
+                    // : { ...obj, isSelected: false }, if you want to select only one filter
+                  ),
+                }));
+              }}
               style={{
                 flexDirection: 'row',
                 display: 'flex',
@@ -878,19 +891,6 @@ class ExplorerSettings extends React.Component {
                   alignItems: 'center',
                   fontSize: 18,
                   fontWeight: 'bold',
-                }}
-                onClick={() => {
-                  this.setState(prevState => ({
-                    ...prevState,
-                    // update an array of objects:
-                    searchList: prevState.searchList.map(
-                      obj =>
-                        obj.id === idx
-                          ? { ...obj, isSelected: !obj.isSelected }
-                          : { ...obj },
-                      // : { ...obj, isSelected: false }, if you want to select only one filter
-                    ),
-                  }));
                 }}>
                 <TranslationText id={filter.translationId} />
               </div>
