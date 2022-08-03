@@ -70,7 +70,7 @@ const initialState = {
     layer_alteration: null,
     layer_compactness: null,
     layer_organic_component: null,
-    layer_striae: null,
+    layer_striae: -1,
     layer_grain_size_1: null,
     layer_grain_size_2: null,
     layer_grain_shape: null,
