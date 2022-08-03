@@ -706,7 +706,10 @@ class BoreholeForm extends React.Component {
                   <Form size={size}>
                     <Form.Group widths="equal">
                       <Form.Field
-                        error={mentions.indexOf('restriction') >= 0}
+                        error={
+                          mentions.indexOf('restriction') >= 0 ||
+                          borehole.restriction === null
+                        }
                         required>
                         <label>
                           <TranslationText id="restriction" />
@@ -869,7 +872,10 @@ class BoreholeForm extends React.Component {
                         </Form.Group>
                         <Form.Group widths="equal">
                           <Form.Field
-                            error={mentions.indexOf('elevation_z') >= 0}
+                            error={
+                              mentions.indexOf('elevation_z') >= 0 ||
+                              _.isNil(borehole.elevation_z)
+                            }
                             required>
                             <label>
                               <TranslationText id="elevation_z" />
@@ -922,7 +928,10 @@ class BoreholeForm extends React.Component {
                         </Form.Group>
                         <Form.Group widths="equal">
                           <Form.Field
-                            error={mentions.indexOf('reference_elevation') >= 0}
+                            error={
+                              mentions.indexOf('reference_elevation') >= 0 ||
+                              _.isNil(borehole.reference_elevation)
+                            }
                             required>
                             <label>
                               <TranslationText id="reference_elevation" />
@@ -978,7 +987,8 @@ class BoreholeForm extends React.Component {
                         <Form.Group widths="equal">
                           <Form.Field
                             error={
-                              mentions.indexOf('reference_elevation_type') >= 0
+                              mentions.indexOf('reference_elevation_type') >=
+                                0 || borehole.reference_elevation_type === null
                             }
                             required>
                             <label>
