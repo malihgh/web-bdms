@@ -18,7 +18,7 @@ export default function useCasingList(boreholeID) {
         </span>
       ),
     },
-    { key: 1, value: 0, text: t('common:nocasing') },
+    { key: 1, value: 0, text: t('common:no_casing') },
   ]);
 
   const getCasingList = useCallback(() => {
