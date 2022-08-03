@@ -19,28 +19,28 @@ export const LocationSearchData = [
     isVisibleValue: 'custom.borehole_identifier',
   },
   {
-    id: 1,
+    id: 2,
     type: 'Input',
     label: 'original_name',
     value: 'original_name',
     isVisibleValue: 'extended.original_name',
   },
   {
-    id: 2,
+    id: 3,
     type: 'Input',
     label: 'project_name',
     value: 'project_name',
     isVisibleValue: 'project_name',
   },
   {
-    id: 3,
+    id: 4,
     type: 'Input',
     label: 'alternate_name',
     value: 'alternate_name',
     isVisibleValue: 'alternate_name',
   },
   {
-    id: 4,
+    id: 5,
     type: 'Dropdown',
     label: 'restriction',
     value: 'restriction',
@@ -50,7 +50,7 @@ export const LocationSearchData = [
     isVisibleValue: 'restriction',
   },
   {
-    id: 5,
+    id: 6,
     type: 'Date',
     label: 'restriction_until',
     value: 'restriction_until_from',
@@ -59,7 +59,7 @@ export const LocationSearchData = [
     isVisibleValue: 'restriction_until',
   },
   {
-    id: 6,
+    id: 7,
     type: 'Date',
     label: '',
     value: 'restriction_until_to',
@@ -68,7 +68,7 @@ export const LocationSearchData = [
     isVisibleValue: 'restriction_until',
   },
   {
-    id: 7,
+    id: 8,
     type: 'Input',
     label: 'elevation_z',
     value: 'elevation_z_from',
@@ -79,7 +79,7 @@ export const LocationSearchData = [
     isVisibleValue: 'elevation_z',
   },
   {
-    id: 8,
+    id: 9,
     type: 'Input',
     label: '',
     value: 'elevation_z_to',
@@ -90,7 +90,7 @@ export const LocationSearchData = [
     isVisibleValue: 'elevation_z',
   },
   {
-    id: 9,
+    id: 10,
     type: 'Input',
     label: 'reference_elevation',
     value: 'reference_elevation_from',
@@ -101,7 +101,7 @@ export const LocationSearchData = [
     isVisibleValue: 'reference_elevation',
   },
   {
-    id: 10,
+    id: 11,
     type: 'Input',
     label: '',
     value: 'reference_elevation_to',
@@ -112,7 +112,7 @@ export const LocationSearchData = [
     isVisibleValue: 'reference_elevation',
   },
   {
-    id: 11,
+    id: 12,
     type: 'Dropdown',
     label: 'reference_elevation_type',
     value: 'reference_elevation_type',
@@ -122,7 +122,7 @@ export const LocationSearchData = [
     isVisibleValue: 'reference_elevation_type',
   },
   {
-    id: 12,
+    id: 13,
     type: 'Dropdown',
     label: 'qt_location',
     value: 'qt_location',
@@ -132,7 +132,7 @@ export const LocationSearchData = [
     isVisibleValue: 'qt_location',
   },
   {
-    id: 13,
+    id: 14,
     type: 'Dropdown',
     label: 'qt_elevation',
     value: 'qt_elevation',
@@ -142,7 +142,7 @@ export const LocationSearchData = [
     isVisibleValue: 'qt_elevation',
   },
   {
-    id: 14,
+    id: 15,
     type: 'Dropdown',
     label: 'reference_elevation_qt',
     value: 'qt_reference_evelation',
@@ -152,7 +152,7 @@ export const LocationSearchData = [
     isVisibleValue: 'reference_elevation_qt',
   },
   {
-    id: 15,
+    id: 16,
     type: 'Canton',
     label: 'canton',
     value: 'canton',
