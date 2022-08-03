@@ -148,6 +148,9 @@ const ListFilter = props => {
     } else if (item.value === 'top_bedrock_tvd_to') {
       updateChange('top_bedrock_tvd_from', '', false);
       updateChange('top_bedrock_tvd_to', '', false);
+    } else if (item.value === 'reference_elevation_to') {
+      updateChange('reference_elevation_from', '', false);
+      updateChange('reference_elevation_to', '', false);
     }
   };
 

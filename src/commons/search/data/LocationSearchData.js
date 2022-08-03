@@ -22,7 +22,7 @@ export const LocationSearchData = [
     id: 1,
     type: 'Input',
     label: 'original_name',
-    value: '', //original_name in boreholeSearchEditor 'identifier' in searchComponent
+    value: 'original_name',
     isVisibleValue: 'extended.original_name',
   },
   {
@@ -93,7 +93,7 @@ export const LocationSearchData = [
     id: 9,
     type: 'Input',
     label: 'reference_elevation',
-    value: '_from', /////////
+    value: 'reference_elevation_from',
     isNumber: true,
     inputType: 'number',
     placeholder: 'fromelevation',
@@ -104,7 +104,7 @@ export const LocationSearchData = [
     id: 10,
     type: 'Input',
     label: '',
-    value: '_to', /////////
+    value: 'reference_elevation_to',
     isNumber: true,
     inputType: 'number',
     placeholder: 'toelevation',
@@ -115,7 +115,7 @@ export const LocationSearchData = [
     id: 11,
     type: 'Dropdown',
     label: 'reference_elevation_type',
-    value: '', /////////
+    value: 'reference_elevation_type',
     schema: 'qt_elevation',
     multiple: false,
     search: false,
@@ -125,7 +125,7 @@ export const LocationSearchData = [
     id: 12,
     type: 'Dropdown',
     label: 'qt_location',
-    value: '', /////////
+    value: 'qt_location',
     schema: 'qt_location',
     multiple: false,
     search: false,
@@ -135,7 +135,7 @@ export const LocationSearchData = [
     id: 13,
     type: 'Dropdown',
     label: 'qt_elevation',
-    value: '', /////////
+    value: 'qt_elevation',
     schema: 'qt_elevation',
     multiple: false,
     search: false,
@@ -145,7 +145,7 @@ export const LocationSearchData = [
     id: 14,
     type: 'Dropdown',
     label: 'reference_elevation_qt',
-    value: '', /////////
+    value: 'qt_reference_evelation',
     schema: 'qt_elevation',
     multiple: false,
     search: false,

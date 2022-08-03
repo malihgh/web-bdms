@@ -135,6 +135,13 @@ const initialState = {
     qt_total_depth_tvd: null,
     qt_top_bedrock: null,
     qt_top_bedrock_tvd: null,
+
+    reference_elevation_type: null,
+    qt_reference_evelation: null,
+    qt_elevation: null,
+    qt_location: null,
+    reference_elevation_from: '',
+    reference_elevation_to: '',
   },
 };
 
