@@ -27,10 +27,10 @@ class ResourcesSettings extends React.Component {
           Documentation:
           <br />
           <a
-            href="https://geoservice.ist.supsi.ch/docs/bdms"
+            href="https://geoservice2.ist.supsi.ch/docs/bdms"
             rel="noopener noreferrer"
             target="_BLANK">
-            https://geoservice.ist.supsi.ch/docs/bdms
+            https://geoservice2.ist.supsi.ch/docs/bdms
           </a>
         </div>
         <div
