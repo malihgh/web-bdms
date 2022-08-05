@@ -158,13 +158,6 @@ class ProfileView extends React.Component {
     )?.conf.colorNS;
 
     if (!domains.data.hasOwnProperty(ns)) {
-      console.log(
-        'no color domain',
-        // Object.keys(domains.data),
-        // ns,
-        // domains.data.layer_kind,
-        // this.state.viewas,
-      );
       return null;
     }
 
@@ -179,7 +172,6 @@ class ProfileView extends React.Component {
       const color = domain.conf.color;
       return 'rgb(' + color.join(',') + ')';
     } else {
-      console.log('no color');
       return null;
     }
   }
@@ -229,9 +221,6 @@ class ProfileView extends React.Component {
             height: '100%',
             overflowY: 'hidden',
           }}>
-          {console.log('domains', this.getColor())}
-          {console.log('pattern', this.getPattern())}
-
           <Stratigraphy
             data={data}
             getColor={this.getColor}
