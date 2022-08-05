@@ -205,8 +205,8 @@ class WorkflowForm extends React.Component {
                       // fontWeight: 'bold'
                     }}
                   >
-                    {flow.author.name} {
-                      flow.author.username === user.data.username?
+                    {flow.creator.name} {
+                      flow.creator.username === user.data.username?
                         <span
                           style={{
                             color: '#787878',

@@ -54,14 +54,16 @@ const ProfileLayers = props => {
   return (
     <Styled.Container>
       {isEditable && selectedStratigraphyID !== null && (
-        <Button
-          fluid
-          onClick={createNewLayer}
-          secondary
-          size="tiny"
-          style={{ marginBottom: '10px' }}>
-          <TranslationText id="add" />
-        </Button>
+        <div>
+          <Button
+            content={<TranslationText id="add" />}
+            icon="add"
+            onClick={createNewLayer}
+            secondary
+            size="small"
+            style={{ marginBottom: '10px', padding: '13px 20px' }}
+          />
+        </div>
       )}
       {layers?.data?.length === 0 && (
         <Styled.Empty>

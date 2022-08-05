@@ -6,6 +6,7 @@ export const InstrumentAttributes = [
     value: 'depth_from',
     require: true,
     isNumber: true,
+    isVisible: true,
   },
   {
     id: 1,
@@ -14,6 +15,7 @@ export const InstrumentAttributes = [
     value: 'depth_to',
     require: true,
     isNumber: true,
+    isVisible: true,
   },
   {
     id: 2,
@@ -21,6 +23,7 @@ export const InstrumentAttributes = [
     label: 'instrumentId',
     value: 'instrument_id',
     require: true,
+    isVisible: true,
   },
   {
     id: 3,
@@ -31,6 +34,7 @@ export const InstrumentAttributes = [
     schema: 'inst100',
     multiple: false,
     search: false,
+    isVisible: true,
   },
   {
     id: 4,
@@ -41,27 +45,30 @@ export const InstrumentAttributes = [
     schema: 'inst101',
     multiple: false,
     search: false,
+    isVisible: true,
   },
   {
     id: 5,
     type: 'CasingDropdown',
     label: 'casing',
-    value: 'casing_id',
+    value: 'instrument_casing_id',
     require: true,
-    schema: 'inst100',
     multiple: false,
     search: false,
+    isVisible: true,
   },
   {
     id: 6,
     type: 'Input',
     label: 'layer_notes',
     value: 'notes',
+    isVisible: true,
   },
   {
     id: 7,
     type: 'Button',
     label: 'delete',
     value: '',
+    isVisible: true,
   },
 ];

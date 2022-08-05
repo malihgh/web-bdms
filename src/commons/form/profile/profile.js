@@ -54,7 +54,8 @@ const Profile = props => {
       attribute === 'primary' ||
       attribute === 'name' ||
       attribute === 'date' ||
-      attribute === 'cloneStratigraphy'
+      attribute === 'cloneStratigraphy' ||
+      attribute === 'fill_name'
     )
       setReloadHeader(reloadHeader => reloadHeader + 1);
 
@@ -172,6 +173,7 @@ const Profile = props => {
                 isEditable,
                 onUpdated,
                 attribute: attributesBasedKind?.profileInfo,
+                boreholeID: borehole.data.id,
               }}
             />
 

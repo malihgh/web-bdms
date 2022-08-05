@@ -133,7 +133,10 @@ const ProfileLayersError = props => {
       isFirstInList={error?.messageId === 'errorStartWrong'}
       isInside={isInside}>
       {!isDelete && (
-        <Styled.Row>
+        <Styled.Row
+          onClick={() => {
+            setShowSolution(id);
+          }}>
           <Styled.ErrorMessageContainer>
             <Icon name="warning sign" />
             {/* {title === 'missingTo' && <>Add end of the layer</>} */}

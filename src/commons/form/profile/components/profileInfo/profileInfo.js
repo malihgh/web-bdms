@@ -13,6 +13,7 @@ const ProfileInfo = props => {
     onUpdated,
     attribute,
     kind,
+    boreholeID,
   } = props.data;
 
   const mounted = useRef(false);
@@ -23,19 +24,14 @@ const ProfileInfo = props => {
     updateAttributeDelay: {},
     profileInfo: {
       id: null,
-      casng_id: null,
       kind: null,
-      casng_kind: null,
-      fill_kind: null,
       name: null,
+      fill_casing: null,
       primary: false,
       date: null,
-      elevation: null,
-      elevation_ref: null,
-      date_spud: null,
-      date_fin: null,
       date_abd: null,
       notes: null,
+      fill_name: null,
     },
   });
 
@@ -102,6 +98,7 @@ const ProfileInfo = props => {
             attribute,
             updateChange,
             profileInfo: state.profileInfo,
+            boreholeID,
           }}
         />
       )}

@@ -6,9 +6,14 @@ import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { getData, sendAttribute } from './api';
 import ProfileAttributeList from './components/profileAttributeList/profileAttributeList';
+import { useSelector } from 'react-redux';
 
 const ProfileAttributes = props => {
   const { id, isEditable, onUpdated, attribute, reloadAttribute } = props.data;
+  const { codes, geocode } = useSelector(state => ({
+    codes: state.core_domain_list,
+    geocode: 'Geol',
+  }));
 
   const { t } = useTranslation();
 
@@ -23,8 +28,8 @@ const ProfileAttributes = props => {
       kind: null,
       depth_from: null,
       depth_to: null,
-      description: '',
-      geology: '',
+      lithological_description: '',
+      facies_description: '',
       last: null,
       qt_description: null,
       lithology: null,
@@ -47,7 +52,6 @@ const ProfileAttributes = props => {
       grain_shape: [],
       grain_granularity: [],
       cohesion: null,
-      further_properties: [],
       uscs_1: null,
       uscs_2: null,
       uscs_3: [],
@@ -55,14 +59,20 @@ const ProfileAttributes = props => {
       uscs_determination: [],
       unconrocks: null,
       debris: [],
-      lit_pet_deb: [],
+      lithology_top_bedrock: [],
+      gradation: null,
       lithok: null,
       kirost: null,
       notes: '',
       fill_material: null,
+      casing_id: null,
       casing_kind: null,
       casing_material: null,
-      casing_drilling: null,
+      casing_date_spud: null,
+      casing_date_finish: null,
+      casing_innder_diameter: null,
+      casing_outer_diameter: null,
+      fill_kind: null,
     },
   });
 
@@ -133,20 +143,62 @@ const ProfileAttributes = props => {
     });
   };
 
+  const isVisibleFunction = field => {
+    if (_.has(codes, 'data.layer_kind') && _.isArray(codes.data.layer_kind)) {
+      for (let idx = 0; idx < codes.data.layer_kind.length; idx++) {
+        const element = codes.data.layer_kind[idx];
+        if (element.code === geocode) {
+          if (
+            _.isObject(element.conf) &&
+            _.has(element.conf, `fields.${field}`)
+          ) {
+            return element.conf.fields[field];
+          } else {
+            return false;
+          }
+        }
+      }
+    }
+    return false;
+  };
+
+  const showCheckbox = () => {
+    let isVisibleCounter = 0;
+
+    for (let i = 0; i < attribute?.length; i++) {
+      if (isVisibleFunction(attribute[i]?.isVisibleValue)) {
+        isVisibleCounter++;
+      } else if (attribute[i]?.isVisible) {
+        isVisibleCounter++;
+      }
+    }
+
+    if (isVisibleCounter === attribute?.length) {
+      return false;
+    } else return true;
+  };
   return (
     <Styled.Container disable={!id}>
-      <Styled.CheckboxContainer>
-        <Checkbox
-          checked={showAll}
-          onChange={() => setShowAll(!showAll)}
-          toggle
-        />
-        <TranslationText id="showallfields" />
-      </Styled.CheckboxContainer>
+      {showCheckbox() && (
+        <Styled.CheckboxContainer>
+          <TranslationText id="showallfields" />
+          <Checkbox
+            checked={showAll}
+            onChange={() => setShowAll(!showAll)}
+            toggle
+          />
+        </Styled.CheckboxContainer>
+      )}
 
       {attribute && (
         <ProfileAttributeList
-          data={{ attribute, showAll, updateChange, layer: state.layer }}
+          data={{
+            attribute,
+            showAll,
+            updateChange,
+            layer: state.layer,
+            isVisibleFunction,
+          }}
         />
       )}
     </Styled.Container>

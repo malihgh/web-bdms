@@ -3,7 +3,6 @@ import * as Styled from './styles';
 import Instrument from './components/instrument';
 import { Button } from 'semantic-ui-react';
 import TranslationText from '../../../translationText';
-import { useTranslation } from 'react-i18next';
 import { profileKind } from '../../constance';
 import {
   createNewInstrument,
@@ -24,10 +23,8 @@ const ProfileInstrument = props => {
     showAllInstrument,
   } = props.data;
 
-  const { t } = useTranslation();
-
   const [instruments, setInstruments] = useState([]);
-  const [casing, setCasing] = useState([]);
+  const [hasCasing, setHasCasing] = useState(false);
   const [reload, setReload] = useState(0);
   const [state, setState] = useState({
     isFetching: false,
@@ -45,8 +42,19 @@ const ProfileInstrument = props => {
     });
   }, []);
 
+  const checkHasCasing = useCallback(() => {
+    getProfile(boreholeID, profileKind.CASING).then(response => {
+      if (response.length > 0) {
+        setHasCasing(true);
+      } else {
+        setHasCasing(false);
+      }
+    });
+  }, [boreholeID]);
+
   const getInstrumentProfile = useCallback(() => {
     getProfile(boreholeID, profileKind.INSTRUMENT).then(response => {
+      checkHasCasing();
       if (response.length > 0) {
         setState(prevState => ({
           ...prevState,
@@ -56,34 +64,11 @@ const ProfileInstrument = props => {
         createStratigraphy(boreholeID);
       }
     });
-  }, [boreholeID, createStratigraphy]);
-
-  const getCasingProfile = useCallback(() => {
-    getProfile(boreholeID, profileKind.CASING).then(response => {
-      if (response.length > 0) {
-        for (const e of response) {
-          setCasing(prevState => {
-            return [
-              ...prevState,
-              {
-                key: e.id,
-                value: e.id,
-                text:
-                  e.name === null || e.name === '' ? t('common:np') : e.name,
-              },
-            ];
-          });
-        }
-        getInstrumentProfile();
-      } else {
-        setCasing([]);
-      }
-    });
-  }, [boreholeID, t, getInstrumentProfile]);
+  }, [boreholeID, createStratigraphy, checkHasCasing]);
 
   useEffect(() => {
-    getCasingProfile();
-  }, [getCasingProfile]);
+    getInstrumentProfile();
+  }, [getInstrumentProfile]);
 
   const setData = useCallback(
     (instrumentID, isAll) => {
@@ -129,7 +114,7 @@ const ProfileInstrument = props => {
   };
 
   return (
-    <Styled.Container disable={casing.length === 0}>
+    <Styled.Container disable={!hasCasing}>
       <Styled.ButtonContainer>
         <Button
           content={<TranslationText id="addInstrument" />}
@@ -159,7 +144,7 @@ const ProfileInstrument = props => {
                 update: () => {
                   setReload(prevState => prevState + 1);
                 },
-                casing,
+                boreholeID,
               }}
               key={index}
             />
