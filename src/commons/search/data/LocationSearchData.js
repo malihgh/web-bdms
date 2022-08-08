@@ -30,7 +30,7 @@ export const LocationSearchData = [
     type: 'Input',
     label: 'project_name',
     value: 'project_name',
-    isVisibleValue: 'project_name',
+    isVisibleValue: 'custom.project_name',
   },
   {
     id: 4,
