@@ -13,7 +13,7 @@ export const MyCard = styled.div`
   flex: 1;
   cursor: pointer;
   :hover {
-    background-color: lightgrey;
+    background-color: #ebebeb;
   }
 `;
 
