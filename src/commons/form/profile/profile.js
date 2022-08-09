@@ -36,16 +36,16 @@ const Profile = props => {
       attribute === 'lithology' ||
       attribute === 'chronostratigraphy' ||
       attribute === 'newLayer' ||
-      attribute === 'fixErrors' ||
       attribute === 'casing_kind' ||
       attribute === 'casing_material' ||
       attribute === 'casing_drilling' ||
-      attribute === 'fill_material'
+      attribute === 'fill_material' ||
+      attribute === 'fill_kind'
     ) {
       setReloadLayer(reloadLayer => reloadLayer + 1);
     }
 
-    if (attribute === 'deleteLayer') {
+    if (attribute === 'deleteLayer' || attribute === 'fixErrors') {
       setSelectedLayer(null);
       setReloadLayer(reloadLayer => reloadLayer + 1);
     }
