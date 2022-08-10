@@ -25,7 +25,6 @@ const ListFilter = props => {
     search,
     setFilter,
     settings,
-    resetIdentifier,
     resetDepth,
   } = props;
   const { t } = useTranslation();
@@ -82,9 +81,7 @@ const ListFilter = props => {
 
   const resetTwoFieldsChange = item => {
     // this is only available for second item of hasTwoFields
-    if (item.value === 'identifier_value') {
-      resetIdentifier();
-    } else if (item.value === 'restriction_until_to') {
+    if (item.value === 'restriction_until_to') {
       resetRestriction();
     } else if (item.value === 'elevation_z_to') {
       resetElevation();

@@ -236,7 +236,6 @@ class SearchEditorComponent extends React.Component {
                 resetDrillDiameter={this.props.resetDrillDiameter}
                 resetDrilling={this.props.resetDrilling}
                 resetElevation={this.props.resetElevation}
-                resetIdentifier={this.props.resetIdentifier}
                 resetRestriction={this.props.resetRestriction}
                 resetTotBedrock={this.props.resetTotBedrock}
                 search={this.props.search}
