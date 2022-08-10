@@ -90,8 +90,8 @@ class MenuExplorer extends React.Component {
                     <TranslationText id="createdBy" />:
                   </span>
                   <br />
-                  {_.hasIn(detail.borehole, 'author.username')
-                    ? detail.borehole.author.username
+                  {_.hasIn(detail.borehole, 'creator.username')
+                    ? detail.borehole.creator.username
                     : null}
                 </div>
                 <div
@@ -106,8 +106,8 @@ class MenuExplorer extends React.Component {
                     <TranslationText id="creationdate" />:
                   </span>
                   <br />
-                  {_.hasIn(detail.borehole, 'author.date') ? (
-                    <DateText date={detail.borehole.author.date} hours />
+                  {_.hasIn(detail.borehole, 'creator.date') ? (
+                    <DateText date={detail.borehole.creator.date} hours />
                   ) : null}
                 </div>
               </Segment>

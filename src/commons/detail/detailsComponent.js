@@ -175,7 +175,7 @@ class DetailsComponent extends React.Component {
                       fontWeight: 'bold',
                       fontSize: '1.1em',
                     }}>
-                    {detail.borehole.length}m
+                    {detail.borehole.total_depth}m
                   </div>
                   <div
                     style={{
