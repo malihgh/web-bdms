@@ -176,29 +176,25 @@ class ProfileView extends React.Component {
     }
   }
   isVisible(name, field, conf) {
+    const isVisibleValue = name.replace('layer_', '');
+    const { domains } = this.props;
     if (
-      this.state.allfields === false &&
-      _.isObject(conf) &&
-      _.has(conf, `fields.${name}`)
+      _.has(domains, 'data.layer_kind') &&
+      _.isArray(domains.data.layer_kind)
     ) {
-      if (conf.fields[name] === true) {
-        return field;
+      for (let idx = 0; idx < domains.data.layer_kind.length; idx++) {
+        if (
+          this.state.allfields === false &&
+          _.isObject(conf) &&
+          _.has(conf, `fields.${isVisibleValue}`)
+        ) {
+          if (conf.fields[isVisibleValue] === true) {
+            return field;
+          } else {
+            return null;
+          }
+        }
       }
-      return null;
-    }
-    return field;
-  }
-
-  _isVisible(name, field, conf) {
-    if (
-      this.state.allfields === false &&
-      conf !== null &&
-      conf.hasOwnProperty('fields')
-    ) {
-      if (conf.fields.indexOf(name) >= 0) {
-        return field;
-      }
-      return null;
     }
     return field;
   }
