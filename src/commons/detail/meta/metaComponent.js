@@ -386,17 +386,13 @@ class MetaComponent extends React.Component {
                   ? data.inclination_direction + '°'
                   : null,
               )}
-              {this.getTextRow(
-                'remarks',
-                data.custom.remarks !== '' ? data.custom.remarks : '-',
-              )}
             </div>
           </div>
         </div>
 
         <div
           style={{
-            // borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
+            borderBottom: 'thin solid rgba(0, 0, 0, 0.15)',
             display: 'flex',
             flexDirection: 'row',
             margin: margin,
@@ -477,6 +473,16 @@ class MetaComponent extends React.Component {
               'chronostratigraphy_top_bedrock',
             )}
           </div>
+        </div>
+        <div
+          style={{
+            margin: margin,
+            padding: padding,
+          }}>
+          {this.getTextRow(
+            'remarks',
+            data.custom.remarks !== '' ? data.custom.remarks : '-',
+          )}
         </div>
       </div>
     );
