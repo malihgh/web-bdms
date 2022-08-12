@@ -346,12 +346,12 @@ class MetaComponent extends React.Component {
               {this.getTextRow(
                 'drill_diameter',
                 data.custom.drill_diameter !== null
-                  ? data.custom.drill_diameter + ' mm'
+                  ? data.custom.drill_diameter
                   : null,
               )}
               {this.getTextRow(
                 'inclination',
-                data.inclination !== null ? data.inclination + '°' : null,
+                data.inclination !== null ? data.inclination : null,
               )}
               {this.getDomainRow(
                 'custom.qt_bore_inc_dir',
@@ -383,7 +383,7 @@ class MetaComponent extends React.Component {
               {this.getTextRow(
                 'inclination_direction',
                 data.inclination_direction !== null
-                  ? data.inclination_direction + '°'
+                  ? data.inclination_direction
                   : null,
               )}
             </div>
@@ -404,24 +404,22 @@ class MetaComponent extends React.Component {
             }}>
             {this.getTextRow(
               'totaldepth',
-              data.total_depth !== null ? data.total_depth + ' m' : null,
+              data.total_depth !== null ? data.total_depth : null,
             )}
             {this.getTextRow(
               'total_depth_tvd',
-              data.total_depth_tvd !== null
-                ? data.total_depth_tvd + ' m'
-                : null,
+              data.total_depth_tvd !== null ? data.total_depth_tvd : null,
             )}
             {this.getTextRow(
               'top_bedrock',
               data.extended.top_bedrock !== null
-                ? data.extended.top_bedrock + ' m'
+                ? data.extended.top_bedrock
                 : null,
             )}
             {this.getTextRow(
               'top_bedrock_tvd',
               data.extended.top_bedrock_tvd !== null
-                ? data.extended.top_bedrock_tvd + ' m'
+                ? data.extended.top_bedrock_tvd
                 : null,
             )}
             {this.getTextRow(
