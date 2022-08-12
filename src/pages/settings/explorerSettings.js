@@ -133,42 +133,21 @@ class ExplorerSettings extends React.Component {
     }
     return false;
   }
-  handleButtonSelected() {
+  handleButtonSelected(name, isSelected) {
     let selectedData = null;
-    if (
-      this.state?.searchList?.[0]?.name === 'location' &&
-      this.state?.searchList?.[0]?.isSelected
-    ) {
+    if (name === 'location' && isSelected) {
       selectedData = locationEditorData;
-    } else if (
-      this.state?.searchList?.[1]?.name === 'borehole' &&
-      this.state?.searchList?.[1]?.isSelected
-    ) {
+    } else if (name === 'borehole' && isSelected) {
       selectedData = boreholeEditorData;
-    } else if (
-      this.state?.searchList?.[2]?.name === 'stratigraphy' &&
-      this.state?.searchList?.[2]?.isSelected
-    ) {
+    } else if (name === 'stratigraphy' && isSelected) {
       selectedData = stratigraphyFilterEditorData;
-    } else if (
-      this.state?.searchList?.[3]?.name === 'casing' &&
-      this.state?.searchList?.[3]?.isSelected
-    ) {
+    } else if (name === 'casing' && isSelected) {
       selectedData = casingEditorData;
-    } else if (
-      this.state?.searchList?.[4]?.name === 'instrument' &&
-      this.state?.searchList?.[4]?.isSelected
-    ) {
+    } else if (name === 'instrument' && isSelected) {
       selectedData = instrumentEditorData;
-    } else if (
-      this.state?.searchList?.[5]?.name === 'filling' &&
-      this.state?.searchList?.[5]?.isSelected
-    ) {
+    } else if (name === 'filling' && isSelected) {
       selectedData = fillingEditorData;
-    } else if (
-      this.state?.searchList?.[6]?.name === 'stratigraphyfields' &&
-      this.state?.searchList?.[6]?.isSelected
-    ) {
+    } else if (name === 'stratigraphyfields' && isSelected) {
       selectedData = stratigraphyFieldEditorData;
     } else {
       selectedData = null;
@@ -909,9 +888,13 @@ class ExplorerSettings extends React.Component {
               </div>
             </div>
             {filter.isSelected === true &&
-            this.handleButtonSelected() !== null ? (
+            this.handleButtonSelected(filter.name, filter.isSelected) !==
+              null ? (
               <EditorSettingList
-                attribute={this.handleButtonSelected()}
+                attribute={this.handleButtonSelected(
+                  filter.name,
+                  filter.isSelected,
+                )}
                 codes={this.props.codes}
                 data={setting.data.filter}
                 geocode={this.props.geocode}
