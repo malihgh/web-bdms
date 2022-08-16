@@ -40,7 +40,6 @@
   "clickLayer": "Cliquez pour plus d'informations",
   "close": "Fermer",
   "collapse": "Réduire",
-  "coordinates": "Coordonnées",
   "completion": "Aménagement",
   "confirm": "Confirmer",
   "copy": "Créer une copie",
@@ -120,7 +119,6 @@
   "flowRestart": "Redémarrer le workflow",
   "french": "Français",
   "from": "de",
-  "fromDegree": "de Degrés",
   "fromdepth": "de la profondeur [m MD]",
   "fromdiameter": "à partir du diamètre",
   "fromelevation": "de l'altitude",
@@ -297,11 +295,10 @@
   "sure": "Êtes-vous sûr?",
   "terms": "Conditions d'utilisation",
   "title": "BMS",
-  "toDegree": "jusqu'à Degrés",
   "todepth": "jusqu'à la profondeur MD  [m]",
   "todiameter": "jusqu'au diamètre",
   "toelevation": "jusqu'à l'altitude",
-  "toMeters": "à [m]",
+  "toMeters": "à [m MD]",
   "top_bedrock": "Toit du rocher MD [m]",
   "top_bedrock_tvd": "Toit du rocher TVD [m]",
   "top_bedrock_tvd_qt": "+/- Toit du rocher TVD [m]",
@@ -333,5 +330,8 @@
   "searchFilterFilling": "Filtres par remplissage",
   "mainCompletion": "Ceci est l’aménagement principale",
   "export_database": "Exporter un groupe de travail ou un forage dans un fichier .gpkg zippé",
-  "import_database": "Veuillez importer un fichier .gpkg zippé (uniquement sous forme d’exports de swissforages) d'un groupe de travail ou d’un forage."
+  "import_database": "Veuillez importer un fichier .gpkg zippé (uniquement sous forme d’exports de swissforages) d'un groupe de travail ou d’un forage.",
+  "coordinates": "Coordonnées",
+  "import": "Importer",
+  "to": "à"
 }

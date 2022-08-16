@@ -40,7 +40,6 @@
   "clickLayer": "Cliccare per ulteriori informazioni",
   "close": "Chiudere",
   "collapse": "Minimizzare",
-  "coordinates": "Coordinate",
   "completion": "Installazione",
   "confirm": "Confermare",
   "copy": "Creare una copia",
@@ -120,7 +119,6 @@
   "flowRestart": "Riavviare il workflow",
   "french": "Francese",
   "from": "da",
-  "fromDegree": "da Gradi",
   "fromdepth": "dalla profondità [m MD]",
   "fromdiameter": "a partire dal diametro",
   "fromelevation": "a partire dalla quota",
@@ -297,11 +295,10 @@
   "sure": "Ne é sicuro?",
   "terms": "Condizioni di utilizzo",
   "title": "BMS",
-  "toDegree": "fino a Gradi",
   "todepth": "fino alla profondità MD [m]",
   "todiameter": "fino al diametro",
   "toelevation": "fino alla quota",
-  "toMeters": "fino a [m]",
+  "toMeters": "fino a [m MD]",
   "top_bedrock": "Top substrato MD [m]",
   "top_bedrock_tvd": "Top substrato TVD [m]",
   "top_bedrock_tvd_qt": "+/- Top del substrato roccioso TVD [m]",
@@ -333,5 +330,8 @@
   "searchFilterFilling": "Filtri specifici al riempimento",
   "mainCompletion": "Questa è l'installazione principale",
   "export_database": "Esportazione di un gruppo di lavoro o di una perforazione in un file .gpkg zippato",
-  "import_database": "Per favore importare un file .gpkg zippato (valido unicamente per le esportazioni da swissforages) di un gruppo di lavoro o di una perforazione."
+  "import_database": "Per favore importare un file .gpkg zippato (valido unicamente per le esportazioni da swissforages) di un gruppo di lavoro o di una perforazione.",
+  "coordinates": "Coordinate",
+  "import": "Importare",
+  "to": "fino a"
 }

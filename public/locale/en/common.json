@@ -40,7 +40,6 @@
   "clickLayer": "Click on a layer for more details",
   "close": "Close",
   "collapse": "Collapse",
-  "coordinates": "Coordinates",
   "completion": "Completion",
   "confirm": "Confirm",
   "copy": "Create a copy",
@@ -120,7 +119,6 @@
   "flowRestart": "Restart the workflow",
   "french": "French",
   "from": "from",
-  "fromDegree": "from Degrees",
   "fromdepth": "from depth [m MD]",
   "fromdiameter": "from diameter",
   "fromelevation": "from elevation",
@@ -297,11 +295,10 @@
   "sure": "Are you sure?",
   "terms": "Terms of service",
   "title": "BMS",
-  "toDegree": "to Degrees",
   "todepth": "to depth MD [m]",
   "todiameter": "to diameter",
   "toelevation": "to elevation",
-  "toMeters": "to [m]",
+  "toMeters": "to [m MD]",
   "top_bedrock": "Top bedrock MD [m]",
   "top_bedrock_tvd": "Top bedrock TVD [m]",
   "top_bedrock_tvd_qt": "+/- Top bedrock TVD [m]",
@@ -333,5 +330,8 @@
   "searchFilterFilling": "Backfill filters",
   "mainCompletion": "This is the main completion",
   "export_database": "Export of a workgroup or borehole in a zipped .gpkg file",
-  "import_database": "Please import a zipped .gpkg file (swissforages exports only) of a workgroup or borehole."
+  "import_database": "Please import a zipped .gpkg file (swissforages exports only) of a workgroup or borehole.",
+  "coordinates": "Coordinates",
+  "import": "Import",
+  "to": "to"
 }
