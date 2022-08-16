@@ -375,7 +375,7 @@ class DatabaseSettings extends React.Component {
                 fontSize: 18,
                 fontWeight: 'bold',
               }}>
-              Import
+              <TranslationText id="import" />
             </div>
             <TranslationText id="import_database" />
           </div>
