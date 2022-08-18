@@ -365,7 +365,7 @@ class ProfileView extends React.Component {
                   )} */}
 
                 {this.getTextRow('layer_uscs_original', layer.uscs_original)}
-                {this.getDomainRowMultiple(
+                {this.getDomainRow(
                   'mcla104',
                   layer.uscs_determination,
                   'layer_uscs_determination',
@@ -382,11 +382,7 @@ class ProfileView extends React.Component {
                   layer.grain_size_2,
                   'layer_grain_size_2',
                 )}
-                {this.getDomainRowMultiple(
-                  'mcla101',
-                  layer.uscs_3,
-                  'layer_uscs_3',
-                )}
+                {this.getDomainRow('mcla101', layer.uscs_3, 'layer_uscs_3')}
                 {this.getDomainRowMultiple(
                   'mlpr110',
                   layer.grain_shape,
@@ -407,12 +403,11 @@ class ProfileView extends React.Component {
                   layer.debris,
                   'layer_debris',
                 )}
-                {this.getDomainRowMultiple(
+                {this.getDomainRow(
                   'custom.lithology_top_bedrock',
                   layer.lithology_top_bedrock,
                   'layer_lithology_top_bedrock',
                 )}
-
                 {this.getTextRow(
                   'layer_striae',
                   layer.striae === true
