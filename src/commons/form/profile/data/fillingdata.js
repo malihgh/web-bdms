@@ -11,7 +11,7 @@ export const fillingData = {
     {
       id: 1,
       type: 'CasingDropdown',
-      label: 'casing',
+      label: 'casingName',
       value: 'fill_casing',
       require: true,
       multiple: false,
