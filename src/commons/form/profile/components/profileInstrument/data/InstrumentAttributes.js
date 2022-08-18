@@ -39,7 +39,7 @@ export const InstrumentAttributes = [
   {
     id: 4,
     type: 'Dropdown',
-    label: 'status',
+    label: 'statusInstrument',
     value: 'instrument_status',
     require: true,
     schema: 'inst101',
@@ -50,7 +50,7 @@ export const InstrumentAttributes = [
   {
     id: 5,
     type: 'CasingDropdown',
-    label: 'casing',
+    label: 'casingName',
     value: 'instrument_casing_id',
     require: true,
     multiple: false,
