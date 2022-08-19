@@ -27,7 +27,7 @@ const Profile = props => {
   const [reloadAttribute, setReloadAttribute] = useState(0);
   const [attributesBasedKind, setAttributesBasedKind] = useState(null);
   const [stratigraphyKind, setStratigraphyKind] = useState(null);
-  const [showAllInstrument, setShowAllInstrument] = useState(false);
+
   const onUpdated = attribute => {
     if (
       attribute === 'depth_to' ||
@@ -116,15 +116,13 @@ const Profile = props => {
     e => {
       setSelectedStratigraphy(e);
       setSelectedLayer(null);
-      setShowAllInstrument(false);
     },
-    [setSelectedStratigraphy, setSelectedLayer, setShowAllInstrument],
+    [setSelectedStratigraphy, setSelectedLayer],
   );
 
-  const setShowAllInstrumentFunc = useCallback(() => {
+  const setSelectedStratigraphyNull = useCallback(() => {
     setSelectedStratigraphy(null);
-    setShowAllInstrument(!showAllInstrument);
-  }, [setSelectedStratigraphy, showAllInstrument]);
+  }, []);
 
   return (
     <Styled.MainContainer>
@@ -134,17 +132,15 @@ const Profile = props => {
             boreholeID: borehole.data.id,
             kind: stratigraphyKind,
             isEditable,
-            showAllInstrument,
             reloadHeader,
           }}
           selectedStratigraphy={selectedStratigraphy}
           setSelectedStratigraphy={set}
-          setShowAllInstrument={setShowAllInstrumentFunc}
+          setSelectedStratigraphyNull={setSelectedStratigraphyNull}
         />
       )}
 
       {!selectedStratigraphy &&
-        !showAllInstrument &&
         stratigraphyKind !== profileKind.INSTRUMENT &&
         stratigraphyKind !== profileKind.CASING && (
           <Styled.Empty>
@@ -153,7 +149,6 @@ const Profile = props => {
         )}
 
       {!selectedStratigraphy &&
-        !showAllInstrument &&
         stratigraphyKind !== profileKind.INSTRUMENT &&
         stratigraphyKind === profileKind.CASING && (
           <Styled.Empty>
@@ -211,7 +206,6 @@ const Profile = props => {
         <ProfileInstrument
           data={{
             boreholeID: borehole.data.id,
-            showAllInstrument,
             selectedStratigraphyID: selectedStratigraphy?.id,
             isEditable,
             reloadLayer,
