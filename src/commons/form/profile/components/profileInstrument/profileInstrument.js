@@ -69,14 +69,11 @@ const ProfileInstrument = props => {
     getInstrumentProfile();
   }, [getInstrumentProfile]);
 
-  const setData = useCallback(
-    instrumentID => {
-      getData(instrumentID).then(response => {
-        setInstruments(response);
-      });
-    },
-    [selectedStratigraphyID],
-  );
+  const setData = useCallback(instrumentID => {
+    getData(instrumentID).then(response => {
+      setInstruments(response);
+    });
+  }, []);
 
   useEffect(() => {
     if (state.instrumentID) {
