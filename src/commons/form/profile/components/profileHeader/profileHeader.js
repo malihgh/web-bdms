@@ -7,32 +7,45 @@ import { profileKind } from '../../constance';
 import ProfileHeaderList from './components/profileHeaderList';
 
 const ProfileHeader = props => {
-  const { boreholeID, kind, isEditable, reloadHeader, showAllInstrument } =
-    props.data;
+  const { boreholeID, kind, isEditable, reloadHeader } = props.data;
   const {
     selectedStratigraphy,
     setSelectedStratigraphy,
-    setShowAllInstrument,
+    setSelectedStratigraphyNull,
   } = props;
 
   const [profiles, setProfiles] = useState([]);
+  const [showAllInstrument, setShowAllInstrument] = useState(false);
+
+  const setStratigraphy = useCallback(
+    item => {
+      setSelectedStratigraphy(item);
+      setShowAllInstrument(false);
+    },
+    [setSelectedStratigraphy],
+  );
+
+  const setStratigraphyNull = useCallback(() => {
+    setSelectedStratigraphyNull();
+    setShowAllInstrument(!showAllInstrument);
+  }, [setSelectedStratigraphyNull, showAllInstrument]);
 
   const setSpecialData = useCallback(
     data => {
       if (!selectedStratigraphy && kind !== profileKind.INSTRUMENT) {
-        setSelectedStratigraphy(data?.[0]);
+        setStratigraphy(data?.[0]);
       } else if (
         !selectedStratigraphy &&
         kind === profileKind.INSTRUMENT &&
         !showAllInstrument
       ) {
-        setShowAllInstrument();
+        setStratigraphyNull();
       }
     },
     [
       selectedStratigraphy,
-      setSelectedStratigraphy,
-      setShowAllInstrument,
+      setStratigraphy,
+      setStratigraphyNull,
       showAllInstrument,
       kind,
     ],
@@ -65,10 +78,6 @@ const ProfileHeader = props => {
     });
   };
 
-  const setStratigraphy = item => {
-    setSelectedStratigraphy(item);
-  };
-
   const setText = (
     <>
       {(kind === profileKind.STRATIGRAPHY && (
@@ -96,7 +105,7 @@ const ProfileHeader = props => {
           <Button
             content={<TranslationText id="showAll" />}
             disabled={showAllInstrument || profiles?.length < 1}
-            onClick={setShowAllInstrument}
+            onClick={setStratigraphyNull}
             secondary
             size="small"
           />
