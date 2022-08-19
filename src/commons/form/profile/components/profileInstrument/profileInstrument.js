@@ -20,7 +20,6 @@ const ProfileInstrument = props => {
     reloadLayer,
     onUpdated,
     selectedStratigraphyID,
-    showAllInstrument,
   } = props.data;
 
   const [instruments, setInstruments] = useState([]);
@@ -71,15 +70,9 @@ const ProfileInstrument = props => {
   }, [getInstrumentProfile]);
 
   const setData = useCallback(
-    (instrumentID, isAll) => {
+    instrumentID => {
       getData(instrumentID).then(response => {
-        if (isAll) setInstruments(response);
-        else if (selectedStratigraphyID) {
-          const selected = response.filter(
-            e => e.casing_id === selectedStratigraphyID,
-          );
-          setInstruments(selected);
-        }
+        setInstruments(response);
       });
     },
     [selectedStratigraphyID],
@@ -87,13 +80,14 @@ const ProfileInstrument = props => {
 
   useEffect(() => {
     if (state.instrumentID) {
-      setData(state.instrumentID, showAllInstrument);
+      setData(state.instrumentID);
     }
-  }, [state.instrumentID, reloadLayer, setData, showAllInstrument, reload]);
+  }, [state.instrumentID, reloadLayer, setData, reload]);
 
   const createLayer = () => {
     if (state.instrumentID) {
       if (selectedStratigraphyID) {
+        console.log('selectedStratigraphyID', selectedStratigraphyID);
         createNewInstrument(state.instrumentID, selectedStratigraphyID).then(
           response => {
             if (response) onUpdated('newLayer');
@@ -113,6 +107,15 @@ const ProfileInstrument = props => {
     });
   };
 
+  const selectedInstrument = () => {
+    let instrument = instruments;
+    if (selectedStratigraphyID) {
+      instrument = instruments.filter(
+        e => e.instrument_casing_id === selectedStratigraphyID,
+      );
+    }
+    return instrument;
+  };
   return (
     <Styled.Container disable={!hasCasing}>
       <Styled.ButtonContainer>
@@ -125,15 +128,16 @@ const ProfileInstrument = props => {
           size="tiny"
         />
       </Styled.ButtonContainer>
-      {instruments.length === 0 && (
+
+      {selectedInstrument().length === 0 && (
         <Styled.Empty>
           <TranslationText id="nothingToShow" />
         </Styled.Empty>
       )}
 
-      {instruments.length > 0 && (
+      {selectedInstrument().length > 0 && (
         <Styled.ListContainer>
-          {instruments.map((item, index) => (
+          {selectedInstrument().map((item, index) => (
             <Instrument
               data={{
                 info: item,
