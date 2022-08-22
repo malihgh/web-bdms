@@ -40,6 +40,7 @@
   "clickLayer": "Klicken Sie für mehr Informationen",
   "close": "Schliessen",
   "collapse": "Minimieren",
+  "coordinates": "Koordinaten",
   "completion": "Ausbau",
   "confirm": "Bestätigen",
   "copy": "Kopie erstellen",
@@ -119,6 +120,7 @@
   "flowRestart": "Neustart des Arbeitsablaufs",
   "french": "Französisch",
   "from": "von",
+  "fromDegree": "von Grad",
   "fromdepth": "von Tiefe [m MD]",
   "fromdiameter": "von Durchmesser",
   "fromelevation": "von Höhe",
@@ -295,6 +297,7 @@
   "sure": "Sind Sie sicher?",
   "terms": "Nutzungsbedingungen",
   "title": "BDMS",
+  "toDegree": "bis Grad",
   "todepth": "bis Tiefe MD [m]",
   "todiameter": "bis Durchmesser",
   "toelevation": "bis Höhe",
@@ -331,7 +334,6 @@
   "mainCompletion": "Dies ist der Hauptausbau",
   "export_database": "Export einer Arbeitsgruppe oder Bohrung in eine gezippte .gpkg-Datei",
   "import_database": "Bitte importieren Sie eine gezippte .gpkg-Datei (nur swissforages-Exporte) einer Arbeitsgruppe oder Bohrung.",
-  "coordinates": "Koordinaten",
   "import": "Importieren",
   "to": "bis"
 }
