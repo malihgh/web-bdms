@@ -1,19 +1,18 @@
 export const stratigraphyFieldEditorData = [
-  // value has problem and they are not working
   {
     id: 0,
     label: 'lithological_description',
-    value: '', //////
+    value: 'lithological_description',
   },
   {
     id: 1,
     label: 'facies_description',
-    value: '', /////
+    value: 'facies_description',
   },
   {
     id: 2,
     label: 'layer_last',
-    value: '', /////
+    value: 'layer_last',
   },
   {
     id: 3,
@@ -128,7 +127,7 @@ export const stratigraphyFieldEditorData = [
   {
     id: 25,
     label: 'gradation',
-    value: '', ///
+    value: 'gradation',
   },
   {
     id: 26,
@@ -143,6 +142,6 @@ export const stratigraphyFieldEditorData = [
   {
     id: 28,
     label: 'layer_notes',
-    value: 'notes', ///is not working
+    value: 'notes',
   },
 ];

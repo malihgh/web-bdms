@@ -22,7 +22,7 @@ export const stratigraphyData = {
       value: 'depth_from',
       require: true,
       isNumber: true,
-      isVisibleValue: '',
+      isVisible: true,
     },
     {
       id: 1,
@@ -31,21 +31,21 @@ export const stratigraphyData = {
       value: 'depth_to',
       require: true,
       isNumber: true,
-      isVisibleValue: '',
+      isVisible: true,
     },
     {
       id: 2,
       type: 'TextArea',
       label: 'lithological_description',
       value: 'lithological_description',
-      isVisibleValue: '',
+      isVisibleValue: 'lithological_description',
     },
     {
       id: 3,
       type: 'TextArea',
       label: 'facies_description',
       value: 'facies_description',
-      isVisibleValue: '',
+      isVisibleValue: 'facies_description',
     },
     {
       id: 4,
@@ -53,7 +53,7 @@ export const stratigraphyData = {
       label: 'layer_last',
       value: 'last',
       to: false,
-      isVisibleValue: '',
+      isVisibleValue: 'layer_last',
     },
     {
       id: 5,
@@ -298,7 +298,7 @@ export const stratigraphyData = {
       schema: 'gradation',
       multiple: false,
       search: true,
-      isVisibleValue: '',
+      isVisibleValue: 'gradation',
     },
     {
       id: 28,
