@@ -62,13 +62,13 @@ const EditorSettingList = props => {
             onClick={() => {
               sendSelectAll(true);
             }}>
-            <TranslationText id="selectall" />
+            <TranslationText id="selectAll" />
           </Button>
           <Button
             onClick={() => {
               sendSelectAll(false);
             }}>
-            <TranslationText id="deselectall" />
+            <TranslationText id="unselectAll" />
           </Button>
         </Button.Group>
       </Segment>
