@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Styled from './styles';
-import { Segment } from 'semantic-ui-react';
+import { Button, Segment } from 'semantic-ui-react';
 import TranslationText from '../../../../commons/form/translationText';
 import _ from 'lodash';
 
@@ -13,8 +13,17 @@ const EditorSettingList = props => {
     listName,
     geocode,
     codes,
+    toggleFieldArray,
+    toggleFilterArray,
   } = props;
 
+  const isChecked = item => {
+    return listName === 'stratigraphyfields'
+      ? isVisible(item.value)
+      : item.value.split('.').length > 1
+      ? data?.[item.value.split('.')[0]]?.[item.value.split('.')[1]]
+      : data?.[item.value];
+  };
   const isVisible = field => {
     if (_.has(codes, 'data.layer_kind') && _.isArray(codes.data.layer_kind)) {
       for (let idx = 0; idx < codes.data.layer_kind.length; idx++) {
@@ -33,18 +42,40 @@ const EditorSettingList = props => {
     }
     return false;
   };
+
+  const sendSelectAll = value => {
+    const newData = [];
+    attribute.forEach(element => {
+      newData.push(element.value);
+    });
+    console.log(newData);
+
+    if (listName === 'stratigraphyfields') {
+      toggleFieldArray(newData, value);
+    } else toggleFilterArray(newData, value);
+  };
   return (
     <Styled.Container>
-      {attribute.map((item, index) => (
+      <Segment>
+        <Button.Group size="mini">
+          <Button
+            onClick={() => {
+              sendSelectAll(true);
+            }}>
+            <TranslationText id="selectall" />
+          </Button>
+          <Button
+            onClick={() => {
+              sendSelectAll(false);
+            }}>
+            <TranslationText id="deselectall" />
+          </Button>
+        </Button.Group>
+      </Segment>
+      {attribute?.map((item, index) => (
         <Segment key={index}>
           <Styled.CheckboxContainer
-            checked={
-              listName === 'stratigraphyfields'
-                ? isVisible(item.value)
-                : item.value.split('.').length > 1
-                ? data?.[item.value.split('.')[0]]?.[item.value.split('.')[1]]
-                : data?.[item.value]
-            }
+            checked={isChecked(item)}
             onChange={(e, d) => {
               if (listName === 'stratigraphyfields') {
                 toggleField(item.value, d.checked);
