@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import * as Styled from './styles';
 import { Button, Segment } from 'semantic-ui-react';
 import TranslationText from '../../../../commons/form/translationText';
@@ -48,7 +48,6 @@ const EditorSettingList = props => {
     attribute.forEach(element => {
       newData.push(element.value);
     });
-    console.log(newData);
 
     if (listName === 'stratigraphyfields') {
       toggleFieldArray(newData, value);
