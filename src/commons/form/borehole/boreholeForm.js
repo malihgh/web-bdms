@@ -228,7 +228,6 @@ class BoreholeForm extends React.Component {
   }
 
   checkLock() {
-    debugger;
     if (this.props.borehole.data.role !== 'EDIT') {
       alert('Borehole status not editable');
       return false;
@@ -332,6 +331,10 @@ class BoreholeForm extends React.Component {
                   borehole.percentage = response.data.percentage;
                   borehole.lock = response.data.lock;
                   borehole.updater = response.data.updater;
+                  if (response.data.location) {
+                    borehole.custom.canton = response.data.location.canton;
+                    borehole.custom.city = response.data.location.city;
+                  }
                   this.props.updateBorehole(borehole);
                 },
               );
