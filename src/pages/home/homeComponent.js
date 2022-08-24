@@ -3,11 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 // import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
-import {
-  Route,
-  Switch,
-  withRouter
-} from "react-router-dom";
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 import ExportLink from '../../commons/exportlink';
 import BoreholeTable from '../../commons/table/boreholeTable';
@@ -18,7 +14,6 @@ import MenuContainer from '../../commons/menu/menuContainer';
 import { Checkbox } from 'semantic-ui-react';
 
 class HomeComponent extends React.Component {
-
   constructor(props) {
     super(props);
     this.rowHover = false;
@@ -29,21 +24,15 @@ class HomeComponent extends React.Component {
       csv: false,
       fullcsv: false,
       shp: false,
-      refresh: 0
+      refresh: 0,
     };
   }
 
   getMap() {
-    const {
-      detail,
-      history,
-      home,
-      search,
-      setting
-    } = this.props;
+    const { detail, history, home, search, setting } = this.props;
     return (
       <div
-        className='stbg'
+        className="stbg"
         style={{
           flex: '1 1 100%',
           display: 'flex',
@@ -53,27 +42,27 @@ class HomeComponent extends React.Component {
           //   '1px solid #787878': '1px solid #cccccc',
           position: 'relative',
           overflow: 'hidden',
-          zIndex: 1
-        }}
-      >
+          zIndex: 1,
+        }}>
         <MapComponent
           centerto={
-            search.center2selected
-            && setting.data.appearance.explorer !== 0 ?
-              detail.borehole !== null?  
-                detail.borehole.id : null
+            search.center2selected && setting.data.appearance.explorer !== 0
+              ? detail.borehole !== null
+                ? detail.borehole.id
+                : null
               : null
           }
           filter={{
-            ...search.filter
+            ...search.filter,
           }}
           highlighted={
-            !_.isNil(detail.borehole) ?
-              [detail.borehole.id] :
-              home.hover?
-                [home.hover.id] : []
+            !_.isNil(detail.borehole)
+              ? [detail.borehole.id]
+              : home.hover
+              ? [home.hover.id]
+              : []
           }
-          hover={(id) => {
+          hover={id => {
             if (_.isNil(detail.borehole)) {
               this.props.mapHover(id);
             }
@@ -82,32 +71,24 @@ class HomeComponent extends React.Component {
           moveend={(features, extent) => {
             this.props.filterByExtent(extent);
           }}
-          selected={(id) => {
+          selected={id => {
             // this.props.boreholeSeleced(id);
-            if (id === null){
+            if (id === null) {
               history.push(process.env.PUBLIC_URL);
             } else {
-              history.push(
-                process.env.PUBLIC_URL + "/" + id
-              );
+              history.push(process.env.PUBLIC_URL + '/' + id);
             }
           }}
           zoomto={
-            search.zoom2selected
-            && setting.data.appearance.explorer !== 0
+            search.zoom2selected && setting.data.appearance.explorer !== 0
           }
         />
       </div>
     );
   }
 
-  getTable() {
-    const {
-      checkout,
-      history,
-      home,
-      search
-    } = this.props;
+  getTable(id) {
+    const { checkout, history, home, search } = this.props;
     return (
       <div
         style={{
@@ -115,104 +96,98 @@ class HomeComponent extends React.Component {
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
-          zIndex: 1
-        }}
-      >
-        {
-          checkout.cart.length > 0 ?
-            <div
+          zIndex: 1,
+        }}>
+        {checkout.cart.length > 0 ? (
+          <div
+            style={{
+              backgroundColor: '#ececec',
+              borderBottom: 'thin solid #c5c5c5',
+              color: 'black',
+              textAlign: 'center',
+              padding: '0.5em',
+            }}>
+            <span
               style={{
-                backgroundColor: '#ececec',
-                borderBottom: 'thin solid #c5c5c5',
-                color: 'black',
-                textAlign: 'center',
-                padding: '0.5em'
+                fontWeight: 'bold',
+              }}>
+              {checkout.cart.length === 1 ? 'One' : checkout.cart.length}{' '}
+              borehole{checkout.cart.length > 1 ? 's' : null} selected.
+            </span>{' '}
+            (
+            <span
+              onClick={() => {
+                this.props.resetCart();
               }}
-            >
-              <span
-                style={{
-                  fontWeight: 'bold'
-                }}
-              >
-                {
-                  checkout.cart.length === 1 ?
-                    'One' :
-                    checkout.cart.length
-                } borehole{
-                  checkout.cart.length > 1 ?
-                    's' : null
-                } selected.
-              </span> (
-              <span
-                onClick={() => {
-                  this.props.resetCart();
-                }}
-                style={{
-                  color: '#f2711c',
-                  textDecoration: 'underline',
-                  cursor: 'pointer'
-                }}
-              >Reset selection</span>)
-            &nbsp;
-            Export as:&nbsp;
-              <Checkbox
-                checked={this.state.pdf}
-                label='PDF'
-                onChange={() => {
-                  this.setState({
-                    pdf: !this.state.pdf
-                  });
-                }}
-              /> &nbsp;&nbsp;
-              <Checkbox
-                checked={this.state.csv}
-                label='CSV'
-                onChange={() => {
-                  this.setState({
-                    csv: !this.state.csv
-                  });
-                }}
-              /> &nbsp;&nbsp;
-              <Checkbox
-                checked={this.state.fullcsv}
-                label='Full-CSV'
-                onChange={() => {
-                  this.setState({
-                    fullcsv: !this.state.fullcsv
-                  });
-                }}
-              /> &nbsp;&nbsp;
-              <Checkbox
-                checked={this.state.shp}
-                label='Shape File'
-                onChange={() => {
-                  this.setState({
-                    shp: !this.state.shp
-                  });
-                }}
-              /> &nbsp;&nbsp;
-              <ExportLink
-                csv={this.state.csv}
-                fullcsv={this.state.fullcsv}
-                id={
-                  checkout.cart.map((k) => {
-                    return k.id;
-                  })
-                }
-                pdf={this.state.pdf}
-                shp={this.state.shp}
-                style={{
-                  fontSize: '0.8em'
-                }}
-              />
-            </div> : null
-        }
+              style={{
+                color: '#f2711c',
+                textDecoration: 'underline',
+                cursor: 'pointer',
+              }}>
+              Reset selection
+            </span>
+            ) &nbsp; Export as:&nbsp;
+            <Checkbox
+              checked={this.state.pdf}
+              label="PDF"
+              onChange={() => {
+                this.setState({
+                  pdf: !this.state.pdf,
+                });
+              }}
+            />{' '}
+            &nbsp;&nbsp;
+            <Checkbox
+              checked={this.state.csv}
+              label="CSV"
+              onChange={() => {
+                this.setState({
+                  csv: !this.state.csv,
+                });
+              }}
+            />{' '}
+            &nbsp;&nbsp;
+            <Checkbox
+              checked={this.state.fullcsv}
+              label="Full-CSV"
+              onChange={() => {
+                this.setState({
+                  fullcsv: !this.state.fullcsv,
+                });
+              }}
+            />{' '}
+            &nbsp;&nbsp;
+            <Checkbox
+              checked={this.state.shp}
+              label="Shape File"
+              onChange={() => {
+                this.setState({
+                  shp: !this.state.shp,
+                });
+              }}
+            />{' '}
+            &nbsp;&nbsp;
+            <ExportLink
+              csv={this.state.csv}
+              fullcsv={this.state.fullcsv}
+              id={checkout.cart.map(k => {
+                return k.id;
+              })}
+              pdf={this.state.pdf}
+              shp={this.state.shp}
+              style={{
+                fontSize: '0.8em',
+              }}
+            />
+          </div>
+        ) : null}
         <BoreholeTable
+          activeItem={id ? parseInt(id, 10) : null}
           filter={{
-            ...search.filter
+            ...search.filter,
           }}
-          highlight={home.maphover}
-          onHover={(item) => {
+          highlight={id ? null : home.maphover}
+          onHover={item => {
             if (this.rowHover) {
               clearTimeout(this.rowHover);
               this.rowHover = false;
@@ -221,15 +196,13 @@ class HomeComponent extends React.Component {
               this.props.boreholeHover(item);
             }, 250);
           }}
-          onSelected={(borehole) => {
+          onSelected={borehole => {
             // this.props.boreholeSeleced(borehole.id);
 
-            if (borehole === null){
+            if (borehole === null) {
               history.push(process.env.PUBLIC_URL);
             } else {
-              history.push(
-                process.env.PUBLIC_URL + "/" + borehole.id
-              );
+              history.push(process.env.PUBLIC_URL + '/' + borehole.id);
             }
           }}
         />
@@ -238,36 +211,30 @@ class HomeComponent extends React.Component {
   }
 
   render() {
-    const {
-      detail,
-      setting
-    } = this.props;
+    const { detail, setting } = this.props;
     return (
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
-          height: '100%'
-        }}
-      >
+          height: '100%',
+        }}>
         <MenuContainer />
         <div
           style={{
             flex: '1 1 100%',
             display: 'flex',
             flexDirection: 'row',
-            overflow: 'hidden'
-          }}
-        >
+            overflow: 'hidden',
+          }}>
           <div
             style={{
               boxShadow: 'rgba(0, 0, 0, 0.17) 2px 6px 6px 0px',
               display: 'flex',
               flexDirection: 'column',
               width: '250px',
-              minWidth: '250px'
-            }}
-          >
+              minWidth: '250px',
+            }}>
             <MenuExplorer />
           </div>
           {(() => {
@@ -279,19 +246,16 @@ class HomeComponent extends React.Component {
                       flex: '1 1 100%',
                       display: 'flex',
                       flexDirection: 'row',
-                      overflow: 'hidden'
-                    }}
-                  >
+                      overflow: 'hidden',
+                    }}>
                     <Switch>
                       <Route
                         exact
-                        path={process.env.PUBLIC_URL + "/:id"}
-                        render={(props) => {
+                        path={process.env.PUBLIC_URL + '/:id'}
+                        render={props => {
                           return (
                             <DetailsContainer
-                              id={
-                                parseInt(props.match.params.id, 10)
-                              }
+                              id={parseInt(props.match.params.id, 10)}
                             />
                           );
                         }}
@@ -309,19 +273,18 @@ class HomeComponent extends React.Component {
                       flex: '1 1 100%',
                       display: 'flex',
                       flexDirection: 'row',
-                      overflow: 'hidden'
-                    }}
-                  >
+                      overflow: 'hidden',
+                    }}>
                     <div
                       style={{
-                        boxShadow: !_.isNil(detail.borehole) ?
-                          'rgba(0, 0, 0, 0.17) 2px 6px 6px 0px' : null,
+                        boxShadow: !_.isNil(detail.borehole)
+                          ? 'rgba(0, 0, 0, 0.17) 2px 6px 6px 0px'
+                          : null,
                         display: 'flex',
                         flex: '1 1 100%',
                         flexDirection: 'column',
                         overflow: 'hidden',
-                      }}
-                    >
+                      }}>
                       <div
                         style={{
                           flex: '1 1 75%',
@@ -329,9 +292,8 @@ class HomeComponent extends React.Component {
                           display: 'flex',
                           flexDirection: 'column',
                           // margin: '1em',
-                          minHeight: '300px'
-                        }}
-                      >
+                          minHeight: '300px',
+                        }}>
                         {this.getMap()}
                       </div>
                       <div
@@ -339,22 +301,28 @@ class HomeComponent extends React.Component {
                           flex: '1 1 100%',
                           overflow: 'hidden',
                           display: 'flex',
-                          flexDirection: 'column'
-                        }}
-                      >
-                        {this.getTable()}
+                          flexDirection: 'column',
+                        }}>
+                        <Switch>
+                          <Route
+                            path={`${process.env.PUBLIC_URL}/:id?`}
+                            render={p => {
+                              if (p.match.params.id === undefined)
+                                return this.getTable();
+                              else return this.getTable(p.match.params.id);
+                            }}
+                          />
+                        </Switch>
                       </div>
                     </div>
                     <Switch>
                       <Route
                         exact
-                        path={process.env.PUBLIC_URL + "/:id"}
-                        render={(props) => {
+                        path={process.env.PUBLIC_URL + '/:id'}
+                        render={props => {
                           return (
                             <DetailsContainer
-                              id={
-                                parseInt(props.match.params.id, 10)
-                              }
+                              id={parseInt(props.match.params.id, 10)}
                             />
                           );
                         }}
@@ -368,7 +336,7 @@ class HomeComponent extends React.Component {
                               flex: '1 1 100%',
                               overflow: 'hidden',
                               display: 'flex',
-                              flexDirection: 'column'
+                              flexDirection: 'column',
                             }}
                           />
                         )}
@@ -384,17 +352,15 @@ class HomeComponent extends React.Component {
                       flex: '1 1 100%',
                       display: 'flex',
                       flexDirection: 'row',
-                      overflow: 'hidden'
-                    }}
-                  >
+                      overflow: 'hidden',
+                    }}>
                     <div
                       style={{
                         display: 'flex',
                         flex: '1 1 100%',
                         flexDirection: 'column',
                         overflow: 'hidden',
-                      }}
-                    >
+                      }}>
                       {this.getMap()}
                     </div>
                     <div
@@ -402,27 +368,29 @@ class HomeComponent extends React.Component {
                         flex: '1 1 100%',
                         overflow: 'hidden',
                         display: 'flex',
-                        flexDirection: 'column'
-                      }}
-                    >
+                        flexDirection: 'column',
+                      }}>
                       <Switch>
                         <Route
                           exact
-                          path={process.env.PUBLIC_URL + "/:id"}
-                          render={(props) => {
+                          path={process.env.PUBLIC_URL + '/:id'}
+                          render={props => {
                             return (
                               <DetailsContainer
-                                id={
-                                  parseInt(props.match.params.id, 10)
-                                }
+                                id={parseInt(props.match.params.id, 10)}
                               />
                             );
                           }}
                         />
+
                         <Route
                           exact
-                          path={process.env.PUBLIC_URL}
-                          render={() => this.getTable()}
+                          path={`${process.env.PUBLIC_URL}/:id?`}
+                          render={p => {
+                            if (p.match.params.id === undefined)
+                              return this.getTable();
+                            else return this.getTable(p.match.params.id);
+                          }}
                         />
                       </Switch>
                     </div>
@@ -436,37 +404,41 @@ class HomeComponent extends React.Component {
                       flex: '1 1 100%',
                       display: 'flex',
                       flexDirection: 'row',
-                      overflow: 'hidden'
-                    }}
-                  >
+                      overflow: 'hidden',
+                    }}>
                     <div
                       style={{
                         display: 'flex',
                         flex: '1 1 100%',
                         flexDirection: 'column',
                         overflow: 'hidden',
-                      }}
-                    >
-                      {this.getTable()}
+                      }}>
+                      <Switch>
+                        <Route
+                          path={`${process.env.PUBLIC_URL}/:id?`}
+                          render={p => {
+                            if (p.match.params.id === undefined)
+                              return this.getTable();
+                            else return this.getTable(p.match.params.id);
+                          }}
+                        />
+                      </Switch>
                     </div>
                     <div
                       style={{
                         flex: '1 1 100%',
                         overflow: 'hidden',
                         display: 'flex',
-                        flexDirection: 'column'
-                      }}
-                    >
+                        flexDirection: 'column',
+                      }}>
                       <Switch>
                         <Route
                           exact
-                          path={process.env.PUBLIC_URL + "/:id"}
-                          render={(props) => {
+                          path={process.env.PUBLIC_URL + '/:id'}
+                          render={props => {
                             return (
                               <DetailsContainer
-                                id={
-                                  parseInt(props.match.params.id, 10)
-                                }
+                                id={parseInt(props.match.params.id, 10)}
                               />
                             );
                           }}
@@ -488,27 +460,23 @@ class HomeComponent extends React.Component {
                       flex: '1 1 100%',
                       display: 'flex',
                       flexDirection: 'row',
-                      overflow: 'hidden'
-                    }}
-                  >
+                      overflow: 'hidden',
+                    }}>
                     <div
                       style={{
                         display: 'flex',
                         flex: '1 1 100%',
                         flexDirection: 'column',
                         overflow: 'hidden',
-                      }}
-                    >
+                      }}>
                       <Switch>
                         <Route
                           exact
-                          path={process.env.PUBLIC_URL + "/:id"}
-                          render={(props) => {
+                          path={process.env.PUBLIC_URL + '/:id'}
+                          render={h => {
                             return (
                               <DetailsContainer
-                                id={
-                                  parseInt(props.match.params.id, 10)
-                                }
+                                id={parseInt(h.match.params.id, 10)}
                               />
                             );
                           }}
@@ -525,12 +493,18 @@ class HomeComponent extends React.Component {
                         flex: '1 1 100%',
                         overflow: 'hidden',
                         display: 'flex',
-                        flexDirection: 'column'
-                      }}
-                    >
-                      {
-                        this.getTable()
-                      }
+                        flexDirection: 'column',
+                      }}>
+                      <Switch>
+                        <Route
+                          path={`${process.env.PUBLIC_URL}/:id?`}
+                          render={p => {
+                            if (p.match.params.id === undefined)
+                              return this.getTable();
+                            else return this.getTable(p.match.params.id);
+                          }}
+                        />
+                      </Switch>
                     </div>
                   </div>
                 );
@@ -542,35 +516,36 @@ class HomeComponent extends React.Component {
                       flex: '1 1 100%',
                       display: 'flex',
                       flexDirection: 'row',
-                      overflow: 'hidden'
-                    }}
-                  >
+                      overflow: 'hidden',
+                    }}>
                     <div
                       style={{
                         display: 'flex',
                         flex: '1 1 100%',
                         flexDirection: 'column',
                         overflow: 'hidden',
-                      }}
-                    >
+                      }}>
                       <Switch>
                         <Route
                           exact
-                          path={process.env.PUBLIC_URL + "/:id"}
-                          render={(props) => {
+                          path={process.env.PUBLIC_URL + '/:id'}
+                          render={props => {
                             return (
                               <DetailsContainer
-                                id={
-                                  parseInt(props.match.params.id, 10)
-                                }
+                                id={parseInt(props.match.params.id, 10)}
                               />
                             );
                           }}
                         />
+
                         <Route
                           exact
-                          path={process.env.PUBLIC_URL}
-                          render={() => this.getTable()}
+                          path={`${process.env.PUBLIC_URL}/:id?`}
+                          render={p => {
+                            if (p.match.params.id === undefined)
+                              return this.getTable();
+                            else return this.getTable(p.match.params.id);
+                          }}
                         />
                       </Switch>
                     </div>
@@ -579,9 +554,8 @@ class HomeComponent extends React.Component {
                         flex: '1 1 100%',
                         overflow: 'hidden',
                         display: 'flex',
-                        flexDirection: 'column'
-                      }}
-                    >
+                        flexDirection: 'column',
+                      }}>
                       {this.getMap()}
                     </div>
                   </div>
@@ -596,70 +570,67 @@ class HomeComponent extends React.Component {
       </div>
     );
   }
-};
+}
 
 HomeComponent.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
-  }).isRequired
+  }).isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     checkout: state.checkout,
     detail: state.detail_borehole,
     home: state.home,
     leftmenu: state.leftmenu,
     search: state.search,
-    setting: state.setting
+    setting: state.setting,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     dispatch: dispatch,
     setIndex: (e, titleProps) => {
       const { index } = titleProps;
       dispatch({
         type: 'LFMSELECTED',
-        index: index
+        index: index,
       });
     },
-    boreholeSeleced: (id) => {
+    boreholeSeleced: id => {
       dispatch({
         type: 'HOME_BOREHOLE_SELECTED',
-        id: id
+        id: id,
       });
     },
-    boreholeHover: (borehole) => {
+    boreholeHover: borehole => {
       dispatch({
         type: 'HOME_BOREHOLE_HOVER',
-        borehole: borehole
+        borehole: borehole,
       });
     },
-    mapHover: (id) => {
+    mapHover: id => {
       dispatch({
         type: 'HOME_MAP_HOVER',
-        id: id
+        id: id,
       });
     },
-    filterByExtent: (extent) => {
+    filterByExtent: extent => {
       dispatch({
         type: 'SEARCH_EXTENT_CHANGED',
-        extent: extent
+        extent: extent,
       });
     },
     resetCart: () => {
       dispatch({
-        type: 'CHECKOUT_RESET_CART'
+        type: 'CHECKOUT_RESET_CART',
       });
-    }
+    },
   };
 };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(HomeComponent) // withTranslation('home')(HomeComponent))
+  connect(mapStateToProps, mapDispatchToProps)(HomeComponent), // withTranslation('home')(HomeComponent))
 );
