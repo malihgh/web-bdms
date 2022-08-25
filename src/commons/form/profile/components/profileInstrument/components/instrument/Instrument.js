@@ -62,7 +62,7 @@ const Instrument = props => {
           .then(response => {
             if (response.data.success) {
               setState(prevState => ({ ...prevState, isPatching: false }));
-              if (attribute === 'casing_id') {
+              if (attribute === 'instrument_casing_id') {
                 update();
               }
             } else {
@@ -83,7 +83,6 @@ const Instrument = props => {
       }));
     });
   };
-
 
   return (
     <Styled.FormContainer>
