@@ -20,11 +20,11 @@ export default function useCasingList(boreholeID) {
     },
     { key: 1, value: 0, text: t('common:no_casing') },
   ];
-  const [casing, setCasing] = useState(initialCasing);
+  const [casing, setCasing] = useState([]);
 
   useEffect(() => {
     getProfile(boreholeID, profileKind.CASING).then(response => {
-      const temp = [];
+      const temp = initialCasing;
       if (response.length > 0) {
         for (const e of response) {
           temp.push({
