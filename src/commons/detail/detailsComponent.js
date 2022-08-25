@@ -112,10 +112,10 @@ class DetailsComponent extends React.Component {
                     color: '#787878',
                     paddingTop: '0.4em',
                   }}>
-                  {detail.borehole.custom.address !== null &&
+                  {/* {detail.borehole.custom.address !== null &&
                   detail.borehole.custom.address !== ''
                     ? detail.borehole.custom.address + ', '
-                    : null}
+                    : null} */}
                   <MunicipalityText id={detail.borehole.custom.city} />
                   {detail.borehole.custom.city !== null &&
                   detail.borehole.custom.city !== ''
