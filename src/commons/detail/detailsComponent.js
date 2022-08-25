@@ -175,7 +175,7 @@ class DetailsComponent extends React.Component {
                       fontWeight: 'bold',
                       fontSize: '1.1em',
                     }}>
-                    {detail.borehole.total_depth}m
+                    {detail.borehole.total_depth} m
                   </div>
                   <div
                     style={{
@@ -195,7 +195,7 @@ class DetailsComponent extends React.Component {
                       fontWeight: 'bold',
                       fontSize: '1.1em',
                     }}>
-                    {detail.borehole.elevation_z}m
+                    {detail.borehole.elevation_z} m
                   </div>
                   <div
                     style={{
