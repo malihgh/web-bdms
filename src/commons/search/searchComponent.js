@@ -329,7 +329,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       });
     },
     resetIdentifier: () => {
-      console.log('resetIdentifier');
       dispatch({
         type: 'SEARCH_FILTER_RESET_IDENTIFIER',
       });

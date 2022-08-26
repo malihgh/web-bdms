@@ -84,7 +84,6 @@ const ProfileInstrument = props => {
   const createLayer = () => {
     if (state.instrumentID) {
       if (selectedStratigraphyID) {
-        console.log('selectedStratigraphyID', selectedStratigraphyID);
         createNewInstrument(state.instrumentID, selectedStratigraphyID).then(
           response => {
             if (response) onUpdated('newLayer');
