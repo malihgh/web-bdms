@@ -36,7 +36,7 @@ export default function useCasingList(boreholeID) {
       }
       setCasing(temp);
     });
-  }, [boreholeID, t]);
+  }, [boreholeID, t, initialCasing]);
 
   return { casing };
 }
