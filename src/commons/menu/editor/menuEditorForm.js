@@ -597,14 +597,14 @@ class MenuEditorForm extends React.Component {
                 style={{
                   fontWeight: 'bold',
                 }}>
-                {borehole.data.author !== undefined
-                  ? borehole.data.author.username ===
+                {borehole.data.creator !== undefined
+                  ? borehole.data.creator.username ===
                     this.props.user.data.username
-                    ? borehole.data.author.fullname +
+                    ? borehole.data.creator.fullname +
                       ' (' +
                       t('common:you') +
                       ')'
-                    : borehole.data.author.fullname
+                    : borehole.data.creator.fullname
                   : '-'}
               </div>
             </div>
@@ -624,8 +624,8 @@ class MenuEditorForm extends React.Component {
               style={{
                 fontWeight: 'bold',
               }}>
-              {borehole.data.author && (
-                <DateText date={borehole.data.author.date} hours />
+              {borehole.data.creator && (
+                <DateText date={borehole.data.creator.date} hours />
               )}
             </div>
             <div
@@ -633,8 +633,8 @@ class MenuEditorForm extends React.Component {
                 fontSize: '0.8em',
                 marginBottom: '0.25em',
               }}>
-              {borehole.data.author !== undefined ? (
-                <DateText date={borehole.data.author.date} fromnow />
+              {borehole.data.creator !== undefined ? (
+                <DateText date={borehole.data.creator.date} fromnow />
               ) : (
                 '-'
               )}
