@@ -186,8 +186,6 @@ class ProfileView extends React.Component {
       _.isArray(domains.data.layer_kind)
     ) {
       for (let idx = 0; idx < domains.data.layer_kind.length; idx++) {
-        console.log('pppp', domains.data.layer_kind, conf);
-
         if (
           this.state.allfields === false &&
           _.isObject(conf) &&
