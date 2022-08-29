@@ -168,6 +168,7 @@ class EditorSettings extends React.Component {
                 toggleFilter={toggleFilter}
                 toggleFieldArray={toggleFieldArray}
                 toggleFilterArray={toggleFilterArray}
+                type={'editor'}
               />
             ) : (
               <Divider style={{ margin: 0 }} />

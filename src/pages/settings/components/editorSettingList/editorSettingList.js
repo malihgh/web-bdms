@@ -15,6 +15,7 @@ const EditorSettingList = props => {
     codes,
     toggleFieldArray,
     toggleFilterArray,
+    type,
   } = props;
 
   const isChecked = item => {
@@ -28,12 +29,21 @@ const EditorSettingList = props => {
     if (_.has(codes, 'data.layer_kind') && _.isArray(codes.data.layer_kind)) {
       for (let idx = 0; idx < codes.data.layer_kind.length; idx++) {
         const element = codes.data.layer_kind[idx];
+
         if (element.code === geocode) {
           if (
+            type === 'editor' &&
             _.isObject(element.conf) &&
             _.has(element.conf, `fields.${field}`)
           ) {
             return element.conf.fields[field];
+          }
+          if (
+            type === 'viewer' &&
+            _.isObject(element.conf) &&
+            _.has(element.conf, `viewerFields.${field}`)
+          ) {
+            return element.conf.viewerFields[field];
           } else {
             return false;
           }

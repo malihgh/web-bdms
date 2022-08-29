@@ -905,6 +905,7 @@ class ExplorerSettings extends React.Component {
                 toggleFilter={toggleFilter}
                 toggleFieldArray={toggleFieldArray}
                 toggleFilterArray={toggleFilterArray}
+                type={'viewer'}
               />
             ) : (
               <Divider style={{ margin: 0 }} />
@@ -933,7 +934,7 @@ const mapDispatchToProps = (dispatch, state) => {
     toggleFieldArray: (filter, enabled) => {
       const newFilter = [];
       filter.forEach(element => {
-        newFilter.push(`fields.${element}`);
+        newFilter.push(`viewerFields.${element}`);
       });
       dispatch(patchCodeConfig(newFilter, enabled));
     },
@@ -945,7 +946,7 @@ const mapDispatchToProps = (dispatch, state) => {
       dispatch(patchSettings(newFilter, enabled));
     },
     toggleField: (filter, enabled) => {
-      dispatch(patchCodeConfig(`fields.${filter}`, enabled));
+      dispatch(patchCodeConfig(`viewerFields.${filter}`, enabled));
     },
     toggleFilter: (filter, enabled) => {
       dispatch(patchSettings(`filter.${filter}`, enabled));
