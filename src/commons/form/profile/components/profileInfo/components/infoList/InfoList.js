@@ -8,7 +8,7 @@ import _ from 'lodash';
 import CasingList from '../../../casingList';
 
 const InfoList = props => {
-  const { attribute, profileInfo, updateChange, boreholeID } = props.data;
+  const { attribute, profileInfo, updateChange, casing } = props.data;
 
   return (
     <>
@@ -82,13 +82,13 @@ const InfoList = props => {
               {item.type === 'CasingDropdown' && (
                 <Styled.AttributesItem>
                   <CasingList
+                    data={casing}
                     dropDownValue={
                       _.isNil(profileInfo?.[item.value])
                         ? null
                         : profileInfo?.[item.value]
                     }
                     handleCasing={updateChange}
-                    id={boreholeID}
                     ItemValue={item.value}
                   />
                 </Styled.AttributesItem>

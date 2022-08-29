@@ -12,6 +12,7 @@ import {
   getData,
   getProfile,
 } from './api';
+import useCasingList from '../../hooks/useCasingList';
 
 const ProfileInstrument = props => {
   const {
@@ -22,6 +23,7 @@ const ProfileInstrument = props => {
     selectedStratigraphyID,
   } = props.data;
 
+  const { casing } = useCasingList(boreholeID);
   const [instruments, setInstruments] = useState([]);
   const [hasCasing, setHasCasing] = useState(false);
   const [reload, setReload] = useState(0);
@@ -144,7 +146,7 @@ const ProfileInstrument = props => {
                 update: () => {
                   setReload(prevState => prevState + 1);
                 },
-                boreholeID,
+                casing,
               }}
               key={index}
             />
