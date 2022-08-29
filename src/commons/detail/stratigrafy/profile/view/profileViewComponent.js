@@ -99,13 +99,15 @@ class ProfileView extends React.Component {
               kind => layer.kind === kind.id,
               //layer.kinds.includes(kind.id),
             );
-            let fields = { ...filtered[0].conf.fields };
+
+            let fields = { ...filtered[0].conf.viewerFields };
             if (filtered.length > 1) {
               for (let index = 1; index < filtered.length; index++) {
                 const element = filtered[index];
+
                 fields = _.mergeWith(
                   fields,
-                  element.conf.fields,
+                  element.conf.viewerFields,
                   (objValue, srcValue) => {
                     return objValue || srcValue;
                   },
@@ -178,11 +180,14 @@ class ProfileView extends React.Component {
   isVisible(name, field, conf) {
     const isVisibleValue = name.replace('layer_', '');
     const { domains } = this.props;
+
     if (
       _.has(domains, 'data.layer_kind') &&
       _.isArray(domains.data.layer_kind)
     ) {
       for (let idx = 0; idx < domains.data.layer_kind.length; idx++) {
+        console.log('pppp', domains.data.layer_kind, conf);
+
         if (
           this.state.allfields === false &&
           _.isObject(conf) &&

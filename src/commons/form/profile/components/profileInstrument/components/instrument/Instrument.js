@@ -10,7 +10,7 @@ import _ from 'lodash';
 import CasingList from '../../../casingList';
 
 const Instrument = props => {
-  const { index, info, deleting, isEditable, boreholeID, update } = props.data;
+  const { index, info, deleting, isEditable, update, casing } = props.data;
 
   const { t } = useTranslation();
 
@@ -29,6 +29,7 @@ const Instrument = props => {
       instrument_id: null,
     },
   });
+
   useEffect(() => {
     setState(prevState => ({ ...prevState, instrument: info }));
   }, [info]);
@@ -62,7 +63,7 @@ const Instrument = props => {
           .then(response => {
             if (response.data.success) {
               setState(prevState => ({ ...prevState, isPatching: false }));
-              if (attribute === 'casing_id') {
+              if (attribute === 'instrument_casing_id') {
                 update();
               }
             } else {
@@ -83,7 +84,6 @@ const Instrument = props => {
       }));
     });
   };
-
 
   return (
     <Styled.FormContainer>
@@ -146,13 +146,13 @@ const Instrument = props => {
             {item.type === 'CasingDropdown' && (
               <Styled.AttributesItem>
                 <CasingList
+                  data={casing}
                   dropDownValue={
                     _.isNil(state?.instrument?.[item.value])
                       ? null
                       : state.instrument[item.value]
                   }
                   handleCasing={updateChange}
-                  id={boreholeID}
                   ItemValue={item.value}
                 />
               </Styled.AttributesItem>

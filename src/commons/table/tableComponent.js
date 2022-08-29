@@ -30,26 +30,38 @@ class TableComponent extends React.Component {
     this.props.loadData(1, filter); //, setting.orderby, setting.direction);
   }
   componentDidUpdate(prevProps) {
-    const { filter } = this.props;
+    const { filter, activeItem } = this.props;
+    let state = null;
     if (!_.isEqual(filter, prevProps.filter)) {
       if (this.delay) {
         clearTimeout(this.delay);
         this.delay = false;
       }
-      this.setState(
-        {
-          selected: [],
-          all: false,
-        },
-        () => {
-          this.delay = setTimeout(
-            function () {
-              this.props.loadData(1, filter); //, setting.orderby, setting.direction);
-            }.bind(this),
-            10,
-          );
-        },
-      );
+      state = {
+        selected: [],
+        all: false,
+      };
+    }
+
+    if (activeItem !== prevProps.activeItem) {
+      if (state === null) {
+        state = {
+          activeItem: activeItem,
+        };
+      } else {
+        state['activeItem'] = activeItem;
+      }
+    }
+
+    if (state !== null) {
+      this.setState(state, () => {
+        this.delay = setTimeout(
+          function () {
+            this.props.loadData(1, filter); //, setting.orderby, setting.direction);
+          }.bind(this),
+          10,
+        );
+      });
     }
   }
   handleClick(selected) {
@@ -273,9 +285,9 @@ class TableComponent extends React.Component {
             <Table.Body>
               {store.data.map((item, idx) => (
                 <Table.Row
-                  active={
-                    activeItem === item.id || this.props.highlight === item.id
-                  }
+                  // active={
+                  //   activeItem === item.id || this.props.highlight === item.id
+                  // }
                   key={this.uid + '_' + idx}
                   onClick={e => {
                     if (all === true || selected.length > 0) {
@@ -288,6 +300,12 @@ class TableComponent extends React.Component {
                   onMouseLeave={e => this.handleHover(null)}
                   style={{
                     cursor: 'pointer',
+                    backgroundColor:
+                      activeItem === item.id
+                        ? 'gray'
+                        : this.props.highlight === item.id
+                        ? 'lightgrey'
+                        : 'white',
                     // cursor: all === true || selected.length > 0 ?
                     //   'copy' : 'pointer'
                   }}>

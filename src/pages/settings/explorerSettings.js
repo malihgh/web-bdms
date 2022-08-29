@@ -163,6 +163,8 @@ class ExplorerSettings extends React.Component {
       t,
       toggleFilter,
       toggleField,
+      toggleFilterArray,
+      toggleFieldArray,
       i18n,
     } = this.props;
 
@@ -901,6 +903,9 @@ class ExplorerSettings extends React.Component {
                 listName={filter.name}
                 toggleField={toggleField}
                 toggleFilter={toggleFilter}
+                toggleFieldArray={toggleFieldArray}
+                toggleFilterArray={toggleFilterArray}
+                type={'viewer'}
               />
             ) : (
               <Divider style={{ margin: 0 }} />
@@ -926,8 +931,22 @@ ExplorerSettings.defaultProps = {
 const mapDispatchToProps = (dispatch, state) => {
   return {
     dispatch: dispatch,
+    toggleFieldArray: (filter, enabled) => {
+      const newFilter = [];
+      filter.forEach(element => {
+        newFilter.push(`viewerFields.${element}`);
+      });
+      dispatch(patchCodeConfig(newFilter, enabled));
+    },
+    toggleFilterArray: (filter, enabled) => {
+      const newFilter = [];
+      filter.forEach(element => {
+        newFilter.push(`filter.${element}`);
+      });
+      dispatch(patchSettings(newFilter, enabled));
+    },
     toggleField: (filter, enabled) => {
-      dispatch(patchCodeConfig(`fields.${filter}`, enabled));
+      dispatch(patchCodeConfig(`viewerFields.${filter}`, enabled));
     },
     toggleFilter: (filter, enabled) => {
       dispatch(patchSettings(`filter.${filter}`, enabled));

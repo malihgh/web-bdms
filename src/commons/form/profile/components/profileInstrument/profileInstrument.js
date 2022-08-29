@@ -12,6 +12,7 @@ import {
   getData,
   getProfile,
 } from './api';
+import useCasingList from '../../hooks/useCasingList';
 
 const ProfileInstrument = props => {
   const {
@@ -22,6 +23,7 @@ const ProfileInstrument = props => {
     selectedStratigraphyID,
   } = props.data;
 
+  const { casing } = useCasingList(boreholeID);
   const [instruments, setInstruments] = useState([]);
   const [hasCasing, setHasCasing] = useState(false);
   const [reload, setReload] = useState(0);
@@ -69,14 +71,11 @@ const ProfileInstrument = props => {
     getInstrumentProfile();
   }, [getInstrumentProfile]);
 
-  const setData = useCallback(
-    instrumentID => {
-      getData(instrumentID).then(response => {
-        setInstruments(response);
-      });
-    },
-    [selectedStratigraphyID],
-  );
+  const setData = useCallback(instrumentID => {
+    getData(instrumentID).then(response => {
+      setInstruments(response);
+    });
+  }, []);
 
   useEffect(() => {
     if (state.instrumentID) {
@@ -87,7 +86,6 @@ const ProfileInstrument = props => {
   const createLayer = () => {
     if (state.instrumentID) {
       if (selectedStratigraphyID) {
-        console.log('selectedStratigraphyID', selectedStratigraphyID);
         createNewInstrument(state.instrumentID, selectedStratigraphyID).then(
           response => {
             if (response) onUpdated('newLayer');
@@ -148,7 +146,7 @@ const ProfileInstrument = props => {
                 update: () => {
                   setReload(prevState => prevState + 1);
                 },
-                boreholeID,
+                casing,
               }}
               key={index}
             />

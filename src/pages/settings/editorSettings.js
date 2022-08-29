@@ -93,7 +93,13 @@ class EditorSettings extends React.Component {
     return selectedData;
   }
   render() {
-    const { setting, toggleField, toggleFilter } = this.props;
+    const {
+      setting,
+      toggleField,
+      toggleFilter,
+      toggleFieldArray,
+      toggleFilterArray,
+    } = this.props;
     return (
       <div
         style={{
@@ -160,6 +166,9 @@ class EditorSettings extends React.Component {
                 listName={filter.name}
                 toggleField={toggleField}
                 toggleFilter={toggleFilter}
+                toggleFieldArray={toggleFieldArray}
+                toggleFilterArray={toggleFilterArray}
+                type={'editor'}
               />
             ) : (
               <Divider style={{ margin: 0 }} />
@@ -225,7 +234,9 @@ EditorSettings.propTypes = {
   setting: PropTypes.object,
   t: PropTypes.func,
   toggleField: PropTypes.func,
+  toggleFieldArray: PropTypes.func,
   toggleFilter: PropTypes.func,
+  toggleFilterArray: PropTypes.func,
 };
 
 EditorSettings.defaultProps = {
@@ -243,6 +254,20 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: dispatch,
+    toggleFieldArray: (filter, enabled) => {
+      const newFilter = [];
+      filter.forEach(element => {
+        newFilter.push(`fields.${element}`);
+      });
+      dispatch(patchCodeConfig(newFilter, enabled));
+    },
+    toggleFilterArray: (filter, enabled) => {
+      const newFilter = [];
+      filter.forEach(element => {
+        newFilter.push(`efilter.${element}`);
+      });
+      dispatch(patchSettings(newFilter, enabled));
+    },
     toggleField: (filter, enabled) => {
       dispatch(patchCodeConfig(`fields.${filter}`, enabled));
     },

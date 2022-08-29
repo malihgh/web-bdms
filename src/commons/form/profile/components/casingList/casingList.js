@@ -1,16 +1,8 @@
-import React, { useEffect } from 'react';
-import useCasingList from '../../hooks/useCasingList';
+import React from 'react';
 import { Dropdown } from 'semantic-ui-react';
 
 const CasingList = props => {
-  const { dropDownValue, handleCasing, id, ItemValue } = props;
-  const { casing, getCasingList } = useCasingList(id);
-
-  useEffect(() => {
-    (async () => {
-      await getCasingList();
-    })();
-  }, [getCasingList]);
+  const { dropDownValue, handleCasing, ItemValue, data } = props;
 
   return (
     <div>
@@ -19,7 +11,7 @@ const CasingList = props => {
         onChange={(e, data) => {
           handleCasing(ItemValue, data.value);
         }}
-        options={casing}
+        options={data}
         selection
         value={dropDownValue}
       />

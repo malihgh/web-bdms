@@ -5,6 +5,7 @@ import InfoCheckBox from './components/infoCheckBox';
 import { useTranslation } from 'react-i18next';
 import { getData, sendProfile } from './api';
 import _ from 'lodash';
+import useCasingList from '../../hooks/useCasingList';
 
 const ProfileInfo = props => {
   const {
@@ -34,6 +35,7 @@ const ProfileInfo = props => {
       fill_name: null,
     },
   });
+  const { casing } = useCasingList(boreholeID);
 
   const setData = useCallback(id => {
     getData(id).then(data => {
@@ -98,7 +100,7 @@ const ProfileInfo = props => {
             attribute,
             updateChange,
             profileInfo: state.profileInfo,
-            boreholeID,
+            casing,
           }}
         />
       )}

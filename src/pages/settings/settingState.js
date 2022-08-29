@@ -207,28 +207,41 @@ const setting = (state = initialState, action) => {
           isFetching: action.disableFetching === true ? false : true,
         };
         let path = null;
-        if (_.has(action, 'key')) {
-          path = _.union(
-            ['data'],
-            action.tree.split('.'),
-            Array.isArray(action.key) === true ? action.key : [action.key],
-          );
+
+        if (Array.isArray(action.tree)) {
+          for (let i = 0; i < action.tree.length; i++) {
+            let element = action.tree[i];
+
+            if (_.has(action, 'key')) {
+              path = _.union(
+                ['data'],
+                element.split('.'),
+                Array.isArray(action.key) === true ? action.key : [action.key],
+              );
+            } else {
+              path = _.union(['data'], element.split('.'));
+            }
+            if (action.value === null) {
+              _.unset(copy, path, action.value);
+            } else {
+              _.set(copy, path, action.value);
+            }
+          }
         } else {
-          path = _.union(['data'], action.tree.split('.'));
-        }
-        if (action.value === null) {
-          _.unset(copy, path, action.value);
-        } else {
-          _.set(copy, path, action.value);
-
-          // if (
-          //   Array.isArray(action.key) === true
-          //   && key[key.length - 1] == 'position'
-          // ) {
-
-          // }
-
-          // isinstance(key, list) and key[-1] == 'position'
+          if (_.has(action, 'key')) {
+            path = _.union(
+              ['data'],
+              action.tree.split('.'),
+              Array.isArray(action.key) === true ? action.key : [action.key],
+            );
+          } else {
+            path = _.union(['data'], action.tree.split('.'));
+          }
+          if (action.value === null) {
+            _.unset(copy, path, action.value);
+          } else {
+            _.set(copy, path, action.value);
+          }
         }
         return copy;
       }
