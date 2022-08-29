@@ -60,20 +60,12 @@ export const InstrumentAttributes = [
   {
     id: 6,
     type: 'Input',
-    label: 'casingId',
-    require: true,
-    value: '', /////
-    isVisible: true,
-  },
-  {
-    id: 7,
-    type: 'Input',
     label: 'layer_notes',
     value: 'notes',
     isVisible: true,
   },
   {
-    id: 8,
+    id: 7,
     type: 'Button',
     label: 'delete',
     value: '',
