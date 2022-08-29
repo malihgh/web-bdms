@@ -2,103 +2,91 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 
-import {
-  Icon
-} from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 
-import {
-  downloadBorehole,
-} from '@ist-supsi/bmsjs';
+import { downloadBorehole } from '@ist-supsi/bmsjs';
 
 class ExportLink extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      downloading: false
+      downloading: false,
     };
   }
 
   render() {
-
     const props = this.props;
-      
+
     if (props.id.lenght === 0) {
       return null;
     }
 
     let frmt = [];
     if (props.pdf === true) {
-      frmt.push("pdf");
+      frmt.push('pdf');
     }
     if (props.shp === true) {
-      frmt.push("shape");
+      frmt.push('shape');
     }
     if (props.csv === true) {
-      frmt.push("csv");
+      frmt.push('csv');
     }
     if (props.fullcsv === true) {
-      frmt.push("fullcsv");
+      frmt.push('fullcsv');
     }
 
     return (
       <span
         style={{
           color: 'rgb(33, 133, 208)',
-          ...props.style
-        }}
-      >
+          display: 'ruby',
+          ...props.style,
+        }}>
         <span
-          className={
-            this.state.downloading === false?
-              'link linker': null
-          }
-          onClick={()=>{
-            if (this.state.downloading === false){
-              this.setState({
-                downloading: true
-              }, ()=>{
-                downloadBorehole({
-                  lang: props.i18n.language,
-                  format: frmt.join(','),
-                  id: props.id.join(',')
-                }).then(()=>{
-                  this.setState({
-                    downloading: false
+          className={this.state.downloading === false ? 'link linker' : null}
+          onClick={() => {
+            if (this.state.downloading === false) {
+              this.setState(
+                {
+                  downloading: true,
+                },
+                () => {
+                  downloadBorehole({
+                    lang: props.i18n.language,
+                    format: frmt.join(','),
+                    id: props.id.join(','),
+                  }).then(() => {
+                    this.setState({
+                      downloading: false,
+                    });
                   });
-                });
-              });
+                },
+              );
             }
-          }}
-        >
-          Download
+          }}>
+          Download Profile
         </span>
         &nbsp;
-        {
-          this.state.downloading === true?
-            <Icon
-              loading
-              name='spinner'
-            />:
-            <Icon
-              name='arrow circle down'
-            />
-        } 
+        {this.state.downloading === true ? (
+          <Icon loading name="spinner" />
+        ) : (
+          <Icon name="arrow circle down" />
+        )}
       </span>
     );
   }
-};
+}
 
 ExportLink.propTypes = {
   csv: PropTypes.bool,
   fullcsv: PropTypes.bool,
   i18n: PropTypes.shape({
-    language: PropTypes.string
+    language: PropTypes.string,
   }),
   id: PropTypes.array,
   pdf: PropTypes.bool,
   shp: PropTypes.bool,
-  style: PropTypes.object
+  style: PropTypes.object,
 };
 
 ExportLink.defaultProps = {
@@ -106,7 +94,7 @@ ExportLink.defaultProps = {
   pdf: true,
   shape: false,
   csv: false,
-  fullcsv: false
+  fullcsv: false,
 };
 
 export default withTranslation()(ExportLink);

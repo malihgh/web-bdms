@@ -408,7 +408,7 @@ class MapComponent extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const {
       centerto,
       filter,

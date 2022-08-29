@@ -52,22 +52,28 @@ Clone server repository, and run the build command.
 git clone https://github.com/geoadmin/web-bdms.git
 cd service-bdms
 version=$(cat ./VERSION.txt)
-docker build -t swisstopo/service-bdms-nginx:$version .
+DOCKER_BUILDKIT=1 \
+    docker build -t swisstopo/service-bdms-nginx:$version .
 ```
 
 If you are preparing a beta just change the version:
 
 ```bash
 version=$(cat ./VERSION.txt)-beta.$(date +%Y%m%d)
-docker build -t ghcr.io/geoadmin/web-bdms/service-bdms-nginx:$version .
-docker push ghcr.io/geoadmin/web-bdms/service-bdms-nginx:$version
+username=geoadmin
+DOCKER_BUILDKIT=1 \
+    docker build \
+      -t ghcr.io/$username/web-bdms/service-bdms-nginx:$version .
+docker push ghcr.io/$username/web-bdms/service-bdms-nginx:$version
 ```
 
 Stable release:
 
 ```bash
 version=$(cat ./VERSION.txt)
-docker build -t swisstopo/service-bdms-nginx:$version .
+DOCKER_BUILDKIT=1 \
+    docker build \
+      -t swisstopo/service-bdms-nginx:$version .
 docker push swisstopo/service-bdms-nginx:$version
 ```
 

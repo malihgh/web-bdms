@@ -10,84 +10,81 @@ const initialState = {
   selectedWMS: 'https://wms.geo.admin.ch?request=getCapabilities&service=WMS',
   WMS: [
     {
-      "key": "https://wms.geo.admin.ch?request=getCapabilities&service=WMS",
-      "text": "https://wms.geo.admin.ch?request=getCapabilities&service=WMS",
-      "value": "https://wms.geo.admin.ch?request=getCapabilities&service=WMS"
+      key: 'https://wms.geo.admin.ch?request=getCapabilities&service=WMS',
+      text: 'https://wms.geo.admin.ch?request=getCapabilities&service=WMS',
+      value: 'https://wms.geo.admin.ch?request=getCapabilities&service=WMS',
     },
     {
-      "key": "https://wms-inspire.geo.admin.ch/?SERVICE=WMS&request=getCapabilities",
-      "text": "https://wms-inspire.geo.admin.ch/?SERVICE=WMS&request=getCapabilities",
-      "value": "https://wms-inspire.geo.admin.ch/?SERVICE=WMS&request=getCapabilities"
+      key: 'https://wms-inspire.geo.admin.ch/?SERVICE=WMS&request=getCapabilities',
+      text: 'https://wms-inspire.geo.admin.ch/?SERVICE=WMS&request=getCapabilities',
+      value:
+        'https://wms-inspire.geo.admin.ch/?SERVICE=WMS&request=getCapabilities',
     },
     {
-      "key": "https://wmts.geo.admin.ch/EPSG/2056/1.0.0/WMTSCapabilities.xml",
-      "text": "https://wmts.geo.admin.ch/EPSG/2056/1.0.0/WMTSCapabilities.xml",
-      "value": "https://wmts.geo.admin.ch/EPSG/2056/1.0.0/WMTSCapabilities.xml"
+      key: 'https://wmts.geo.admin.ch/EPSG/2056/1.0.0/WMTSCapabilities.xml',
+      text: 'https://wmts.geo.admin.ch/EPSG/2056/1.0.0/WMTSCapabilities.xml',
+      value: 'https://wmts.geo.admin.ch/EPSG/2056/1.0.0/WMTSCapabilities.xml',
     },
   ],
   data: {
     boreholetable: {
       orderby: null,
-      direction: null
+      direction: null,
     },
     eboreholetable: {
       orderby: null,
-      direction: null
+      direction: null,
     },
     map: {
       explorer: {},
-      editor: {}
+      editor: {},
     },
     appearance: {
-      explorer: 'mode-1'
+      explorer: 'mode-1',
     },
     filter: {
       mapfilter: true,
       zoom2selected: true,
       kind: true,
       restriction: true,
-      "restriction_until": true,
-      "location_x": true,
-      "location_y": true,
+      restriction_until: true,
+      location_x: true,
+      location_y: true,
       srs: true,
-      "elevation_z": true,
+      elevation_z: true,
       hrs: true,
-      "drilling_date": true,
-      "bore_inc": true,
-      "bore_inc_dir": true,
+      drilling_date: true,
+      bore_inc: true,
+      bore_inc_dir: true,
       length: true,
       extended: {
-        "original_name": true,
+        original_name: true,
         method: true,
         purpose: true,
         status: true,
-        "top_bedrock": true,
-        groundwater: true
+        top_bedrock: true,
+        groundwater: true,
       },
       custom: {
-        "public_name": true,
-        "project_name": true,
+        alternate_name: true,
+        project_name: true,
         canton: true,
         city: true,
         address: true,
         landuse: true,
         cuttings: true,
-        "drill_diameter": true,
-        "lit_pet_top_bedrock": true,
-        "lit_str_top_bedrock": true,
-        "chro_str_top_bedrock": true,
+        drill_diameter: true,
+        lithology_top_bedrock: true,
+        lithostratigraphy_top_bedrock: true,
+        chronostratigraphy_top_bedrock: true,
         remarks: true,
-        // mistakes: true,
-        // "processing_status": true,
-        "national_relevance": true,
-        // "attributes_to_edit": true
       },
 
       // Layers / Stratigraphy filters
       layer: {
-        depth: true, 
+        depth: true,
         depth_from: false,
-        depth_to: false, 
+        depth_to: false,
         description: true,
         geology: true,
         lithology: true,
@@ -112,51 +109,47 @@ const initialState = {
         uscs_3: true,
         uscs_determination: true,
         debris: true,
-        lit_pet_deb: true,
+        lithology_top_bedrock: true,
       },
     },
     efilter: {
       kind: true,
       restriction: true,
-      "restriction_until": true,
-      "elevation_z": true,
+      restriction_until: true,
+      elevation_z: true,
       hrs: true,
-      "drilling_date": true,
-      "bore_inc": true,
-      "bore_inc_dir": true,
+      drilling_date: true,
+      bore_inc: true,
+      bore_inc_dir: true,
       length: true,
       extended: {
-        "original_name": true,
+        original_name: true,
         method: true,
         purpose: true,
         status: true,
-        "top_bedrock": true,
-        groundwater: true
+        top_bedrock: true,
+        groundwater: true,
       },
       custom: {
-        "public_name": true,
-        "project_name": true,
+        alternate_name: true,
+        project_name: true,
         canton: true,
         city: true,
         address: true,
         landuse: true,
         cuttings: true,
-        "drill_diameter": true,
-        "lit_pet_top_bedrock": true,
-        "lit_str_top_bedrock": true,
-        "chro_str_top_bedrock": true,
+        drill_diameter: true,
+        lithology_top_bedrock: true,
+        lithostratigraphy_top_bedrock: true,
+        chronostratigraphy_top_bedrock: true,
         remarks: true,
-        // mistakes: true,
-        // "processing_status": true,
-        // "national_relevance": true,
-        // "attributes_to_edit": true
       },
 
       // Layers / Stratigraphy filters
       layer: {
-        depth: true, 
+        depth: true,
         depth_from: false,
-        depth_to: false, 
+        depth_to: false,
         description: true,
         geology: true,
         lithology: true,
@@ -181,11 +174,10 @@ const initialState = {
         uscs_3: true,
         uscs_determination: true,
         debris: true,
-        lit_pet_deb: true,
+        lithology_top_bedrock: true,
       },
-
     },
-  }
+  },
 };
 
 const setting = (state = initialState, action) => {
@@ -195,74 +187,71 @@ const setting = (state = initialState, action) => {
       case 'GET': {
         return {
           ...initialState,
-          rtime: (
-            new Date()
-          ).getTime(),
-          isFetching: true
+          rtime: new Date().getTime(),
+          isFetching: true,
         };
       }
       case 'GET_OK': {
         let copy = {
           ...state,
-          fcnt: (state.fcnt + 1),
+          fcnt: state.fcnt + 1,
           isFetching: false,
-          rtime: (
-            new Date()
-          ).getTime() - state.rtime,
-          data: _.merge(state.data, action.json.data)
+          rtime: new Date().getTime() - state.rtime,
+          data: _.merge(state.data, action.json.data),
         };
         return copy;
       }
       case 'PATCH': {
         const copy = {
           ...state,
-          isFetching: (
-            action.disableFetching === true? false: true
-          )
+          isFetching: action.disableFetching === true ? false : true,
         };
         let path = null;
-        if (_.has(action, 'key')){
-          path = _.union(
-            ['data'],
-            action.tree.split('.'),
-            Array.isArray(action.key) === true?
-              action.key: [action.key]
-          );
+
+        if (Array.isArray(action.tree)) {
+          for (let i = 0; i < action.tree.length; i++) {
+            let element = action.tree[i];
+
+            if (_.has(action, 'key')) {
+              path = _.union(
+                ['data'],
+                element.split('.'),
+                Array.isArray(action.key) === true ? action.key : [action.key],
+              );
+            } else {
+              path = _.union(['data'], element.split('.'));
+            }
+            if (action.value === null) {
+              _.unset(copy, path, action.value);
+            } else {
+              _.set(copy, path, action.value);
+            }
+          }
         } else {
-          path = _.union(
-            ['data'],
-            action.tree.split('.')
-          );
-        }
-        if (action.value === null){
-          _.unset(
-            copy, path, action.value
-          );
-        } else {
-          _.set(
-            copy, path, action.value
-          );
-
-          // if (
-          //   Array.isArray(action.key) === true
-          //   && key[key.length - 1] == 'position'
-          // ) {
-
-          // }
-
-          // isinstance(key, list) and key[-1] == 'position'
+          if (_.has(action, 'key')) {
+            path = _.union(
+              ['data'],
+              action.tree.split('.'),
+              Array.isArray(action.key) === true ? action.key : [action.key],
+            );
+          } else {
+            path = _.union(['data'], action.tree.split('.'));
+          }
+          if (action.value === null) {
+            _.unset(copy, path, action.value);
+          } else {
+            _.set(copy, path, action.value);
+          }
         }
         return copy;
       }
       case 'PATCH_OK': {
         let copy = {
           ...state,
-          fcnt: (state.fcnt + 1),
+          fcnt: state.fcnt + 1,
           isFetching: false,
-          rtime: (
-            new Date()
-          ).getTime() - state.rtime,
-          data: _.merge(state.data, action.json.data)
+          rtime: new Date().getTime() - state.rtime,
+          data: _.merge(state.data, action.json.data),
         };
         return copy;
       }
@@ -273,21 +262,19 @@ const setting = (state = initialState, action) => {
   switch (action.type) {
     case 'SETTING_TOGGLE_FILTER': {
       const copy = { ...state };
-      _.set(
-        copy, `data.filter.${action.filter}`, action.enabled
-      );
+      _.set(copy, `data.filter.${action.filter}`, action.enabled);
       return copy;
     }
     case 'SETTING_SCROLLBAR_WIDTH': {
       return {
         ...state,
-        scrollbar: action.width
+        scrollbar: action.width,
       };
     }
     case 'SETTING_SET_PAGE': {
       return {
         ...state,
-        page: action.page
+        page: action.page,
       };
     }
     case 'WMS_ADDED': {
@@ -296,18 +283,18 @@ const setting = (state = initialState, action) => {
         selectedWMS: action.url,
         WMS: [
           {
-            "key": action.url,
-            "text": action.url,
-            "value": action.url
+            key: action.url,
+            text: action.url,
+            value: action.url,
           },
-          ...state.WMS
-        ]
+          ...state.WMS,
+        ],
       };
     }
     case 'WMS_SELECTED': {
       return {
         ...state,
-        selectedWMS: action.url
+        selectedWMS: action.url,
       };
     }
     default:

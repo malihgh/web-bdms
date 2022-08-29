@@ -49,13 +49,13 @@ class MultipleForm extends React.Component {
         bore_inc_dir: '',
         qt_bore_inc_dir: null,
         length: '',
-        qt_length: null,
+        qt_depth: null,
         top_bedrock: '',
         qt_top_bedrock: null,
         groundwater: null,
-        lit_pet_top_bedrock: null,
-        lit_str_top_bedrock: null,
-        chro_str_top_bedrock: null,
+        lithology_top_bedrock: null,
+        lithostratigraphy_top_bedrock: null,
+        chronostratigraphy_top_bedrock: null,
       }
     };
   }
@@ -93,13 +93,13 @@ class MultipleForm extends React.Component {
       'drill_diameter': 'custom.drill_diameter',
       'status': 'extended.status',
       'qt_bore_inc_dir': 'custom.qt_bore_inc_dir',
-      'qt_length': 'custom.qt_length',
+      'qt_depth': 'custom.qt_depth',
       'top_bedrock': 'extended.top_bedrock',
       'qt_top_bedrock': 'custom.qt_top_bedrock',
       'groundwater': 'extended.groundwater',
-      'lit_pet_top_bedrock': 'custom.lit_pet_top_bedrock',
-      'lit_str_top_bedrock': 'custom.lit_str_top_bedrock',
-      'chro_str_top_bedrock': 'custom.chro_str_top_bedrock'
+      'lithology_top_bedrock': 'custom.lithology_top_bedrock',
+      'lithostratigraphy_top_bedrock': 'custom.lithostratigraphy_top_bedrock',
+      'chronostratigraphy_top_bedrock': 'custom.chronostratigraphy_top_bedrock'
     };
     const fields = this.state.fields.map(field => ([
       voca.hasOwnProperty(field)? voca[field]: field,
@@ -244,13 +244,13 @@ class MultipleForm extends React.Component {
           {this.getToggle('bore_inc_dir')}
           {this.getToggle('qt_bore_inc_dir')}
           {this.getToggle('length')}
-          {this.getToggle('qt_length')}
+          {this.getToggle('qt_depth')}
           {this.getToggle('top_bedrock')}
           {this.getToggle('qt_top_bedrock')}
           {this.getToggle('groundwater')}
-          {this.getToggle('lit_pet_top_bedrock')}
-          {this.getToggle('lit_str_top_bedrock')}
-          {this.getToggle('chro_str_top_bedrock')}
+          {this.getToggle('lithology_top_bedrock')}
+          {this.getToggle('lithostratigraphy_top_bedrock')}
+          {this.getToggle('chronostratigraphy_top_bedrock')}
         </div>
         <div
           style={{
@@ -376,7 +376,7 @@ class MultipleForm extends React.Component {
             </Form.Group>
             <Form.Group widths='equal'>
               {this.getInput('length', 'number')}
-              {this.getDomain('qt_length', 'custom.qt_length')}
+              {this.getDomain('qt_depth', 'custom.qt_depth')}
             </Form.Group>
             <Form.Group widths='equal'>
               {this.getInput('top_bedrock', 'number')}
@@ -431,9 +431,9 @@ class MultipleForm extends React.Component {
                   </Form.Group>
                 </Form.Field>: null
             }
-            {this.getDomain('lit_pet_top_bedrock', 'custom.lit_pet_top_bedrock')}
-            {this.getDomain('lit_str_top_bedrock', 'custom.lit_str_top_bedrock')}
-            {this.getDomain('chro_str_top_bedrock', 'custom.chro_str_top_bedrock')}
+            {this.getDomain('lithology_top_bedrock', 'custom.lithology_top_bedrock')}
+            {this.getDomain('lithostratigraphy_top_bedrock', 'custom.lithostratigraphy_top_bedrock')}
+            {this.getDomain('chronostratigraphy_top_bedrock', 'custom.chronostratigraphy_top_bedrock')}
           </Form>
         </div>
         <div

@@ -3,18 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 
-
 class TranslationText extends React.Component {
-
   render() {
-    const {
-      append,
-      extra,
-      id,
-      ns,
-      prepend,
-      t
-    } = this.props;
+    const { append, extra, id, ns, prepend, t } = this.props;
 
     if (this.props.developer.debug === true) {
       return (
@@ -25,69 +16,62 @@ class TranslationText extends React.Component {
             lineHeight: '1.2em',
             margin: '5px',
             padding: '5px',
-            ...this.props.style
+            ...this.props.style,
           }}
-          title={`trans=${ns!=='common'?ns+".":''}${id}`}
-        >
-          {prepend}{t(`${ns}:${id}`, extra)}{append}
+          title={`trans=${ns !== 'common' ? ns + '.' : ''}${id}`}>
+          {prepend}
+          {t(`${ns}:${id}`, extra)}
+          {append}
           <br />
           <span
             style={{
               color: 'red',
-              margin: '5px'
+              margin: '5px',
             }}
-            title={`trans=${ns!=='common'?ns+".":''}${id}`}
-          >
-            trans={`${ns!=='common'?ns+".":''}${id}`}
+            title={`trans=${ns !== 'common' ? ns + '.' : ''}${id}`}>
+            trans={`${ns !== 'common' ? ns + '.' : ''}${id}`}
           </span>
         </span>
       );
     }
     let text = t(`${ns}:${id}`, extra);
-    if (this.props.firstUpperCase === true){
-      return prepend + text.charAt(0).toUpperCase()
-        + text.slice(1) + append;
+    if (this.props.firstUpperCase === true) {
+      return prepend + text.charAt(0).toUpperCase() + text.slice(1) + append;
     }
     return prepend + text + append;
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    developer: state.developer
+    developer: state.developer,
   };
 };
 
 TranslationText.propTypes = {
   append: PropTypes.string,
   developer: PropTypes.shape({
-    debug: PropTypes.bool
+    debug: PropTypes.bool,
   }),
-  extra: PropTypes.oneOf([
-    PropTypes.string,
-    PropTypes.object
-  ]),
+  extra: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+
   firstUpperCase: PropTypes.bool,
   id: PropTypes.string,
   ns: PropTypes.string,
   prepend: PropTypes.string,
   style: PropTypes.object,
-  t: PropTypes.func
+  t: PropTypes.func,
 };
 
 TranslationText.defaultProps = {
-  append: "",
+  append: '',
   firstUpperCase: false,
   extra: null,
   ns: 'common',
   prepend: '',
-  style: {}
+  style: {},
 };
 export default connect(
   mapStateToProps,
-  null
-)(
-  withTranslation([
-    'common',
-  ])(TranslationText)
-);
+  null,
+)(withTranslation(['common'])(TranslationText));

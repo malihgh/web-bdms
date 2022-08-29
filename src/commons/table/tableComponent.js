@@ -7,10 +7,7 @@ import {
   // deleteBoreholes
 } from '@ist-supsi/bmsjs';
 
-import {
-  Table,
-  Pagination,
-} from 'semantic-ui-react';
+import { Table, Pagination } from 'semantic-ui-react';
 
 class TableComponent extends React.Component {
   constructor(props) {
@@ -20,46 +17,55 @@ class TableComponent extends React.Component {
     this.add2selection = this.add2selection.bind(this);
     this.inSelection = this.inSelection.bind(this);
     // this.deleteList = this.deleteList.bind(this);
-    const {
-      activeItem,
-      filter
-    } = this.props;
+    const { activeItem, filter } = this.props;
     this.state = {
       activeItem: activeItem !== undefined ? activeItem : null,
       filter: filter !== undefined ? filter : {},
       selected: [],
-      all: false
+      all: false,
     };
   }
   componentDidMount() {
-    const {
-      filter
-    } = this.props;
+    const { filter } = this.props;
     this.props.loadData(1, filter); //, setting.orderby, setting.direction);
   }
   componentDidUpdate(prevProps) {
-    const {
-      filter
-    } = this.props;
+    const { filter, activeItem } = this.props;
+    let state = null;
     if (!_.isEqual(filter, prevProps.filter)) {
       if (this.delay) {
         clearTimeout(this.delay);
         this.delay = false;
       }
-      this.setState({
+      state = {
         selected: [],
-        all: false
-      }, () => {
-        this.delay = setTimeout(function () {
-          this.props.loadData(1, filter); //, setting.orderby, setting.direction);
-        }.bind(this), 10);
+        all: false,
+      };
+    }
+
+    if (activeItem !== prevProps.activeItem) {
+      if (state === null) {
+        state = {
+          activeItem: activeItem,
+        };
+      } else {
+        state['activeItem'] = activeItem;
+      }
+    }
+
+    if (state !== null) {
+      this.setState(state, () => {
+        this.delay = setTimeout(
+          function () {
+            this.props.loadData(1, filter); //, setting.orderby, setting.direction);
+          }.bind(this),
+          10,
+        );
       });
     }
   }
   handleClick(selected) {
-    const {
-      onSelected
-    } = this.props;
+    const { onSelected } = this.props;
     if (this.state.activeItem === selected.id) {
       if (onSelected !== undefined) {
         onSelected(null);
@@ -73,26 +79,21 @@ class TableComponent extends React.Component {
     }
   }
   handleMultipleClick() {
-    const {
-      filter,
-      onMultiple
-    } = this.props;
+    const { filter, onMultiple } = this.props;
     if (this.state.all === true || this.state.selected.length > 0) {
       // Load selected id if all is true
       if (onMultiple !== undefined) {
         if (this.state.all === true) {
-          getdBoreholeIds(filter).then((response) => {
-            if (
-              response.data.success
-            ) {
-              //TODO check this part. Updating state is not incorrect!
-              onMultiple(
-                _.pullAll(response.data.data, this.state.selected)
-              );
-            }
-          }).catch((err) => {
-            console.log(err);
-          });
+          getdBoreholeIds(filter)
+            .then(response => {
+              if (response.data.success) {
+                //TODO check this part. Updating state is not incorrect!
+                onMultiple(_.pullAll(response.data.data, this.state.selected));
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
         } else {
           onMultiple(this.state.selected);
         }
@@ -100,9 +101,7 @@ class TableComponent extends React.Component {
     }
   }
   handleHover(selected) {
-    const {
-      onHover
-    } = this.props;
+    const { onHover } = this.props;
     if (onHover !== undefined) {
       onHover(selected);
     }
@@ -147,9 +146,7 @@ class TableComponent extends React.Component {
   // }
 
   add2selection(id) {
-    const {
-      selected
-    } = this.state;
+    const { selected } = this.state;
     const tmp = [...selected];
     const index = tmp.indexOf(id);
     if (index >= 0) {
@@ -158,14 +155,12 @@ class TableComponent extends React.Component {
       tmp.push(id);
     }
     this.setState({
-      selected: tmp
+      selected: tmp,
     });
   }
 
   inSelection(id) {
-    const {
-      selected, all
-    } = this.state;
+    const { selected, all } = this.state;
     const index = selected.indexOf(id);
     if (all === true) {
       if (index >= 0) {
@@ -183,37 +178,28 @@ class TableComponent extends React.Component {
   }
 
   getHeader() {
-    console.error("Please overwrite getHeader method");
+    console.error('Please overwrite getHeader method');
   }
 
   getCols(item, idx) {
-    console.error("Please overwrite getCols method");
+    console.error('Please overwrite getCols method');
   }
 
   render() {
-    const {
-      store,
-      filter
-    } = this.props;
-    const {
-      activeItem,
-      selected,
-      all
-    } = this.state;
+    const { store, filter } = this.props;
+    const { activeItem, selected, all } = this.state;
     return (
       <div
         style={{
-          flex: "1 1 100%",
+          flex: '1 1 100%',
           display: 'flex',
           flexDirection: 'column',
-          overflow: 'hidden'
-        }}
-      >
+          overflow: 'hidden',
+        }}>
         <div
           style={{
             textAlign: 'center',
-          }}
-        >
+          }}>
           {/* {
             all === true || selected.length > 0 ?
               <div
@@ -284,85 +270,68 @@ class TableComponent extends React.Component {
                 </Button>
               </div> : null
           } */}
-          <Table
-            basic='very'
-            compact='very'
-            fixed
-          >
-            <Table.Header>
-              {this.getHeader()}
-            </Table.Header>
+          <Table basic="very" compact="very" fixed>
+            <Table.Header>{this.getHeader()}</Table.Header>
           </Table>
         </div>
         <div
           style={{
-            flex: "1 1 0%",
+            flex: '1 1 0%',
             overflowY: 'auto',
             // border: 'thin solid #d2d2d2',
             // padding: '0px 1em'
-          }}
-        >
-          <Table
-            basic='very'
-            compact='very'
-            fixed
-            selectable
-          >
+          }}>
+          <Table basic="very" compact="very" fixed selectable>
             <Table.Body>
-              {
-                store.data.map((item, idx) => (
-                  <Table.Row
-                    active={
+              {store.data.map((item, idx) => (
+                <Table.Row
+                  // active={
+                  //   activeItem === item.id || this.props.highlight === item.id
+                  // }
+                  key={this.uid + '_' + idx}
+                  onClick={e => {
+                    if (all === true || selected.length > 0) {
+                      this.add2selection(item.id);
+                    } else {
+                      this.handleClick(item);
+                    }
+                  }}
+                  onMouseEnter={e => this.handleHover(item)}
+                  onMouseLeave={e => this.handleHover(null)}
+                  style={{
+                    cursor: 'pointer',
+                    backgroundColor:
                       activeItem === item.id
-                      || this.props.highlight === item.id
-                    }
-                    key={this.uid + "_" + idx}
-                    onClick={e => {
-                      if (all === true || selected.length > 0) {
-                        this.add2selection(item.id);
-                      } else {
-                        this.handleClick(item);
-                      }
-                    }}
-                    onMouseEnter={e => this.handleHover(item)}
-                    onMouseLeave={e => this.handleHover(null)}
-                    style={{
-                      cursor: 'pointer'
-                      // cursor: all === true || selected.length > 0 ?
-                      //   'copy' : 'pointer'
-                    }}
-                  >
-                    {
-                      this.getCols(item, idx)
-                    }
-                  </Table.Row>
-                ))
-              }
+                        ? 'gray'
+                        : this.props.highlight === item.id
+                        ? 'lightgrey'
+                        : 'white',
+                    // cursor: all === true || selected.length > 0 ?
+                    //   'copy' : 'pointer'
+                  }}>
+                  {this.getCols(item, idx)}
+                </Table.Row>
+              ))}
             </Table.Body>
           </Table>
         </div>
-        {
-          store.pages > 1 ?
-            <div
-              style={{
-                textAlign: 'center',
-                padding: '1em 0px 0px 1em'
+        {store.pages > 1 ? (
+          <div
+            style={{
+              textAlign: 'center',
+              padding: '1em 0px 0px 1em',
+            }}>
+            <Pagination
+              activePage={store.page}
+              onPageChange={(ev, data) => {
+                this.props.loadData(data.activePage, filter);
               }}
-            >
-              <Pagination
-                activePage={store.page}
-                onPageChange={(ev, data) => {
-                  this.props.loadData(
-                    data.activePage,
-                    filter
-                  );
-                }}
-                pointing
-                secondary
-                totalPages={store.pages}
-              />
-            </div> : null
-        }
+              pointing
+              secondary
+              totalPages={store.pages}
+            />
+          </div>
+        ) : null}
       </div>
     );
   }
@@ -375,15 +344,15 @@ TableComponent.propTypes = {
   onSelected: PropTypes.func,
   onMultiple: PropTypes.func,
   onHover: PropTypes.func,
-  setting: PropTypes.object
+  setting: PropTypes.object,
 };
 
 TableComponent.defaultProps = {
   name: 'Stranger',
   setting: {
     orderby: null,
-    direction: null
-  }
+    direction: null,
+  },
 };
 
 export default TableComponent;
